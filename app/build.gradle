@@ -1,15 +1,26 @@
 apply plugin: 'com.android.application'
 
+ext.versionMajor = 1
+ext.versionMinor = 0
+ext.versionPatch = 0
+ext.versionClassifier = null
+ext.isSnapshot = false
+ext.minimumSdkVersion = 14
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
+
+    buildFeatures {
+        dataBinding = true
+    }
 
     defaultConfig {
         applicationId "mz.org.fgh.idartlite"
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode generateVersionCode()
+        versionName generateVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -20,6 +31,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+}
+
+private Integer generateVersionCode() {
+    return ext.minimumSdkVersion * 10000000 + ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
+}
+
+private String generateVersionName() {
+    String versionName = "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+    if (ext.versionClassifier == null && ext.isSnapshot) {
+        ext.versionClassifier = "SNAPSHOT"
+    }
+
+    if (ext.versionClassifier != null) {
+        versionName += "-" + ext.versionClassifier
+    }
+    return versionName;
 }
 
 dependencies {
