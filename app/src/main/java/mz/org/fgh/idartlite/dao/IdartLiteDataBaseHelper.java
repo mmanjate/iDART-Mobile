@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.base;
+package mz.org.fgh.idartlite.dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +10,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.model.User;
 
 public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
@@ -17,6 +18,22 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME    = "idartlite.db";
     private static final int    DATABASE_VERSION = 1;
+    private UserDao userDao;
+    private GenericDao genericDao;
+
+    public GenericDao getGenericDao(BaseModel model) throws SQLException {
+        if(genericDao == null){
+            genericDao = getDao(model.getClass());
+        }
+        return genericDao;
+    }
+
+    public UserDao getUserDao() throws SQLException {
+        if(userDao == null){
+            userDao = getDao(User.class);
+        }
+        return userDao;
+    }
 
     private static IdartLiteDataBaseHelper dataBaseHelper;
 
