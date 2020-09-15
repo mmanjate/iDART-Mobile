@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="space_image_logo">150dp</dimen>
+    <dimen name="margin_left_logo">40dp</dimen>
 </resources>
