@@ -4,8 +4,9 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.UserDaoImpl;
 
-@DatabaseTable(tableName = "user")
+@DatabaseTable(tableName = "user", daoClass = UserDaoImpl.class)
 public class User extends BaseModel {
 
     public static final String COLUMN_USER_NAME = "user_name";

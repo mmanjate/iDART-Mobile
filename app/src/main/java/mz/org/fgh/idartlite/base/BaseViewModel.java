@@ -10,6 +10,15 @@ import androidx.lifecycle.AndroidViewModel;
 public abstract class BaseViewModel  extends AndroidViewModel implements Observable {
 
     private PropertyChangeRegistry callbacks;
+    private BaseActivity baseActivity;
+
+    public BaseActivity getBaseActivity() {
+        return baseActivity;
+    }
+
+    public void setBaseActivity(BaseActivity baseActivity) {
+        this.baseActivity = baseActivity;
+    }
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
