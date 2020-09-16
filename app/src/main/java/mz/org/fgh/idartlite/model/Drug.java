@@ -1,10 +1,15 @@
 package mz.org.fgh.idartlite.model;
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import mz.org.fgh.idartlite.base.BaseModel;
+
+import java.util.Objects;
 
 @DatabaseTable(tableName = "drug")
-public class Drug {
+public class Drug extends BaseModel {
 
     public static final String COLUMN_FNMCODE = "fnm_code";
     public static final String COLUMN_DESCRIPTION = "description";
@@ -17,22 +22,22 @@ public class Drug {
     @DatabaseField(columnName = "id", id = true)
     private int id;
 
-    @DatabaseField(columnName = "fnm_code")
+    @DatabaseField(columnName = COLUMN_FNMCODE)
     private String fnmcode;
 
-    @DatabaseField(columnName = "description")
+    @DatabaseField(columnName = COLUMN_DESCRIPTION)
     private String description;
 
-    @DatabaseField(columnName = "pack_size")
+    @DatabaseField(columnName = COLUMN_PACK_SIZE)
     private int packSize;
 
-    @DatabaseField(columnName = "instruction")
+    @DatabaseField(columnName = COLUMN_INSTRUCTION)
     private String instruction;
 
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_FORM, canBeNull = false, foreign = true)
     private Form form;
 
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_DISEASE_TYPE,canBeNull = false, foreign = true)
     private DiseaseType diseaseType;
 
 
@@ -90,5 +95,38 @@ public class Drug {
 
     public void setInstruction(String instruction) {
         this.instruction = instruction;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Drug drug = (Drug) o;
+        return id == drug.id &&
+                packSize == drug.packSize &&
+                fnmcode.equals(drug.fnmcode) &&
+                description.equals(drug.description) &&
+                instruction.equals(drug.instruction) &&
+                form.equals(drug.form) &&
+                diseaseType.equals(drug.diseaseType);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fnmcode, description, packSize, instruction, form, diseaseType);
+    }
+
+    @Override
+    public String toString() {
+        return "Drug{" +
+                "id=" + id +
+                ", fnmcode='" + fnmcode + '\'' +
+                ", description='" + description + '\'' +
+                ", packSize=" + packSize +
+                ", instruction='" + instruction + '\'' +
+                ", form=" + form +
+                ", diseaseType=" + diseaseType +
+                '}';
     }
 }

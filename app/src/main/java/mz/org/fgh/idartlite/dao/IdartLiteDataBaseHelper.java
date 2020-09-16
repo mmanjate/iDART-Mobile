@@ -11,6 +11,8 @@ import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.User;
 
 public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
@@ -20,6 +22,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int    DATABASE_VERSION = 1;
     private UserDao userDao;
     private GenericDao genericDao;
+    private EpisodeDao episodeDao;
+    private PrescriptionDao prescriptionDao;
 
     public GenericDao getGenericDao(BaseModel model) throws SQLException {
         if(genericDao == null){
@@ -33,6 +37,20 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             userDao = getDao(User.class);
         }
         return userDao;
+    }
+
+    public EpisodeDao getEpisodeDao() throws SQLException {
+        if(episodeDao == null){
+            episodeDao = getDao(Episode.class);
+        }
+        return episodeDao;
+    }
+
+    public PrescriptionDao getPrescriptionDao() throws SQLException {
+        if(prescriptionDao == null){
+            prescriptionDao = getDao(Prescription.class);
+        }
+        return prescriptionDao;
     }
 
     private static IdartLiteDataBaseHelper dataBaseHelper;
