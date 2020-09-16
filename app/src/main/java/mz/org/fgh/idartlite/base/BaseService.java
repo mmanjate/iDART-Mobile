@@ -2,17 +2,38 @@ package mz.org.fgh.idartlite.base;
 
 import android.app.Application;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import mz.org.fgh.idartlite.dao.IdartLiteDataBaseHelper;
+import mz.org.fgh.idartlite.model.User;
 
 public abstract class BaseService {
 
     protected IdartLiteDataBaseHelper dataBaseHelper;
 
-    public BaseService(Application application) {
+    private static final int NUMBER_OF_THREADS = 4;
+    protected static ExecutorService restServiceExecutor;
+
+    protected User currentUser;
+
+
+    public BaseService(Application application, User currentUser) {
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
+        restServiceExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+
+        this.currentUser = currentUser;
     }
 
     public IdartLiteDataBaseHelper getDataBaseHelper() {
         return dataBaseHelper;
+    }
+
+    public static ExecutorService getRestServiceExecutor() {
+        return restServiceExecutor;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 }

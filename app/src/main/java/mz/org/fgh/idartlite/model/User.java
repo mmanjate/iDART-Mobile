@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.model;
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -15,9 +16,11 @@ public class User extends BaseModel {
     @DatabaseField(columnName = "id", id = true)
     private int id;
 
+    @SerializedName("cl_username")
     @DatabaseField(columnName = "user_name")
     private String userName;
 
+    @SerializedName("cl_password")
     @DatabaseField(columnName = "password")
     private String password;
 

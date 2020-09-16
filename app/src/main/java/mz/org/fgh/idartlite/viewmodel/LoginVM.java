@@ -30,6 +30,11 @@ public class LoginVM extends BaseViewModel {
     @Bindable
     private String toastMessage = null;
 
+    public LoginVM(@NonNull Application application) {
+        super(application);
+        user = new User();
+        userService = new UserService(getApplication(), getCurrentUser());
+    }
 
     public String getToastMessage() {
         return toastMessage;
@@ -61,11 +66,43 @@ public class LoginVM extends BaseViewModel {
         notifyPropertyChanged(BR.userPassword);
     }
 
-    public LoginVM(@NonNull Application application) {
-        super(application);
-        user = new User();
-        userService = new UserService(getApplication());
+
+
+
+    public boolean isInputDataValid() {
+        try {
+            if (getUserName().length() == 0 || getUserPassword().length() == 0) {
+                setToastMessage("Campo User Name e Password Sao Obrigatorios!");
+            } else {
+
+                if (userService.checkIfUsertableIsEmpty()) {
+                    User user = new User();
+                    user.setUserName("root@root.com");
+                    user.setPassword("root");
+                    userService.saveUser(user);
+                    setToastMessage("User Root Criado!");
+                } else {
+                    if (!userService.login(user)) {
+                        Intent intent = new Intent(getApplication(), MainActivity.class);
+                        //intent.putEXtra("user");
+                        getRelatedActivity().startActivity(intent);
+                    } else {
+                        setToastMessage("Campo User Name ou Password estao errados!");
+                    }
+                }
+            }
+        }catch (SQLException e) {
+            Log.i("INFO DB", "Erro ao fazer Login" + e.getMessage());
+            e.printStackTrace();
+        }
+        return !TextUtils.isEmpty(getUserName()) && Patterns.EMAIL_ADDRESS.matcher(getUserName()).matches() && getUserPassword().length() > 5;
     }
+
+    public void login(){
+        if (isInputDataValid())
+            setToastMessage(successMessage);
+        else
+            setToastMessage(errorMessage);
 
      public void login(){
          try {
@@ -93,10 +130,15 @@ public class LoginVM extends BaseViewModel {
              Log.i("INFO DB", "Erro ao fazer Login" + e.getMessage());
              e.printStackTrace();
          }
+
     }
 
     @Override
-    public LoginActivity getBaseActivity() {
-        return (LoginActivity) super.getBaseActivity();
+    public LoginActivity getRelatedActivity() {
+        return (LoginActivity) super.getRelatedActivity();
+    }
+
+    public void requestUserFromCloud(){
+        this.userService.getUsers();
     }
 }
