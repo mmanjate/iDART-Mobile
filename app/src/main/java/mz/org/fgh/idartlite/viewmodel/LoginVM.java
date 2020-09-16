@@ -28,6 +28,11 @@ public class LoginVM extends BaseViewModel {
     @Bindable
     private String toastMessage = null;
 
+    public LoginVM(@NonNull Application application) {
+        super(application);
+        user = new User();
+        userService = new UserService(getApplication(), getCurrentUser());
+    }
 
     public String getToastMessage() {
         return toastMessage;
@@ -59,11 +64,7 @@ public class LoginVM extends BaseViewModel {
         notifyPropertyChanged(BR.userPassword);
     }
 
-    public LoginVM(@NonNull Application application) {
-        super(application);
-        user = new User();
-        userService = new UserService(getApplication());
-    }
+
 
     public boolean isInputDataValid() {
         try {
@@ -81,7 +82,7 @@ public class LoginVM extends BaseViewModel {
                     if (!userService.login(user)) {
                         Intent intent = new Intent(getApplication(), MainActivity.class);
                         //intent.putEXtra("user");
-                        getBaseActivity().startActivity(intent);
+                        getRelatedActivity().startActivity(intent);
                     } else {
                         setToastMessage("Campo User Name ou Password estao errados!");
                     }
@@ -102,7 +103,11 @@ public class LoginVM extends BaseViewModel {
     }
 
     @Override
-    public LoginActivity getBaseActivity() {
-        return (LoginActivity) super.getBaseActivity();
+    public LoginActivity getRelatedActivity() {
+        return (LoginActivity) super.getRelatedActivity();
+    }
+
+    public void requestUserFromCloud(){
+        this.userService.getUsers();
     }
 }

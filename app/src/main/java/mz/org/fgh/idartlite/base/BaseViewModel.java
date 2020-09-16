@@ -7,17 +7,21 @@ import androidx.databinding.Observable;
 import androidx.databinding.PropertyChangeRegistry;
 import androidx.lifecycle.AndroidViewModel;
 
+import mz.org.fgh.idartlite.model.User;
+
 public abstract class BaseViewModel  extends AndroidViewModel implements Observable {
 
     private PropertyChangeRegistry callbacks;
-    private BaseActivity baseActivity;
+    private BaseActivity relatedActivity;
 
-    public BaseActivity getBaseActivity() {
-        return baseActivity;
+    protected User currentUser;
+
+    public BaseActivity getRelatedActivity() {
+        return relatedActivity;
     }
 
-    public void setBaseActivity(BaseActivity baseActivity) {
-        this.baseActivity = baseActivity;
+    public void setRelatedActivity(BaseActivity relatedActivity) {
+        this.relatedActivity = relatedActivity;
     }
 
     public BaseViewModel(@NonNull Application application) {
@@ -51,5 +55,13 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
      */
     protected void notifyPropertyChanged(int fieldId) {
         callbacks.notifyCallbacks(this, fieldId, null);
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 }
