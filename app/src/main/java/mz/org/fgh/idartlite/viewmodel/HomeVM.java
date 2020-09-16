@@ -17,12 +17,12 @@ public class HomeVM extends BaseViewModel {
 
     public void callSearchPatient(){
         Intent intent = new Intent(getApplication(), SearchPatientActivity.class);
-        getBaseActivity().startActivity(intent);
+        getRelatedActivity().startActivity(intent);
     }
 
     @Override
-    public HomeActivity getBaseActivity(){
-        return (HomeActivity) super.getBaseActivity();
+    public HomeActivity getRelatedActivity(){
+        return (HomeActivity) super.getRelatedActivity();
     }
 
 }

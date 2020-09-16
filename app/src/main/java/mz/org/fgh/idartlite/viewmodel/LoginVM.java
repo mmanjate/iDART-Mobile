@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.viewmodel;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -63,7 +64,7 @@ public class LoginVM extends BaseViewModel {
     public LoginVM(@NonNull Application application) {
         super(application);
         user = new User();
-        userService = new UserService(getApplication());
+        userService = new UserService(getApplication(), this.user);
     }
 
      public void login(){
@@ -81,8 +82,10 @@ public class LoginVM extends BaseViewModel {
                  } else {
                      if (!userService.login(user)) {
                          Intent intent = new Intent(getApplication(), HomeActivity.class);
-                         //intent.putEXtra("user");
-                         getBaseActivity().startActivity(intent);
+                         Bundle bundle = new Bundle();
+                         bundle.putSerializable("user",user);
+                         intent.putExtras(bundle);
+                         getRelatedActivity().startActivity(intent);
                      } else {
                          setToastMessage(errorMessage);
                      }
@@ -95,8 +98,8 @@ public class LoginVM extends BaseViewModel {
     }
 
     @Override
-    public LoginActivity getBaseActivity() {
+    public LoginActivity getRelatedActivity() {
 
-        return (LoginActivity) super.getBaseActivity();
+        return (LoginActivity) super.getRelatedActivity();
     }
 }
