@@ -3,23 +3,26 @@ package mz.org.fgh.idartlite.model;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.TherapeuticLineDaoImpl;
 
 import java.util.Objects;
 
+@DatabaseTable(tableName = "therapeutic_line", daoClass = TherapeuticLineDaoImpl.class)
 public class TherapeuticLine extends BaseModel {
 
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_CODE = "code";
 	public static final String COLUMN_DESCRIPTION = "description";
 
-	@DatabaseField(columnName = "id", id = true)
+	@DatabaseField(columnName = COLUMN_ID, id = true)
 	private int id;
 
-	@DatabaseField(columnName = "code")
+	@DatabaseField(columnName = COLUMN_CODE)
 	private String code;
 
-	@DatabaseField(columnName = "description")
+	@DatabaseField(columnName = COLUMN_DESCRIPTION)
 	private String description;
 
 	public int getId() {

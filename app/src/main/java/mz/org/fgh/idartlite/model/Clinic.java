@@ -20,26 +20,26 @@ public class Clinic extends BaseModel {
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PHARMACY_TYPE_ID = "pharmacy_type_id";
 
-	@DatabaseField(columnName = "id", id = true)
+	@DatabaseField(columnName = COLUMN_ID, id = true)
 	private int id;
 
-	@DatabaseField(columnName = "code")
+	@DatabaseField(columnName = COLUMN_CODE)
 	private String code;
 
-	@DatabaseField(columnName = "clinic_name")
+	@DatabaseField(columnName = COLUMN_CLINIC_NAME)
 	private String clinicName;
 
-	@DatabaseField(columnName = "phone")
+	@DatabaseField(columnName = COLUMN_PHONE)
 	private String phone;
 
-	@DatabaseField(columnName = "address")
+	@DatabaseField(columnName = COLUMN_ADDRESS)
 	private String address;
 
-	@DatabaseField(columnName = "uuid")
+	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = "pharmacy_type_id")
-	private PharmacyType pharmacyTypeId;
+	@DatabaseField(columnName = COLUMN_PHARMACY_TYPE_ID, canBeNull = false, foreign = true)
+	private PharmacyType pharmacyType;
 
 	public int getId() {
 		return id;
@@ -89,12 +89,12 @@ public class Clinic extends BaseModel {
 		this.uuid = uuid;
 	}
 
-	public PharmacyType getPharmacyTypeId() {
-		return pharmacyTypeId;
+	public PharmacyType getPharmacyType() {
+		return pharmacyType;
 	}
 
-	public void setPharmacyTypeId(PharmacyType pharmacyTypeId) {
-		this.pharmacyTypeId = pharmacyTypeId;
+	public void setPharmacyType(PharmacyType pharmacyType) {
+		this.pharmacyType = pharmacyType;
 	}
 
 	@Override

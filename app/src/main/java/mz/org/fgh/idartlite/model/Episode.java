@@ -5,11 +5,11 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.UserDaoImpl;
+import mz.org.fgh.idartlite.dao.EpisodeDaoImpl;
 
 import java.util.Objects;
 
-@DatabaseTable(tableName = "episode", daoClass = UserDaoImpl.class)
+@DatabaseTable(tableName = "episode", daoClass = EpisodeDaoImpl.class)
 public class Episode extends BaseModel {
 
 	public static final String COLUMN_ID = "id";
@@ -20,26 +20,26 @@ public class Episode extends BaseModel {
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
 
-	@DatabaseField(columnName = "id", id = true)
+	@DatabaseField(columnName = COLUMN_ID, id = true)
 	private int id;
 
-	@DatabaseField(columnName = "episode_date")
+	@DatabaseField(columnName = COLUMN_EPISODE_DATE)
 	private int episodeDate;
 
-	@DatabaseField(columnName = "start_reason")
+	@DatabaseField(columnName = COLUMN_START_REASON)
 	private String startReason;
 
-	@DatabaseField(columnName = "stop_reason")
+	@DatabaseField(columnName = COLUMN_STOP_REASON)
 	private String stopReason;
 
-	@DatabaseField(columnName = "notes")
+	@DatabaseField(columnName = COLUMN_NOTES)
 	private String notes;
 
-	@DatabaseField(columnName = "uuid")
+	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = "patient_id")
-	private Patient patientId;
+	@DatabaseField(columnName = COLUMN_PATIENT_ID)
+	private Patient patient;
 
 	public int getId() {
 		return id;
@@ -89,12 +89,12 @@ public class Episode extends BaseModel {
 		this.uuid = uuid;
 	}
 
-	public Patient getPatientId() {
-		return patientId;
+	public Patient getPatient() {
+		return patient;
 	}
 
-	public void setPatientId(Patient patientId) {
-		this.patientId = patientId;
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	@Override
@@ -102,14 +102,15 @@ public class Episode extends BaseModel {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Episode episode = (Episode) o;
-		return uuid.equals(episode.uuid) &&
-				patientId.equals(episode.patientId);
+		return episodeDate == episode.episodeDate &&
+				uuid.equals(episode.uuid) &&
+				patient.equals(episode.patient);
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 	@Override
 	public int hashCode() {
-		return Objects.hash(uuid, patientId);
+		return Objects.hash(episodeDate, uuid, patient);
 	}
 
 	@Override
