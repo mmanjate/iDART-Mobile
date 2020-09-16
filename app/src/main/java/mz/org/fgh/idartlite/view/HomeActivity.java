@@ -19,6 +19,8 @@ public class HomeActivity extends BaseActivity {
         ActivityHomeBinding activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         activityHomeBinding.setViewModel(getRelatedViewModel());
         activityHomeBinding.executePendingBindings();
+
+
     }
 
     @Override

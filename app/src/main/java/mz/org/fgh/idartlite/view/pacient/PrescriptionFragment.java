@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view;
+package mz.org.fgh.idartlite.view.pacient;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,20 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.GenericFragment;
 
-public class SecondFragment extends Fragment {
+public class PrescriptionFragment extends GenericFragment {
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false);
+        return inflater.inflate(R.layout.prescription_fragment, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -28,7 +25,7 @@ public class SecondFragment extends Fragment {
         view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(SecondFragment.this)
+                NavHostFragment.findNavController(PrescriptionFragment.this)
                         .navigate(R.id.action_SecondFragment_to_FirstFragment);
             }
         });
