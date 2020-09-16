@@ -12,7 +12,6 @@ xmlns:tools="http://schemas.android.com/tools">
         type="mz.org.fgh.idartlite.viewmodel.LoginVM" />
 </data>
 
-
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -47,7 +46,8 @@ xmlns:tools="http://schemas.android.com/tools">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:autofillHints="@string/hint_username" />
 
         <EditText
             android:id="@+id/inPassword"
@@ -59,7 +59,8 @@ xmlns:tools="http://schemas.android.com/tools">
             android:text="@={viewModel.userPassword}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inUserName" />
+            app:layout_constraintTop_toBottomOf="@+id/inUserName"
+            android:autofillHints="@string/password" />
 
         <Button
             android:id="@+id/button"

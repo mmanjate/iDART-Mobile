@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -16,6 +17,14 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = this.getIntent();
+        if(intent != null){
+            Bundle bundle = intent.getExtras();
+            if(bundle != null) {
+                currentUser = (User) bundle.getSerializable("user");
+            }
+        }
 
         this.relatedViewModel = initViewModel();
         if (this.relatedViewModel != null) {
