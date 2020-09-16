@@ -14,4 +14,13 @@
     <string name="login">LOGIN</string>
     <string name="logImage">Log Image</string>
     <string name="logIDart">Log iDart Image</string>
+    <string name="nome_farmacia">Farmácia Indico</string>
+    <string name="endereco_farmacia">Av.Mateus Munguambe</string>
+    <string name="contacto_farmacia">Telefone: 82665382</string>
+    <string name="gestao_patient">Gestão de Pacientes</string>
+    <string name="gestao_stock">Gestão de Stock</string>
+    <string name="content_description_logo">Logo idart</string>
+    <string name="logo_farmacia">logo farmacia</string>
+    <string name="search_patient">NID/Nome  do Paciente</string>
+    <string name="input_search_patient">pesquisar</string>
 </resources>

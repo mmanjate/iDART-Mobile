@@ -6,8 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
-import android.text.TextUtils;
-import android.util.Patterns;
+
 import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.BR;
@@ -15,7 +14,7 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.UserService;
 import mz.org.fgh.idartlite.view.LoginActivity;
-import mz.org.fgh.idartlite.view.MainActivity;
+import mz.org.fgh.idartlite.view.HomeActivity;
 
 public class LoginVM extends BaseViewModel {
 
@@ -81,7 +80,7 @@ public class LoginVM extends BaseViewModel {
                      setToastMessage(successUserCreation);
                  } else {
                      if (!userService.login(user)) {
-                         Intent intent = new Intent(getApplication(), MainActivity.class);
+                         Intent intent = new Intent(getApplication(), HomeActivity.class);
                          //intent.putEXtra("user");
                          getBaseActivity().startActivity(intent);
                      } else {
@@ -97,6 +96,7 @@ public class LoginVM extends BaseViewModel {
 
     @Override
     public LoginActivity getBaseActivity() {
+
         return (LoginActivity) super.getBaseActivity();
     }
 }
