@@ -2,27 +2,26 @@ package mz.org.fgh.idartlite.model;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import mz.org.fgh.idartlite.base.BaseModel;
 
 @DatabaseTable(tableName = "Dispense_drug")
-public class DispensedDrug {
-
+public class DispensedDrug extends BaseModel {
 
     public static final String COLUMN_QUANTITY_SUPPLIED = "quantity_supplied";
     public static final String COLUMN_DISPENSE = "dispense_id";
-    public static final String COLUMN_NEXT_PICKUP_DATE = "next_pickup_date";
-    public static final String COLUMN_PRESCRIPTION = "prescription_id";
-    public static final String COLUMN_UUID = "uuid";
+    public static final String COLUMN_STOCK = "stock_id";
 
 
     @DatabaseField(columnName = "id", id = true)
     private int id;
 
-    @DatabaseField(columnName = "quantity_supplied")
+    @DatabaseField(columnName = COLUMN_QUANTITY_SUPPLIED)
     private int quantitySupplied;
 
-    //private Stock stock_id;
+    @DatabaseField(columnName = COLUMN_STOCK , canBeNull = false, foreign = true)
+    private Stock stock;
 
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_DISPENSE ,canBeNull = false, foreign = true)
     private Dispense dispense;
 
     public int getId() {
@@ -47,5 +46,13 @@ public class DispensedDrug {
 
     public void setDispense(Dispense dispense) {
         this.dispense = dispense;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 }
