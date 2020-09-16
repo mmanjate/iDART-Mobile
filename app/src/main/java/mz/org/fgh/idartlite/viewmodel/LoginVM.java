@@ -21,8 +21,10 @@ public class LoginVM extends BaseViewModel {
 
     private User user;
 
-    private String successMessage = "Login was successful";
-    private String errorMessage = "Email or Password not valid";
+    private String successMessage      = "Login was successful!";
+    private String successUserCreation = "User was successful create!";
+    private String errorMessage        = "User Name or Password not valid!";
+    private String mandatoryField      = "User Name and Password are mandatory!";
     private UserService userService;
 
     @Bindable
@@ -65,40 +67,32 @@ public class LoginVM extends BaseViewModel {
         userService = new UserService(getApplication());
     }
 
-    public boolean isInputDataValid() {
-        try {
-            if (getUserName().length() == 0 || getUserPassword().length() == 0) {
-                setToastMessage("Campo User Name e Password Sao Obrigatorios!");
-            } else {
+     public void login(){
+         try {
+             if (getUserName().length() == 0 || getUserPassword().length() == 0) {
+                 setToastMessage(mandatoryField);
+             } else {
 
-                if (userService.checkIfUsertableIsEmpty()) {
-                    User user = new User();
-                    user.setUserName("root@root.com");
-                    user.setPassword("root");
-                    userService.saveUser(user);
-                    setToastMessage("User Root Criado!");
-                } else {
-                    if (!userService.login(user)) {
-                        Intent intent = new Intent(getApplication(), MainActivity.class);
-                        //intent.putEXtra("user");
-                        getBaseActivity().startActivity(intent);
-                    } else {
-                        setToastMessage("Campo User Name ou Password estao errados!");
-                    }
-                }
-            }
-        }catch (SQLException e) {
-            Log.i("INFO DB", "Erro ao fazer Login" + e.getMessage());
-            e.printStackTrace();
-        }
-        return !TextUtils.isEmpty(getUserName()) && Patterns.EMAIL_ADDRESS.matcher(getUserName()).matches() && getUserPassword().length() > 5;
-    }
-
-    public void login(){
-        if (isInputDataValid())
-            setToastMessage(successMessage);
-        else
-            setToastMessage(errorMessage);
+                 if (userService.checkIfUsertableIsEmpty()) {
+                     User user = new User();
+                     user.setUserName("root");
+                     user.setPassword("root");
+                     userService.saveUser(user);
+                     setToastMessage(successUserCreation);
+                 } else {
+                     if (!userService.login(user)) {
+                         Intent intent = new Intent(getApplication(), MainActivity.class);
+                         //intent.putEXtra("user");
+                         getBaseActivity().startActivity(intent);
+                     } else {
+                         setToastMessage(errorMessage);
+                     }
+                 }
+             }
+         }catch (SQLException e) {
+             Log.i("INFO DB", "Erro ao fazer Login" + e.getMessage());
+             e.printStackTrace();
+         }
     }
 
     @Override
