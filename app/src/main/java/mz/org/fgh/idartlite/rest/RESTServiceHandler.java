@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.base;
+package mz.org.fgh.idartlite.rest;
 
 import android.util.Base64;
 import android.widget.ImageView;
@@ -9,10 +9,13 @@ import com.android.volley.toolbox.ImageLoader;
 import java.util.HashMap;
 import java.util.Map;
 
+import mz.org.fgh.idartlite.base.IdartLiteApplication;
+import mz.org.fgh.idartlite.model.User;
+
 public class RESTServiceHandler {
 
     private Map<String, String> mHeaders;
-    //private User user;
+    private User user;
 
     public RESTServiceHandler() {
         //this.user = user;
@@ -49,9 +52,14 @@ public class RESTServiceHandler {
     public Map<String, String> buildAuthHeaders(){
 
         Map<String, String> headerMap = new HashMap<>();
-        String credentials = null;//this.user.getUserName() + ":" + this.user.getPassword();
+        String credentials = this.user.getUserName() + ":" + this.user.getPassword();
         String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
         headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
         return headerMap;
+
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.base;
+package mz.org.fgh.idartlite.rest;
 
 import android.util.Log;
 
@@ -122,7 +122,7 @@ public class ObjectRequest<T> extends JsonRequest<T> {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        if (mHeaders.isEmpty()) {
+        if (mHeaders == null || mHeaders.isEmpty()) {
             return super.getHeaders();
         }else{
             return mHeaders;
