@@ -104,22 +104,29 @@ public class LoginVM extends BaseViewModel {
                      clinicService.saveClinic(clinic);
 
                      Patient patient = new Patient();
+                     clinic.setId(1);
                      patient.setAddress("Matola");
                      Date date = Calendar.getInstance().getTime();
                      patient.setBirthDate(date);
                      patient.setFirstName("Antonio Mateus");
+                     patient.setPhone("82665382");
                      patient.setLastName("Munguambe");
                      patient.setGender("Masculino");
                      patient.setNid("0101010101/2020/00001");
+                     patient.setUuid("0101010101/2020/00001");
+                     patient.setClinic(clinic);
                      patientService.savePatient(patient);
 
                      patient.setAddress("CS Chabeco");
                      date = Calendar.getInstance().getTime();
+                     clinic.setId(1);
                      patient.setBirthDate(date);
                      patient.setFirstName("Engels Mateus");
                      patient.setLastName("Nhantumbo");
+                     patient.setPhone("826219264");
                      patient.setGender("Masculino");
                      patient.setNid("0101010101/2020/63254");
+                     patient.setClinic(clinic);
                      patientService.savePatient(patient);
 
                      User user = new User();

@@ -39,7 +39,7 @@ public class Episode extends BaseModel {
 	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = COLUMN_PATIENT_ID)
+	@DatabaseField(columnName = COLUMN_PATIENT_ID, canBeNull = false, foreign = true)
 	private Patient patient;
 
 	@DatabaseField(columnName = COLUMN_SYNC_STATUS)
