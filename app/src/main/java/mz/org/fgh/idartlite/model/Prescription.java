@@ -40,7 +40,7 @@ public class Prescription extends BaseModel {
 	private Date expiryDate;
 
 	@DatabaseField(columnName = COLUMN_URGENT_PRESCRIPTION)
-	private boolean urgentPrescription;
+	private String urgentPrescription;
 
 	@DatabaseField(columnName = COLUMN_URGENT_NOTES)
 	private String urgentNotes;
@@ -98,11 +98,11 @@ public class Prescription extends BaseModel {
 		this.expiryDate = expiryDate;
 	}
 
-	public boolean isUrgentPrescription() {
+	public String isUrgentPrescription() {
 		return urgentPrescription;
 	}
 
-	public void setUrgentPrescription(boolean urgentPrescription) {
+	public void setUrgentPrescription(String urgentPrescription) {
 		this.urgentPrescription = urgentPrescription;
 	}
 
