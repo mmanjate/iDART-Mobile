@@ -18,6 +18,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME    = "idartlite.db";
     private static final int    DATABASE_VERSION = 1;
+
     private ClinicDao clinicDao;
     private DiseaseTypeDao diseaseTypeDao;
     private DispenseDao dispenseDao;
@@ -177,24 +178,24 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-            TableUtils.createTable(connectionSource, Clinic.class);
-            TableUtils.createTable(connectionSource, DiseaseType.class);
-            TableUtils.createTable(connectionSource, Dispense.class);
-            TableUtils.createTable(connectionSource, DispensedDrug.class);
-            TableUtils.createTable(connectionSource, DispenseType.class);
-            TableUtils.createTable(connectionSource, Drug.class);
-            TableUtils.createTable(connectionSource, Episode.class);
-            TableUtils.createTable(connectionSource, Form.class);
-            TableUtils.createTable(connectionSource, Patient.class);
-            TableUtils.createTable(connectionSource, PharmacyType.class);
-            TableUtils.createTable(connectionSource, PrescribedDrug.class);
-            TableUtils.createTable(connectionSource, Prescription.class);
-            TableUtils.createTable(connectionSource, RegimenDrug.class);
-            TableUtils.createTable(connectionSource, Stock.class);
-            TableUtils.createTable(connectionSource, TherapeuticLine.class);
-            TableUtils.createTable(connectionSource, TherapeuticRegimen.class);
-            TableUtils.createTable(connectionSource, User.class);
 
+            TableUtils.createTable(connectionSource, DispenseType.class);
+            TableUtils.createTable(connectionSource, DiseaseType.class);
+            TableUtils.createTable(connectionSource, PharmacyType.class);
+            TableUtils.createTable(connectionSource, Clinic.class);
+            TableUtils.createTable(connectionSource, User.class);
+            TableUtils.createTable(connectionSource, TherapeuticRegimen.class);
+            TableUtils.createTable(connectionSource, TherapeuticLine.class);
+            TableUtils.createTable(connectionSource, Patient.class);
+            TableUtils.createTable(connectionSource, Prescription.class);
+            TableUtils.createTable(connectionSource, Dispense.class);
+            TableUtils.createTable(connectionSource, Form.class);
+            TableUtils.createTable(connectionSource, Drug.class);
+            TableUtils.createTable(connectionSource, Stock.class);
+            TableUtils.createTable(connectionSource, DispensedDrug.class);
+            TableUtils.createTable(connectionSource, Episode.class);
+            TableUtils.createTable(connectionSource, PrescribedDrug.class);
+            TableUtils.createTable(connectionSource, RegimenDrug.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
