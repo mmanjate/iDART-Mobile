@@ -10,4 +10,5 @@
     <dimen name="dimen_18dp">18dp</dimen>
     <dimen name="dimen_17dp">17dp</dimen>
     <dimen name="dimen_5dp">5dp</dimen>
+    <dimen name="dimen_4dp">4dp</dimen>
 </resources>

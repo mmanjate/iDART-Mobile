@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.SearchPatientActivity"></activity>
         <activity
-            android:name=".view.pacient.PatientActivity"
+            android:name=".view.patient.PatientActivity"
             android:label="@string/title_activity_patient"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
