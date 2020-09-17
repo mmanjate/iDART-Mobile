@@ -1,22 +1,27 @@
 package mz.org.fgh.idartlite.model;
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import mz.org.fgh.idartlite.base.BaseModel;
+
+import java.util.Objects;
 
 @DatabaseTable(tableName = "Disease_type")
-public class DiseaseType {
+public class DiseaseType extends BaseModel {
 
-    public static final String COLUMN_UNIT = "unit";
+    public static final String COLUMN_CODE = "code";
     public static final String COLUMN_DESCRIPTION = "description";
 
 
     @DatabaseField(columnName = "id", id = true)
     private int id;
 
-    @DatabaseField(columnName = "unit")
-    private String unit;
+    @DatabaseField(columnName = COLUMN_CODE)
+    private String code;
 
-    @DatabaseField(columnName = "description")
+    @DatabaseField(columnName = COLUMN_DESCRIPTION)
     private String description;
 
 
@@ -28,12 +33,12 @@ public class DiseaseType {
         this.id = id;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getCode() {
+        return code;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getDescription() {
@@ -44,4 +49,26 @@ public class DiseaseType {
         this.description = description;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiseaseType that = (DiseaseType) o;
+        return code.equals(that.code);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(code);
+    }
+
+    @Override
+    public String toString() {
+        return "DiseaseType{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

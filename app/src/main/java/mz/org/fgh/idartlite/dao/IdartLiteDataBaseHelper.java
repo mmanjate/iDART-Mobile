@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.model.*;
 
 public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -20,6 +20,10 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int    DATABASE_VERSION = 1;
     private UserDao userDao;
     private GenericDao genericDao;
+    private EpisodeDao episodeDao;
+    private PrescriptionDao prescriptionDao;
+    private DispenseDao dispenseDao;
+    private StockDao stockDao;
 
     public GenericDao getGenericDao(BaseModel model) throws SQLException {
         if(genericDao == null){
@@ -33,6 +37,34 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             userDao = getDao(User.class);
         }
         return userDao;
+    }
+
+    public EpisodeDao getEpisodeDao() throws SQLException {
+        if(episodeDao == null){
+            episodeDao = getDao(Episode.class);
+        }
+        return episodeDao;
+    }
+
+    public PrescriptionDao getPrescriptionDao() throws SQLException {
+        if(prescriptionDao == null){
+            prescriptionDao = getDao(Prescription.class);
+        }
+        return prescriptionDao;
+    }
+
+    public DispenseDao getDispenseDao() throws SQLException {
+        if(dispenseDao == null){
+            dispenseDao = getDao(Dispense.class);
+        }
+        return dispenseDao;
+    }
+
+    public StockDao getStockDao() throws SQLException {
+        if(stockDao == null){
+            stockDao = getDao(Stock.class);
+        }
+        return stockDao;
     }
 
     private static IdartLiteDataBaseHelper dataBaseHelper;

@@ -19,6 +19,7 @@ public class Episode extends BaseModel {
 	public static final String COLUMN_NOTES = "notes";
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
+	public static final String COLUMN_SYNC_STATUS = "sync_status";
 
 	@DatabaseField(columnName = COLUMN_ID, id = true)
 	private int id;
@@ -40,6 +41,9 @@ public class Episode extends BaseModel {
 
 	@DatabaseField(columnName = COLUMN_PATIENT_ID)
 	private Patient patient;
+
+	@DatabaseField(columnName = COLUMN_SYNC_STATUS)
+	private String syncStatus;
 
 	public int getId() {
 		return id;
@@ -97,6 +101,14 @@ public class Episode extends BaseModel {
 		this.patient = patient;
 	}
 
+	public String getSyncStatus() {
+		return syncStatus;
+	}
+
+	public void setSyncStatus(String syncStatus) {
+		this.syncStatus = syncStatus;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -121,6 +133,7 @@ public class Episode extends BaseModel {
 				", stopReason='" + stopReason + '\'' +
 				", notes='" + notes + '\'' +
 				", uuid='" + uuid + '\'' +
+				", syncStatus='" + syncStatus + '\'' +
 				'}';
 	}
 }

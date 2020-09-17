@@ -23,7 +23,7 @@ public class Patient extends BaseModel {
 	public static final String COLUMN_PHONE = "phone";
 	public static final String COLUMN_ADDRESS = "address";
 	public static final String COLUMN_UUID = "uuid";
-	public static final String COLUMN_CLINIC_ID = "clini_id";
+	public static final String COLUMN_CLINIC_ID = "clinic_id";
 
 	@DatabaseField(columnName = COLUMN_ID, id = true)
 	private int id;
