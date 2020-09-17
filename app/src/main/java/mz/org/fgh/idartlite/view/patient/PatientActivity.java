@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view.pacient;
+package mz.org.fgh.idartlite.view.patient;
 
 import android.os.Bundle;
 
@@ -6,7 +6,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
@@ -18,7 +17,7 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 
 public class PatientActivity extends BaseActivity {
 
-    private PacientTabAdapter adapter;
+    private PatientTabAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
@@ -34,8 +33,8 @@ public class PatientActivity extends BaseActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
 
-        adapter = new PacientTabAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PacientDetailsFragment(), getString(R.string.general_info));
+        adapter = new PatientTabAdapter(getSupportFragmentManager());
+        adapter.addFragment(new PatientDetailsFragment(), getString(R.string.general_info));
         adapter.addFragment(new PrescriptionFragment(), getString(R.string.prescription));
         adapter.addFragment(new DispenseFragment(), getString(R.string.dispense));
         adapter.addFragment(new EpisodeFragment(), getString(R.string.episode));

@@ -52,5 +52,14 @@
         <item name="android:padding">@dimen/dimen_10dp</item>
     </style>
 
+    <!-- App Compat Alert Dialog Style -->
+    <style name="StyleAppCompatAlertDialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:colorBackgroundCacheHint">@android:color/white</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
 
 </resources>
