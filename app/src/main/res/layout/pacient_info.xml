@@ -50,7 +50,8 @@
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@+id/pacient_nid"
                         android:gravity="right"
-                        android:text="NID" />
+                        android:paddingRight="3dp"
+                        android:text="NID:" />
 
                     <TextView
                         android:id="@+id/pacient_nid"
@@ -65,8 +66,8 @@
                         style="@style/us_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/nid"
                         android:layout_toLeftOf="@+id/us_name"
+                        android:layout_below="@id/pacient_nid"
                         android:gravity="right"
                         android:text="Unidade Sanitária" />
 

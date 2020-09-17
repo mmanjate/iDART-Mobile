@@ -28,4 +28,13 @@ public class DispenseService extends BaseService {
     public void deleteDispense(Dispense dispense) throws SQLException {
         getDataBaseHelper().getGenericDao(dispense).deleteGenericObjectByClass(dispense);
     }
+
+    public List<Dispense> getAllOfPrescription(Prescription prescription) throws SQLException {
+        return getDataBaseHelper().getDispenseDao().queryForEq(Dispense.COLUMN_PRESCRIPTION, prescription.getId());
+    }
+
+    public List<Dispense> getAllOfPatient(Patient patient) throws SQLException {
+        // join with percrition to patient
+        return null;
+    }
 }

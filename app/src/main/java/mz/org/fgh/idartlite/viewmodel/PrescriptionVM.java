@@ -23,7 +23,7 @@ public class PrescriptionVM extends BaseViewModel {
     }
 
     public List<Prescription> gatAllOfPatient(Patient patient) throws SQLException {
-        return prescriptionService.getAllOfPatient(patient);
+        return prescriptionService.getAllPrescriptionsByPatient(patient);
     }
 
 }

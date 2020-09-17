@@ -18,6 +18,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME    = "idartlite.db";
     private static final int    DATABASE_VERSION = 1;
+
     private UserDao userDao;
     private GenericDao genericDao;
     private EpisodeDao episodeDao;
