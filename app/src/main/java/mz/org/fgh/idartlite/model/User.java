@@ -10,11 +10,11 @@ import mz.org.fgh.idartlite.dao.UserDaoImpl;
 @DatabaseTable(tableName = "user", daoClass = UserDaoImpl.class)
 public class User extends BaseModel {
 
-    public static final String COLUMN_USER_NAME = "cl_username";
-    public static final String COLUMN_PASSWORD = "cl_password";
-    public static final String COLUMN_CLINIC_ID = "clinic_id";
+    public static final String COLUMN_USER_NAME = "user_name";
+    public static final String COLUMN_PASSWORD = "password";
+    public static final String COLUMN_CLINIC_ID = "clini_id";
 
-    @DatabaseField(columnName = "id", generatedId = true)
+    @DatabaseField(columnName = "id", id = true)
     private int id;
 
     @SerializedName("cl_username")
@@ -29,14 +29,6 @@ public class User extends BaseModel {
     private Clinic clinic;
 
     public User() {
-    }
-
-    public Clinic getClinic() {
-        return clinic;
-    }
-
-    public void setClinic(Clinic clinic) {
-        this.clinic = clinic;
     }
 
     public int getId() {
@@ -61,5 +53,13 @@ public class User extends BaseModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
     }
 }

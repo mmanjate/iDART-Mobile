@@ -4,11 +4,9 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.PatientDaoImpl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -25,40 +23,40 @@ public class Patient extends BaseModel {
 	public static final String COLUMN_PHONE = "phone";
 	public static final String COLUMN_ADDRESS = "address";
 	public static final String COLUMN_UUID = "uuid";
-	public static final String COLUMN_CLINIC_ID = "clini_id";
+	public static final String COLUMN_CLINIC_ID = "clinic_id";
 
-	@DatabaseField(columnName = "id", generatedId = true)
+	@DatabaseField(columnName = COLUMN_ID, id = true)
 	private int id;
 
-	@DatabaseField(columnName = "nid")
+	@DatabaseField(columnName = COLUMN_NID)
 	private String nid;
 
-	@DatabaseField(columnName = "first_name")
+	@DatabaseField(columnName = COLUMN_FIRST_NAME)
 	private String firstName;
 
-	@DatabaseField(columnName = "last_name")
+	@DatabaseField(columnName = COLUMN_LAST_NAME)
 	private String lastName;
 
-	@DatabaseField(columnName = "birth_date")
+	@DatabaseField(columnName = COLUMN_BIRTH_DATE)
 	private Date birthDate;
 
-	@DatabaseField(columnName = "gender")
+	@DatabaseField(columnName = COLUMN_GENDER)
 	private String gender;
 
-	@DatabaseField(columnName = "start_ARV_date")
+	@DatabaseField(columnName = COLUMN_START_ARV_DATE)
 	private Date startARVDate;
 
-	@DatabaseField(columnName = "phone")
+	@DatabaseField(columnName = COLUMN_PHONE)
 	private String phone;
 
-	@DatabaseField(columnName = "address")
+	@DatabaseField(columnName = COLUMN_ADDRESS)
 	private String address;
 
-	@DatabaseField(columnName = "uuid")
+	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = "clinic_id")
-	private int clinicId;
+	@DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true)
+	private Clinic clinic;
 
 	public int getId() {
 		return id;
@@ -140,18 +138,12 @@ public class Patient extends BaseModel {
 		this.uuid = uuid;
 	}
 
-	public int getClinicId() {
-		return clinicId;
+	public Clinic getClinic() {
+		return clinic;
 	}
 
-	public void setClinicId(int clinicId) {
-		this.clinicId = clinicId;
-	}
-
-	public String getDateString(){
-		SimpleDateFormat datetemp = new SimpleDateFormat("yyyy-MM-dd");
-		String dateOfbirth = datetemp.format(this.birthDate);
-		return dateOfbirth;
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
 	}
 
 	@Override

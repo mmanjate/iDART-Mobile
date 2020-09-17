@@ -2,11 +2,12 @@ package mz.org.fgh.idartlite.dao;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
-import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.model.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
-public class DispenseDaoImpl extends GenericDaoImpl<Stock, Integer> implements StockDao {
+public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implements DispenseDao {
 
     public DispenseDaoImpl(Class dataClass) throws SQLException {
         super(dataClass);
@@ -20,4 +21,8 @@ public class DispenseDaoImpl extends GenericDaoImpl<Stock, Integer> implements S
         super(connectionSource, tableConfig);
     }
 
+    @Override
+    public List<Dispense> getAllByPrescription(Prescription prescription) throws SQLException {
+        return queryBuilder().where().eq(Dispense.COLUMN_PRESCRIPTION, prescription.getId()).query();
+    }
 }

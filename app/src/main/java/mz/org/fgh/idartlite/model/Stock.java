@@ -1,22 +1,24 @@
 package mz.org.fgh.idartlite.model;
 
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import mz.org.fgh.idartlite.base.BaseModel;
 
 import java.util.Date;
+import java.util.Objects;
 
-import mz.org.fgh.idartlite.dao.StockDaoImpl;
-
-@DatabaseTable(tableName = "Stock", daoClass = StockDaoImpl.class)
-public class Stock {
+@DatabaseTable(tableName = "Stock")
+public class Stock extends BaseModel {
 
 
-    public static final String COLUMN_QUANTITY_SUPPLIED = "order_number";
+    public static final String COLUMN_ORDER_NUMBER = "order_number";
     public static final String COLUMN_BATCH_NUMBER = "batch_number";
     public static final String COLUMN_DATE_RECEIVED = "date_received";
     public static final String COLUMN_SHELF_NUMBER = "shelf_number";
-    public static final String COLUMN_PRESCRIPTION = "expiry_date";
+    public static final String COLUMN_EXPIRY_DATE = "expiry_date";
     public static final String COLUMN_UNITS_RECEIVED = "units_received";
     public static final String COLUMN_STOCK_MOVIMENT = "stock_moviment";
     public static final String COLUMN_STOCK_ADJUSTMENTS = "stock_adjustments";
@@ -24,45 +26,49 @@ public class Stock {
     public static final String COLUMN_DRUG = "drug_id";
     public static final String COLUMN_CLINIC = "clinic_id";
     public static final String COLUMN_UUID = "uuid";
+    public static final String COLUMN_SYNC_STATUS = "sync_status";
 
-    @DatabaseField(columnName = "id", generatedId = true)
+    @DatabaseField(columnName = "id", id = true)
     private int id;
 
-    @DatabaseField(columnName = "order_number")
+    @DatabaseField(columnName = COLUMN_ORDER_NUMBER)
     private String orderNumber;
 
-    @DatabaseField(columnName = "batch_number")
+    @DatabaseField(columnName = COLUMN_BATCH_NUMBER)
     private int batchNumber;
 
-    @DatabaseField(columnName = "date_received")
+    @DatabaseField(columnName = COLUMN_DATE_RECEIVED)
     private Date dateReceived;
 
-    @DatabaseField(columnName = "shelf_number")
+    @DatabaseField(columnName = COLUMN_SHELF_NUMBER)
     private int shelfNumber;
 
-    @DatabaseField(columnName = "expiry_date")
+    @DatabaseField(columnName = COLUMN_EXPIRY_DATE)
     private Date expiryDate;
 
-    @DatabaseField(columnName = "units_received")
+    @DatabaseField(columnName = COLUMN_UNITS_RECEIVED)
     private int unitsReceived;
 
-    @DatabaseField(columnName = "stock_moviment")
+    @DatabaseField(columnName = COLUMN_STOCK_MOVIMENT)
     private int stockMoviment;
 
-    @DatabaseField(columnName = "stock_adjustments")
+    @DatabaseField(columnName = COLUMN_STOCK_ADJUSTMENTS)
     private int stockAdjustments;
 
-    @DatabaseField(columnName = "price")
+    @DatabaseField(columnName =COLUMN_PRICE)
     private double price;
 
-    @DatabaseField(columnName = "uuid")
+    @DatabaseField(columnName = COLUMN_UUID)
     private String uuid;
 
-    @DatabaseField(canBeNull = false, foreign = true)
-    private Clinic clinic_id;
+    @DatabaseField(columnName = COLUMN_CLINIC,canBeNull = false, foreign = true)
+    private Clinic clinic;
 
-    @DatabaseField(canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_DRUG,canBeNull = false, foreign = true)
     private Drug drug;
+
+    @DatabaseField(columnName = COLUMN_SYNC_STATUS)
+    private String syncStatus;
 
     public int getId() {
         return id;
@@ -158,5 +164,46 @@ public class Stock {
 
     public void setDrug(Drug drug) {
         this.drug = drug;
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stock stock = (Stock) o;
+        return uuid.equals(stock.uuid);
+    }
+
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public int hashCode() {
+        return Objects.hash(uuid);
+    }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "id=" + id +
+                ", orderNumber='" + orderNumber + '\'' +
+                ", batchNumber=" + batchNumber +
+                ", dateReceived=" + dateReceived +
+                ", shelfNumber=" + shelfNumber +
+                ", expiryDate=" + expiryDate +
+                ", unitsReceived=" + unitsReceived +
+                ", stockMoviment=" + stockMoviment +
+                ", stockAdjustments=" + stockAdjustments +
+                ", price=" + price +
+                ", uuid='" + uuid + '\'' +
+                ", clinic=" + clinic +
+                ", drug=" + drug +
+                '}';
     }
 }

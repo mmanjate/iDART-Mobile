@@ -32,6 +32,8 @@ public class HomeActivity extends BaseActivity {
         }
 
         activityHomeBinding.executePendingBindings();
+
+
     }
 
     @Override

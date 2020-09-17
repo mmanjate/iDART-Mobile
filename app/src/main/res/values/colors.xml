@@ -5,4 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="background_layout">#0061A9</color>
     <color name="text_color">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#F4BE36</color>
 </resources>

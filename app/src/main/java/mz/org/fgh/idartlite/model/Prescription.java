@@ -4,7 +4,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.PrescriptionDaoImpl;
 
@@ -26,44 +25,46 @@ public class Prescription extends BaseModel {
 	public static final String COLUMN_PRESCRIPTION_SEQ = "prescription_seq";
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
+	public static final String COLUMN_SYNC_STATUS = "sync_status";
 
-	@DatabaseField(columnName = "id", generatedId = true)
+	@DatabaseField(columnName = COLUMN_ID, id = true)
 	private int id;
 
-	@DatabaseField(columnName = "prescription_date")
+	@DatabaseField(columnName = COLUMN_PRESCRIPTION_DATE)
 	private Date prescriptionDate;
 
-	@DatabaseField(columnName = "supply")
+	@DatabaseField(columnName = COLUMN_SUPPLY)
 	private int supply;
 
-	@DatabaseField(columnName = "expiry_date")
+	@DatabaseField(columnName = COLUMN_EXPIRY_DATE)
 	private Date expiryDate;
 
-	@DatabaseField(columnName = "urgent_prescription")
+	@DatabaseField(columnName = COLUMN_URGENT_PRESCRIPTION)
 	private boolean urgentPrescription;
 
-	@DatabaseField(columnName = "urgent_notes")
+	@DatabaseField(columnName = COLUMN_URGENT_NOTES)
 	private String urgentNotes;
 
-	@DatabaseField(columnName = "regimen_id", canBeNull = false, foreign = true)
+	@DatabaseField(columnName = COLUMN_REGIMEN_ID)
 	private TherapeuticRegimen regimenId;
 
-	@DatabaseField(columnName = "line_id", canBeNull = false, foreign = true)
+	@DatabaseField(columnName = COLUMN_LINE_ID)
 	private TherapeuticLine lineId;
 
-	//private DispenseType dispenseTypeId;
+	@DatabaseField(columnName = COLUMN_DISPENSE_TYPE_ID, canBeNull = false, foreign = true)
+	private DispenseType dispenseType;
 
-	@DatabaseField(columnName = "prescription_seq")
+	@DatabaseField(columnName = COLUMN_PRESCRIPTION_SEQ)
 	private String prescriptionSeq;
 
-	@DatabaseField(columnName = "uuid")
+	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = "patient_id", canBeNull = false, foreign = true)
-	private Patient patientId;
+	@DatabaseField(columnName = COLUMN_PATIENT_ID, canBeNull = false, foreign = true)
+	private Patient patient;
 
-	public Prescription() {
-	}
+	@DatabaseField(columnName = COLUMN_SYNC_STATUS)
+	private String syncStatus;
 
 	public int getId() {
 		return id;
@@ -145,12 +146,28 @@ public class Prescription extends BaseModel {
 		this.uuid = uuid;
 	}
 
-	public Patient getPatientId() {
-		return patientId;
+	public DispenseType getDispenseType() {
+		return dispenseType;
 	}
 
-	public void setPatientId(Patient patientId) {
-		this.patientId = patientId;
+	public void setDispenseType(DispenseType dispenseType) {
+		this.dispenseType = dispenseType;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public String getSyncStatus() {
+		return syncStatus;
+	}
+
+	public void setSyncStatus(String syncStatus) {
+		this.syncStatus = syncStatus;
 	}
 
 	@Override
@@ -178,8 +195,10 @@ public class Prescription extends BaseModel {
 				", expiryDate=" + expiryDate +
 				", urgentPrescription=" + urgentPrescription +
 				", urgentNotes='" + urgentNotes + '\'' +
+				", dispenseType=" + dispenseType +
 				", prescriptionSeq='" + prescriptionSeq + '\'' +
 				", uuid='" + uuid + '\'' +
+				", syncStatus='" + syncStatus + '\'' +
 				'}';
 	}
 }

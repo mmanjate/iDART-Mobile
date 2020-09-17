@@ -1,13 +1,16 @@
 package mz.org.fgh.idartlite.model;
 
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import mz.org.fgh.idartlite.base.BaseModel;
 
 import java.util.Objects;
 
 @DatabaseTable(tableName = "form")
-public class Form {
+public class Form extends BaseModel {
 
     public static final String COLUMN_UNIT = "unit";
     public static final String COLUMN_DESCRIPTION = "description";
@@ -15,10 +18,10 @@ public class Form {
     @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = "unit")
+    @DatabaseField(columnName = COLUMN_UNIT)
     private String unit;
 
-    @DatabaseField(columnName = "description")
+    @DatabaseField(columnName = COLUMN_DESCRIPTION)
     private String description;
 
     public int getId() {
@@ -50,13 +53,23 @@ public class Form {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Form form = (Form) o;
-        return getId() == form.getId() &&
-                Objects.equals(getUnit(), form.getUnit()) &&
-                Objects.equals(getDescription(), form.getDescription());
+        return id == form.id &&
+                unit.equals(form.unit) &&
+                description.equals(form.description);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, unit, description);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getUnit(), getDescription());
+    public String toString() {
+        return "Form{" +
+                "id=" + id +
+                ", unit='" + unit + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
