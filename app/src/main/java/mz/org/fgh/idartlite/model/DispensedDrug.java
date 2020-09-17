@@ -1,8 +1,12 @@
 package mz.org.fgh.idartlite.model;
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+
+import java.util.Objects;
 
 @DatabaseTable(tableName = "Dispense_drug")
 public class DispensedDrug extends BaseModel {
@@ -54,5 +58,31 @@ public class DispensedDrug extends BaseModel {
 
     public void setStock(Stock stock) {
         this.stock = stock;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DispensedDrug that = (DispensedDrug) o;
+        return id == that.id &&
+                stock.equals(that.stock) &&
+                dispense.equals(that.dispense);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, stock, dispense);
+    }
+
+    @Override
+    public String toString() {
+        return "DispensedDrug{" +
+                "id=" + id +
+                ", quantitySupplied=" + quantitySupplied +
+                ", stock=" + stock +
+                ", dispense=" + dispense +
+                '}';
     }
 }
