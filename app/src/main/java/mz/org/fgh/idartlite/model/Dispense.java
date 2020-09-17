@@ -1,11 +1,14 @@
 package mz.org.fgh.idartlite.model;
 
 
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
 
 import java.util.Date;
+import java.util.Objects;
 
 @DatabaseTable(tableName = "Dispense")
 public class Dispense extends BaseModel {
@@ -81,5 +84,31 @@ public class Dispense extends BaseModel {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Dispense dispense = (Dispense) o;
+        return uuid.equals(dispense.uuid);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid);
+    }
+
+    @Override
+    public String toString() {
+        return "Dispense{" +
+                "id=" + id +
+                ", pickupDate=" + pickupDate +
+                ", supply=" + supply +
+                ", nextPickupDate=" + nextPickupDate +
+                ", prescription=" + prescription +
+                ", uuid='" + uuid + '\'' +
+                '}';
     }
 }
