@@ -2,25 +2,30 @@ package mz.org.fgh.idartlite.service;
 
 import android.app.Application;
 import mz.org.fgh.idartlite.base.BaseService;
-import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.model.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class DispenseService extends BaseService {
 
-    public DispenseService(Application application) {
-        super(application);
+    public DispenseService(Application application, User currUser) {
+        super(application, currUser);
     }
 
-    public boolean login(User user) throws SQLException {
-        return getDataBaseHelper().getUserDao().login(user);
+    public List<Dispense> getAllDispenseByPrescription(Prescription prescription) throws SQLException{
+        return getDataBaseHelper().getDispenseDao().getAllByPrescription(prescription);
     }
 
-    public boolean checkIfUsertableIsEmpty() throws SQLException {
-        return getDataBaseHelper().getUserDao().checkIfUsertableIsEmpty();
+    public void createDispense(Dispense dispense) throws SQLException {
+        getDataBaseHelper().getGenericDao(dispense).saveGenericObjectByClass(dispense);
     }
 
-    public void saveUser(User user) throws SQLException {
-        getDataBaseHelper().getGenericDao(user).saveGenericObjectByClass(user);
+    public void udpateDispense(Dispense dispense) throws SQLException {
+        getDataBaseHelper().getGenericDao(dispense).updateGenericObjectByClass(dispense);
+    }
+
+    public void deleteDispense(Dispense dispense) throws SQLException {
+        getDataBaseHelper().getGenericDao(dispense).deleteGenericObjectByClass(dispense);
     }
 }
