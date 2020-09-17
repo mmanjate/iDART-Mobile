@@ -40,7 +40,8 @@
                     android:layout_alignParentLeft="true"
                     android:gravity="right"
                     android:textStyle="bold"
-                    android:text="NID: "/>
+                    android:text="NID: "
+                    android:layout_alignParentStart="true" />
 
                 <TextView
                     android:id="@+id/pacient_nid"
@@ -58,7 +59,7 @@
                     android:layout_alignParentLeft="true"
                     android:gravity="right"
                     android:textStyle="bold"
-                    android:text="Nome: "/>
+                    android:text="@string/nome"/>
 
                 <TextView
                     android:id="@+id/pacient_name"
@@ -67,7 +68,9 @@
                     android:layout_toRightOf="@+id/name"
                     android:layout_below="@+id/pacient_nid"
                     android:layout_alignParentRight="true"
-                    android:text="@{patient.firstName}" />
+                    android:text="@{patient.firstName}"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@+id/name" />
 
                 <TextView
                     android:id="@+id/apelido"

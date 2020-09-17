@@ -6,10 +6,11 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.FormDaoImpl;
 
 import java.util.Objects;
 
-@DatabaseTable(tableName = "form")
+@DatabaseTable(tableName = "form", daoClass = FormDaoImpl.class)
 public class Form extends BaseModel {
 
     public static final String COLUMN_UNIT = "unit";

@@ -16,7 +16,7 @@ public class PharmacyType extends BaseModel {
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_DESCRIPTION = "description";
 
-	@DatabaseField(columnName = COLUMN_ID, id = true)
+	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = COLUMN_DESCRIPTION)
