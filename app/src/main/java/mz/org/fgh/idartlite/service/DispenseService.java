@@ -8,19 +8,7 @@ import java.sql.SQLException;
 
 public class DispenseService extends BaseService {
 
-    public DispenseService(Application application) {
-        super(application);
-    }
-
-    public boolean login(User user) throws SQLException {
-        return getDataBaseHelper().getUserDao().login(user);
-    }
-
-    public boolean checkIfUsertableIsEmpty() throws SQLException {
-        return getDataBaseHelper().getUserDao().checkIfUsertableIsEmpty();
-    }
-
-    public void saveUser(User user) throws SQLException {
-        getDataBaseHelper().getGenericDao(user).saveGenericObjectByClass(user);
+    public DispenseService(Application application, User currUser) {
+        super(application, currUser);
     }
 }

@@ -12,7 +12,7 @@ public class Form {
     public static final String COLUMN_UNIT = "unit";
     public static final String COLUMN_DESCRIPTION = "description";
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = "unit")

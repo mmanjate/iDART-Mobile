@@ -3,7 +3,9 @@ package mz.org.fgh.idartlite.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "drug")
+import mz.org.fgh.idartlite.dao.DrugDaoImpl;
+
+@DatabaseTable(tableName = "drug", daoClass = DrugDaoImpl.class)
 public class Drug {
 
     public static final String COLUMN_FNMCODE = "fnm_code";
@@ -14,7 +16,7 @@ public class Drug {
     public static final String COLUMN_DISEASE_TYPE = "diseaseType_id";
 
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = "fnm_code")

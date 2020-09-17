@@ -6,7 +6,9 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
-@DatabaseTable(tableName = "Dispense")
+import mz.org.fgh.idartlite.dao.DispenseDaoImpl;
+
+@DatabaseTable(tableName = "Dispense", daoClass = DispenseDaoImpl.class)
 public class Dispense {
 
     public static final String COLUMN_PICKUP_DATE = "pickup_date";
@@ -16,7 +18,7 @@ public class Dispense {
     public static final String COLUMN_UUID = "uuid";
 
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = "pickup_date")

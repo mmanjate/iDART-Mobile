@@ -23,4 +23,5 @@
     <string name="logo_farmacia">logo farmacia</string>
     <string name="search_patient">NID/Nome  do Paciente</string>
     <string name="input_search_patient">pesquisar</string>
+    <string name="phone">"Telefone: "</string>
 </resources>

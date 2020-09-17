@@ -9,7 +9,7 @@ public class DispenseType {
     public static final String COLUMN_CODE = "unit";
     public static final String COLUMN_DESCRIPTION = "description";
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = "code")

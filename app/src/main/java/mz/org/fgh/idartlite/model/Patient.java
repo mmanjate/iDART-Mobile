@@ -3,11 +3,16 @@ package mz.org.fgh.idartlite.model;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
-import mz.org.fgh.idartlite.base.BaseModel;
+import com.j256.ormlite.table.DatabaseTable;
 
+import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.PatientDaoImpl;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+@DatabaseTable(tableName = "patient", daoClass = PatientDaoImpl.class)
 public class Patient extends BaseModel {
 
 	public static final String COLUMN_ID = "id";
@@ -22,7 +27,7 @@ public class Patient extends BaseModel {
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_CLINIC_ID = "clini_id";
 
-	@DatabaseField(columnName = "id", id = true)
+	@DatabaseField(columnName = "id", generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = "nid")
@@ -141,6 +146,12 @@ public class Patient extends BaseModel {
 
 	public void setClinicId(int clinicId) {
 		this.clinicId = clinicId;
+	}
+
+	public String getDateString(){
+		SimpleDateFormat datetemp = new SimpleDateFormat("yyyy-MM-dd");
+		String dateOfbirth = datetemp.format(this.birthDate);
+		return dateOfbirth;
 	}
 
 	@Override

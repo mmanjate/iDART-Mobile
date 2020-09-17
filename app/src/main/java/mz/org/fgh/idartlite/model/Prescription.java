@@ -3,11 +3,15 @@ package mz.org.fgh.idartlite.model;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.PrescriptionDaoImpl;
 
 import java.util.Date;
 import java.util.Objects;
 
+@DatabaseTable(tableName = "prescription", daoClass = PrescriptionDaoImpl.class)
 public class Prescription extends BaseModel {
 
 	public static final String COLUMN_ID = "id";
@@ -23,7 +27,7 @@ public class Prescription extends BaseModel {
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
 
-	@DatabaseField(columnName = "id", id = true)
+	@DatabaseField(columnName = "id", generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = "prescription_date")
@@ -41,10 +45,10 @@ public class Prescription extends BaseModel {
 	@DatabaseField(columnName = "urgent_notes")
 	private String urgentNotes;
 
-	@DatabaseField(columnName = "regimen_id")
+	@DatabaseField(columnName = "regimen_id", canBeNull = false, foreign = true)
 	private TherapeuticRegimen regimenId;
 
-	@DatabaseField(columnName = "line_id")
+	@DatabaseField(columnName = "line_id", canBeNull = false, foreign = true)
 	private TherapeuticLine lineId;
 
 	//private DispenseType dispenseTypeId;
@@ -55,12 +59,11 @@ public class Prescription extends BaseModel {
 	@DatabaseField(columnName = "uuid")
 	private String uuid;
 
-	@DatabaseField(columnName = "patient_id")
+	@DatabaseField(columnName = "patient_id", canBeNull = false, foreign = true)
 	private Patient patientId;
 
-	//public Drug drugList() {
-	//	return null;
-	//}
+	public Prescription() {
+	}
 
 	public int getId() {
 		return id;

@@ -6,7 +6,9 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
-@DatabaseTable(tableName = "Stock")
+import mz.org.fgh.idartlite.dao.StockDaoImpl;
+
+@DatabaseTable(tableName = "Stock", daoClass = StockDaoImpl.class)
 public class Stock {
 
 
@@ -23,7 +25,7 @@ public class Stock {
     public static final String COLUMN_CLINIC = "clinic_id";
     public static final String COLUMN_UUID = "uuid";
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = "order_number")
@@ -56,8 +58,8 @@ public class Stock {
     @DatabaseField(columnName = "uuid")
     private String uuid;
 
-    //@DatabaseField(canBeNull = false, foreign = true)
-    //private Clinic clinic_id;
+    @DatabaseField(canBeNull = false, foreign = true)
+    private Clinic clinic_id;
 
     @DatabaseField(canBeNull = false, foreign = true)
     private Drug drug;

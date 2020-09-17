@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.Bindable;
 
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.view.HomeActivity;
@@ -25,4 +26,18 @@ public class HomeVM extends BaseViewModel {
         return (HomeActivity) super.getRelatedActivity();
     }
 
+    @Bindable
+    public String getClinicName(){
+        return getRelatedActivity().getCurrentClinic().getClinicName();
+    }
+
+    @Bindable
+    public String getPhone(){
+        return  getRelatedActivity().getCurrentClinic().getPhone();
+    }
+
+    @Bindable
+    public String getAddress(){
+        return getRelatedActivity().getCurrentClinic().getAddress();
+    }
 }

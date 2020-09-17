@@ -10,21 +10,33 @@ import mz.org.fgh.idartlite.dao.UserDaoImpl;
 @DatabaseTable(tableName = "user", daoClass = UserDaoImpl.class)
 public class User extends BaseModel {
 
-    public static final String COLUMN_USER_NAME = "user_name";
-    public static final String COLUMN_PASSWORD = "password";
+    public static final String COLUMN_USER_NAME = "cl_username";
+    public static final String COLUMN_PASSWORD = "cl_password";
+    public static final String COLUMN_CLINIC_ID = "clinic_id";
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @SerializedName("cl_username")
-    @DatabaseField(columnName = "user_name")
+    @DatabaseField(columnName = COLUMN_USER_NAME)
     private String userName;
 
     @SerializedName("cl_password")
-    @DatabaseField(columnName = "password")
+    @DatabaseField(columnName = COLUMN_PASSWORD)
     private String password;
 
+    @DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true)
+    private Clinic clinic;
+
     public User() {
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
     }
 
     public int getId() {

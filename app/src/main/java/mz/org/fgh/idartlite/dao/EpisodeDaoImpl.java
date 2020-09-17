@@ -6,7 +6,7 @@ import mz.org.fgh.idartlite.model.Episode;
 
 import java.sql.SQLException;
 
-public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements EpisodeDao{
+public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements EpisodeDao {
 
     public EpisodeDaoImpl(Class dataClass) throws SQLException {
         super(dataClass);

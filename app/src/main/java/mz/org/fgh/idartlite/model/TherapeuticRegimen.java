@@ -3,17 +3,21 @@ package mz.org.fgh.idartlite.model;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.TherapeuticRegimenDaoImpl;
 
 import java.util.Objects;
 
+@DatabaseTable(tableName = "therapeuticRegimen", daoClass = TherapeuticRegimenDaoImpl.class)
 public class TherapeuticRegimen extends BaseModel {
 
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_REGIMEN_CODE = "regimen_code";
 	public static final String COLUMN_DESCRIPTION = "description";
 
-	@DatabaseField(columnName = "id", id = true)
+	@DatabaseField(columnName = "id", generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = "regimen_code")
@@ -22,9 +26,9 @@ public class TherapeuticRegimen extends BaseModel {
 	@DatabaseField(columnName = "description")
 	private String description;
 
-	//public Drug drugList() {
-//		return null;
-	//}
+	public Drug drugList() {
+		return null;
+	}
 
 	public int getId() {
 		return id;
