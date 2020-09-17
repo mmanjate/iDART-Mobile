@@ -8,8 +8,9 @@ import java.sql.SQLException;
 
 public class DispenseService extends BaseService {
 
-    public DispenseService(Application application) {
-        super(application);
+
+    public DispenseService(Application application, User currentUser) {
+        super(application, currentUser);
     }
 
     public boolean login(User user) throws SQLException {
