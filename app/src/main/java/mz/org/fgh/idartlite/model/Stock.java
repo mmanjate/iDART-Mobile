@@ -26,6 +26,7 @@ public class Stock extends BaseModel {
     public static final String COLUMN_DRUG = "drug_id";
     public static final String COLUMN_CLINIC = "clinic_id";
     public static final String COLUMN_UUID = "uuid";
+    public static final String COLUMN_SYNC_STATUS = "sync_status";
 
     @DatabaseField(columnName = "id", id = true)
     private int id;
@@ -65,6 +66,9 @@ public class Stock extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_DRUG,canBeNull = false, foreign = true)
     private Drug drug;
+
+    @DatabaseField(columnName = COLUMN_SYNC_STATUS)
+    private String syncStatus;
 
     public int getId() {
         return id;

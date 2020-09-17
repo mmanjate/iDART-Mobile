@@ -16,7 +16,6 @@ public class Dispense extends BaseModel {
     public static final String COLUMN_PRESCRIPTION = "prescription_id";
     public static final String COLUMN_UUID = "uuid";
 
-
     @DatabaseField(columnName = "id", id = true)
     private int id;
 
@@ -29,7 +28,7 @@ public class Dispense extends BaseModel {
     @DatabaseField(columnName = COLUMN_NEXT_PICKUP_DATE)
     private Date nextPickupDate;
 
-    @DatabaseField(columnName = COLUMN_PRESCRIPTION ,canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_PRESCRIPTION,canBeNull = false, foreign = true)
     private Prescription prescription;
 
     @DatabaseField(columnName = COLUMN_UUID)

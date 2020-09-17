@@ -25,6 +25,7 @@ public class Prescription extends BaseModel {
 	public static final String COLUMN_PRESCRIPTION_SEQ = "prescription_seq";
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
+	public static final String COLUMN_SYNC_STATUS = "sync_status";
 
 	@DatabaseField(columnName = COLUMN_ID, id = true)
 	private int id;
@@ -61,6 +62,9 @@ public class Prescription extends BaseModel {
 
 	@DatabaseField(columnName = COLUMN_PATIENT_ID, canBeNull = false, foreign = true)
 	private Patient patient;
+
+	@DatabaseField(columnName = COLUMN_SYNC_STATUS)
+	private String syncStatus;
 
 	public int getId() {
 		return id;
@@ -158,6 +162,14 @@ public class Prescription extends BaseModel {
 		this.patient = patient;
 	}
 
+	public String getSyncStatus() {
+		return syncStatus;
+	}
+
+	public void setSyncStatus(String syncStatus) {
+		this.syncStatus = syncStatus;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -183,8 +195,10 @@ public class Prescription extends BaseModel {
 				", expiryDate=" + expiryDate +
 				", urgentPrescription=" + urgentPrescription +
 				", urgentNotes='" + urgentNotes + '\'' +
+				", dispenseType=" + dispenseType +
 				", prescriptionSeq='" + prescriptionSeq + '\'' +
 				", uuid='" + uuid + '\'' +
+				", syncStatus='" + syncStatus + '\'' +
 				'}';
 	}
 }

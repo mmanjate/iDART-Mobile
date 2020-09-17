@@ -2,25 +2,27 @@ package mz.org.fgh.idartlite.service;
 
 import android.app.Application;
 import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 
 import java.sql.SQLException;
 
 public class StockService extends BaseService {
 
-    public StockService(Application application) {
-        super(application);
+    public StockService(Application application, User currUser) {
+        super(application, currUser);
     }
 
-    public boolean login(User user) throws SQLException {
-        return getDataBaseHelper().getUserDao().login(user);
+    public void createStock(Stock stock) throws SQLException {
+        getDataBaseHelper().getGenericDao(stock).saveGenericObjectByClass(stock);
     }
 
-    public boolean checkIfUsertableIsEmpty() throws SQLException {
-        return getDataBaseHelper().getUserDao().checkIfUsertableIsEmpty();
+    public void udpateStock(Stock stock) throws SQLException {
+        getDataBaseHelper().getGenericDao(stock).updateGenericObjectByClass(stock);
     }
 
-    public void saveUser(User user) throws SQLException {
-        getDataBaseHelper().getGenericDao(user).saveGenericObjectByClass(user);
+    public void deleteStock(Stock stock) throws SQLException {
+        getDataBaseHelper().getGenericDao(stock).deleteGenericObjectByClass(stock);
     }
+
 }
