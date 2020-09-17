@@ -16,7 +16,7 @@ public class TherapeuticRegimen extends BaseModel {
 	public static final String COLUMN_REGIMEN_CODE = "regimen_code";
 	public static final String COLUMN_DESCRIPTION = "description";
 
-	@DatabaseField(columnName = COLUMN_ID, id = true)
+	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = COLUMN_REGIMEN_CODE)

@@ -20,7 +20,7 @@ public class Clinic extends BaseModel {
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PHARMACY_TYPE_ID = "pharmacy_type_id";
 
-	@DatabaseField(columnName = COLUMN_ID, id = true)
+	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = COLUMN_CODE)

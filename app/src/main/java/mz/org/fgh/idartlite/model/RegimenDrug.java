@@ -6,17 +6,18 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.GenericDaoImpl;
+import mz.org.fgh.idartlite.dao.RegimenDrugDaoImpl;
 
 import java.util.Objects;
 
-@DatabaseTable(tableName = "regimen_drug", daoClass = GenericDaoImpl.class)
+@DatabaseTable(tableName = "regimen_drug", daoClass = RegimenDrugDaoImpl.class)
 public class RegimenDrug extends BaseModel {
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_THERAPEUTIC_REGIMEN_ID = "therapeutic_regimen_id";
     public static final String COLUMN_DRUG_ID = "drug_id";
 
-    @DatabaseField(columnName = COLUMN_ID, id = true)
+    @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
 
     @DatabaseField(columnName = COLUMN_THERAPEUTIC_REGIMEN_ID, canBeNull = false, foreign = true)

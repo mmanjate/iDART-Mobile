@@ -17,18 +17,17 @@
         <activity android:name=".view.SearchPatientActivity"></activity>
         <activity
             android:name=".view.patient.PatientActivity"
-            android:label="@string/title_activity_patient"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:label="@string/title_activity_patient">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".view.LoginActivity"
-            android:screenOrientation="sensor">
-
+            android:screenOrientation="sensor"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".view.HomeActivity"

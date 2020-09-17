@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 
 public abstract class BaseActivity extends AppCompatActivity implements GenericActivity {
@@ -13,6 +14,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     protected BaseViewModel relatedViewModel;
 
     protected User currentUser;
+    protected Clinic currentClinic;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
                 currentUser = (User) bundle.getSerializable("user");
+                currentClinic = (Clinic) bundle.getSerializable("clinic");
             }
         }
 
@@ -31,7 +34,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
             this.relatedViewModel.setRelatedActivity(this);
             this.relatedViewModel.setCurrentUser(currentUser);
         }
-
     }
 
     public BaseViewModel getRelatedViewModel() {
@@ -44,5 +46,13 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public Clinic getCurrentClinic() {
+        return currentClinic;
+    }
+
+    public void setCurrentClinic(Clinic currentClinic) {
+        this.currentClinic = currentClinic;
     }
 }

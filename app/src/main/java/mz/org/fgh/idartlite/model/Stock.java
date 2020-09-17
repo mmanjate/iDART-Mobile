@@ -6,11 +6,12 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.StockDaoImpl;
 
 import java.util.Date;
 import java.util.Objects;
 
-@DatabaseTable(tableName = "Stock")
+@DatabaseTable(tableName = "Stock", daoClass = StockDaoImpl.class)
 public class Stock extends BaseModel {
 
 
@@ -28,7 +29,7 @@ public class Stock extends BaseModel {
     public static final String COLUMN_UUID = "uuid";
     public static final String COLUMN_SYNC_STATUS = "sync_status";
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = COLUMN_ORDER_NUMBER)
