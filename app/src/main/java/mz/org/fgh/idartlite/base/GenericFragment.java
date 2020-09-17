@@ -11,6 +11,7 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
 
     protected BaseViewModel relatedViewModel;
 
+    
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
