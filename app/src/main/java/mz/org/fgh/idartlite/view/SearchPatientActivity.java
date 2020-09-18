@@ -39,11 +39,6 @@ public class SearchPatientActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchPatientBinding = DataBindingUtil.setContentView(this, R.layout.activity_search_patient);
-        /*try {
-            displaySearchResult();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
         searchPatientBinding.buttonSearch.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -67,7 +62,6 @@ public class SearchPatientActivity extends BaseActivity {
     public void searPatient(){
         try {
             patientList = getRelatedViewModel().searchPatient(searchPatientBinding.edtSearchParam.getText().toString());
-            //patientList = getRelatedViewModel().getAllPatient();
             System.out.println(patientList.get(0).getFirstName());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,8 +69,6 @@ public class SearchPatientActivity extends BaseActivity {
     }
 
     public void displaySearchResult() throws SQLException {
-        //patientList = getRelatedViewModel().getAllPatient();
-        //searPatient();
         recyclerPatient = searchPatientBinding.reyclerPatient;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerPatient.setLayoutManager(layoutManager);
