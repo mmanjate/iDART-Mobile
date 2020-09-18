@@ -63,8 +63,6 @@ public class EpisodeFragment extends GenericFragment {
             episodeAdapter = new EpisodeAdapter(this.rcvEpisodes, this.episodeList, getMyActivity());
             displayDataOnRecyclerView(rcvEpisodes, episodeAdapter, getContext());
         }
-
-
     }
 
     /*private void displayPrescriptions(RecyclerView rcvEpisodes) {
