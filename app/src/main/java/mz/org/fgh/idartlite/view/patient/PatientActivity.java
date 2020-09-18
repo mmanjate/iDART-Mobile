@@ -14,12 +14,15 @@ import android.view.View;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.view.patient.adapter.PatientTabAdapter;
 
 public class PatientActivity extends BaseActivity {
 
     private PatientTabAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class PatientActivity extends BaseActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_pacient);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_patient);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_prescription);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_dispense);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_episode);
@@ -55,6 +58,10 @@ public class PatientActivity extends BaseActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    public Patient getPatient() {
+        return patient;
     }
 
     @Override

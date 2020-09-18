@@ -10,8 +10,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.GenericFragment;
 
-public class PatientDetailsFragment extends Fragment {
+public class PatientDetailsFragment extends GenericFragment {
+
+    public PatientDetailsFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,5 +34,10 @@ public class PatientDetailsFragment extends Fragment {
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
+    }
+
+    @Override
+    public BaseViewModel initViewModel() {
+        return null;
     }
 }
