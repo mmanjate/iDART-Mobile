@@ -25,7 +25,7 @@ public class PatientService extends BaseService {
     }
 
     public List<Patient> search(String param) throws SQLException {
-        return patientDao.queryBuilder().where().like(Patient.COLUMN_NID, param).or().like(Patient.COLUMN_FIRST_NAME, param).query();
+        return patientDao.queryBuilder().where().like(Patient.COLUMN_NID, "%" + param + "%").or().like(Patient.COLUMN_FIRST_NAME, "%" + param + "%").query();
     }
 
     public List<Patient> getALLPatient() throws  SQLException {
