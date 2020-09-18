@@ -21,7 +21,7 @@ public class Episode extends BaseModel {
 	public static final String COLUMN_PATIENT_ID = "patient_id";
 	public static final String COLUMN_SYNC_STATUS = "sync_status";
 
-	@DatabaseField(columnName = COLUMN_ID, id = true)
+	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = COLUMN_EPISODE_DATE)
@@ -39,7 +39,7 @@ public class Episode extends BaseModel {
 	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = COLUMN_PATIENT_ID)
+	@DatabaseField(columnName = COLUMN_PATIENT_ID, canBeNull = false, foreign = true)
 	private Patient patient;
 
 	@DatabaseField(columnName = COLUMN_SYNC_STATUS)

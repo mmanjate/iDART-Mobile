@@ -19,12 +19,107 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME    = "idartlite.db";
     private static final int    DATABASE_VERSION = 1;
 
+
     private UserDao userDao;
     private GenericDao genericDao;
-    private EpisodeDao episodeDao;
-    private PrescriptionDao prescriptionDao;
+
+    private ClinicDao clinicDao;
+    private DiseaseTypeDao diseaseTypeDao;
     private DispenseDao dispenseDao;
+    private DispensedDrugDao dispensedDrugDao;
+    private DispenseTypeDao dispenseTypeDao;
+    private DrugDao drugDao;
+
+    private EpisodeDao episodeDao;
+    private FormDao formDao;
+    private PatientDao patientDao;
+    private PharmacyTypeDao pharmacyTypeDao;
+    private PrescribedDrugDao prescribedDrugDao;
+    private PrescriptionDao prescriptionDao;
+    private RegimenDrugDao regimenDrugDao;
     private StockDao stockDao;
+    private TherapeuticLineDao therapeuticLineDao;
+    private TherapeuticRegimenDao therapeuticRegimenDao;
+    private UserDao userDao;
+    private GenericDao genericDao;
+
+    public ClinicDao getClinicDao() throws SQLException {
+        if(clinicDao == null){
+            clinicDao = getDao(Clinic.class);
+        }
+        return clinicDao;
+    }
+
+    public DiseaseTypeDao getDiseaseTypeDao() throws SQLException {
+        if(diseaseTypeDao == null){
+            diseaseTypeDao = getDao(DiseaseType.class);
+        }
+        return diseaseTypeDao;
+    }
+
+    public DispensedDrugDao getDispensedDrugDao() throws SQLException {
+        if(dispensedDrugDao == null){
+            dispensedDrugDao = getDao(DispensedDrug.class);
+        }
+        return dispensedDrugDao;
+    }
+
+    public DispenseTypeDao getDispenseTypeDao() throws SQLException {
+        if(dispenseTypeDao == null){
+            dispenseTypeDao = getDao(DispenseType.class);
+        }
+        return dispenseTypeDao;
+    }
+
+    public DrugDao getDrugDao() throws SQLException {
+        return drugDao;
+    }
+
+    public FormDao getFormDao() throws SQLException {
+        if(formDao == null){
+            formDao = getDao(Form.class);
+        }
+        return formDao;
+    }
+
+    public PatientDao getPatientDao() throws SQLException {
+        if(patientDao == null){
+            patientDao = getDao(Patient.class);
+        }
+        return patientDao;
+    }
+
+    public PharmacyTypeDao getPharmacyTypeDao() throws SQLException {
+        if(pharmacyTypeDao == null){
+            pharmacyTypeDao = getDao(PharmacyType.class);
+        }
+        return pharmacyTypeDao;
+    }
+
+    public PrescribedDrugDao getPrescribedDrugDao() throws SQLException {
+        if(prescribedDrugDao == null){
+            prescribedDrugDao = getDao(PrescribedDrug.class);
+        }
+        return prescribedDrugDao;
+    }
+
+    public RegimenDrugDao getRegimenDrugDao() throws SQLException {
+        return regimenDrugDao;
+    }
+
+    public TherapeuticLineDao getTherapeuticLineDao() throws SQLException {
+        if(therapeuticLineDao == null){
+            therapeuticLineDao = getDao(TherapeuticLine.class);
+        }
+        return therapeuticLineDao;
+    }
+
+    public TherapeuticRegimenDao getTherapeuticRegimenDao() throws SQLException {
+        if(therapeuticRegimenDao == null){
+            therapeuticRegimenDao = getDao(TherapeuticRegimen.class);
+        }
+        return therapeuticRegimenDao;
+    }
 
     public GenericDao getGenericDao(BaseModel model) throws SQLException {
         if(genericDao == null){
@@ -88,8 +183,24 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-            TableUtils.createTable(connectionSource, User.class);
 
+            TableUtils.createTable(connectionSource, DispenseType.class);
+            TableUtils.createTable(connectionSource, DiseaseType.class);
+            TableUtils.createTable(connectionSource, PharmacyType.class);
+            TableUtils.createTable(connectionSource, Clinic.class);
+            TableUtils.createTable(connectionSource, User.class);
+            TableUtils.createTable(connectionSource, TherapeuticRegimen.class);
+            TableUtils.createTable(connectionSource, TherapeuticLine.class);
+            TableUtils.createTable(connectionSource, Patient.class);
+            TableUtils.createTable(connectionSource, Prescription.class);
+            TableUtils.createTable(connectionSource, Dispense.class);
+            TableUtils.createTable(connectionSource, Form.class);
+            TableUtils.createTable(connectionSource, Drug.class);
+            TableUtils.createTable(connectionSource, Stock.class);
+            TableUtils.createTable(connectionSource, DispensedDrug.class);
+            TableUtils.createTable(connectionSource, Episode.class);
+            TableUtils.createTable(connectionSource, PrescribedDrug.class);
+            TableUtils.createTable(connectionSource, RegimenDrug.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }

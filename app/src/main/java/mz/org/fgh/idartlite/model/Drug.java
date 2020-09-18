@@ -5,10 +5,11 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.DrugDaoImpl;
 
 import java.util.Objects;
 
-@DatabaseTable(tableName = "drug")
+@DatabaseTable(tableName = "drug", daoClass = DrugDaoImpl.class)
 public class Drug extends BaseModel {
 
     public static final String COLUMN_FNMCODE = "fnm_code";
@@ -19,7 +20,7 @@ public class Drug extends BaseModel {
     public static final String COLUMN_DISEASE_TYPE = "diseaseType_id";
 
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = COLUMN_FNMCODE)

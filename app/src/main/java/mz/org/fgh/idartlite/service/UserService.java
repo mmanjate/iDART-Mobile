@@ -31,7 +31,7 @@ public class UserService extends BaseService {
     }
 
     public void saveUser(User user) throws SQLException {
-        getDataBaseHelper().getGenericDao(user).saveGenericObjectByClass(user);
+        getDataBaseHelper().getUserDao().saveGenericObjectByClass(user);
     }
 
 
@@ -46,7 +46,7 @@ public class UserService extends BaseService {
             params.put("id", "eq.213077");
             handler.addHeader("Content-Type","Application/json");
 
-            handler.objectRequest("http://10.10.2.133:3001/users?id=eq.213077", Request.Method.GET, null, User[].class, new Response.Listener<User[]>() {
+            handler.objectRequest("http://10.10.2.134:3001/users?id=eq.213077", Request.Method.GET, null, User[].class, new Response.Listener<User[]>() {
                 @Override
                 public void onResponse(User[] response) {
                     Log.d("Response", response.toString());

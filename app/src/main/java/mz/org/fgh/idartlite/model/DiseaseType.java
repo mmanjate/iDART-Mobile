@@ -5,17 +5,17 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.DiseaseTypeDaoImpl;
 
 import java.util.Objects;
 
-@DatabaseTable(tableName = "Disease_type")
+@DatabaseTable(tableName = "Disease_type", daoClass = DiseaseTypeDaoImpl.class)
 public class DiseaseType extends BaseModel {
 
     public static final String COLUMN_CODE = "code";
     public static final String COLUMN_DESCRIPTION = "description";
 
-
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = COLUMN_CODE)

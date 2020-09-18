@@ -27,7 +27,7 @@ public class Prescription extends BaseModel {
 	public static final String COLUMN_PATIENT_ID = "patient_id";
 	public static final String COLUMN_SYNC_STATUS = "sync_status";
 
-	@DatabaseField(columnName = COLUMN_ID, id = true)
+	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = COLUMN_PRESCRIPTION_DATE)
@@ -40,16 +40,16 @@ public class Prescription extends BaseModel {
 	private Date expiryDate;
 
 	@DatabaseField(columnName = COLUMN_URGENT_PRESCRIPTION)
-	private boolean urgentPrescription;
+	private String urgentPrescription;
 
 	@DatabaseField(columnName = COLUMN_URGENT_NOTES)
 	private String urgentNotes;
 
-	@DatabaseField(columnName = COLUMN_REGIMEN_ID)
-	private TherapeuticRegimen regimenId;
+	@DatabaseField(columnName = COLUMN_REGIMEN_ID, canBeNull = false, foreign = true)
+	private TherapeuticRegimen therapeuticRegimen;
 
-	@DatabaseField(columnName = COLUMN_LINE_ID)
-	private TherapeuticLine lineId;
+	@DatabaseField(columnName = COLUMN_LINE_ID, canBeNull = false, foreign = true)
+	private TherapeuticLine therapeuticLine;
 
 	@DatabaseField(columnName = COLUMN_DISPENSE_TYPE_ID, canBeNull = false, foreign = true)
 	private DispenseType dispenseType;
@@ -98,11 +98,11 @@ public class Prescription extends BaseModel {
 		this.expiryDate = expiryDate;
 	}
 
-	public boolean isUrgentPrescription() {
+	public String getUrgentPrescription() {
 		return urgentPrescription;
 	}
 
-	public void setUrgentPrescription(boolean urgentPrescription) {
+	public void setUrgentPrescription(String urgentPrescription) {
 		this.urgentPrescription = urgentPrescription;
 	}
 
@@ -114,20 +114,20 @@ public class Prescription extends BaseModel {
 		this.urgentNotes = urgentNotes;
 	}
 
-	public TherapeuticRegimen getRegimenId() {
-		return regimenId;
+	public TherapeuticRegimen getTherapeuticRegimen() {
+		return therapeuticRegimen;
 	}
 
-	public void setRegimenId(TherapeuticRegimen regimenId) {
-		this.regimenId = regimenId;
+	public void setTherapeuticRegimen(TherapeuticRegimen therapeuticRegimen) {
+		this.therapeuticRegimen = therapeuticRegimen;
 	}
 
-	public TherapeuticLine getLineId() {
-		return lineId;
+	public TherapeuticLine getTherapeuticLine() {
+		return therapeuticLine;
 	}
 
-	public void setLineId(TherapeuticLine lineId) {
-		this.lineId = lineId;
+	public void setTherapeuticLine(TherapeuticLine therapeuticLine) {
+		this.therapeuticLine = therapeuticLine;
 	}
 
 	public String getPrescriptionSeq() {

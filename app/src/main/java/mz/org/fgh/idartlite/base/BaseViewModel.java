@@ -7,6 +7,7 @@ import androidx.databinding.Observable;
 import androidx.databinding.PropertyChangeRegistry;
 import androidx.lifecycle.AndroidViewModel;
 
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 
 public abstract class BaseViewModel  extends AndroidViewModel implements Observable {
@@ -15,6 +16,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private BaseActivity relatedActivity;
 
     protected User currentUser;
+    protected Clinic currentClinic;
 
     public BaseActivity getRelatedActivity() {
         return relatedActivity;
@@ -63,5 +65,13 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public Clinic getCurrentClinic() {
+        return currentClinic;
+    }
+
+    public void setCurrentClinic(Clinic currentClinic) {
+        this.currentClinic = currentClinic;
     }
 }

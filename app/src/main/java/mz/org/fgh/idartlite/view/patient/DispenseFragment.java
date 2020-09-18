@@ -110,4 +110,9 @@ public class DispenseFragment extends GenericFragment {
     private Patient getSelectedPatient(){
         return getMyActivity().getPatient();
     }
+
+    @Override
+    public BaseViewModel initViewModel() {
+        return null;
+    }
 }

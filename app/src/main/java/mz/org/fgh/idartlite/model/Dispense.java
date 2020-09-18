@@ -6,11 +6,12 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.DispenseDaoImpl;
 
 import java.util.Date;
 import java.util.Objects;
 
-@DatabaseTable(tableName = "Dispense")
+@DatabaseTable(tableName = "Dispense", daoClass = DispenseDaoImpl.class)
 public class Dispense extends BaseModel {
 
     public static final String COLUMN_PICKUP_DATE = "pickup_date";
@@ -19,7 +20,7 @@ public class Dispense extends BaseModel {
     public static final String COLUMN_PRESCRIPTION = "prescription_id";
     public static final String COLUMN_UUID = "uuid";
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = COLUMN_PICKUP_DATE)
@@ -31,7 +32,7 @@ public class Dispense extends BaseModel {
     @DatabaseField(columnName = COLUMN_NEXT_PICKUP_DATE)
     private Date nextPickupDate;
 
-    @DatabaseField(columnName = COLUMN_PRESCRIPTION,canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_PRESCRIPTION, canBeNull = false, foreign = true)
     private Prescription prescription;
 
     @DatabaseField(columnName = COLUMN_UUID)

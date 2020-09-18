@@ -5,10 +5,11 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.DispensedDrugDaoImpl;
 
 import java.util.Objects;
 
-@DatabaseTable(tableName = "Dispense_drug")
+@DatabaseTable(tableName = "Dispense_drug", daoClass = DispensedDrugDaoImpl.class)
 public class DispensedDrug extends BaseModel {
 
     public static final String COLUMN_QUANTITY_SUPPLIED = "quantity_supplied";
@@ -16,7 +17,7 @@ public class DispensedDrug extends BaseModel {
     public static final String COLUMN_STOCK = "stock_id";
 
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @DatabaseField(columnName = COLUMN_QUANTITY_SUPPLIED)

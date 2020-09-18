@@ -9,7 +9,7 @@ import mz.org.fgh.idartlite.model.Prescription;
 import java.sql.SQLException;
 import java.util.List;
 
-public class PrescriptionDaoImpl extends GenericDaoImpl<Prescription, Integer> implements PrescriptionDao{
+public class PrescriptionDaoImpl extends GenericDaoImpl<Prescription, Integer> implements PrescriptionDao {
 
     public PrescriptionDaoImpl(Class dataClass) throws SQLException {
         super(dataClass);

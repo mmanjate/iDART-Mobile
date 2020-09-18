@@ -14,7 +14,7 @@ public class User extends BaseModel {
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_CLINIC_ID = "clini_id";
 
-    @DatabaseField(columnName = "id", id = true)
+    @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
     @SerializedName("cl_username")

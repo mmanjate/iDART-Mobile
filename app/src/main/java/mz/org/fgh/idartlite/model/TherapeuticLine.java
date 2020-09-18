@@ -16,7 +16,7 @@ public class TherapeuticLine extends BaseModel {
 	public static final String COLUMN_CODE = "code";
 	public static final String COLUMN_DESCRIPTION = "description";
 
-	@DatabaseField(columnName = COLUMN_ID, id = true)
+	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = COLUMN_CODE)
