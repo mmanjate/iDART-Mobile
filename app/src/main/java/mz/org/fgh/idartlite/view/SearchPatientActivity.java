@@ -25,6 +25,7 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
 import mz.org.fgh.idartlite.generated.callback.OnClickListener;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.PatientActivity;
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
@@ -38,17 +39,12 @@ public class SearchPatientActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchPatientBinding = DataBindingUtil.setContentView(this, R.layout.activity_search_patient);
-        try {
-            displaySearchResult();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        searchPatientBinding.imageViewSearch.setOnClickListener(new View.OnClickListener(){
+        searchPatientBinding.buttonSearch.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(searchPatientBinding.edtSearchParam.getText() != null){
+                if(Utilities.stringHasValue(searchPatientBinding.edtSearchParam.getText().toString())){
                     searPatient();
-                    if(!patientList.isEmpty()){
+                    if(Utilities.listHasElements(patientList)){
                         try {
                             displaySearchResult();
                         } catch (SQLException e) {
@@ -65,8 +61,7 @@ public class SearchPatientActivity extends BaseActivity {
 
     public void searPatient(){
         try {
-            //patientList = getRelatedViewModel().searchPatient(searchPatientBinding.edtSearchParam.getText().toString());
-            patientList = getRelatedViewModel().getAllPatient();
+            patientList = getRelatedViewModel().searchPatient(searchPatientBinding.edtSearchParam.getText().toString());
             System.out.println(patientList.get(0).getFirstName());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,7 +69,6 @@ public class SearchPatientActivity extends BaseActivity {
     }
 
     public void displaySearchResult() throws SQLException {
-        patientList = getRelatedViewModel().getAllPatient();
         recyclerPatient = searchPatientBinding.reyclerPatient;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerPatient.setLayoutManager(layoutManager);
