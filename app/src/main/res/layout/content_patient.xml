@@ -37,97 +37,78 @@
                     android:id="@+id/nid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_toStartOf="@+id/pacient_nid"
+                    android:layout_toLeftOf="@+id/pacient_nid"
                     android:gravity="right"
-                    android:textStyle="bold"
-                    android:text="NID: "
-                    android:layout_alignParentStart="true" />
+                    android:text="@string/nid"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/pacient_nid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/nid"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:text="@{patient.nid}" />
+                    android:text="@{patient.nid}"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/nid"
-                    android:layout_alignParentLeft="true"
+                    android:layout_toStartOf="@+id/pacient_name"
+                    android:layout_toLeftOf="@+id/pacient_name"
                     android:gravity="right"
-                    android:textStyle="bold"
-                    android:text="@string/nome"/>
+                    android:text="@string/name"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/pacient_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/name"
                     android:layout_below="@+id/pacient_nid"
                     android:layout_alignParentRight="true"
-                    android:text="@{patient.firstName}"
-                    android:layout_alignParentEnd="true"
-                    android:layout_toEndOf="@+id/name" />
-
-                <TextView
-                    android:id="@+id/apelido"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/name"
-                    android:layout_alignParentLeft="true"
-                    android:gravity="right"
-                    android:textStyle="bold"
-                    android:text="Apelido: "/>
-
-                <TextView
-                    android:id="@+id/pacient_apelido"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/name"
-                    android:layout_toRightOf="@id/apelido"
-                    android:layout_alignParentRight="true"
-                    android:text="@{patient.lastName}" />
+                    android:text="@{patient.fullName}"
+                    android:layout_alignParentEnd="true" />
 
                 <TextView
                     android:id="@+id/genero"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/apelido"
-                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/pacient_genero"
                     android:gravity="right"
-                    android:textStyle="bold"
-                    android:text="Genero:"/>
+                    android:text="@string/gender"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/pacient_genero"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/apelido"
-                    android:layout_toRightOf="@id/apelido"
-                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/idade"
                     android:text="@{patient.gender}" />
 
                 <TextView
                     android:id="@+id/idade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/genero"
-                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/pacient_name"
+                    android:layout_toLeftOf="@+id/pacient_idade"
                     android:gravity="right"
-                    android:textStyle="bold"
-                    android:text="Idade:"/>
+                    android:text="@string/age"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/pacient_idade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/genero"
-                    android:layout_toRightOf="@id/apelido"
+                    android:layout_below="@id/pacient_name"
                     android:layout_alignParentRight="true"
-                    android:text="@{patient.dateString}" />
+                    android:text="@{patient.dateString}"/>
 
             </RelativeLayout>
 

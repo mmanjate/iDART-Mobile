@@ -30,4 +30,11 @@
     <string name="dispense">Aviamento</string>
     <string name="prescription">Prescrição</string>
     <string name="alert_ok">OK</string>
+    <string name="phone">Telefone: </string>
+    <string name="name">Nome: </string>
+    <string name="age">Idade: </string>
+    <string name="nid">NID: </string>
+    <string name="last_name">Apelido: </string>
+    <string name="gender">Genero: </string>
+    <string name="button_ok">Ok</string>
 </resources>

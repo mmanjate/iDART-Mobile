@@ -153,6 +153,10 @@ public class Patient extends BaseModel {
 		return data;
 	}
 
+	public String getFullName(){
+		return this.firstName + " " + this.lastName;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
