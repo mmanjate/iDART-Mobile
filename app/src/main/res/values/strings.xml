@@ -37,5 +37,9 @@
     <string name="last_name">Last Name: </string>
     <string name="gender">Gender: </string>
     <string name="button_ok">Ok</string>
+    <string name="unidade_sanit_ria">Unidade Sanitária</string>
+    <string name="genero">Genero</string>
+    <string name="idade">Idade</string>
+    <string name="telefone">Telefone</string>
 
 </resources>

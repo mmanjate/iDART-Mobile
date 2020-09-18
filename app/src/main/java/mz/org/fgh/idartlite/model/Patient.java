@@ -6,6 +6,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.PatientDaoImpl;
+import mz.org.fgh.idartlite.util.Utilities;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -151,6 +152,11 @@ public class Patient extends BaseModel {
 		SimpleDateFormat datetemp = new SimpleDateFormat("yyyy-MM-dd");
 		String data = datetemp.format(this.birthDate);
 		return data;
+	}
+
+	public int getAge(){
+		//return Utilities...
+		return 0;
 	}
 
 	public String getFullName(){
