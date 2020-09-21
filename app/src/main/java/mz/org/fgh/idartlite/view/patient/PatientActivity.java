@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
@@ -30,11 +31,12 @@ public class PatientActivity extends BaseActivity {
     private ViewPager viewPager;
 
     private ActivityPatientBinding patientBinding;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient);
+        patientBinding = DataBindingUtil.setContentView(this, R.layout.activity_patient);
+
 
         Intent intent = this.getIntent();
         if(intent != null){
