@@ -37,12 +37,10 @@ public class PatientActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         patientBinding = DataBindingUtil.setContentView(this, R.layout.activity_patient);
 
-
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
-
                 getRelatedViewModel().setPatient((Patient) bundle.getSerializable("patient"));
                 patientBinding.setPatient(getRelatedViewModel().getPatient());
                 if (getRelatedViewModel().getPatient() == null){
@@ -57,7 +55,6 @@ public class PatientActivity extends BaseActivity {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-
         adapter = new PatientTabAdapter(getSupportFragmentManager());
         adapter.addFragment(new PatientDetailsFragment(), getString(R.string.general_info));
         adapter.addFragment(new PrescriptionFragment(), getString(R.string.prescription));
@@ -71,8 +68,6 @@ public class PatientActivity extends BaseActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_prescription);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_dispense);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_episode);
-
-
     }
 
     public Patient getPatient() {
