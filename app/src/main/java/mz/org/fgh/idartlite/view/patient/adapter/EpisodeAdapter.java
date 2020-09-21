@@ -28,7 +28,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        PatientEpisodeRowBinding patientEpisodeRowBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.patient_prescription_row, parent, false);
+        PatientEpisodeRowBinding patientEpisodeRowBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.patient_episode_row, parent, false);
         return new EpisodeViewHolder(patientEpisodeRowBinding);
     }
 

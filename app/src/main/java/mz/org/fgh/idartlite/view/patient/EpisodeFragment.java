@@ -1,10 +1,12 @@
 package mz.org.fgh.idartlite.view.patient;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.ClickListener;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
 import mz.org.fgh.idartlite.common.RecyclerTouchListener;
@@ -63,6 +66,40 @@ public class EpisodeFragment extends GenericFragment {
         if (Utilities.listHasElements(episodeList)) {
             episodeAdapter = new EpisodeAdapter(this.rcvEpisodes, this.episodeList, getMyActivity());
             displayDataOnRecyclerView(rcvEpisodes, episodeAdapter, getContext());
+
+            rcvEpisodes.addOnItemTouchListener(
+                    new ClickListener(
+                            getContext(), rcvEpisodes, new ClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            Episode episode = episodeList.get(position);
+                            Intent intent = new Intent(getContext(), CreateEpisodeActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("user", getCurrentUser());
+                            bundle.putSerializable("patient", getSelectedPatient());
+                         //   bundle.putSerializable("clinic", getCurrentClinic());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onLongItemClick(View view, int position) {
+                            Episode episode = episodeList.get(position);
+                            Intent intent = new Intent(getContext(), CreateEpisodeActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("user", getCurrentUser());
+                         //   bundle.putSerializable("clinic", getCurrentClinic());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        }
+                    }
+                    )
+            );
         }
     }
 

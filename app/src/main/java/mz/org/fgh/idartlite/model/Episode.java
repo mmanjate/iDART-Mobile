@@ -6,7 +6,10 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.EpisodeDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.Utilities;
 
+import java.util.Date;
 import java.util.Objects;
 
 @DatabaseTable(tableName = "episode", daoClass = EpisodeDaoImpl.class)
@@ -25,7 +28,7 @@ public class Episode extends BaseModel {
 	private int id;
 
 	@DatabaseField(columnName = COLUMN_EPISODE_DATE)
-	private int episodeDate;
+	private Date episodeDate;
 
 	@DatabaseField(columnName = COLUMN_START_REASON)
 	private String startReason;
@@ -53,11 +56,11 @@ public class Episode extends BaseModel {
 		this.id = id;
 	}
 
-	public int getEpisodeDate() {
+	public Date getEpisodeDate() {
 		return episodeDate;
 	}
 
-	public void setEpisodeDate(int episodeDate) {
+	public void setEpisodeDate(Date episodeDate) {
 		this.episodeDate = episodeDate;
 	}
 
@@ -136,4 +139,9 @@ public class Episode extends BaseModel {
 				", syncStatus='" + syncStatus + '\'' +
 				'}';
 	}
+
+	public String getStringEpisodeDate(){
+		return DateUtilitis.parseDateToDDMMYYYYString(this.episodeDate);
+	}
+
 }

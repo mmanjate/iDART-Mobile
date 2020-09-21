@@ -64,4 +64,8 @@
     <string name="reason_to_stop">reasontostop</string>
     <string name="stock_entrance">Entrada</string>
     <string name="stock_inventory">Inventário</string>
+    <string name="data_da_visita">data da visita</string>
+    <string name="adicionar_episodio">adicionar_episodio</string>
+    <string name="motivo_de_inicio">motivo_de_inicio</string>
+    <string name="motivo_de_fim">motivo_de_de_fim</string>
 </resources>
