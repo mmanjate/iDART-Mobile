@@ -23,7 +23,6 @@ import mz.org.fgh.idartlite.adapter.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
-import mz.org.fgh.idartlite.generated.callback.OnClickListener;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.PatientActivity;
