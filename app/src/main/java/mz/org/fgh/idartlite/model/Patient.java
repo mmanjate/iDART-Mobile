@@ -165,6 +165,10 @@ public class Patient extends BaseModel {
 		return age;
 	}
 
+	public String getAgeToString(){
+		return String.valueOf(this.getAge());
+	}
+
 	public String getDateStartTarv(){
 		if(this.startARVDate == null){
 			return DateUtilitis.parseDateToDDMMYYYYString(Calendar.getInstance().getTime());
