@@ -41,4 +41,12 @@
     <string name="genero">Genero</string>
     <string name="idade">Idade</string>
     <string name="telefone">Telefone</string>
+    <string name="data_episodio">data_episodio</string>
+    <string name="data_de_referencia">data_de_referencia</string>
+    <string name="data_prox_levantamento">data_prox_levantamento</string>
+    <string name="notas">notas</string>
+    <string name="regime_terapeutico">regime_terapeutico</string>
+    <string name="linha">regime_terapeutico</string>
+    <string name="dura_o">dura_o</string>
+    <string name="data">data</string>
 </resources>
