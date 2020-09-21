@@ -42,8 +42,14 @@
         </activity>
         <activity
             android:name=".view.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="sensor" />
+
+        <activity
+            android:name=".view.patient.CreateEpisodeActivity"
+            android:label="@string/episode"
             android:screenOrientation="sensor"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

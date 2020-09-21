@@ -8,6 +8,7 @@
         <variable
             name="episode"
             type="mz.org.fgh.idartlite.model.Episode" />
+
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,17 +95,17 @@
                         android:id="@+id/dataEpisodio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{episode.episodeDate}"/>
+                        android:text="@{episode.getStringEpisodeDate}"/>
                     <TextView
                         android:id="@+id/dataReferencia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{episode.episodeDate}"/>
+                        android:text="@{episode.getStringEpisodeDate}"/>
                     <TextView
                         android:id="@+id/dataProxLevantamento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{episode.id}"/>
+                        android:text="@{episode.getStringEpisodeDate}"/>
                     <TextView
                         android:id="@+id/notes"
                         android:layout_width="match_parent"
