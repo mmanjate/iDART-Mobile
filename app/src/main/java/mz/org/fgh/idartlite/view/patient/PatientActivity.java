@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -11,6 +12,7 @@ import com.google.android.material.tabs.TabLayout;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 
+import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
 
 import mz.org.fgh.idartlite.model.Clinic;
@@ -27,6 +29,8 @@ public class PatientActivity extends BaseActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    private ActivityPatientBinding patientBinding;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
