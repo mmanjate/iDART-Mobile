@@ -7,5 +7,6 @@
     <color name="text_color">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="tab_back">#BDF6F4</color>
+    <color name="list_icon">#DBDBDC</color>
     <color name="yellow">#F4BE36</color>
 </resources>

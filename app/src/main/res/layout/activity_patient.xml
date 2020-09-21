@@ -10,41 +10,43 @@
             type="mz.org.fgh.idartlite.model.Patient" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <include layout="@layout/app_bar" />
 
-        <include layout="@layout/pacient_info" bind:patient="@{patient}"/>
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?actionBarSize"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/colorPrimary"
-            app:tabIndicatorHeight="4dp"
-            app:tabBackground="@color/tab_back"
-            app:tabMode="fixed"
-            app:tabTextColor="@color/colorPrimary"
-            app:tabSelectedTextColor="@color/yellow" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </androidx.viewpager.widget.ViewPager>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@android:drawable/ic_dialog_email" />
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:elevation="6dp">
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+                <include layout="@layout/app_bar" />
+
+                <include layout="@layout/pacient_info" bind:patient="@{patient}" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    app:tabMode="fixed"
+                    android:layout_below="@+id/patient_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabBackground="@color/tab_back"
+                    app:elevation="0dp"
+                    app:tabTextColor="@color/colorPrimary"
+                    android:minHeight="?attr/actionBarSize"
+                    />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            </androidx.viewpager.widget.ViewPager>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

@@ -1,17 +1,21 @@
 package mz.org.fgh.idartlite.model;
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.PrescriptionDaoImpl;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Objects;
+
+import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.dao.PrescriptionDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilitis;
 
 @DatabaseTable(tableName = "prescription", daoClass = PrescriptionDaoImpl.class)
 public class Prescription extends BaseModel {
@@ -182,6 +186,10 @@ public class Prescription extends BaseModel {
 				expiryDate.equals(that.expiryDate) &&
 				prescriptionSeq.equals(that.prescriptionSeq) &&
 				uuid.equals(that.uuid);
+	}
+
+	public double getDurationInMonths(){
+		return DateUtilitis.dateDiff(this.prescriptionDate, this.expiryDate, DateUtilitis.MONTH_FORMAT);
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
