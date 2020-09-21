@@ -43,6 +43,7 @@ public class LoginActivity extends BaseActivity {
         activityLoginBinding.executePendingBindings();
 
         spinnerFarmacia = findViewById(R.id.spinnerFarmacia);
+
     }
 
     @BindingAdapter({"toastMessage"})

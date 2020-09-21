@@ -166,13 +166,10 @@ public class Patient extends BaseModel {
 	}
 
 	public String getDateStartTarv(){
-		SimpleDateFormat datetemp = new SimpleDateFormat("yyyy-MM-dd");
 		if(this.startARVDate == null){
-			String data = datetemp.format(Calendar.DATE);
-			return data;
+			return DateUtilitis.parseDateToDDMMYYYYString(Calendar.getInstance().getTime());
 		}else {
-			String data = datetemp.format(this.startARVDate);
-			return data;
+			return DateUtilitis.parseDateToDDMMYYYYString(this.startARVDate);
 		}
 	}
 
