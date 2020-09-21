@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -30,7 +31,7 @@ import mz.org.fgh.idartlite.viewmodel.LoginVM;
 public class LoginActivity extends BaseActivity {
 
     private ActivityLoginBinding activityLoginBinding;
-
+    private Spinner spinnerFarmacia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class LoginActivity extends BaseActivity {
         activityLoginBinding.setViewModel(getRelatedViewModel());
         activityLoginBinding.executePendingBindings();
 
+        spinnerFarmacia = findViewById(R.id.spinnerFarmacia);
     }
 
     @BindingAdapter({"toastMessage"})
