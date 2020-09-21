@@ -9,6 +9,7 @@ import androidx.databinding.Bindable;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.view.HomeActivity;
 import mz.org.fgh.idartlite.view.SearchPatientActivity;
+import mz.org.fgh.idartlite.view.stock.StockActivity;
 
 public class HomeVM extends BaseViewModel {
 
@@ -18,6 +19,11 @@ public class HomeVM extends BaseViewModel {
 
     public void callSearchPatient(){
         Intent intent = new Intent(getApplication(), SearchPatientActivity.class);
+        getRelatedActivity().startActivity(intent);
+    }
+
+    public void callStck(){
+        Intent intent = new Intent(getApplication(), StockActivity.class);
         getRelatedActivity().startActivity(intent);
     }
 

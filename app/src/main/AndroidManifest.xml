@@ -14,30 +14,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.stock.StockActivity"></activity>
         <activity
             android:name=".view.SearchPatientActivity"
             android:screenOrientation="sensor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.patient.PatientActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_patient"
             android:screenOrientation="sensor"
-            android:label="@string/title_activity_patient">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".view.LoginActivity"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".view.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="sensor" />
+            android:screenOrientation="sensor"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
