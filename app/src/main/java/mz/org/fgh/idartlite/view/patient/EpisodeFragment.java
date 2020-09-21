@@ -45,6 +45,7 @@ public class EpisodeFragment extends GenericFragment {
         // Inflate the layout for this fragment
         fragmentEpisodeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_episode, container,false);
         return fragmentEpisodeBinding.getRoot();
+        
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -107,6 +108,5 @@ public class EpisodeFragment extends GenericFragment {
     private Patient getSelectedPatient(){
         return getMyActivity().getPatient();
     }
-
 
 }

@@ -40,8 +40,6 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private StockDao stockDao;
     private TherapeuticLineDao therapeuticLineDao;
     private TherapeuticRegimenDao therapeuticRegimenDao;
-    private UserDao userDao;
-    private GenericDao genericDao;
 
     public ClinicDao getClinicDao() throws SQLException {
         if(clinicDao == null){

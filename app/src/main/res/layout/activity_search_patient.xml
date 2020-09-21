@@ -42,21 +42,22 @@
                 android:id="@+id/edtSearchParam"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_patient_search"
-                android:drawableLeft="@drawable/ic_patient_search"
+                android:drawableEnd="@drawable/ic_patient_search"
+                android:drawableRight="@drawable/ic_patient_search"
                 android:gravity="bottom"
                 android:hint="@string/input_search_patient"
                 android:textColor="@color/text_color" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/imageViewSearch"
+        <Button
+            android:id="@+id/buttonSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_button_search" />
+            android:background="@color/background_layout"
+            android:text="@string/button_ok" />
 
     </LinearLayout>
 

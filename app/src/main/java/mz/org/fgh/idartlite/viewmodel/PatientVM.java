@@ -28,4 +28,12 @@ public class PatientVM extends BaseViewModel {
     public List<Patient> getAllPatient() throws SQLException {
         return patientService.getALLPatient();
     }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
 }
