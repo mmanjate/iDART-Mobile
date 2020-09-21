@@ -6,7 +6,10 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.PatientDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.Utilities;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -148,9 +151,17 @@ public class Patient extends BaseModel {
 	}
 
 	public String getDateString(){
-		SimpleDateFormat datetemp = new SimpleDateFormat("yyyy-MM-dd");
-		String data = datetemp.format(this.birthDate);
-		return data;
+		return DateUtilitis.parseDateToDDMMYYYYString(this.birthDate);
+	}
+
+	public int getAge() {
+		int age = 0;
+		try {
+			age = (int) DateUtilitis.calculaIdade(DateUtilitis.formatToDDMMYYYY(this.birthDate, "-"),DateUtilitis.YEAR_FORMAT);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return age;
 	}
 
 	public String getFullName(){
