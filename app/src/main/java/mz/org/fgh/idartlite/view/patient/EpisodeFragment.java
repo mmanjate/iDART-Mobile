@@ -108,8 +108,5 @@ public class EpisodeFragment extends GenericFragment {
         return getMyActivity().getPatient();
     }
 
-    @Override
-    public BaseViewModel initViewModel() {
-        return null;
-    }
+
 }
