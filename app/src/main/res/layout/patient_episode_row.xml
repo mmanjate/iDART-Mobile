@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ID Prescricao"
+                    android:text="Inicio"
                     android:textSize="@dimen/dimen_18dp"
                     android:textStyle="bold"/>
 
@@ -47,7 +47,7 @@
                     android:id="@+id/prescriptionId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="0101150101/2020/65843-26542"
+                    android:text="Paciente Referido da US"
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:textSize="@dimen/dimen_18dp"
                     android:textStyle="bold"/>
@@ -64,24 +64,24 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="1.5">
+                    android:layout_weight="4.8">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Data:"/>
+                        android:text="@string/data_episodio"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Regime Terapeutico:"/>
+                        android:text="@string/data_de_referencia"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Linha:"/>
+                        android:text="@string/data_prox_levantamento"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Duração:"/>
+                        android:text="@string/notas"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -91,31 +91,31 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:id="@+id/dataPrescricao"
+                        android:id="@+id/dataEpisodio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="20/01/2020"/>
+                        android:text="@{episode.episodeDate}"/>
                     <TextView
-                        android:id="@+id/regime"
+                        android:id="@+id/dataReferencia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TDF+3TC+DTG"/>
+                        android:text="@{episode.episodeDate}"/>
                     <TextView
-                        android:id="@+id/linha"
+                        android:id="@+id/dataProxLevantamento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1 Linha"/>
+                        android:text="@{episode.id}"/>
                     <TextView
-                        android:id="@+id/duracao"
+                        android:id="@+id/notes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="6 Meses"/>
+                        android:text="@{episode.notes}"/>
 
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="@dimen/dimen_10dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:layout_width="match_parent"

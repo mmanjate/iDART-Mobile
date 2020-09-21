@@ -4,44 +4,39 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseViewModel;
+
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
+
+import mz.org.fgh.idartlite.model.Clinic;
+
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.view.patient.adapter.PatientTabAdapter;
+
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
+
 
 public class PatientActivity extends BaseActivity {
 
     private PatientTabAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private ActivityPatientBinding patientBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        patientBinding = DataBindingUtil.setContentView(this, R.layout.activity_patient);
-
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        viewPager = patientBinding.viewPager;
-        tabLayout = patientBinding.tabLayout;
+        setContentView(R.layout.activity_patient);
 
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
+
                 getRelatedViewModel().setPatient((Patient) bundle.getSerializable("patient"));
                 patientBinding.setPatient(getRelatedViewModel().getPatient());
                 if (getRelatedViewModel().getPatient() == null){
@@ -49,6 +44,12 @@ public class PatientActivity extends BaseActivity {
                 }
             }
         }
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
 
         adapter = new PatientTabAdapter(getSupportFragmentManager());

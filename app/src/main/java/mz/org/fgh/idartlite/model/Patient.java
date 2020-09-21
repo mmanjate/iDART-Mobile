@@ -11,6 +11,7 @@ import mz.org.fgh.idartlite.util.Utilities;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -162,6 +163,18 @@ public class Patient extends BaseModel {
 			e.printStackTrace();
 		}
 		return age;
+	}
+
+	public String getAgeToString(){
+		return String.valueOf(this.getAge());
+	}
+
+	public String getDateStartTarv(){
+		if(this.startARVDate == null){
+			return DateUtilitis.parseDateToDDMMYYYYString(Calendar.getInstance().getTime());
+		}else {
+			return DateUtilitis.parseDateToDDMMYYYYString(this.startARVDate);
+		}
 	}
 
 	public String getFullName(){

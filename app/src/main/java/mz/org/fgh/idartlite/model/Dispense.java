@@ -8,6 +8,9 @@ import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.DispenseDaoImpl;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Objects;
 
@@ -19,6 +22,7 @@ public class Dispense extends BaseModel {
     public static final String COLUMN_NEXT_PICKUP_DATE = "next_pickup_date";
     public static final String COLUMN_PRESCRIPTION = "prescription_id";
     public static final String COLUMN_UUID = "uuid";
+    public static final String COLUMN_SYNC_STATUS = "sync_status";
 
     @DatabaseField(columnName = "id", generatedId = true)
     private int id;
@@ -37,6 +41,9 @@ public class Dispense extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_UUID)
     private String uuid;
+
+    @DatabaseField(columnName = COLUMN_SYNC_STATUS)
+    private String syncStatus;
 
 
     public int getId() {
@@ -87,6 +94,14 @@ public class Dispense extends BaseModel {
         this.uuid = uuid;
     }
 
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,6 +125,25 @@ public class Dispense extends BaseModel {
                 ", nextPickupDate=" + nextPickupDate +
                 ", prescription=" + prescription +
                 ", uuid='" + uuid + '\'' +
+                ", syncStatus='" + syncStatus + '\'' +
                 '}';
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public int getDuration(Date pickupDate, Date nextPickupDate){
+        //Parsing the date
+        LocalDate pickupLocalDate = pickupDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        LocalDate nextPickupLocalDate  = nextPickupDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        //calculating number of days in between
+        long noOfDaysBetween = ChronoUnit.DAYS.between(pickupLocalDate, nextPickupLocalDate);
+
+       return (int) noOfDaysBetween;
+
     }
 }

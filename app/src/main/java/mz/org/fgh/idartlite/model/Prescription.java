@@ -7,6 +7,9 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Objects;
 
@@ -49,13 +52,13 @@ public class Prescription extends BaseModel {
 	@DatabaseField(columnName = COLUMN_URGENT_NOTES)
 	private String urgentNotes;
 
-	@DatabaseField(columnName = COLUMN_REGIMEN_ID, canBeNull = false, foreign = true)
+	@DatabaseField(columnName = COLUMN_REGIMEN_ID, canBeNull = true, foreign = true)
 	private TherapeuticRegimen therapeuticRegimen;
 
-	@DatabaseField(columnName = COLUMN_LINE_ID, canBeNull = false, foreign = true)
+	@DatabaseField(columnName = COLUMN_LINE_ID, canBeNull = true, foreign = true)
 	private TherapeuticLine therapeuticLine;
 
-	@DatabaseField(columnName = COLUMN_DISPENSE_TYPE_ID, canBeNull = false, foreign = true)
+	@DatabaseField(columnName = COLUMN_DISPENSE_TYPE_ID, canBeNull = true, foreign = true)
 	private DispenseType dispenseType;
 
 	@DatabaseField(columnName = COLUMN_PRESCRIPTION_SEQ)
@@ -208,5 +211,23 @@ public class Prescription extends BaseModel {
 				", uuid='" + uuid + '\'' +
 				", syncStatus='" + syncStatus + '\'' +
 				'}';
+	}
+
+	@RequiresApi(api = Build.VERSION_CODES.O)
+	public String getDuration(Date pickupDate, Date nextPickupDate){
+		//Parsing the date
+		LocalDate pickupLocalDate = pickupDate.toInstant()
+				.atZone(ZoneId.systemDefault())
+				.toLocalDate();
+
+		LocalDate nextPickupLocalDate  = nextPickupDate.toInstant()
+				.atZone(ZoneId.systemDefault())
+				.toLocalDate();
+
+		//calculating number of days in between
+		long noOfDaysBetween = ChronoUnit.DAYS.between(pickupLocalDate, nextPickupLocalDate);
+
+		return String.valueOf(noOfDaysBetween);
+
 	}
 }

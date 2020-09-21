@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
@@ -13,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
@@ -73,7 +75,7 @@ public class LoginVM extends BaseViewModel {
         notifyPropertyChanged(BR.userPassword);
     }
 
-    public LoginVM(@NonNull Application application) {
+    public LoginVM(@NonNull Application application) throws SQLException {
         super(application);
         user = new User();
         clinic = new Clinic();
