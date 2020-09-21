@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:text="ID Prescricao"
                     android:textSize="@dimen/dimen_18dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/prescriptionId"
@@ -64,28 +64,28 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="1.5">
+                    android:layout_weight="2.5">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Data:"/>
+                        android:text="@string/data"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Regime Terapeutico:"/>
+                        android:text="@string/regime_terapeutico"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Linha:"/>
+                        android:text="@string/linha"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Duração:"/>
+                        android:text="@string/dura_o"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="2">
@@ -94,28 +94,31 @@
                         android:id="@+id/dataPrescricao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="20/01/2020"/>
+                        android:text="@{prescription.prescriptionDate.toString()}" />
+
                     <TextView
                         android:id="@+id/regime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TDF+3TC+DTG"/>
+                        android:text="@{prescription.therapeuticRegimen.description}" />
+
                     <TextView
                         android:id="@+id/linha"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1 Linha"/>
+                        android:text="@{prescription.therapeuticLine.description}" />
+
                     <TextView
                         android:id="@+id/duracao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="6 Meses"/>
+                        android:text="@{prescription.getDuration(prescription.prescriptionDate,prescription.expiryDate)}" />
 
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="@dimen/dimen_10dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:layout_width="match_parent"

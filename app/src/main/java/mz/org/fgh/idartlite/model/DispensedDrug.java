@@ -15,6 +15,7 @@ public class DispensedDrug extends BaseModel {
     public static final String COLUMN_QUANTITY_SUPPLIED = "quantity_supplied";
     public static final String COLUMN_DISPENSE = "dispense_id";
     public static final String COLUMN_STOCK = "stock_id";
+    public static final String COLUMN_SYNC_STATUS = "sync_status";
 
 
     @DatabaseField(columnName = "id", generatedId = true)
@@ -28,6 +29,9 @@ public class DispensedDrug extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_DISPENSE ,canBeNull = false, foreign = true)
     private Dispense dispense;
+
+    @DatabaseField(columnName = COLUMN_SYNC_STATUS)
+    private String syncStatus;
 
     public int getId() {
         return id;
@@ -61,6 +65,13 @@ public class DispensedDrug extends BaseModel {
         this.stock = stock;
     }
 
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,6 +95,7 @@ public class DispensedDrug extends BaseModel {
                 ", quantitySupplied=" + quantitySupplied +
                 ", stock=" + stock +
                 ", dispense=" + dispense +
+                ", syncStatus='" + syncStatus + '\'' +
                 '}';
     }
 }
