@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.viewmodel;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
@@ -24,6 +25,10 @@ public class HomeVM extends BaseViewModel {
 
     public void callStck(){
         Intent intent = new Intent(getApplication(), StockActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", getRelatedActivity().getCurrentUser());
+        bundle.putSerializable("clinic", getRelatedActivity().getCurrentClinic());
+        intent.putExtras(bundle);
         getRelatedActivity().startActivity(intent);
     }
 

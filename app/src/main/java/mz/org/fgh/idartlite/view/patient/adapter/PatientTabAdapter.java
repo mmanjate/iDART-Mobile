@@ -34,8 +34,6 @@ public class PatientTabAdapter extends FragmentStatePagerAdapter {
         mFragmentTitleList.add(title);
     }
 
-
-
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {

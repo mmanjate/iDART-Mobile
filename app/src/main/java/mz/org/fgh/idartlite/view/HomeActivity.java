@@ -27,13 +27,11 @@ public class HomeActivity extends BaseActivity {
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
                 currentUser = (User) bundle.getSerializable("user");
-                setCurrentClinic((Clinic) bundle.getSerializable("clinic"));
+                currentClinic = (Clinic) bundle.getSerializable("clinic");
             }
         }
 
         activityHomeBinding.executePendingBindings();
-
-
     }
 
     @Override
