@@ -26,4 +26,7 @@ public class PrescriptionVM extends BaseViewModel {
         return prescriptionService.getAllPrescriptionsByPatient(patient);
     }
 
+    public void create(Prescription prescription) throws SQLException {
+        this.prescriptionService.createPrescription(prescription);
+    }
 }

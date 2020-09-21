@@ -2,9 +2,12 @@ package mz.org.fgh.idartlite.view.patient.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +35,32 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+
         ((PrescriptionViewHolder) viewHolder).patientPrescriptionRowBinding.setPrescription(prescriptionList.get(position));
+        ((PrescriptionViewHolder) viewHolder).patientPrescriptionRowBinding.textViewOptions.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+
+                PopupMenu popup = new PopupMenu(activity.getApplicationContext(), ((PrescriptionViewHolder) viewHolder).patientPrescriptionRowBinding.textViewOptions);
+                popup.inflate(R.menu.edit_remove_menu);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.edit:
+                                //
+                                break;
+                            case R.id.remove:
+
+                                //
+                                break;
+                        }
+                        return false;
+                    }
+                });
+            }
+        });
     }
 
     @Override

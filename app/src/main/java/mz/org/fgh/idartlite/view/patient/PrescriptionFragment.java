@@ -4,14 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
@@ -20,12 +16,14 @@ import java.util.List;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
-import mz.org.fgh.idartlite.common.RecyclerTouchListener;
 import mz.org.fgh.idartlite.databinding.PrescriptionFragmentBinding;
+import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.TherapeuticLine;
+import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.patient.adapter.DispenseAdapter;
 import mz.org.fgh.idartlite.view.patient.adapter.PrescriptionAdapter;
 import mz.org.fgh.idartlite.viewmodel.PrescriptionVM;
 
@@ -51,6 +49,8 @@ public class PrescriptionFragment extends GenericFragment {
         super.onViewCreated(view, savedInstanceState);
 
         this.rcvPrescriptions = prescriptionFragmentBinding.rcvPrescriptions;
+
+
 
         try {
             this.prescriptionList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
@@ -106,5 +106,30 @@ public class PrescriptionFragment extends GenericFragment {
 
     private Patient getSelectedPatient(){
         return getMyActivity().getPatient();
+    }
+
+    private void generateTestData(){
+
+        Prescription p = new Prescription();
+        p.setDispenseType(new DispenseType());
+        p.getDispenseType().setDescription("Semanal");
+        p.getDispenseType().setCode("SEMANAL");
+        p.setPatient(getMyActivity().getPatient());
+        p.setTherapeuticLine(new TherapeuticLine());
+        p.getTherapeuticLine().setDescription("Linha terapeutica 1");
+        p.getTherapeuticLine().setCode("Linha_Ter_1");
+        p.setTherapeuticRegimen(new TherapeuticRegimen());
+        p.getTherapeuticRegimen().setDescription("Regime 1");
+        p.getTherapeuticRegimen().setRegimenCode("REGIME_1");
+        p.setExpiryDate(DateUtilitis.getCurrentDate());
+        p.setPrescriptionDate(DateUtilitis.getCurrentDate());
+        p.setSyncStatus("N");
+
+        try {
+            getRelatedViewModel().create(p);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

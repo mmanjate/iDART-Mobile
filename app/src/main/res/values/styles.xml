@@ -25,7 +25,7 @@
     <style name="pacient_nid">
         <item name="android:textColor">@color/white</item>
         <item name="android:typeface">sans</item>
-        <item name="android:textSize">@dimen/dimen_17dp</item>
+        <item name="android:textSize">@dimen/dimen_15dp</item>
         <item name="android:paddingTop">@dimen/dimen_10dp</item>
         <item name="android:paddingBottom">@dimen/dimen_5dp</item>
         <item name="android:paddingRight">@dimen/dimen_10dp</item>
@@ -60,6 +60,10 @@
         <item name="android:background">@android:color/white</item>
         <item name="android:colorBackgroundCacheHint">@android:color/white</item>
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="patient_activity_lists" parent="Base.CardView">
+        <item name="android:textSize">@dimen/dimen_10dp</item>
     </style>
 
 

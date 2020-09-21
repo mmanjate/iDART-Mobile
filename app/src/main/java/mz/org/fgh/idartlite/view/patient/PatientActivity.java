@@ -3,26 +3,19 @@ package mz.org.fgh.idartlite.view.patient;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
-import android.view.View;
+import com.google.android.material.tabs.TabLayout;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
-import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.view.patient.adapter.PatientTabAdapter;
-import mz.org.fgh.idartlite.viewmodel.LoginVM;
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
 public class PatientActivity extends BaseActivity {
@@ -50,6 +43,7 @@ public class PatientActivity extends BaseActivity {
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
                 getRelatedViewModel().setPatient((Patient) bundle.getSerializable("patient"));
+                patientBinding.setPatient(getRelatedViewModel().getPatient());
                 if (getRelatedViewModel().getPatient() == null){
                     throw new RuntimeException("Não foi seleccionado um paciente para detalhar.");
                 }
@@ -71,14 +65,7 @@ public class PatientActivity extends BaseActivity {
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_dispense);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_episode);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
     }
 
     public Patient getPatient() {

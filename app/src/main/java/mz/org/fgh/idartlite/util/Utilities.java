@@ -8,11 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
@@ -153,6 +149,10 @@ public class Utilities {
     }
 
     public static String parseIntToString(int toParse){
+        return String.valueOf(toParse);
+    }
+
+    public static String parseDoubleToString(double toParse){
         return String.valueOf(toParse);
     }
 
