@@ -90,17 +90,17 @@ xmlns:tools="http://schemas.android.com/tools">
         <Spinner
             android:id="@+id/spinnerFarmacia"
             android:layout_width="0dp"
-            android:layout_height="39dp"
+            android:layout_height="35dp"
             android:layout_marginBottom="16dp"
+            android:spinnerMode="dropdown"
             app:layout_constraintBottom_toTopOf="@+id/inUserName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textIcon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/textFarmacia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/farmacia"
@@ -110,6 +110,17 @@ xmlns:tools="http://schemas.android.com/tools">
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/inUserName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:drawableLeftCompat="@drawable/ic_add_clinic" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
