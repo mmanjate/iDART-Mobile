@@ -52,12 +52,15 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
      * @param params
      */
     public void nextActivity(Context context, Class clazz, Map<String, Object> params){
+
         Intent intent = new Intent(context, clazz);
         Bundle bundle = new Bundle();
 
         if (params != null && params.size() > 0){
             for (Map.Entry<String, Object> entry : params.entrySet()) {
-                bundle.putSerializable(entry.getKey(), (Serializable) entry.getValue());
+                if (entry.getValue() instanceof Serializable) {
+                    bundle.putSerializable(entry.getKey(), (Serializable) entry.getValue());
+                }
             }
             intent.putExtras(bundle);
         }

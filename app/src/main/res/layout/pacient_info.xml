@@ -7,7 +7,9 @@
         <variable
             name="patient"
             type="mz.org.fgh.idartlite.model.Patient" />
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -158,7 +160,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@{patient.age}"
+                        android:text="@{Utilities.parseIntToString(patient.age)}"
                         android:textStyle="bold" />
                 </LinearLayout>
 
