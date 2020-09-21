@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view.patient.adapter;
+package mz.org.fgh.idartlite.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,12 +9,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientTabAdapter extends FragmentStatePagerAdapter {
+public class StockTabAdapter extends FragmentStatePagerAdapter {
 
-    private final List<Fragment> mFragmentList = new ArrayList<>();
-    private final List<String> mFragmentTitleList = new ArrayList<>();
+    private final List<Fragment> mFragmentList = new ArrayList<Fragment>();
+    private final List<String> mFragmentTitleList = new ArrayList<String>();
 
-    public PatientTabAdapter(@NonNull FragmentManager fm) {
+    public StockTabAdapter(@NonNull FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 

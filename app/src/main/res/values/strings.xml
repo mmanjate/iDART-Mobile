@@ -62,5 +62,6 @@
     <string name="date_tarv">Data Inicio TARV:</string>
     <string name="farmacia">Farmácia</string>
     <string name="reason_to_stop">reasontostop</string>
-
+    <string name="stock_entrance">Entrada</string>
+    <string name="stock_inventory">Inventário</string>
 </resources>

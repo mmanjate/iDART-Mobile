@@ -10,6 +10,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.service.PatientService;
+import mz.org.fgh.idartlite.view.patient.PatientActivity;
 
 public class PatientVM extends BaseViewModel {
 
@@ -18,7 +19,7 @@ public class PatientVM extends BaseViewModel {
 
     public PatientVM(@NonNull Application application) {
         super(application);
-        patientService = new PatientService(application,getCurrentUser());
+        patientService = new PatientService(application, getCurrentUser());
     }
 
     public List<Patient> searchPatient(String param) throws SQLException {
@@ -35,5 +36,9 @@ public class PatientVM extends BaseViewModel {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public PatientActivity getRelatedActivity() {
+        return (PatientActivity) super.getRelatedActivity();
     }
 }
