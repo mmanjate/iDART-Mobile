@@ -104,12 +104,12 @@
                         android:id="@+id/linha"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="linha"/>
+                        android:text="@{dispense.id}"/>
                     <TextView
                         android:id="@+id/duracao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="duracao"/>
+                        android:text="@{dispense.id}"/>
 
                 </LinearLayout>
                 <LinearLayout
