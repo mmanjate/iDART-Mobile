@@ -37,5 +37,24 @@
     <string name="last_name">Last Name: </string>
     <string name="gender">Gender: </string>
     <string name="button_ok">Ok</string>
+    <string name="unidade_sanit_ria">Unidade Sanitária</string>
+    <string name="genero">Genero</string>
+    <string name="idade">Idade</string>
+    <string name="telefone">Telefone</string>
+    <string name="data_episodio">data_episodio</string>
+    <string name="data_de_referencia">data_de_referencia</string>
+    <string name="data_prox_levantamento">data_prox_levantamento</string>
+    <string name="notas">notas</string>
+    <string name="data">data</string>
+    <string name="regime_terapeutico">regime_terapeutico</string>
+    <string name="linha">regime_terapeutico</string>
+    <string name="dura_o">dura_o</string>
+    <string name="dados_pessoais">Dados Pessoais</string>
+    <string name="contacto_pessoais">Contacto</string>
+    <string name="other_details_person">Outros</string>
+    <string name="phone_person">Telefone:</string>
+    <string name="adress_person">Endreço</string>
+    <string name="date_tarv">Data Inicio TARV</string>
+    <string name="farmacia">Farmácia</string>
 
 </resources>
