@@ -77,5 +77,8 @@
 
     <string name="dt_proximo_levantamento">Próximo levantamento:</string>
     <string name="label_entrada_stock">Entrada de Stock - Dados Iniciais</string>
+    <string name="label_numero_guia">Número da Guia *</string>
+    <string name="label_data_entrada">Data da Entrada *</string>
+    <string name="label_entrada_stock_medicamentos">Entrada de Stock - Medicamentos</string>
 
 </resources>
