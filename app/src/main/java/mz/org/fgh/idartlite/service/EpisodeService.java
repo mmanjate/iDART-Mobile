@@ -15,6 +15,7 @@ import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class EpisodeService extends BaseService {
 
@@ -29,6 +30,10 @@ public class EpisodeService extends BaseService {
 
 
     public void createEpisode(Episode episode) throws SQLException {
+        UUID uuid = UUID.randomUUID();
+
+        episode.setSyncStatus("R");
+        episode.setUuid(uuid.toString());
         getDataBaseHelper().getGenericDao(episode).saveGenericObjectByClass(episode);
     }
 
