@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.view.stock;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,19 @@ public class StockEntranceFragment extends GenericFragment {
             stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, this.stockList, getMyActivity());
             displayDataOnRecyclerView(rcvFragmentStock, stockEntranceAdapter, getContext());
         }
+
+        fragmentStockEntranceBinding.newStock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getContext(), StockEntranceActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", getCurrentUser());
+                bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

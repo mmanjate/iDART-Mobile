@@ -76,6 +76,6 @@
     <string name="list_item_delete_msg">Confirma remover o item?</string>
 
     <string name="dt_proximo_levantamento">Próximo levantamento:</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="label_entrada_stock">Entrada de Stock - Dados Iniciais</string>
 
 </resources>
