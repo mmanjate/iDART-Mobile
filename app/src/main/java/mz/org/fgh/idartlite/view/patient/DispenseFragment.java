@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.view.patient;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -65,6 +66,20 @@ public class DispenseFragment extends GenericFragment {
             dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
             displayDataOnRecyclerView(rcvDispences, dispenseAdapter, getContext());
         }
+
+        fragmentDispenseBinding.newDispense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getContext(), CreateDispenseActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", getCurrentUser());
+                bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                bundle.putSerializable("patient", getMyActivity().getPatient());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
     }
 
