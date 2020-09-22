@@ -69,5 +69,11 @@
     <string name="adicionar_episodio">Adicionar Episodio</string>
     <string name="motivo_de_inicio">Motivo de Inicio</string>
     <string name="motivo_de_fim">Motivo de Fim</string>
+
+    <string name="remove">Remover</string>
+    <string name="cancel">Cancelar</string>
+    <string name="list_item_delete_msg">Confirma remover o item?</string>
+
     <string name="dt_proximo_levantamento">Próximo levantamento:</string>
+
 </resources>

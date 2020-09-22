@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.patient.PrescriptionActivity"
+    >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.PrescriptionVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            app:elevation="6dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/app_bar" />
+
+            <include
+                layout="@layout/pacient_info"
+                bind:patient="@{viewModel.prescription.patient}" />
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="1dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
+
+            <TextView
+                android:id="@+id/initial_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adicionar Prescrição - Dados Iniciais"
+                android:background="@color/background_layout"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingLeft="@dimen/dimen_4dp"
+                app:drawableEndCompat="@drawable/ic_row_dados_pessoais"
+                android:layout_margin="@dimen/dimen_4dp"/>
+
+            <LinearLayout
+                android:id="@+id/initial_data_lyt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_4dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Data da Prescrição"
+                    style="@style/input_labels"
+                    />
+                <EditText
+                    android:id="@+id/prescription_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_calendar"
+                    android:paddingStart="@dimen/dimen_4dp"
+                    android:paddingLeft="@dimen/dimen_4dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Duração"
+                    style="@style/input_labels"
+                    />
+                <EditText
+                    android:id="@+id/prescription_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_duration"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Regime Terapêutico"
+                    style="@style/input_labels"
+                    />
+                <Spinner
+                    android:id="@+id/spn_regime"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Linha Terapêutica"
+                    style="@style/input_labels"
+                    />
+                <Spinner
+                    android:id="@+id/spn_line"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo de Dispensa"
+                    style="@style/input_labels"
+                    />
+                <Spinner
+                    android:id="@+id/spn_dispense_type"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txv_drugs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adicionar Prescrição - Medicamentos"
+                android:background="@color/background_layout"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingLeft="@dimen/dimen_4dp"
+                app:drawableEndCompat="@drawable/ic_row_dados_pessoais"
+                android:layout_margin="@dimen/dimen_4dp"/>
+
+            <LinearLayout
+                android:id="@+id/drugs_data_lyt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_4dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Medicamentos *"
+                    style="@style/input_labels"
+                    />
+                <Spinner
+                    android:id="@+id/spn_drugs"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_4dp"
+                    />
+
+                <ImageView
+                    android:id="@+id/imv_add_selected_drug"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_arrow_downward"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lista de Medicamentos *"
+                    style="@style/input_labels"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_selected_drugs"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_4dp"
+                    android:scrollbars="vertical"/>
+
+                <ImageView
+                    android:id="@+id/save_and_continue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_ok"
+                    android:layout_margin="@dimen/dimen_10dp"
+                    android:layout_gravity="right"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

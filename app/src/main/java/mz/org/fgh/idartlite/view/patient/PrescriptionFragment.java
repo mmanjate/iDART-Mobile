@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.view.patient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,19 @@ public class PrescriptionFragment extends GenericFragment {
             displayDataOnRecyclerView(rcvPrescriptions, prescriptionAdapter, getContext());
         }
 
+        prescriptionFragmentBinding.newPrescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getContext(), PrescriptionActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", getCurrentUser());
+                bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                bundle.putSerializable("patient", getMyActivity().getPatient());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     /*private void displayPrescriptions(RecyclerView rcvEpisodes) {

@@ -9,4 +9,5 @@
     <color name="tab_back">#BDF6F4</color>
     <color name="list_icon">#DBDBDC</color>
     <color name="yellow">#F4BE36</color>
+    <color name="input_labels">#6E6E6E</color>
 </resources>
