@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
@@ -14,11 +13,29 @@ import java.util.Calendar;
 import java.util.Date;
 
 import mz.org.fgh.idartlite.BR;
-import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+
+import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.DiseaseType;
+import mz.org.fgh.idartlite.model.Drug;
+import mz.org.fgh.idartlite.model.Form;
+import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.PharmacyType;
+import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.service.ClinicService;
+import mz.org.fgh.idartlite.service.DiseaseTypeService;
+import mz.org.fgh.idartlite.service.DrugService;
+import mz.org.fgh.idartlite.service.FormService;
+import mz.org.fgh.idartlite.service.PatientService;
+import mz.org.fgh.idartlite.service.PharmacyTypeService;
+import mz.org.fgh.idartlite.service.StockService;
+import mz.org.fgh.idartlite.service.UserService;
+
 import mz.org.fgh.idartlite.model.*;
 import mz.org.fgh.idartlite.service.*;
 import mz.org.fgh.idartlite.util.DateUtilitis;
+
 import mz.org.fgh.idartlite.view.LoginActivity;
 import mz.org.fgh.idartlite.view.HomeActivity;
 
@@ -26,9 +43,17 @@ public class LoginVM extends BaseViewModel {
 
     private User user;
     private Clinic clinic;
+    private Stock stock;
+    private Drug drug;
+    private DiseaseType diseaseType;
+    private Form form;
     private PharmacyType pharmacyType;
     private UserService userService;
     private ClinicService clinicService;
+    private StockService stockService;
+    private DrugService drugService;
+    private DiseaseTypeService diseaseTypeService;
+    private FormService formService;
     private PatientService patientService;
     private PharmacyTypeService pharmacyTypeService;
     private PrescriptionService prescriptionService;
@@ -84,12 +109,19 @@ public class LoginVM extends BaseViewModel {
         clinicService = new ClinicService(getApplication(), this.user);
         patientService = new PatientService(getApplication(), this.user);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), this.user);
+
+        drugService = new DrugService(getApplication(), this.user);
+        stockService = new StockService(getApplication(), this.user);
+        diseaseTypeService = new DiseaseTypeService(getApplication(), this.user);
+        formService = new FormService(getApplication(), this.user);
+
         this.dispenseTypeService = new DispenseTypeService(getApplication(), this.user);
         this.prescriptionService = new PrescriptionService(getApplication(), this.user);
         this.therapheuticRegimenService = new TherapheuticRegimenService(getApplication(), this.user);
         this.therapeuthicLineService = new TherapeuthicLineService(getApplication(), this.user);
         this.dispenseService = new DispenseService(getApplication(), this.user);
         this.episodeService = new EpisodeService(getApplication(), this.user);
+
     }
 
      public void login(){
@@ -237,6 +269,42 @@ public class LoginVM extends BaseViewModel {
                      clinic.setId(1);
                      user.setClinic(clinic);
                      userService.saveUser(user);
+
+                     diseaseType = new DiseaseType();
+                     diseaseType.setCode("102030");
+                     diseaseType.setDescription("HIV");
+                     diseaseTypeService.saveDiseaseType(diseaseType);
+                     diseaseType.setId(1);
+
+                     form = new Form();
+                     form.setUnit("1-1");
+                     form.setDescription("um de manha e um final do dia");
+                     formService.saveForm(form);
+                     form.setId(1);
+
+                     drug = new Drug();
+                     drug.setDescription("[DTG] DoluteGravir 50mg");
+                     drug.setPackSize(180);
+                     drug.setInstruction("1/1/1");
+                     drug.setFnmcode("D05019060-A");
+                     drug.setDiseaseType(diseaseType);
+                     drug.setForm(form);
+                     drugService.saveDrug(drug);
+                     drug.setId(1);
+
+                     stock = new Stock();
+                     stock.setBatchNumber(250845);
+                     stock.setClinic(clinic);
+                     stock.setDrug(drug);
+                     stock.setDateReceived(date);
+                     stock.setExpiryDate(date);
+                     stock.setOrderNumber("00001/001/2020");
+                     stock.setPrice(50);
+                     stock.setShelfNumber(80);
+                     stock.setUnitsReceived(2390);
+                     stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
+                     stockService.saveStock(stock);
+
                      setToastMessage(successUserCreation);
                  } else {
                      if (!userService.login(user)) {

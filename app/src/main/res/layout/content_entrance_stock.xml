@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="stock"
+            type="mz.org.fgh.idartlite.model.Stock" />
+        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                bind:srcCompat="@drawable/ic_stock_entrance"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Número da Guia"
+                    android:textSize="@dimen/dimen_18dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/prescriptionId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{stock.orderNumber}"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:textSize="@dimen/dimen_18dp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="3">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Medicamento:"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lote:"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Data Entrada:"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Quantidade:"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Validade:"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:id="@+id/medicamento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{stock.drug.description}"/>
+                    <TextView
+                        android:id="@+id/lote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{Utilities.parseIntToString(stock.batchNumber)}"/>
+                    <TextView
+                        android:id="@+id/dataEntrada"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{DateUtilitis.formatToDDMMYYYY(stock.dateReceived)}"/>
+                    <TextView
+                        android:id="@+id/quantidade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{Utilities.parseIntToString(stock.unitsReceived)}"/>
+                    <TextView
+                        android:id="@+id/validade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{DateUtilitis.formatToDDMMYYYY(stock.expiryDate)}"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/dimen_22dp"
+                        bind:srcCompat="@drawable/ic_baseline_autorenew_24"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

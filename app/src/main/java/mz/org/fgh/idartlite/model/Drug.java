@@ -39,7 +39,7 @@ public class Drug extends BaseModel implements Listble {
     @DatabaseField(columnName = COLUMN_FORM, canBeNull = false, foreign = true)
     private Form form;
 
-    @DatabaseField(columnName = COLUMN_DISEASE_TYPE,canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_DISEASE_TYPE, canBeNull = false, foreign = true)
     private DiseaseType diseaseType;
 
 

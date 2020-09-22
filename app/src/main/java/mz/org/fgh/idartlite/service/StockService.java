@@ -2,10 +2,12 @@ package mz.org.fgh.idartlite.service;
 
 import android.app.Application;
 import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class StockService extends BaseService {
 
@@ -13,16 +15,19 @@ public class StockService extends BaseService {
         super(application, currUser);
     }
 
-    public void createStock(Stock stock) throws SQLException {
-        getDataBaseHelper().getGenericDao(stock).saveGenericObjectByClass(stock);
+    public void saveStock(Stock stock) throws SQLException {
+        getDataBaseHelper().getStockDao().create(stock);
     }
 
     public void udpateStock(Stock stock) throws SQLException {
-        getDataBaseHelper().getGenericDao(stock).updateGenericObjectByClass(stock);
+        getDataBaseHelper().getStockDao().update(stock);
     }
 
     public void deleteStock(Stock stock) throws SQLException {
-        getDataBaseHelper().getGenericDao(stock).deleteGenericObjectByClass(stock);
+        getDataBaseHelper().getStockDao().delete(stock);
     }
 
+    public List<Stock> getStockByClinic(Clinic clinic) throws SQLException {
+        return getDataBaseHelper().getStockDao().queryBuilder().where().eq(Stock.COLUMN_CLINIC,clinic.getId()).query();
+    }
 }
