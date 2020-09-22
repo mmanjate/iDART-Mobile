@@ -2,65 +2,72 @@ package mz.org.fgh.idartlite.view.stock;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.StockEntranceAdapter;
+import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.GenericFragment;
+import mz.org.fgh.idartlite.databinding.FragmentStockEntranceBinding;
+import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.viewmodel.StockEntranceVM;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StockEntranceFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class StockEntranceFragment extends Fragment {
+public class StockEntranceFragment extends GenericFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RecyclerView rcvFragmentStock;
+    private List<Stock> stockList;
+    private StockEntranceAdapter stockEntranceAdapter;
+    private FragmentStockEntranceBinding fragmentStockEntranceBinding;
 
     public StockEntranceFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StockEntranceFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StockEntranceFragment newInstance(String param1, String param2) {
-        StockEntranceFragment fragment = new StockEntranceFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        fragmentStockEntranceBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_stock_entrance, container,false);
+        return fragmentStockEntranceBinding.getRoot();
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        this.rcvFragmentStock = fragmentStockEntranceBinding.rcvFragmentStock;
+
+        try {
+            this.stockList = getRelatedViewModel().getStockByClinic(getMyActivity().getCurrentClinic());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (Utilities.listHasElements(stockList)) {
+            stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, this.stockList, getMyActivity());
+            displayDataOnRecyclerView(rcvFragmentStock, stockEntranceAdapter, getContext());
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_stock_entrance, container, false);
+    public BaseViewModel initViewModel() {
+        return new ViewModelProvider(this).get(StockEntranceVM.class);
+    }
+
+    public StockActivity getMyActivity() {
+        return (StockActivity) getActivity();
+    }
+
+    @Override
+    public StockEntranceVM getRelatedViewModel(){
+        return (StockEntranceVM) super.getRelatedViewModel();
     }
 }

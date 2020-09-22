@@ -70,6 +70,9 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public DrugDao getDrugDao() throws SQLException {
+        if(drugDao == null){
+            drugDao = getDao(Drug.class);
+        }
         return drugDao;
     }
 
@@ -102,6 +105,9 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public RegimenDrugDao getRegimenDrugDao() throws SQLException {
+        if(regimenDrugDao == null){
+            regimenDrugDao = getDao(RegimenDrug.class);
+        }
         return regimenDrugDao;
     }
 
