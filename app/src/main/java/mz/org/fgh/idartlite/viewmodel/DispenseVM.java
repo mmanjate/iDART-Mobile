@@ -17,8 +17,12 @@ public class DispenseVM extends BaseViewModel {
 
     private DispenseService dispenseService;
 
+    private Dispense dispense;
+
     public DispenseVM(@NonNull Application application) {
         super(application);
+
+        this.dispense = new Dispense();
 
         dispenseService = new DispenseService(application, getCurrentUser());
     }
@@ -29,5 +33,13 @@ public class DispenseVM extends BaseViewModel {
 
     public List<Dispense> gatAllOfPatient(Patient patient) throws SQLException {
         return dispenseService.getAllOfPatient(patient);
+    }
+
+    public Dispense getDispense() {
+        return dispense;
+    }
+
+    public void setDispense(Dispense dispense) {
+        this.dispense = dispense;
     }
 }

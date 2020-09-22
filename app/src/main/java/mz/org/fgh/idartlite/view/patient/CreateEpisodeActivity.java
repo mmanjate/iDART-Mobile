@@ -50,7 +50,7 @@ public class CreateEpisodeActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         createEpisodeBinding = DataBindingUtil.setContentView(this, R.layout.create_activity_episode);
-        setContentView(R.layout.create_activity_episode);
+        //setContentView(R.layout.create_activity_episode);
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
