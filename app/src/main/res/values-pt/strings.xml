@@ -68,4 +68,7 @@
     <string name="adicionar_episodio">adicionar_episodio</string>
     <string name="motivo_de_inicio">motivo_de_inicio</string>
     <string name="motivo_de_fim">motivo_de_de_fim</string>
+    <string name="remove">Remover</string>
+    <string name="cancel">Cancelar</string>
+    <string name="list_item_delete_msg">Confirma remover o item?</string>
 </resources>

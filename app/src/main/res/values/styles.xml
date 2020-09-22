@@ -66,5 +66,13 @@
         <item name="android:textSize">@dimen/dimen_10dp</item>
     </style>
 
+    <style name="input_labels">
+        <item name="android:textColor">@color/input_labels</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">@dimen/dimen_10dp</item>
+        <item name="android:padding">@dimen/dimen_4dp</item>
+    </style>
+
+
 
 </resources>
