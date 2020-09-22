@@ -4,6 +4,7 @@ package mz.org.fgh.idartlite.model;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.DispenseDaoImpl;
@@ -36,7 +37,7 @@ public class Dispense extends BaseModel {
     @DatabaseField(columnName = COLUMN_NEXT_PICKUP_DATE)
     private Date nextPickupDate;
 
-    @DatabaseField(columnName = COLUMN_PRESCRIPTION, canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_PRESCRIPTION, canBeNull = false, foreign = true, foreignAutoRefresh = true )
     private Prescription prescription;
 
     @DatabaseField(columnName = COLUMN_UUID)

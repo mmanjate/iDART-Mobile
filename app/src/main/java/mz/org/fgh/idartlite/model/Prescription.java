@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.time.LocalDate;
@@ -55,7 +56,7 @@ public class Prescription extends BaseModel {
 	@DatabaseField(columnName = COLUMN_REGIMEN_ID, canBeNull = true, foreign = true)
 	private TherapeuticRegimen therapeuticRegimen;
 
-	@DatabaseField(columnName = COLUMN_LINE_ID, canBeNull = true, foreign = true)
+	@DatabaseField(columnName = COLUMN_LINE_ID, canBeNull = true, foreign = true, foreignAutoRefresh = true)
 	private TherapeuticLine therapeuticLine;
 
 	@DatabaseField(columnName = COLUMN_DISPENSE_TYPE_ID, canBeNull = true, foreign = true)
