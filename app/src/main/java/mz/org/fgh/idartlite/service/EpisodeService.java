@@ -31,20 +31,16 @@ public class EpisodeService extends BaseService {
 
     public void createEpisode(Episode episode) throws SQLException {
         UUID uuid = UUID.randomUUID();
-
         episode.setSyncStatus("R");
         episode.setUuid(uuid.toString());
-        getDataBaseHelper().getGenericDao(episode).saveGenericObjectByClass(episode);
+        getDataBaseHelper().getEpisodeDao().create(episode);
     }
-
-
 
     public void udpateEpisode(Episode episode) throws SQLException {
-        getDataBaseHelper().getGenericDao(episode).updateGenericObjectByClass(episode);
+        getDataBaseHelper().getEpisodeDao().updateGenericObjectByClass(episode);
     }
 
-
     public void deleteEpisode(Episode episode) throws SQLException {
-        getDataBaseHelper().getGenericDao(episode).deleteGenericObjectByClass(episode);
+        getDataBaseHelper().getEpisodeDao().deleteGenericObjectByClass(episode);
     }
 }
