@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".view.stock.StockEntranceActivity"></activity>
         <activity android:name=".view.patient.PrescriptionActivity" />
         <activity
             android:name=".view.stock.StockActivity"
