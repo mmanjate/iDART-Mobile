@@ -16,8 +16,6 @@ import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityStockBinding;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.view.patient.PatientDetailsFragment;
-import mz.org.fgh.idartlite.view.patient.PrescriptionFragment;
 import mz.org.fgh.idartlite.viewmodel.StockVM;
 
 public class StockActivity extends BaseActivity {
