@@ -36,6 +36,7 @@ public class LoginVM extends BaseViewModel {
     private DispenseTypeService dispenseTypeService;
     private TherapheuticRegimenService therapheuticRegimenService;
     private TherapeuthicLineService therapeuthicLineService;
+    private EpisodeService episodeService;
 
     private String successMessage      = "Login was successful!";
     private String successUserCreation = "User was successful create!";
@@ -88,6 +89,7 @@ public class LoginVM extends BaseViewModel {
         this.therapheuticRegimenService = new TherapheuticRegimenService(getApplication(), this.user);
         this.therapeuthicLineService = new TherapeuthicLineService(getApplication(), this.user);
         this.dispenseService = new DispenseService(getApplication(), this.user);
+        this.episodeService = new EpisodeService(getApplication(), this.user);
     }
 
      public void login(){
@@ -208,6 +210,24 @@ public class LoginVM extends BaseViewModel {
                      dispense.setPrescription(p);
                      dispense.setUuid("14");
                      this.dispenseService.createDispense(dispense);
+
+                     //Creating an Episode For Patient1
+                     Episode episode=new Episode();
+                     episode.setEpisodeDate(date);
+                     episode.setNotes("EPisodio teste ");
+                     episode.setStartReason("Testeeee");
+                     episode.setSyncStatus("Ready");
+                     episode.setPatient(patient);
+                     episodeService.createEpisode(episode);
+
+                     Prescription prescription=new Prescription();
+                     prescription.setPatient(patient);
+                     prescription.setPrescriptionDate(date);
+
+                     prescription.setExpiryDate(date);
+                     prescription.setSupply(123);
+                     prescription.setPrescriptionSeq("111");
+                     prescriptionService.createPrescription(prescription);
 
                      System.out.println("ID Dispensa: "+dispense.getId());
 
