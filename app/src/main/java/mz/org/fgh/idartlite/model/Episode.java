@@ -23,6 +23,9 @@ public class Episode extends BaseModel {
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
 	public static final String COLUMN_SYNC_STATUS = "sync_status";
+	public static final String COLUMN_SANITARY_UNIT = "sanitary_unit";
+	public static final String COLUMN_SANITARY_UNIT_UUID = "us_uuid";
+
 
 	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
@@ -47,6 +50,12 @@ public class Episode extends BaseModel {
 
 	@DatabaseField(columnName = COLUMN_SYNC_STATUS)
 	private String syncStatus;
+
+	@DatabaseField(columnName = COLUMN_SANITARY_UNIT)
+	private String sanitaryUnit;
+
+	@DatabaseField(columnName = COLUMN_SANITARY_UNIT_UUID)
+	private String usUuid;
 
 	public int getId() {
 		return id;
@@ -110,6 +119,22 @@ public class Episode extends BaseModel {
 
 	public void setSyncStatus(String syncStatus) {
 		this.syncStatus = syncStatus;
+	}
+
+	public String getSanitaryUnit() {
+		return sanitaryUnit;
+	}
+
+	public void setSanitaryUnit(String sanitaryUnit) {
+		this.sanitaryUnit = sanitaryUnit;
+	}
+
+	public String getUsUuid() {
+		return usUuid;
+	}
+
+	public void setUsUuid(String usUuid) {
+		this.usUuid = usUuid;
 	}
 
 	@Override
