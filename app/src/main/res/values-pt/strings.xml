@@ -68,4 +68,6 @@
     <string name="adicionar_episodio">adicionar_episodio</string>
     <string name="motivo_de_inicio">motivo_de_inicio</string>
     <string name="motivo_de_fim">motivo_de_de_fim</string>
+    <string name="data_levantamento">Data Levantamento</string>
+    <string name="dt_proximo_levantamento">Próximo levantamento</string>
 </resources>

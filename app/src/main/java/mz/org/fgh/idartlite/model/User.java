@@ -12,7 +12,7 @@ public class User extends BaseModel {
 
     public static final String COLUMN_USER_NAME = "user_name";
     public static final String COLUMN_PASSWORD = "password";
-    public static final String COLUMN_CLINIC_ID = "clini_id";
+    public static final String COLUMN_CLINIC_ID = "clinic_id";
 
     @DatabaseField(columnName = "id", generatedId = true)
     private int id;
