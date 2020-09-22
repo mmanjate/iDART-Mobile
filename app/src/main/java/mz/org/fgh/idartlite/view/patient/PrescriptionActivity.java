@@ -39,12 +39,17 @@ public class PrescriptionActivity extends BaseActivity {
 
     private ListbleAdapter listbleAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prescriptionBinding = DataBindingUtil.setContentView(this, R.layout.activity_prescription);
 
         rcvSelectedDrugs = prescriptionBinding.rcvSelectedDrugs;
+
+        prescriptionBinding.drugsDataLyt.setVisibility(View.GONE);
+        getRelatedViewModel().setInitialDataVisible(true);
+        getRelatedViewModel().setDrugDataVisible(false);
 
         Intent intent = this.getIntent();
         if(intent != null){
@@ -90,6 +95,13 @@ public class PrescriptionActivity extends BaseActivity {
 
             }
         });
+        prescriptionBinding.txvDrugs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeVisibilityToInitialData(view);
+
+            }
+        });
 
         prescriptionBinding.imvAddSelectedDrug.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,12 +119,27 @@ public class PrescriptionActivity extends BaseActivity {
 
     private void changeVisibilityToInitialData(View view) {
         if (view.equals(prescriptionBinding.initialData)){
-            prescriptionBinding.initialDataLyt.setVisibility(View.VISIBLE);
-            prescriptionBinding.drugsDataLyt.setVisibility(View.GONE);
+            if (prescriptionBinding.initialDataLyt.getVisibility() == View.VISIBLE){
+                prescriptionBinding.initialDataLyt.setVisibility(View.GONE);
+                switchLayout();
+            }else {
+                prescriptionBinding.initialDataLyt.setVisibility(View.VISIBLE);
+                switchLayout();
+            }
         }else if (view.equals(prescriptionBinding.txvDrugs)){
-            prescriptionBinding.initialDataLyt.setVisibility(View.GONE);
-            prescriptionBinding.drugsDataLyt.setVisibility(View.VISIBLE);
+            if (prescriptionBinding.drugsDataLyt.getVisibility() == View.VISIBLE){
+                prescriptionBinding.drugsDataLyt.setVisibility(View.GONE);
+                switchLayout();
+            }else {
+                prescriptionBinding.drugsDataLyt.setVisibility(View.VISIBLE);
+                switchLayout();
+            }
         }
+    }
+
+    private void switchLayout(){
+        getRelatedViewModel().setInitialDataVisible(!getRelatedViewModel().isInitialDataVisible());
+        getRelatedViewModel().setDrugDataVisible(!getRelatedViewModel().isDrugDataVisible());
     }
 
     @Override
