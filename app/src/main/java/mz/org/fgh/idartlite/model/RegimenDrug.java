@@ -20,10 +20,10 @@ public class RegimenDrug extends BaseModel {
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = COLUMN_THERAPEUTIC_REGIMEN_ID, canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_THERAPEUTIC_REGIMEN_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private TherapeuticRegimen therapeuticRegimen;
 
-    @DatabaseField(columnName = COLUMN_DRUG_ID, canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_DRUG_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Drug drug;
 
     public int getId() {

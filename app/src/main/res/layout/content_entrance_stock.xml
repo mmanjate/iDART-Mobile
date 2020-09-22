@@ -66,62 +66,70 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="3">
+                    android:layout_weight="2"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Medicamento:"/>
+                        android:text="Medicamento:" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Lote:"/>
+                        android:text="Lote:" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Data Entrada:"/>
+                        android:text="Data Entrada:" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Quantidade:"/>
+                        android:text="Quantidade:" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Validade:"/>
+                        android:text="Validade:" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="@dimen/dimen_10dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="2">
+                    android:layout_weight="3"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/medicamento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{stock.drug.description}"/>
+                        android:text="@{stock.drug.description}" />
+
                     <TextView
                         android:id="@+id/lote"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{Utilities.parseIntToString(stock.batchNumber)}"/>
+                        android:text="@{Utilities.parseIntToString(stock.batchNumber)}" />
+
                     <TextView
                         android:id="@+id/dataEntrada"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{DateUtilitis.formatToDDMMYYYY(stock.dateReceived)}"/>
+                        android:text="@{DateUtilitis.formatToDDMMYYYY(stock.dateReceived)}" />
+
                     <TextView
                         android:id="@+id/quantidade"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{Utilities.parseIntToString(stock.unitsReceived)}"/>
+                        android:text="@{Utilities.parseIntToString(stock.unitsReceived)}" />
+
                     <TextView
                         android:id="@+id/validade"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{DateUtilitis.formatToDDMMYYYY(stock.expiryDate)}"/>
+                        android:text="@{DateUtilitis.formatToDDMMYYYY(stock.expiryDate)}" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="@dimen/dimen_10dp"
@@ -132,7 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="@dimen/dimen_22dp"
-                        bind:srcCompat="@drawable/ic_baseline_autorenew_24"/>
+                        bind:srcCompat="@drawable/ic_baseline_autorenew_24" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

@@ -38,7 +38,7 @@ public class Clinic extends BaseModel {
 	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = COLUMN_PHARMACY_TYPE_ID, canBeNull = false, foreign = true)
+	@DatabaseField(columnName = COLUMN_PHARMACY_TYPE_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
 	private PharmacyType pharmacyType;
 
 	public int getId() {

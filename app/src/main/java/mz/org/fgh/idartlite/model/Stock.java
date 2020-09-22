@@ -62,10 +62,10 @@ public class Stock extends BaseModel {
     @DatabaseField(columnName = COLUMN_UUID)
     private String uuid;
 
-    @DatabaseField(columnName = COLUMN_CLINIC,canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_CLINIC,canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Clinic clinic;
 
-    @DatabaseField(columnName = COLUMN_DRUG,canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_DRUG,canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Drug drug;
 
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)

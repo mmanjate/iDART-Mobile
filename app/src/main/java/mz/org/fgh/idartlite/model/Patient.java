@@ -60,7 +60,7 @@ public class Patient extends BaseModel {
 	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true)
+	@DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
 	private Clinic clinic;
 
 	public int getId() {

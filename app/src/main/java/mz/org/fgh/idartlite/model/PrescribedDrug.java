@@ -20,10 +20,10 @@ public class PrescribedDrug extends BaseModel {
     @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = COLUMN_STOCK , canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_STOCK , canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Drug drug;
 
-    @DatabaseField(columnName = COLUMN_PRESCRIPTION ,canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_PRESCRIPTION ,canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Prescription prescription;
 
     public int getId() {
