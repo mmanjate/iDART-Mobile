@@ -25,7 +25,7 @@ public class User extends BaseModel {
     @DatabaseField(columnName = COLUMN_PASSWORD)
     private String password;
 
-    @DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Clinic clinic;
 
     public User() {

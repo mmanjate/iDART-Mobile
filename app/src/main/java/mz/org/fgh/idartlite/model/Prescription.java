@@ -53,13 +53,13 @@ public class Prescription extends BaseModel {
 	@DatabaseField(columnName = COLUMN_URGENT_NOTES)
 	private String urgentNotes;
 
-	@DatabaseField(columnName = COLUMN_REGIMEN_ID, canBeNull = true, foreign = true)
+	@DatabaseField(columnName = COLUMN_REGIMEN_ID, canBeNull = true, foreign = true, foreignAutoRefresh = true)
 	private TherapeuticRegimen therapeuticRegimen;
 
 	@DatabaseField(columnName = COLUMN_LINE_ID, canBeNull = true, foreign = true, foreignAutoRefresh = true)
 	private TherapeuticLine therapeuticLine;
 
-	@DatabaseField(columnName = COLUMN_DISPENSE_TYPE_ID, canBeNull = true, foreign = true)
+	@DatabaseField(columnName = COLUMN_DISPENSE_TYPE_ID, canBeNull = true, foreign = true, foreignAutoRefresh = true)
 	private DispenseType dispenseType;
 
 	@DatabaseField(columnName = COLUMN_PRESCRIPTION_SEQ)
@@ -68,7 +68,7 @@ public class Prescription extends BaseModel {
 	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = COLUMN_PATIENT_ID, canBeNull = false, foreign = true)
+	@DatabaseField(columnName = COLUMN_PATIENT_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
 	private Patient patient;
 
 	@DatabaseField(columnName = COLUMN_SYNC_STATUS)

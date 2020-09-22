@@ -10,40 +10,44 @@
             type="mz.org.fgh.idartlite.model.Clinic" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:elevation="6dp">
+            android:layout_height="match_parent">
 
-            <include layout="@layout/app_bar" />
-
-            <include layout="@layout/stock_info" bind:clinic="@{clinic}" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
-                app:tabMode="fixed"
-                android:layout_below="@+id/patient_info"
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabBackground="@color/tab_back"
-                app:elevation="0dp"
-                app:tabTextColor="@color/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
-                />
+                app:elevation="6dp">
 
-        </com.google.android.material.appbar.AppBarLayout>
+                <include layout="@layout/app_bar" />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        </androidx.viewpager.widget.ViewPager>
+                <include
+                    layout="@layout/stock_info"
+                    bind:clinic="@{clinic}" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/patient_info"
+                    android:minHeight="?attr/actionBarSize"
+                    app:elevation="0dp"
+                    app:tabBackground="@color/tab_back"
+                    app:tabMode="fixed"
+                    app:tabTextColor="@color/colorPrimary" />
 
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.viewpager.widget.ViewPager>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </ScrollView>
 </layout>

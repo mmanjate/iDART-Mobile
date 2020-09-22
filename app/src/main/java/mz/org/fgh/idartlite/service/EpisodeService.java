@@ -23,11 +23,9 @@ public class EpisodeService extends BaseService {
         super(application, currUser);
     }
 
-
     public List<Episode> getAllEpisodesByPatient(Patient patient) throws SQLException{
         return getDataBaseHelper().getEpisodeDao().getAllByPatient(patient);
     }
-
 
     public void createEpisode(Episode episode) throws SQLException {
         UUID uuid = UUID.randomUUID();

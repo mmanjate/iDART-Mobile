@@ -20,7 +20,6 @@ public class Drug extends BaseModel implements Listble {
     public static final String COLUMN_FORM = "form_id";
     public static final String COLUMN_DISEASE_TYPE = "diseaseType_id";
 
-
     @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
@@ -36,10 +35,10 @@ public class Drug extends BaseModel implements Listble {
     @DatabaseField(columnName = COLUMN_INSTRUCTION)
     private String instruction;
 
-    @DatabaseField(columnName = COLUMN_FORM, canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_FORM, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Form form;
 
-    @DatabaseField(columnName = COLUMN_DISEASE_TYPE, canBeNull = false, foreign = true)
+    @DatabaseField(columnName = COLUMN_DISEASE_TYPE, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private DiseaseType diseaseType;
 
 
