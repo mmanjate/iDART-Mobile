@@ -6,7 +6,10 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.EpisodeDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.Utilities;
 
+import java.util.Date;
 import java.util.Objects;
 
 @DatabaseTable(tableName = "episode", daoClass = EpisodeDaoImpl.class)
@@ -20,12 +23,15 @@ public class Episode extends BaseModel {
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
 	public static final String COLUMN_SYNC_STATUS = "sync_status";
+	public static final String COLUMN_SANITARY_UNIT = "sanitary_unit";
+	public static final String COLUMN_SANITARY_UNIT_UUID = "us_uuid";
+
 
 	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
 
 	@DatabaseField(columnName = COLUMN_EPISODE_DATE)
-	private int episodeDate;
+	private Date episodeDate;
 
 	@DatabaseField(columnName = COLUMN_START_REASON)
 	private String startReason;
@@ -45,6 +51,12 @@ public class Episode extends BaseModel {
 	@DatabaseField(columnName = COLUMN_SYNC_STATUS)
 	private String syncStatus;
 
+	@DatabaseField(columnName = COLUMN_SANITARY_UNIT)
+	private String sanitaryUnit;
+
+	@DatabaseField(columnName = COLUMN_SANITARY_UNIT_UUID)
+	private String usUuid;
+
 	public int getId() {
 		return id;
 	}
@@ -53,11 +65,11 @@ public class Episode extends BaseModel {
 		this.id = id;
 	}
 
-	public int getEpisodeDate() {
+	public Date getEpisodeDate() {
 		return episodeDate;
 	}
 
-	public void setEpisodeDate(int episodeDate) {
+	public void setEpisodeDate(Date episodeDate) {
 		this.episodeDate = episodeDate;
 	}
 
@@ -109,6 +121,22 @@ public class Episode extends BaseModel {
 		this.syncStatus = syncStatus;
 	}
 
+	public String getSanitaryUnit() {
+		return sanitaryUnit;
+	}
+
+	public void setSanitaryUnit(String sanitaryUnit) {
+		this.sanitaryUnit = sanitaryUnit;
+	}
+
+	public String getUsUuid() {
+		return usUuid;
+	}
+
+	public void setUsUuid(String usUuid) {
+		this.usUuid = usUuid;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -136,4 +164,9 @@ public class Episode extends BaseModel {
 				", syncStatus='" + syncStatus + '\'' +
 				'}';
 	}
+
+	public String getStringEpisodeDate(){
+		return DateUtilitis.parseDateToDDMMYYYYString(this.episodeDate);
+	}
+
 }

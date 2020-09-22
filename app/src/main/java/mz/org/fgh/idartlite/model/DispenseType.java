@@ -12,7 +12,7 @@ import java.util.Objects;
 @DatabaseTable(tableName = "Dispense_type", daoClass = DispenseTypeDaoImpl.class)
 public class DispenseType extends BaseModel {
 
-    public static final String COLUMN_CODE = "unit";
+    public static final String COLUMN_CODE = "code";
     public static final String COLUMN_DESCRIPTION = "description";
 
     @DatabaseField(columnName = "id", generatedId = true)

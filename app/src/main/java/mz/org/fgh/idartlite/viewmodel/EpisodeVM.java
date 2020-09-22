@@ -16,6 +16,8 @@ public class EpisodeVM extends BaseViewModel {
 
     private EpisodeService episodeService;
 
+    private Patient patient;
+
     public EpisodeVM(@NonNull Application application) {
         super(application);
 
@@ -24,5 +26,17 @@ public class EpisodeVM extends BaseViewModel {
 
     public List<Episode> gatAllOfPatient(Patient selectedPatient) throws SQLException {
         return episodeService.getAllEpisodesByPatient(selectedPatient);
+    }
+
+    public void createEpisode(Episode episode) throws SQLException {
+        episodeService.createEpisode(episode);
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }

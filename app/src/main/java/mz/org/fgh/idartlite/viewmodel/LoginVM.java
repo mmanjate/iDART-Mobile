@@ -14,6 +14,7 @@ import java.util.Date;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.Drug;
@@ -30,6 +31,11 @@ import mz.org.fgh.idartlite.service.PatientService;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.StockService;
 import mz.org.fgh.idartlite.service.UserService;
+
+import mz.org.fgh.idartlite.model.*;
+import mz.org.fgh.idartlite.service.*;
+import mz.org.fgh.idartlite.util.DateUtilitis;
+
 import mz.org.fgh.idartlite.view.LoginActivity;
 import mz.org.fgh.idartlite.view.HomeActivity;
 
@@ -50,6 +56,12 @@ public class LoginVM extends BaseViewModel {
     private FormService formService;
     private PatientService patientService;
     private PharmacyTypeService pharmacyTypeService;
+    private PrescriptionService prescriptionService;
+    private DispenseService dispenseService;
+    private DispenseTypeService dispenseTypeService;
+    private TherapheuticRegimenService therapheuticRegimenService;
+    private TherapeuthicLineService therapeuthicLineService;
+    private EpisodeService episodeService;
 
     private String successMessage      = "Login was successful!";
     private String successUserCreation = "User was successful create!";
@@ -97,10 +109,19 @@ public class LoginVM extends BaseViewModel {
         clinicService = new ClinicService(getApplication(), this.user);
         patientService = new PatientService(getApplication(), this.user);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), this.user);
+
         drugService = new DrugService(getApplication(), this.user);
         stockService = new StockService(getApplication(), this.user);
         diseaseTypeService = new DiseaseTypeService(getApplication(), this.user);
         formService = new FormService(getApplication(), this.user);
+
+        this.dispenseTypeService = new DispenseTypeService(getApplication(), this.user);
+        this.prescriptionService = new PrescriptionService(getApplication(), this.user);
+        this.therapheuticRegimenService = new TherapheuticRegimenService(getApplication(), this.user);
+        this.therapeuthicLineService = new TherapeuthicLineService(getApplication(), this.user);
+        this.dispenseService = new DispenseService(getApplication(), this.user);
+        this.episodeService = new EpisodeService(getApplication(), this.user);
+
     }
 
      public void login(){
@@ -148,6 +169,99 @@ public class LoginVM extends BaseViewModel {
                      patient.setNid("0101010101/2020/63254");
                      patient.setClinic(clinic);
                      patientService.savePatient(patient);
+
+                     //Create DispenseType
+                     DispenseType dt = new DispenseType();
+                     dt.setCode("MENSAL");
+                     dt.setDescription("Mensal");
+                     this.dispenseTypeService.createDispenseType(dt);
+
+                     System.out.println("DispenseType ID "+dt.getId());
+
+                     //Create Therapheuticline
+                     TherapeuticLine tl = new TherapeuticLine();
+                     tl.setCode("AZT+3TC+NVP");
+                     tl.setDescription("AZITROMICINA+LAMIVUDINA");
+                     this.therapeuthicLineService.createTherapheuticLine(tl);
+
+                     System.out.println("TherapeuticLine ID "+tl.getId()+"CODE LINHA"+tl.getCode());
+
+                     //Create TherapeuticRegimen
+                     TherapeuticRegimen tr = new TherapeuticRegimen();
+                     tr.setRegimenCode("AZT+3TC+NVP");
+                     tr.setDescription("AZITROMICINA");
+                     this.therapheuticRegimenService.createTherapheuticRegimen(tr);
+
+                     System.out.println("Regime ID "+tr.getId());
+
+                     //Create prescription
+                     Prescription p = new Prescription();
+                     p.setDispenseType(dt);
+                     p.setExpiryDate(DateUtilitis.getCurrentDate());
+                     patient.setId(1);
+                     p.setPatient(patient);
+                     p.setPrescriptionDate(DateUtilitis.getCurrentDate());
+                     p.setPrescriptionSeq("01010101");
+                     p.setSupply(0);
+                     p.setSyncStatus("ready");
+                     tl.setId(1);
+                     p.setTherapeuticLine(tl);
+                     tr.setId(1);
+                     p.setTherapeuticRegimen(tr);
+                     p.setUrgentNotes("Nao especial");
+                     p.setUrgentPrescription("Nao especial");
+                     p.setUuid("1");
+                     this.prescriptionService.createPrescription(p);
+
+                     System.out.println("ID Prescicao: "+p.getId());
+
+                     //Create Dispense
+                     Dispense dispense = new Dispense();
+                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setSupply(0);
+                     p.setId(1);
+                     dispense.setPrescription(p);
+                     dispense.setUuid("12");
+                     this.dispenseService.createDispense(dispense);
+
+                     dispense = new Dispense();
+                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setSupply(0);
+                     p.setId(1);
+                     dispense.setPrescription(p);
+                     dispense.setUuid("13");
+                     this.dispenseService.createDispense(dispense);
+
+                     dispense = new Dispense();
+                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setSupply(0);
+                     p.setId(1);
+                     dispense.setPrescription(p);
+                     dispense.setUuid("14");
+                     this.dispenseService.createDispense(dispense);
+
+                     //Creating an Episode For Patient1
+                     Episode episode=new Episode();
+                     episode.setEpisodeDate(date);
+                     episode.setNotes("EPisodio teste ");
+                     episode.setStartReason("Testeeee");
+                     episode.setSyncStatus("Ready");
+                     episode.setPatient(patient);
+                     episodeService.createEpisode(episode);
+
+                     Prescription prescription=new Prescription();
+                     prescription.setPatient(patient);
+                     prescription.setPrescriptionDate(date);
+
+                     prescription.setExpiryDate(date);
+                     prescription.setSupply(123);
+                     prescription.setPrescriptionSeq("111");
+                     prescriptionService.createPrescription(prescription);
+
+                     System.out.println("ID Dispensa: "+dispense.getId());
 
                      User user = new User();
                      user.setUserName("root");

@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.util;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -120,6 +121,38 @@ public class Utilities {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative) {
+        final boolean[] result = {false};
+        
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(mContext)
+                // set message, title, and icon
+                .setTitle(mContext.getResources().getString(R.string.app_name))
+                .setMessage(dialogMesg)
+
+                .setPositiveButton(positive, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        result[0] = true;
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton(negative, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        result[0] = false;
+                        dialog.dismiss();
+
+                    }
+                })
+                .show();
+        
+        return result[0];
+    }
+
+    public static boolean displayDeleteConfirmationDialog(final Context mContext, final String dialogMesg) {
+        return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel));
     }
 
     public static <T> List<T> parseToList(T... obj){

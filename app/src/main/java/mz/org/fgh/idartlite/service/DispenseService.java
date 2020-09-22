@@ -1,10 +1,12 @@
 package mz.org.fgh.idartlite.service;
 
 import android.app.Application;
+import com.j256.ormlite.stmt.QueryBuilder;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DispenseService extends BaseService {
@@ -34,7 +36,18 @@ public class DispenseService extends BaseService {
     }
 
     public List<Dispense> getAllOfPatient(Patient patient) throws SQLException {
-        // join with percrition to patient
-        return null;
+
+        QueryBuilder<Prescription, Integer> prescriptionQb = getDataBaseHelper().getPrescriptionDao().queryBuilder();
+        prescriptionQb.where().eq(Prescription.COLUMN_PATIENT_ID, patient.getId());
+
+        QueryBuilder<TherapeuticLine, Integer> therapeuticLineQb = getDataBaseHelper().getTherapeuticLineDao().queryBuilder();
+        prescriptionQb.join(therapeuticLineQb);
+
+        QueryBuilder<Dispense, Integer> dispenseQb =  getDataBaseHelper().getDispenseDao().queryBuilder();
+        dispenseQb.join(prescriptionQb);
+
+        List<Dispense> dispenses = dispenseQb.query();
+
+        return dispenses;
     }
 }
