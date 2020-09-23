@@ -9,6 +9,8 @@
         <variable
             name="listble"
             type="mz.org.fgh.idartlite.common.Listble" />
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +36,7 @@
                 android:layout_weight="1"
                 android:padding="2dp"
                 android:gravity="right"
-                android:text="@{listble.position}" />
+                android:text="@{Utilities.parseIntToString(listble.position)}" />
 
             <View
                 android:layout_width="0dp"
@@ -49,6 +51,27 @@
                 android:paddingStart="@dimen/dimen_4dp"
                 android:text="@{listble.description}"
                 android:paddingLeft="@dimen/dimen_4dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.050"
+                android:visibility="@{listble.quantity > 0 ? View.VISIBLE : View.GONE}"
+                android:background="@color/white"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="2dp"
+                android:visibility="@{listble.quantity > 0 ? View.VISIBLE : View.GONE}"
+                android:paddingStart="@dimen/dimen_4dp"
+                android:text="@{Utilities.parseIntToString(listble.quantity)}"
+                android:paddingLeft="@dimen/dimen_4dp" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.050"
+                android:background="@color/white"/>
 
             <ImageView
                 android:id="@+id/imv_remove"

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.common.ListbleItemRemoveListener;
 
 public class Utilities {
 
@@ -60,45 +62,12 @@ public class Utilities {
 
     public static boolean isNetworkAvailable(Context context) {
 
-        boolean isNetAvailable = false;
-        if (context != null) {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            final ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-            if (mConnectivityManager != null) {
-
-                boolean mobileNetwork = false;
-                boolean wifiNetwork = false;
-
-                boolean mobileNetworkConnected = false;
-                boolean wifiNetworkConnected = false;
-
-                final NetworkInfo mobileInfo = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-                final NetworkInfo wifiInfo = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-                if (mobileInfo != null) {
-
-                    mobileNetwork = mobileInfo.isAvailable();
-                }
-
-                if (wifiInfo != null) {
-
-                    wifiNetwork = wifiInfo.isAvailable();
-                }
-
-                if (wifiNetwork || mobileNetwork) {
-
-                    if (mobileInfo != null) {
-
-                        mobileNetworkConnected = mobileInfo.isConnectedOrConnecting();
-                    }
-                    wifiNetworkConnected = wifiInfo.isConnectedOrConnecting();
-                }
-                isNetAvailable = (mobileNetworkConnected || wifiNetworkConnected);
-            }
-        }
-
-        return isNetAvailable;
+        return isConnected;
     }
 
     public static boolean listHasElements(List list) {
@@ -111,48 +80,52 @@ public class Utilities {
      *
      * @param mContext, Context of where to display
      */
-    public static void displayAlertDialog(final Context mContext, final String alertMessage) {
-        try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.StyleAppCompatAlertDialog);
-            builder.setTitle(mContext.getResources().getString(R.string.app_name));
-            builder.setMessage(alertMessage);
-            builder.setPositiveButton(mContext.getResources().getString(R.string.alert_ok), null);
-            builder.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static AlertDialog displayAlertDialog(final Context mContext, final String alertMessage) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                .setMessage(alertMessage)
+                .setPositiveButton(android.R.string.ok, null);
+
+        return builder.create();
+    }
+
+    private static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, int position, BaseModel baseModel, ListbleItemRemoveListener listener)
+        {
+            AlertDialog myQuittingDialogBox = new AlertDialog.Builder(mContext)
+                    // set message, title, and icon
+                    .setTitle(mContext.getResources().getString(R.string.app_name))
+                    .setMessage(dialogMesg)
+
+                    .setPositiveButton(positive, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            if (baseModel != null){
+                                listener.remove(baseModel);
+                            }else {
+                                listener.remove(position);
+                            }
+                            dialog.dismiss();
+                        }
+
+                    })
+                    .setNegativeButton(negative, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+
+                        }
+                    })
+                    .create();
+
+            return myQuittingDialogBox;
         }
+
+    public static AlertDialog displayDeleteConfirmationDialogFromList(final Context mContext, final String dialogMesg, int position, ListbleItemRemoveListener listener) {
+        return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel), position, null, listener);
     }
 
-    public static boolean displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative) {
-        final boolean[] result = {false};
-        
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(mContext)
-                // set message, title, and icon
-                .setTitle(mContext.getResources().getString(R.string.app_name))
-                .setMessage(dialogMesg)
-
-                .setPositiveButton(positive, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        result[0] = true;
-                        dialog.dismiss();
-                    }
-
-                })
-                .setNegativeButton(negative, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        result[0] = false;
-                        dialog.dismiss();
-
-                    }
-                })
-                .show();
-        
-        return result[0];
-    }
-
-    public static boolean displayDeleteConfirmationDialog(final Context mContext, final String dialogMesg) {
-        return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel));
+    public static AlertDialog displayDeleteConfirmationDialog(final Context mContext, final String dialogMesg,  BaseModel baseModel, ListbleItemRemoveListener listener) {
+        return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel), 0, baseModel, listener);
     }
 
     public static <T> List<T> parseToList(T... obj){

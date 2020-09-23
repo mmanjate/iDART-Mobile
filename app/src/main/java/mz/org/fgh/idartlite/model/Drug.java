@@ -67,6 +67,12 @@ public class Drug extends BaseModel implements Listble {
         return description;
     }
 
+    @Override
+    public int getQuantity() {
+        return 0;
+    }
+
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -125,14 +131,19 @@ public class Drug extends BaseModel implements Listble {
 
     @Override
     public String toString() {
-        return "Drug{" +
-                "id=" + id +
-                ", fnmcode='" + fnmcode + '\'' +
-                ", description='" + description + '\'' +
-                ", packSize=" + packSize +
-                ", instruction='" + instruction + '\'' +
-                ", form=" + form +
-                ", diseaseType=" + diseaseType +
-                '}';
+        return description;
+    }
+
+
+    @Override
+    public int compareTo(BaseModel baseModel) {
+        if (this.getPosition() == 0 || ((Drug) baseModel).getPosition() == 0) return 0;
+
+        return this.getPosition() - ((Drug) baseModel).getPosition();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return compareTo((BaseModel) o);
     }
 }

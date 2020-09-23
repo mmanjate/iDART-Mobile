@@ -174,9 +174,9 @@
 
                     <ImageView
                         android:id="@+id/imv_add_selected_drug"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_arrow_downward"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        app:srcCompat="@drawable/ic_save"
                         android:layout_margin="@dimen/dimen_10dp"
                         android:layout_gravity="center"/>
 
@@ -195,11 +195,19 @@
                         android:layout_marginTop="@dimen/dimen_4dp"
                         android:scrollbars="vertical"/>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/background_layout"/>
+
+
                     <ImageView
                         android:id="@+id/save_and_continue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         app:srcCompat="@drawable/ic_ok"
+                        android:layout_marginTop="@dimen/dimen_22dp"
                         android:layout_margin="@dimen/dimen_10dp"
                         android:layout_gravity="right"/>
 

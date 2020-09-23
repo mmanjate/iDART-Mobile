@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.databinding.ListableItemBinding;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class ListbleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ListbleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListbleItemRemoveListener{
 
     private Activity activity;
     private List<Listble> listbles;
@@ -39,26 +40,29 @@ public class ListbleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ((ListbleViewHolder) viewHolder).listableItemBinding.imvRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean result = Utilities.displayDeleteConfirmationDialog(activity.getApplicationContext(), activity.getString(R.string.list_item_delete_msg));
-                
-                if (result){
-                    listbles.remove(listbles.get(position));
-                    
-                    /*for (int i = 0; i < listbles.size(); i++){
-                        listbles.get(i).setListPosition(i+1);
-                    }*/
-                    notifyItemRemoved(position);
-                    recyclerView.removeViewAt(position);
-                    notifyItemRangeChanged(position, getItemCount());
-                }
+                Utilities.displayDeleteConfirmationDialogFromList(activity, activity.getString(R.string.list_item_delete_msg), position, ListbleAdapter.this).show();
             }
         });
+    }
+
+    public void remove(int position) {
+        listbles.remove(listbles.get(position));
+
+        for (int i = 0; i < listbles.size(); i++){
+            listbles.get(i).setListPosition(i+1);
+        }
+        notifyItemRemoved(position);
+        recyclerView.removeViewAt(position);
+        notifyItemRangeChanged(position, getItemCount());
     }
 
     @Override
     public int getItemCount() {
         return listbles.size();
     }
+
+    @Override
+    public void remove(BaseModel baseModel) { }
 
     public class ListbleViewHolder extends RecyclerView.ViewHolder{
 
@@ -70,4 +74,5 @@ public class ListbleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             this.listableItemBinding = listableItemBinding;
         }
     }
+
 }

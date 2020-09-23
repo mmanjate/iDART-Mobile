@@ -76,6 +76,9 @@
 
     <string name="data_levantamento">Data Levantamento</string>
     <string name="dt_proximo_levantamento">Próximo levantamento</string>
+
+    <string name="drug_data_duplication_msg">Não pode adicionar o mesmo medicamento duas vezes.</string>
+
     <string name="label_entrada_stock">Entrada de Stock - Dados Iniciais</string>
     <string name="label_numero_guia">Número da Guia *</string>
     <string name="label_data_entrada">Data da Entrada *</string>
@@ -85,5 +88,6 @@
     <string name="label_data_validade">Data de Validade *</string>
     <string name="label_quantidade_recebida">Quantidade Recebida *</string>
     <string name="label_preco">Preço *</string>
+
 
 </resources>
