@@ -48,10 +48,10 @@
     <string name="remover">Remover</string>
     <string name="editar">Editar</string>
 
-    <string name="data_episodio">data_episodio</string>
-    <string name="data_de_referencia">data_de_referencia</string>
-    <string name="data_prox_levantamento">data_prox_levantamento</string>
-    <string name="notas">notas</string>
+    <string name="data_episodio">Data Episodio:</string>
+    <string name="data_de_referencia">Data de Referencia:</string>
+    <string name="data_prox_levantamento">Data do Prox. Levan:</string>
+    <string name="notas">Notas:</string>
     <string name="data">data</string>
     <string name="regime_terapeutico">regime_terapeutico</string>
     <string name="linha">regime_terapeutico</string>
@@ -76,7 +76,19 @@
     <string name="list_item_delete_msg">Confirma remover o item?</string>
 
     <string name="dt_proximo_levantamento">Próximo levantamento:</string>
+
     <string name="title_activity_main">MainActivity</string>
     <string name="drug_data_duplication_msg">Não pode adicionar o mesmo medicamento duas vezes.</string>
+
+    <string name="label_entrada_stock">Entrada de Stock - Dados Iniciais</string>
+    <string name="label_numero_guia">Número da Guia *</string>
+    <string name="label_data_entrada">Data da Entrada *</string>
+    <string name="label_entrada_stock_medicamentos">Entrada de Stock - Medicamentos</string>
+    <string name="label_medicamentos">Medicamentos *</string>
+    <string name="label_numero_lote">Número do Lote *</string>
+    <string name="label_data_validade">Data de Validade *</string>
+    <string name="label_quantidade_recebida">Quantidade Recebida *</string>
+    <string name="label_preco">Preço *</string>
+
 
 </resources>

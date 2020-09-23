@@ -1,11 +1,13 @@
 package mz.org.fgh.idartlite.view.patient;
 
 import android.app.Application;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -14,11 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.security.AccessController;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +31,7 @@ import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
 import mz.org.fgh.idartlite.databinding.CreateActivityEpisodeBindingImpl;
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.DateUtilitis;
@@ -38,7 +43,6 @@ public class CreateEpisodeActivity extends BaseActivity {
 
 
     private Spinner spinnerStartReason;
-
     private Spinner spinnerStopReason;
     private CreateActivityEpisodeBindingImpl createEpisodeBinding;
 
@@ -50,7 +54,7 @@ public class CreateEpisodeActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         createEpisodeBinding = DataBindingUtil.setContentView(this, R.layout.create_activity_episode);
-        setContentView(R.layout.create_activity_episode);
+
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
@@ -64,10 +68,29 @@ public class CreateEpisodeActivity extends BaseActivity {
             }
         }
 
-       // Button button = (Button)findViewById(R.id.imageButton);
-       // button.setOnClickListener(this);
+        createEpisodeBinding.editEpisodeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int mYear, mMonth, mDay;
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CreateEpisodeActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        createEpisodeBinding.editEpisodeDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
         List<String> spinnerReasonToStartArray =  new ArrayList<String>();
         spinnerReasonToStartArray.add("Referido De");
         spinnerReasonToStartArray.add("Re-Referido De");
@@ -76,8 +99,6 @@ public class CreateEpisodeActivity extends BaseActivity {
         spinnerReasonToStopArray.add("Referido para mesma US");
         spinnerReasonToStopArray.add("Abandono");
         spinnerReasonToStopArray.add("Óbito");
-
-
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -93,12 +114,12 @@ public class CreateEpisodeActivity extends BaseActivity {
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner sItems2 = (Spinner) findViewById(R.id.spinnerStopReason);
         sItems2.setAdapter(adapter2);
+        sItems.setEnabled(false);
+        sItems.setClickable(false);
     }
 
     public void createEpisode(View v) throws SQLException, ParseException {
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
         EditText dataVisita=findViewById(R.id.editEpisodeDate);
 
@@ -121,6 +142,7 @@ public class CreateEpisodeActivity extends BaseActivity {
         episode.setNotes(notes.getText().toString());
 
         getRelatedViewModel().createEpisode(episode);
+        Utilities.displayAlertDialog(getApplicationContext(),""+" Episodio Criado Com Sucesso" );
     }
 
     @Override
@@ -131,5 +153,10 @@ public class CreateEpisodeActivity extends BaseActivity {
     @Override
     public EpisodeVM getRelatedViewModel() {
         return (EpisodeVM) super.getRelatedViewModel();
+    }
+
+
+    public Patient getPatient(){
+        return getRelatedViewModel().getPatient();
     }
 }
