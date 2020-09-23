@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -26,6 +29,7 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
 import mz.org.fgh.idartlite.common.RecyclerTouchListener;
 import mz.org.fgh.idartlite.databinding.FragmentEpisodeBinding;
+import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -36,9 +40,11 @@ public class EpisodeFragment extends GenericFragment {
 
     private RecyclerView rcvEpisodes;
     private List<Episode> episodeList;
-
+    private Episode firstEpisode;
     private FragmentEpisodeBinding fragmentEpisodeBinding;
     private EpisodeAdapter episodeAdapter;
+    private Dispense lastDispense;
+
 
     public EpisodeFragment() {
     }
@@ -54,54 +60,50 @@ public class EpisodeFragment extends GenericFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         this.rcvEpisodes = fragmentEpisodeBinding.rcvEpisodes;
+
 
         try {
             this.episodeList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
+            this.lastDispense=getRelatedViewModel().getLastDispenseOfPatient(getSelectedPatient());
+            firstEpisode=episodeList.get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
 
         if (Utilities.listHasElements(episodeList)) {
-            episodeAdapter = new EpisodeAdapter(this.rcvEpisodes, this.episodeList, getMyActivity());
+            episodeAdapter = new EpisodeAdapter(this.rcvEpisodes, this.episodeList, getMyActivity(),firstEpisode,lastDispense);
             displayDataOnRecyclerView(rcvEpisodes, episodeAdapter, getContext());
 
-            rcvEpisodes.addOnItemTouchListener(
-                    new ClickListener(
-                            getContext(), rcvEpisodes, new ClickListener.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            Episode episode = episodeList.get(position);
-                            Intent intent = new Intent(getContext(), CreateEpisodeActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("user", getCurrentUser());
-                            bundle.putSerializable("patient", getSelectedPatient());
-                         //   bundle.putSerializable("clinic", getCurrentClinic());
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }
 
-                        @Override
-                        public void onLongItemClick(View view, int position) {
-                            Episode episode = episodeList.get(position);
-                            Intent intent = new Intent(getContext(), CreateEpisodeActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("user", getCurrentUser());
-                         //   bundle.putSerializable("clinic", getCurrentClinic());
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }
 
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                        }
-                    }
-                    )
-            );
+
+            fragmentEpisodeBinding.newEpisode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(getContext(), CreateEpisodeActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("user", getCurrentUser());
+                    bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                    bundle.putSerializable("patient", getMyActivity().getPatient());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            });
+
+
+
         }
     }
+
+
+
+
+
 
     /*private void displayPrescriptions(RecyclerView rcvEpisodes) {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());

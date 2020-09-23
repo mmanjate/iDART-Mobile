@@ -247,8 +247,8 @@ public class LoginVM extends BaseViewModel {
                      Episode episode=new Episode();
                      episode.setEpisodeDate(date);
                      episode.setNotes("EPisodio teste ");
-                     episode.setStartReason("Testeeee");
-                     episode.setSyncStatus("Ready");
+                     episode.setStartReason("Referido De");
+                     episode.setSyncStatus("R");
                      episode.setPatient(patient);
                      episodeService.createEpisode(episode);
 

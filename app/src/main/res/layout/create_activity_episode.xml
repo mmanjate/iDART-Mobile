@@ -9,6 +9,10 @@
         <variable
             name="patient"
             type="mz.org.fgh.idartlite.model.Patient" />
+
+        <variable
+            name="episodeVM"
+            type="mz.org.fgh.idartlite.viewmodel.EpisodeVM" />
     </data>
 
     <LinearLayout
@@ -45,14 +49,12 @@
             <EditText
                 android:id="@+id/editEpisodeDate"
                 android:layout_width="330dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:ems="10"
-                android:inputType="date"
                 app:layout_constraintHorizontal_bias="0.28"
                 bind:layout_constraintEnd_toEndOf="parent"
                 bind:layout_constraintStart_toEndOf="@+id/calendarIcon"
@@ -112,6 +114,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
+                android:enabled="true"
                 app:layout_constraintHorizontal_bias="1.0"
                 bind:layout_constraintEnd_toEndOf="parent"
                 bind:layout_constraintStart_toEndOf="@+id/comboStartIcon"

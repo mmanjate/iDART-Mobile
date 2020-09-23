@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="episode"
             type="mz.org.fgh.idartlite.model.Episode" />
 
+        <variable
+            name="firstEpisode"
+            type="mz.org.fgh.idartlite.model.Episode" />
+        <variable
+            name="lastDispense"
+            type="mz.org.fgh.idartlite.model.Dispense" />
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_22dp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:background="@color/list_icon"
+            android:layout_marginLeft="@dimen/dimen_4dp"
+            android:layout_weight="2.5">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -26,91 +35,129 @@
                 bind:srcCompat="@drawable/ic_prescription"/>
         </LinearLayout>
         <LinearLayout
+            android:layout_width="@dimen/dimen_10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"/>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="4">
+            android:layout_weight="10">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="2"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:layout_weight="8">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Inicio"
-                    android:textSize="@dimen/dimen_18dp"
-                    android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ID Prescricao"
+                        android:textSize="@dimen/dimen_12dp"
+                        android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/prescriptionId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Paciente Referido da US"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:textSize="@dimen/dimen_18dp"
-                    android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/prescriptionId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{episode.startReason}"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:textSize="@dimen/dimen_12dp"
+                        android:textStyle="bold"/>
 
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/textViewOptions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:onClick="showPopup"
+                        android:paddingLeft="@dimen/dimen_22dp"
+                        android:text="&#8942;"
+                        android:textAppearance="?android:textAppearanceLarge" />
+                </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="3"
+                android:layout_weight="13"
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     android:orientation="vertical"
-                    android:layout_weight="4.8">
+                    android:layout_weight="10">
+
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="17.5dp"
                         android:text="@string/data_episodio"/>
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="17.5dp"
                         android:text="@string/data_de_referencia"/>
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="17.5dp"
                         android:text="@string/data_prox_levantamento"/>
+
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/notas"/>
+                        android:layout_height="17.5dp"
+                        android:text="@string/notas" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="@dimen/dimen_10dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="2">
+                    android:layout_height="70dp"
+                    android:layout_weight="4"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/dataEpisodio"
+                        android:id="@+id/episodeDate"
+                        style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{episode.getStringEpisodeDate}"/>
+                        android:layout_height="17.5dp"
+                        android:text="@{DateUtilitis.formatToDDMMYYYY(episode.getStringEpisodeDate)}" />
+
                     <TextView
-                        android:id="@+id/dataReferencia"
+                        android:id="@+id/referenceDate"
+                        style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{episode.getStringEpisodeDate}"/>
+                        android:layout_height="17.5dp"
+                        android:text="@{DateUtilitis.formatToDDMMYYYY(firstEpisode.getStringEpisodeDate)}" />
+
                     <TextView
-                        android:id="@+id/dataProxLevantamento"
+                        android:id="@+id/nextPickUpDate"
+                        style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{episode.getStringEpisodeDate}"/>
+                        android:layout_height="17.5dp"
+                        android:text="@{DateUtilitis.formatToDDMMYYYY(lastDispense.nextPickupDate)}" />
+
                     <TextView
                         android:id="@+id/notes"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{episode.notes}"/>
+                        android:layout_height="17.5dp"
+                        android:text="@{episode.notes}" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -121,7 +168,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="@dimen/dimen_22dp"
+                        android:layout_gravity="top"
                         bind:srcCompat="@drawable/ic_baseline_autorenew_24"/>
                 </LinearLayout>
             </LinearLayout>
