@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.service;
 import android.app.Application;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Drug;
@@ -15,5 +16,9 @@ public class DrugService extends BaseService {
 
     public void saveDrug(Drug drug) throws SQLException {
         getDataBaseHelper().getDrugDao().create(drug);
+    }
+
+    public List<Drug> getDrugListAll() throws SQLException {
+        return getDataBaseHelper().getDrugDao().queryForAll();
     }
 }
