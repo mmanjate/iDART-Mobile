@@ -6,11 +6,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -46,17 +48,6 @@ public class StockEntranceFragment extends GenericFragment {
 
         this.rcvFragmentStock = fragmentStockEntranceBinding.rcvFragmentStock;
 
-        try {
-            this.stockList = getRelatedViewModel().getStockByClinic(getMyActivity().getCurrentClinic());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (Utilities.listHasElements(stockList)) {
-            stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, this.stockList, getMyActivity());
-            displayDataOnRecyclerView(rcvFragmentStock, stockEntranceAdapter, getContext());
-        }
-
         fragmentStockEntranceBinding.newStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +60,21 @@ public class StockEntranceFragment extends GenericFragment {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            this.stockList = getRelatedViewModel().getStockByClinic(getMyActivity().getCurrentClinic());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (Utilities.listHasElements(stockList)) {
+            stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, this.stockList, getMyActivity());
+            displayDataOnRecyclerView(rcvFragmentStock, stockEntranceAdapter, getContext());
+        }
     }
 
     @Override

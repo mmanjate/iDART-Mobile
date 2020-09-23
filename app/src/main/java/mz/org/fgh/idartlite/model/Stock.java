@@ -37,7 +37,7 @@ public class Stock extends BaseModel implements Listble {
     private String orderNumber;
 
     @DatabaseField(columnName = COLUMN_BATCH_NUMBER)
-    private int batchNumber;
+    private String batchNumber;
 
     @DatabaseField(columnName = COLUMN_DATE_RECEIVED)
     private Date dateReceived;
@@ -98,6 +98,13 @@ public class Stock extends BaseModel implements Listble {
         return this.getPosition() - ((Stock) baseModel).getPosition();
     }
 
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -111,11 +118,11 @@ public class Stock extends BaseModel implements Listble {
         this.orderNumber = orderNumber;
     }
 
-    public int getBatchNumber() {
+    public String getBatchNumber() {
         return batchNumber;
     }
 
-    public void setBatchNumber(int batchNumber) {
+    public void setBatchNumber(String batchNumber) {
         this.batchNumber = batchNumber;
     }
 

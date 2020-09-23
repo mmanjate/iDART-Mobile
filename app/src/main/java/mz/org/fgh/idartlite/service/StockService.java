@@ -8,6 +8,7 @@ import mz.org.fgh.idartlite.model.User;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 public class StockService extends BaseService {
 
@@ -16,6 +17,9 @@ public class StockService extends BaseService {
     }
 
     public void saveStock(Stock stock) throws SQLException {
+        UUID uuid = UUID.randomUUID();
+        stock.setSyncStatus("R");
+        stock.setUuid(uuid.toString());
         getDataBaseHelper().getStockDao().create(stock);
     }
 

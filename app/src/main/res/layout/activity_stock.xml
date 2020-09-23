@@ -10,10 +10,6 @@
             type="mz.org.fgh.idartlite.model.Clinic" />
     </data>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -25,20 +21,18 @@
 
                 <include layout="@layout/app_bar" />
 
-                <include
-                    layout="@layout/stock_info"
-                    bind:clinic="@{clinic}" />
+                <include layout="@layout/stock_info" bind:clinic="@{clinic}" />
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
+                    app:tabMode="fixed"
+                    android:layout_below="@+id/stock_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/patient_info"
-                    android:minHeight="?attr/actionBarSize"
-                    app:elevation="0dp"
                     app:tabBackground="@color/tab_back"
-                    app:tabMode="fixed"
-                    app:tabTextColor="@color/colorPrimary" />
+                    app:elevation="0dp"
+                    app:tabTextColor="@color/colorPrimary"
+                    android:minHeight="?attr/actionBarSize"/>
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -49,5 +43,4 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.viewpager.widget.ViewPager>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </ScrollView>
 </layout>
