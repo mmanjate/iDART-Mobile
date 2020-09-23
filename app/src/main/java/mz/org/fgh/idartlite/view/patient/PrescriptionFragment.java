@@ -3,10 +3,14 @@ package mz.org.fgh.idartlite.view.patient;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +19,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.ClickListener;
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
+import mz.org.fgh.idartlite.common.ListbleDialogListener;
 import mz.org.fgh.idartlite.databinding.PrescriptionFragmentBinding;
 import mz.org.fgh.idartlite.model.DispenseType;
+import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
@@ -28,13 +36,15 @@ import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.adapter.PrescriptionAdapter;
 import mz.org.fgh.idartlite.viewmodel.PrescriptionVM;
 
-public class PrescriptionFragment extends GenericFragment {
+public class PrescriptionFragment extends GenericFragment implements ListbleDialogListener {
 
     private RecyclerView rcvPrescriptions;
     private List<Prescription> prescriptionList;
 
     private PrescriptionFragmentBinding prescriptionFragmentBinding;
     private PrescriptionAdapter prescriptionAdapter;
+
+    int prescriptionPosition;
 
     public PrescriptionFragment() {
     }
@@ -77,6 +87,38 @@ public class PrescriptionFragment extends GenericFragment {
                 startActivity(intent);
             }
         });
+
+        rcvPrescriptions.addOnItemTouchListener(
+                new ClickListener(
+                        getContext(), rcvPrescriptions, new ClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Prescription prescription = prescriptionList.get(position);
+                        prescriptionPosition=position;
+                        PopupMenu popup = new PopupMenu(view.getContext(),view);
+                        MenuInflater inflater = popup.getMenuInflater();
+                        popup.setOnMenuItemClickListener(PrescriptionFragment.this::onMenuItemClick);
+                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
+                        popup.show();
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        Prescription prescription = prescriptionList.get(position);
+                        prescriptionPosition=position;
+                        PopupMenu popup = new PopupMenu(view.getContext(),view);
+                        MenuInflater inflater = popup.getMenuInflater();
+                        popup.setOnMenuItemClickListener(PrescriptionFragment.this::onMenuItemClick);
+                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
+                        popup.show();
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+                ));
     }
 
     /*private void displayPrescriptions(RecyclerView rcvEpisodes) {
@@ -103,6 +145,53 @@ public class PrescriptionFragment extends GenericFragment {
             }
         }));
     }*/
+
+    public boolean onMenuItemClick(MenuItem item){
+        switch (item.getItemId()){
+
+
+            case R.id.edit:
+              //Call activity to Edit
+                return true;
+            case R.id.remove:
+                Utilities.displayDeleteConfirmationDialogFromList(PrescriptionFragment.this.getContext(),PrescriptionFragment.this.getString(R.string.list_item_delete_msg),prescriptionPosition,PrescriptionFragment.this).show();
+                return true;
+            default:
+                return false;
+        }
+
+    }
+
+    @Override
+    public void remove(int position) {
+
+        if(prescriptionList.get(position).getSyncStatus().equals("R")){
+            prescriptionList.remove(prescriptionList.get(position));
+
+            for (int i = 0; i < prescriptionList.size(); i++){
+                prescriptionList.get(i).setListPosition(i+1);
+            }
+            rcvPrescriptions.getAdapter().notifyItemRemoved(position);
+            rcvPrescriptions.removeViewAt(position);
+            rcvPrescriptions.getAdapter().notifyItemRangeChanged(position, rcvPrescriptions.getAdapter().getItemCount());
+
+
+            try {
+                getRelatedViewModel().deletePrescription(prescriptionList.get(position));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(),"A Prescricao nao pode ser removido uma vez que ja foi sicronizado com a central").show();
+        }
+
+    }
+
+    @Override
+    public void remove(BaseModel baseModel) {
+
+    }
 
     public PatientActivity getMyActivity(){
         return (PatientActivity) getActivity();

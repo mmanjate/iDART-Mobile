@@ -31,6 +31,10 @@ public class StockEntranceVM extends BaseViewModel {
         return stockService.getStockByClinic(clinic);
     }
 
+    public void deleteStock(Stock stock) throws SQLException {
+        this.stockService.deleteStock(stock);
+    }
+
     public Clinic getClinic() {
         return clinic;
     }
