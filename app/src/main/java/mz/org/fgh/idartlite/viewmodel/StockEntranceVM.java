@@ -3,10 +3,12 @@ package mz.org.fgh.idartlite.viewmodel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
 import java.util.List;
 
+import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
@@ -17,6 +19,8 @@ public class StockEntranceVM extends BaseViewModel {
 
     private Clinic clinic;
     private StockService stockService;
+    private boolean initialDataVisible;
+    private boolean drugDataVisible;
 
     public StockEntranceVM(@NonNull Application application) {
         super(application);
@@ -37,5 +41,26 @@ public class StockEntranceVM extends BaseViewModel {
 
     public StockEntranceActivity getRelatedActivity() {
         return (StockEntranceActivity) super.getRelatedActivity();
+    }
+
+    @Bindable
+    public boolean isInitialDataVisible() {
+        return initialDataVisible;
+    }
+
+    public void setInitialDataVisible(boolean initialDataVisible) {
+        this.initialDataVisible = initialDataVisible;
+        notifyPropertyChanged(BR.initialDataVisible);
+    }
+
+    @Bindable
+    public boolean isDrugDataVisible() {
+        return drugDataVisible;
+    }
+
+
+    public void setDrugDataVisible(boolean drugDataVisible) {
+        this.drugDataVisible = drugDataVisible;
+        notifyPropertyChanged(BR.drugDataVisible);
     }
 }

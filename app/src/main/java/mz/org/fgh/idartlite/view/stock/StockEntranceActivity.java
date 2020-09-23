@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
@@ -23,6 +24,10 @@ public class StockEntranceActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         stockEntranceBinding = DataBindingUtil.setContentView(this, R.layout.activity_stock_entrance);
 
+        stockEntranceBinding.drugsDataLyt.setVisibility(View.GONE);
+        getRelatedViewModel().setInitialDataVisible(true);
+        getRelatedViewModel().setDrugDataVisible(false);
+
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
@@ -34,6 +39,48 @@ public class StockEntranceActivity extends BaseActivity {
                 }
             }
         }
+
+        stockEntranceBinding.initialData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeVisibilityToInitialData(view);
+
+            }
+        });
+
+        stockEntranceBinding.txvDrugs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeVisibilityToInitialData(view);
+
+            }
+        });
+
+    }
+
+    private void changeVisibilityToInitialData(View view) {
+        if (view.equals(stockEntranceBinding.initialData)){
+            if (stockEntranceBinding.initialDataLyt.getVisibility() == View.VISIBLE){
+                stockEntranceBinding.initialDataLyt.setVisibility(View.GONE);
+                switchLayout();
+            }else {
+                stockEntranceBinding.initialDataLyt.setVisibility(View.VISIBLE);
+                switchLayout();
+            }
+        }else if (view.equals(stockEntranceBinding.txvDrugs)){
+            if (stockEntranceBinding.drugsDataLyt.getVisibility() == View.VISIBLE){
+                stockEntranceBinding.drugsDataLyt.setVisibility(View.GONE);
+                switchLayout();
+            }else {
+                stockEntranceBinding.drugsDataLyt.setVisibility(View.VISIBLE);
+                switchLayout();
+            }
+        }
+    }
+
+    private void switchLayout(){
+        getRelatedViewModel().setInitialDataVisible(!getRelatedViewModel().isInitialDataVisible());
+        getRelatedViewModel().setDrugDataVisible(!getRelatedViewModel().isDrugDataVisible());
     }
 
     public Clinic getClinic(){
