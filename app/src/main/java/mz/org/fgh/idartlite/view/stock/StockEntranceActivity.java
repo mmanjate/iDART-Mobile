@@ -84,7 +84,7 @@ public class StockEntranceActivity extends BaseActivity {
     }
 
     public void populateDrugList() throws SQLException {
-        drugList = drugService.getDrugListAll();
+        drugList = drugService.getAll();
         ArrayAdapter<Drug> adapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stockEntranceBinding.spnDrugs.setAdapter(adapter);
