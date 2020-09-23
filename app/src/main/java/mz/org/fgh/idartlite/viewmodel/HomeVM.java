@@ -20,6 +20,10 @@ public class HomeVM extends BaseViewModel {
 
     public void callSearchPatient(){
         Intent intent = new Intent(getApplication(), SearchPatientActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", getRelatedActivity().getCurrentUser());
+        bundle.putSerializable("clinic", getRelatedActivity().getCurrentClinic());
+        intent.putExtras(bundle);
         getRelatedActivity().startActivity(intent);
     }
 
