@@ -33,12 +33,10 @@ public class EpisodeService extends BaseService {
         episode.setUuid(uuid.toString());
         getDataBaseHelper().getEpisodeDao().create(episode);
     }
-
     public void udpateEpisode(Episode episode) throws SQLException {
-        getDataBaseHelper().getEpisodeDao().updateGenericObjectByClass(episode);
+        getDataBaseHelper().getEpisodeDao().update(episode);
     }
-
     public void deleteEpisode(Episode episode) throws SQLException {
-        getDataBaseHelper().getEpisodeDao().deleteGenericObjectByClass(episode);
+        getDataBaseHelper().getEpisodeDao().delete(episode);
     }
 }

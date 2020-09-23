@@ -48,10 +48,10 @@
     <string name="remover">Remover</string>
     <string name="editar">Editar</string>
 
-    <string name="data_episodio">data_episodio</string>
-    <string name="data_de_referencia">data_de_referencia</string>
-    <string name="data_prox_levantamento">data_prox_levantamento</string>
-    <string name="notas">notas</string>
+    <string name="data_episodio">Data Episodio:</string>
+    <string name="data_de_referencia">Data de Referencia:</string>
+    <string name="data_prox_levantamento">Data do Prox. Levan:</string>
+    <string name="notas">Notas:</string>
     <string name="data">data</string>
     <string name="regime_terapeutico">regime_terapeutico</string>
     <string name="linha">regime_terapeutico</string>

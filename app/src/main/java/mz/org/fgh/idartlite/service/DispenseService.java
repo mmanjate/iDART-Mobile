@@ -46,7 +46,7 @@ public class DispenseService extends BaseService {
         QueryBuilder<Dispense, Integer> dispenseQb =  getDataBaseHelper().getDispenseDao().queryBuilder();
         dispenseQb.join(prescriptionQb);
 
-        List<Dispense> dispenses = dispenseQb.query();
+        List<Dispense> dispenses = dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,false).query();
 
         return dispenses;
     }
