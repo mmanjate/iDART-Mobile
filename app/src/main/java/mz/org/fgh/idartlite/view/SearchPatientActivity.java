@@ -21,6 +21,7 @@ import mz.org.fgh.idartlite.adapter.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.PatientActivity;
@@ -31,47 +32,49 @@ public class SearchPatientActivity extends BaseActivity {
     private RecyclerView recyclerPatient;
     private List<Patient> patientList;
     private ActivitySearchPatientBinding searchPatientBinding;
-
+    private ContentListPatientAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchPatientBinding = DataBindingUtil.setContentView(this, R.layout.activity_search_patient);
+        Intent intent = this.getIntent();
+        if(intent != null){
+            Bundle bundle = intent.getExtras();
+            if(bundle != null) {
+
+                getRelatedViewModel().setCurrentClinic((Clinic) bundle.getSerializable("clinic"));
+
+            }
+        }
         searchPatientBinding.buttonSearch.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if(Utilities.stringHasValue(searchPatientBinding.edtSearchParam.getText().toString())){
-                    searPatient();
-                    if(Utilities.listHasElements(patientList)){
-                        try {
-                            displaySearchResult();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }else{
-
+                    searchPatient();
+                    displaySearchResult();
+                    if(!Utilities.listHasElements(patientList)){
+                        Utilities.displayAlertDialog(SearchPatientActivity.this,"Nao existe nenhum paciente com esse nome ou nid").show();
                     }
                 }
-            }
+        }
         });
-
     }
 
-    public void searPatient(){
+    public void searchPatient(){
         try {
-            patientList = getRelatedViewModel().searchPatient(searchPatientBinding.edtSearchParam.getText().toString());
-            System.out.println(patientList.get(0).getFirstName());
+            patientList = getRelatedViewModel().searchPatient(searchPatientBinding.edtSearchParam.getText().toString(),getCurrentClinic());
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
-    public void displaySearchResult() throws SQLException {
-        recyclerPatient = searchPatientBinding.reyclerPatient;
+    public void displaySearchResult() { recyclerPatient = searchPatientBinding.reyclerPatient;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerPatient.setLayoutManager(layoutManager);
         recyclerPatient.setHasFixedSize(true);
         recyclerPatient.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
-        ContentListPatientAdapter adapter = new ContentListPatientAdapter(recyclerPatient, patientList,this);
+         adapter = new ContentListPatientAdapter(recyclerPatient, patientList,this);
         recyclerPatient.setAdapter(adapter);
         recyclerPatient.addOnItemTouchListener(
                 new ClickListener(
@@ -117,4 +120,10 @@ public class SearchPatientActivity extends BaseActivity {
     public PatientVM getRelatedViewModel() {
         return (PatientVM) super.getRelatedViewModel();
     }
+
+    public Clinic getClinic(){
+        return getRelatedViewModel().getCurrentClinic();
+    }
+
+
 }
