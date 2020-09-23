@@ -47,6 +47,9 @@ public class EpisodeVM extends BaseViewModel {
     public void createEpisode(Episode episode) throws SQLException {
         episodeService.createEpisode(episode);
     }
+    public void deleteEpisode(Episode episode) throws SQLException {
+        episodeService.deleteEpisode(episode);
+    }
 
     public Patient getPatient() {
         return patient;
