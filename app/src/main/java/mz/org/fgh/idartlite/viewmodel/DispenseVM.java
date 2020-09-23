@@ -35,6 +35,10 @@ public class DispenseVM extends BaseViewModel {
         return dispenseService.getAllOfPatient(patient);
     }
 
+    public void deleteDispense(Dispense dispense) throws SQLException {
+        this.dispenseService.deleteDispense(dispense);
+    }
+
     public Dispense getDispense() {
         return dispense;
     }

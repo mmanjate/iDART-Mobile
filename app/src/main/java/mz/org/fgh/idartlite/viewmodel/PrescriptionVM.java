@@ -73,6 +73,10 @@ public class PrescriptionVM extends BaseViewModel {
         this.prescriptionService.createPrescription(prescription);
     }
 
+    public void deletePrescription(Prescription prescription) throws SQLException {
+        this.prescriptionService.deletePrescription(prescription);
+    }
+
     public Prescription getPrescription() {
         return prescription;
     }
