@@ -9,4 +9,8 @@ public abstract class BaseModel implements Serializable {
     public void setListPosition(int listPosition) {
         this.listPosition = listPosition;
     }
+
+
+
+
 }

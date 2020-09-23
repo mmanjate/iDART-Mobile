@@ -25,7 +25,7 @@ public abstract class BaseService {
         this.currentUser = currentUser;
     }
 
-    public IdartLiteDataBaseHelper getDataBaseHelper() {
+    protected IdartLiteDataBaseHelper getDataBaseHelper() {
         return dataBaseHelper;
     }
 

@@ -1,6 +1,8 @@
 package mz.org.fgh.idartlite.common;
 
-public interface Listble {
+import mz.org.fgh.idartlite.base.BaseModel;
+
+public interface Listble<T extends BaseModel> extends Comparable<T>{
 
     int getId();
 
@@ -9,4 +11,9 @@ public interface Listble {
     String getDescription();
 
     void setListPosition(int listPosition);
+
+    int getQuantity();
+
+    @Override
+    int compareTo(T t);
 }

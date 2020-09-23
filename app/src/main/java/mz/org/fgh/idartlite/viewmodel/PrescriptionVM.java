@@ -12,13 +12,18 @@ import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.service.PrescriptionService;
+import mz.org.fgh.idartlite.service.TherapeuthicLineService;
+import mz.org.fgh.idartlite.service.TherapheuticRegimenService;
 
 public class PrescriptionVM extends BaseViewModel {
 
     private PrescriptionService prescriptionService;
 
     private Prescription prescription;
+    private TherapheuticRegimenService regimenService;
+    private TherapeuthicLineService lineService;
 
     private boolean initialDataVisible;
 
@@ -30,6 +35,8 @@ public class PrescriptionVM extends BaseViewModel {
         this.prescription = new Prescription();
 
         prescriptionService = new PrescriptionService(application, getCurrentUser());
+        regimenService = new TherapheuticRegimenService(application, getCurrentUser());
+        lineService = new TherapeuthicLineService(application, getCurrentUser());
     }
 
     public List<Prescription> gatAllOfPatient(Patient patient) throws SQLException {
@@ -68,5 +75,9 @@ public class PrescriptionVM extends BaseViewModel {
     public void setDrugDataVisible(boolean drugDataVisible) {
         this.drugDataVisible = drugDataVisible;
         notifyPropertyChanged(BR.drugDataVisible);
+    }
+
+    public List<TherapeuticRegimen> getAllTherapeuticRegimen (){
+        return null;
     }
 }

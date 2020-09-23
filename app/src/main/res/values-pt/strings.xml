@@ -76,5 +76,6 @@
 
     <string name="data_levantamento">Data Levantamento</string>
     <string name="dt_proximo_levantamento">Próximo levantamento</string>
+    <string name="drug_data_duplication_msg">Não pode adicionar o mesmo medicamento duas vezes.</string>
 
 </resources>

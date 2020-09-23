@@ -6,13 +6,14 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.dao.StockDaoImpl;
 
 import java.util.Date;
 import java.util.Objects;
 
 @DatabaseTable(tableName = "Stock", daoClass = StockDaoImpl.class)
-public class Stock extends BaseModel {
+public class Stock extends BaseModel implements Listble {
 
 
     public static final String COLUMN_ORDER_NUMBER = "order_number";
@@ -74,6 +75,29 @@ public class Stock extends BaseModel {
     public int getId() {
         return id;
     }
+
+    @Override
+    public int getPosition() {
+        return this.listPosition;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.drug.getDescription();
+    }
+
+    @Override
+    public int getQuantity() {
+        return this.unitsReceived;
+    }
+
+    @Override
+    public int compareTo(BaseModel baseModel) {
+        if (this.getPosition() == 0 || ((Stock) baseModel).getPosition() == 0) return 0;
+
+        return this.getPosition() - ((Stock) baseModel).getPosition();
+    }
+
 
     public void setId(int id) {
         this.id = id;
@@ -206,5 +230,10 @@ public class Stock extends BaseModel {
                 ", clinic=" + clinic +
                 ", drug=" + drug +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }

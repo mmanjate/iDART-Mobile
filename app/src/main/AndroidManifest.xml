@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.patient.PrescriptionActivity" />
+        <activity android:name=".view.patient.PrescriptionActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.stock.StockActivity"
             android:label="@string/title_activity_stock"
