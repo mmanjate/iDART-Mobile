@@ -8,6 +8,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.dao.PatientDao;
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.User;
 
@@ -24,8 +25,9 @@ public class PatientService extends BaseService {
         }
     }
 
-    public List<Patient> search(String param) throws SQLException {
-        return patientDao.queryBuilder().where().like(Patient.COLUMN_NID, "%" + param + "%").or().like(Patient.COLUMN_FIRST_NAME, "%" + param + "%").query();
+    public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic) throws SQLException {
+            return getDataBaseHelper().getPatientDao().searchPatientByParamAndClinic(param, clinic);
+
     }
 
     public List<Patient> getALLPatient() throws  SQLException {
