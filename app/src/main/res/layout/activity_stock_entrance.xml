@@ -8,6 +8,9 @@
         <variable
             name="clinic"
             type="mz.org.fgh.idartlite.model.Clinic" />
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.StockEntranceVM" />
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
