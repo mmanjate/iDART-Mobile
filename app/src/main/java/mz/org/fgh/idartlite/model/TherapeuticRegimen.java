@@ -66,9 +66,6 @@ public class TherapeuticRegimen extends BaseModel {
 
 	@Override
 	public String toString() {
-		return "TherapeuticRegimen{" +
-				"regimenCode='" + regimenCode + '\'' +
-				", description='" + description + '\'' +
-				'}';
+		return description;
 	}
 }

@@ -16,7 +16,7 @@ import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.databinding.ListableItemBinding;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class ListbleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListbleItemRemoveListener{
+public class ListbleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListbleDialogListener {
 
     private Activity activity;
     private List<Listble> listbles;
@@ -63,6 +63,7 @@ public class ListbleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void remove(BaseModel baseModel) { }
+
 
     public class ListbleViewHolder extends RecyclerView.ViewHolder{
 

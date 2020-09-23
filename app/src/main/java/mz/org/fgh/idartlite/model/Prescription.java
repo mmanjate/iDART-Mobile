@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.BaseModel;
@@ -34,6 +35,17 @@ public class Prescription extends BaseModel {
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
 	public static final String COLUMN_SYNC_STATUS = "sync_status";
+
+	public static final String DURATION_TWO_WEEKS = "2 Semanas";
+	public static final String DURATION_ONE_MONTH = "1 Mês";
+	public static final String DURATION_TWO_MONTHS = "2 Meses";
+	public static final String DURATION_THREE_MONTHS = "3 Mêeses";
+	public static final String DURATION_FOUR_MONTHS = "4 Meses";
+	public static final String DURATION_FIVE_MONTHS = "5 Meses";
+	public static final String DURATION_SIX_MONTHS = "6 Meses";
+
+	public static final String URGENT_PRESCRIPTION = "Especial";
+	public static final String NOT_URGENT_PRESCRIPTION = "Não Especial";
 
 	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
@@ -73,6 +85,8 @@ public class Prescription extends BaseModel {
 
 	@DatabaseField(columnName = COLUMN_SYNC_STATUS)
 	private String syncStatus;
+
+	private List<PrescribedDrug> prescribedDrugs;
 
 	public int getId() {
 		return id;
@@ -178,6 +192,14 @@ public class Prescription extends BaseModel {
 		this.syncStatus = syncStatus;
 	}
 
+	public List<PrescribedDrug> getPrescribedDrugs() {
+		return prescribedDrugs;
+	}
+
+	public void setPrescribedDrugs(List<PrescribedDrug> prescribedDrugs) {
+		this.prescribedDrugs = prescribedDrugs;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -212,6 +234,10 @@ public class Prescription extends BaseModel {
 				", uuid='" + uuid + '\'' +
 				", syncStatus='" + syncStatus + '\'' +
 				'}';
+	}
+
+	public boolean isUrgent(){
+		return  this.urgentPrescription.equalsIgnoreCase(URGENT_PRESCRIPTION);
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.O)

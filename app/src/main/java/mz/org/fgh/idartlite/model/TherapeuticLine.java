@@ -66,9 +66,6 @@ public class TherapeuticLine extends BaseModel {
 
 	@Override
 	public String toString() {
-		return "TherapeuticLine{" +
-				"code='" + code + '\'' +
-				", description='" + description + '\'' +
-				'}';
+		return description;
 	}
 }

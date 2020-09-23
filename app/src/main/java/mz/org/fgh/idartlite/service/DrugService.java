@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.User;
 
@@ -18,7 +19,7 @@ public class DrugService extends BaseService {
         getDataBaseHelper().getDrugDao().create(drug);
     }
 
-    public List<Drug> getDrugListAll() throws SQLException {
+    public List<Drug> getAll() throws SQLException {
         return getDataBaseHelper().getDrugDao().queryForAll();
     }
 }

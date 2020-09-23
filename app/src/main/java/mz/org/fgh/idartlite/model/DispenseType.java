@@ -64,10 +64,6 @@ public class DispenseType extends BaseModel {
 
     @Override
     public String toString() {
-        return "DispenseType{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return description;
     }
 }

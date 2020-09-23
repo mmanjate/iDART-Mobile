@@ -1,7 +1,5 @@
 package mz.org.fgh.idartlite.view.patient;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -16,25 +14,35 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleAdapter;
-import mz.org.fgh.idartlite.common.RecyclerTouchListener;
+import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.databinding.ActivityPrescriptionBinding;
+import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.PrescribedDrug;
+import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.TherapeuticLine;
+import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.patient.adapter.PrescriptionAdapter;
 import mz.org.fgh.idartlite.viewmodel.PrescriptionVM;
 
-public class PrescriptionActivity extends BaseActivity {
+public class PrescriptionActivity extends BaseActivity implements DialogListener {
 
     private ActivityPrescriptionBinding prescriptionBinding;
 
@@ -44,7 +52,6 @@ public class PrescriptionActivity extends BaseActivity {
 
     private ListbleAdapter listbleAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +60,7 @@ public class PrescriptionActivity extends BaseActivity {
         rcvSelectedDrugs = prescriptionBinding.rcvSelectedDrugs;
 
         prescriptionBinding.drugsDataLyt.setVisibility(View.GONE);
+        prescriptionBinding.urgentLyt.setVisibility(View.GONE);
         getRelatedViewModel().setInitialDataVisible(true);
         getRelatedViewModel().setDrugDataVisible(false);
 
@@ -70,33 +78,6 @@ public class PrescriptionActivity extends BaseActivity {
         }
 
         populateForm();
-
-        List<Drug> d = new ArrayList<>();
-        Drug drug = new Drug();
-        drug.setId(1);
-        drug.setDescription("Paracetamol");
-        drug.setPackSize(3);
-
-        Drug dru = new Drug();
-        dru.setId(2);
-        dru.setDescription("Efferflu");
-        dru.setPackSize(4);
-
-        Drug dr = new Drug();
-        dr.setId(3);
-        dr.setDescription("Quinino");
-        dr.setPackSize(7);
-
-        d.add(drug);
-        d.add(dru);
-        d.add(dr);
-
-        ArrayAdapter<Drug> adapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, d);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        prescriptionBinding.spnDrugs.setAdapter(adapter);
-
 
         prescriptionBinding.prescriptionDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +117,13 @@ public class PrescriptionActivity extends BaseActivity {
 
             }
         });
+        prescriptionBinding.txvUrgent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeVisibilityToInitialData(view);
+
+            }
+        });
 
         prescriptionBinding.imvAddSelectedDrug.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +131,7 @@ public class PrescriptionActivity extends BaseActivity {
                if (selectedDrugs == null) selectedDrugs = new ArrayList<>();
 
                if ( prescriptionBinding.spnDrugs.getSelectedItem() != null){
-                   Listble listble = (Listble) prescriptionBinding.spnDrugs.getSelectedItem();
+                   Listble<Drug> listble = (Listble<Drug>) prescriptionBinding.spnDrugs.getSelectedItem();
 
                    if (!selectedDrugs.contains(listble)) {
                        listble.setListPosition(selectedDrugs.size()+1);
@@ -162,6 +150,70 @@ public class PrescriptionActivity extends BaseActivity {
     }
 
     private void populateForm() {
+        try {
+            List<TherapeuticRegimen> therapeuticRegimenList = new ArrayList<>();
+            therapeuticRegimenList.add(new TherapeuticRegimen());
+            therapeuticRegimenList.addAll(getRelatedViewModel().getAllTherapeuticRegimen());
+
+            List<TherapeuticLine> therapeuticLines = new ArrayList<>();
+            therapeuticLines.add(new TherapeuticLine());
+            therapeuticLines.addAll(getRelatedViewModel().getAllTherapeuticLines());
+
+            List<DispenseType> dispenseTypes = new ArrayList<>();
+            dispenseTypes.add(new DispenseType());
+            dispenseTypes.addAll(getRelatedViewModel().getAllDispenseTypes());
+
+            List<Drug> drugs = new ArrayList<>();
+            drugs.add(new Drug());
+            drugs.addAll(getRelatedViewModel().getAllDrugs());
+
+            ArrayAdapter<DispenseType> dispenseTypeArrayAdapter = new ArrayAdapter<DispenseType>(getApplicationContext(), android.R.layout.simple_spinner_item, dispenseTypes);
+            dispenseTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            prescriptionBinding.spnDispenseType.setAdapter(dispenseTypeArrayAdapter);
+
+            ArrayAdapter<TherapeuticLine> lineArrayAdapter = new ArrayAdapter<TherapeuticLine>(getApplicationContext(), android.R.layout.simple_spinner_item, therapeuticLines);
+            lineArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            prescriptionBinding.spnLine.setAdapter(lineArrayAdapter);
+
+            ArrayAdapter<TherapeuticRegimen> regimenArrayAdapter = new ArrayAdapter<TherapeuticRegimen>(getApplicationContext(), android.R.layout.simple_spinner_item, therapeuticRegimenList);
+            regimenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            prescriptionBinding.spnRegime.setAdapter(regimenArrayAdapter);
+
+            ArrayAdapter<Drug> drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugs);
+            drugArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            prescriptionBinding.spnDrugs.setAdapter(drugArrayAdapter);
+
+
+            List<ValorSimples> durations = new ArrayList<>();
+            durations.add(new ValorSimples());
+            durations.add(ValorSimples.fastCreate(2, Prescription.DURATION_TWO_WEEKS));
+            durations.add(ValorSimples.fastCreate(4, Prescription.DURATION_ONE_MONTH));
+            durations.add(ValorSimples.fastCreate(8, Prescription.DURATION_TWO_MONTHS));
+            durations.add(ValorSimples.fastCreate(12, Prescription.DURATION_THREE_MONTHS));
+            durations.add(ValorSimples.fastCreate(16, Prescription.DURATION_FOUR_MONTHS));
+            durations.add(ValorSimples.fastCreate(20, Prescription.DURATION_FIVE_MONTHS));
+            durations.add(ValorSimples.fastCreate(24, Prescription.DURATION_SIX_MONTHS));
+
+            ArrayAdapter<ValorSimples> valorSimplesArrayAdapter = new ArrayAdapter<ValorSimples>(getApplicationContext(), android.R.layout.simple_spinner_item, durations);
+            valorSimplesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            prescriptionBinding.spnDuration.setAdapter(valorSimplesArrayAdapter);
+
+            List<ValorSimples> motives = new ArrayList<>();
+            motives.add(new ValorSimples());
+            motives.add(ValorSimples.fastCreate("Perda de Medicamento"));
+            motives.add(ValorSimples.fastCreate("Ausencia do Clinico"));
+            motives.add(ValorSimples.fastCreate("Laboratorio"));
+            motives.add(ValorSimples.fastCreate("Rotura de Stock"));
+            motives.add(ValorSimples.fastCreate("Outro"));
+
+            ArrayAdapter<ValorSimples> motiveArrayAdapter = new ArrayAdapter<ValorSimples>(getApplicationContext(), android.R.layout.simple_spinner_item, motives);
+            motiveArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            prescriptionBinding.spnReson.setAdapter(motiveArrayAdapter);
+
+        } catch (SQLException e) {
+            Utilities.displayAlertDialog(PrescriptionActivity.this, getString(R.string.error_loading_form_data)+e.getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -180,6 +232,14 @@ public class PrescriptionActivity extends BaseActivity {
                 switchLayout();
             }else {
                 prescriptionBinding.drugsDataLyt.setVisibility(View.VISIBLE);
+                switchLayout();
+            }
+        }else if (view.equals(prescriptionBinding.txvUrgent)){
+            if (prescriptionBinding.urgentLyt.getVisibility() == View.VISIBLE){
+                prescriptionBinding.urgentLyt.setVisibility(View.GONE);
+                switchLayout();
+            }else {
+                prescriptionBinding.urgentLyt.setVisibility(View.VISIBLE);
                 switchLayout();
             }
         }
@@ -212,6 +272,45 @@ public class PrescriptionActivity extends BaseActivity {
             listbleAdapter = new ListbleAdapter(rcvSelectedDrugs, this.selectedDrugs, this);
             rcvSelectedDrugs.setAdapter(listbleAdapter);
         }
+    }
 
+    public void loadFormData() {
+        getRelatedViewModel().getPrescription().setSupply(((ValorSimples) prescriptionBinding.spnDuration.getSelectedItem()).getId());
+        getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.createDate(prescriptionBinding.prescriptionDate.getText().toString(), "dd-MM-YYYY"));
+        getRelatedViewModel().getPrescription().setDispenseType((DispenseType) prescriptionBinding.spnDispenseType.getSelectedItem());
+        getRelatedViewModel().getPrescription().setTherapeuticRegimen((TherapeuticRegimen) prescriptionBinding.spnRegime.getSelectedItem());
+        getRelatedViewModel().getPrescription().setTherapeuticLine((TherapeuticLine) prescriptionBinding.spnLine.getSelectedItem());
+
+        if (getRelatedViewModel().getPrescription().isUrgent()) {
+            getRelatedViewModel().getPrescription().setUrgentNotes(((ValorSimples) prescriptionBinding.spnReson.getSelectedItem()).getDescription());
+        }
+        List<PrescribedDrug> prescribedDrugs = new ArrayList<>();
+
+        for (Listble drug : selectedDrugs){
+            prescribedDrugs.add(initNewPrescribedDrug((Drug) drug));
+        }
+
+        getRelatedViewModel().getPrescription().setPrescribedDrugs(prescribedDrugs);
+
+        getRelatedViewModel().getPrescription().setUuid(Utilities.getNewUUID().toString());
+
+        getRelatedViewModel().getPrescription().setSyncStatus(BaseModel.SYNC_SATUS_READY);
+    }
+
+    private PrescribedDrug initNewPrescribedDrug(Drug drug) {
+        return  new PrescribedDrug(drug, getRelatedViewModel().getPrescription());
+    }
+
+    public void doAfterSave(){
+        Map<String, Object> params = new HashMap<>();
+        params.put("prescription", getRelatedViewModel().getPrescription());
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        nextActivity(getApplication(), CreateDispenseActivity.class,params);
+    }
+
+    @Override
+    public void doOnConfirmed() {
+        doAfterSave();
     }
 }
