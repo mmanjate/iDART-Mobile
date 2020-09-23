@@ -36,6 +36,7 @@ import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.SearchPatientActivity;
 import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
@@ -142,7 +143,11 @@ public class CreateEpisodeActivity extends BaseActivity {
         episode.setNotes(notes.getText().toString());
 
         getRelatedViewModel().createEpisode(episode);
-        Utilities.displayAlertDialog(getApplicationContext(),""+" Episodio Criado Com Sucesso" );
+        Utilities.displayAlertDialog(CreateEpisodeActivity.this,"Episodio Criado Com Sucesso").show();
+
+        Intent intent = new Intent(CreateEpisodeActivity.this, EpisodeFragment.class);
+        startActivity(intent);
+
     }
 
     @Override
