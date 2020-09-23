@@ -11,10 +11,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.common.ListbleItemRemoveListener;
+import mz.org.fgh.idartlite.common.DialogListener;
+import mz.org.fgh.idartlite.common.ListbleDialogListener;
 
 public class Utilities {
 
@@ -89,7 +91,7 @@ public class Utilities {
         return builder.create();
     }
 
-    private static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, int position, BaseModel baseModel, ListbleItemRemoveListener listener)
+    private static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, int position, BaseModel baseModel, ListbleDialogListener listener)
         {
             AlertDialog myQuittingDialogBox = new AlertDialog.Builder(mContext)
                     // set message, title, and icon
@@ -120,11 +122,38 @@ public class Utilities {
             return myQuittingDialogBox;
         }
 
-    public static AlertDialog displayDeleteConfirmationDialogFromList(final Context mContext, final String dialogMesg, int position, ListbleItemRemoveListener listener) {
+    public static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, DialogListener listener)
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(mContext)
+                // set message, title, and icon
+                .setTitle(mContext.getResources().getString(R.string.app_name))
+                .setMessage(dialogMesg)
+
+                .setPositiveButton(positive, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton(negative, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
+
+    public static AlertDialog displayDeleteConfirmationDialogFromList(final Context mContext, final String dialogMesg, int position, ListbleDialogListener listener) {
         return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel), position, null, listener);
     }
 
-    public static AlertDialog displayDeleteConfirmationDialog(final Context mContext, final String dialogMesg,  BaseModel baseModel, ListbleItemRemoveListener listener) {
+    public static AlertDialog displayDeleteConfirmationDialog(final Context mContext, final String dialogMesg,  BaseModel baseModel, ListbleDialogListener listener) {
         return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel), 0, baseModel, listener);
     }
 
@@ -160,6 +189,10 @@ public class Utilities {
 
     public static String parseDoubleToString(double toParse){
         return String.valueOf(toParse);
+    }
+
+    public static UUID getNewUUID(){
+        return UUID.randomUUID();
     }
 
 }

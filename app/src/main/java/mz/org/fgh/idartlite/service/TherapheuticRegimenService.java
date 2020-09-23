@@ -6,6 +6,7 @@ import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class TherapheuticRegimenService extends BaseService {
 
@@ -15,5 +16,9 @@ public class TherapheuticRegimenService extends BaseService {
 
     public void createTherapheuticRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException {
         getDataBaseHelper().getTherapeuticRegimenDao().create(therapeuticRegimen);
+    }
+
+    public List<TherapeuticRegimen> getAll() throws SQLException {
+        return getDataBaseHelper().getTherapeuticRegimenDao().queryForAll();
     }
 }

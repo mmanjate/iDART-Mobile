@@ -26,6 +26,14 @@ public class PrescribedDrug extends BaseModel {
     @DatabaseField(columnName = COLUMN_PRESCRIPTION ,canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Prescription prescription;
 
+    public PrescribedDrug() {
+    }
+
+    public PrescribedDrug(Drug drug, Prescription prescription) {
+        this.drug = drug;
+        this.prescription = prescription;
+    }
+
     public int getId() {
         return id;
     }

@@ -88,6 +88,8 @@
     <string name="label_data_validade">Data de Validade *</string>
     <string name="label_quantidade_recebida">Quantidade Recebida *</string>
     <string name="label_preco">Preço *</string>
+    <string name="error_loading_form_data">\"Ocorreu um erro ao carregar os dados iniciais do formulário. \"</string>
+    <string name="record_saved">Registo gravado com sucesso.</string>
 
 
 </resources>
