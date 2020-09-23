@@ -213,6 +213,21 @@
                             android:drawableLeft="@drawable/ic_preco"
                             android:inputType="number|numberDecimal" />
 
+                        <ImageView
+                            android:id="@+id/imv_add_selected_drug"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/ic_save"
+                            android:layout_margin="@dimen/dimen_10dp"
+                            android:layout_gravity="center"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_lista_medicamentos"
+                            style="@style/input_labels"
+                            android:textStyle="bold"/>
+
                     </LinearLayout>
 
                     </LinearLayout>
