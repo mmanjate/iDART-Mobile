@@ -293,7 +293,7 @@ public class LoginVM extends BaseViewModel {
                      drug.setId(1);
 
                      stock = new Stock();
-                     stock.setBatchNumber(250845);
+                     stock.setBatchNumber("250845AD");
                      stock.setClinic(clinic);
                      stock.setDrug(drug);
                      stock.setDateReceived(date);
