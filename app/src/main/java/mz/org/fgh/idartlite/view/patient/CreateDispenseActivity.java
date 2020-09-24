@@ -56,7 +56,6 @@ public class CreateDispenseActivity extends BaseActivity {
 
     private ListbleAdapter listbleAdapter;
 
-    private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +73,14 @@ public class CreateDispenseActivity extends BaseActivity {
         if (intent != null) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                getRelatedViewModel().setPatient((Patient) bundle.getSerializable("patient"));
+                getRelatedViewModel().getDispense().setPrescription((Prescription) bundle.getSerializable("prescription"));
                 activityCreateDispenseBinding.setViewModel(getRelatedViewModel());
 
-                if (getRelatedViewModel().getPatient() == null) {
-                    throw new RuntimeException("Não foi seleccionado um paciente para detalhar.");
+                if (getRelatedViewModel().getDispense().getPrescription() == null) {
+                    // Carregar a ultima prescricao
+                    throw new RuntimeException("Carregar ultima prescricao");
                 }
 
-                this.patient = getRelatedViewModel().getPatient();
             }
         }
 
@@ -227,7 +226,7 @@ public class CreateDispenseActivity extends BaseActivity {
 
         Dispense dispense = new Dispense();
 
-        Prescription prescription = getRelatedViewModel().getLastPatientPrescription(this.patient);
+        Prescription prescription = getRelatedViewModel().getLastPatientPrescription(getRelatedViewModel().getDispense().getPrescription().getPatient());
 
         //Fazer as buscas corretas
         Clinic clinic = new Clinic();

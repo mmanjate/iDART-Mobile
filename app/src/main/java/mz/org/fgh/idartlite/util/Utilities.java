@@ -132,7 +132,7 @@ public class Utilities {
                 .setPositiveButton(positive, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-
+                        listener.doOnConfirmed();
                         dialog.dismiss();
                     }
 
