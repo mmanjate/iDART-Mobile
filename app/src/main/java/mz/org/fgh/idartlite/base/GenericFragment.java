@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -9,6 +10,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.Serializable;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.model.User;
 
@@ -38,6 +42,32 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
 
     public User getCurrentUser() {
         return getMyActivity().getCurrentUser();
+    }
+
+    public void nextActivity(Context context, Class clazz){
+        nextActivity(context, clazz, null);
+    }
+    /**
+     * Move from one {@link android.app.Activity} to another
+     *
+     * @param context
+     * @param clazz
+     * @param params
+     */
+    public void nextActivity(Context context, Class clazz, Map<String, Object> params){
+
+        Intent intent = new Intent(context, clazz);
+        Bundle bundle = new Bundle();
+
+        if (params != null && params.size() > 0){
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                if (entry.getValue() instanceof Serializable) {
+                    bundle.putSerializable(entry.getKey(), (Serializable) entry.getValue());
+                }
+            }
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
     }
 
     protected void displayDataOnRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter, Context context) {

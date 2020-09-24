@@ -29,8 +29,6 @@ public class DispenseVM extends BaseViewModel {
 
     private boolean drugDataVisible;
 
-    private Patient patient;
-
     private PrescriptionService prescriptionService;
 
     private DispenseDrugService dispenseDrugService;
@@ -66,14 +64,6 @@ public class DispenseVM extends BaseViewModel {
 
     public void setDispense(Dispense dispense) {
         this.dispense = dispense;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
     }
 
     @Bindable
