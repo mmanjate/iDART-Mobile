@@ -3,6 +3,10 @@ package mz.org.fgh.idartlite.model;
 
 import android.os.Build;
 import androidx.annotation.RequiresApi;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.dao.LazyForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -12,6 +16,8 @@ import mz.org.fgh.idartlite.dao.DispenseDaoImpl;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
@@ -45,6 +51,12 @@ public class Dispense extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
+
+    @ForeignCollectionField(eager=false)
+    private Collection<DispensedDrug> dispensedDrugs = new ArrayList<>();
+
+    public Dispense() {
+    }
 
 
     public int getId() {
@@ -101,6 +113,14 @@ public class Dispense extends BaseModel {
 
     public void setSyncStatus(String syncStatus) {
         this.syncStatus = syncStatus;
+    }
+
+    public Collection<DispensedDrug> getDispensedDrugs() {
+        return dispensedDrugs;
+    }
+
+    public void setDispensedDrugs(Collection<DispensedDrug> dispensedDrugs) {
+        this.dispensedDrugs = dispensedDrugs;
     }
 
     @Override

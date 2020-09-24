@@ -7,8 +7,8 @@
 
     <data>
         <variable
-            name="patient"
-            type="mz.org.fgh.idartlite.model.Patient" />
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.DispenseVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,13 +21,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
             app:elevation="6dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <include layout="@layout/app_bar" />
 
-            <include layout="@layout/pacient_info" bind:patient="@{patient}"/>
+            <include layout="@layout/pacient_info" bind:patient="@{viewModel.patient}"/>
 
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -110,17 +111,17 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txv_drugs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Adicionar Aviamento - Medicamentos"
-            android:background="@color/background_layout"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:paddingLeft="@dimen/dimen_4dp"
-            app:drawableEndCompat="@drawable/ic_row_dados_pessoais"
-            android:layout_margin="@dimen/dimen_4dp"/>
+            <TextView
+                android:id="@+id/txv_drugs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adicionar Aviamento - Medicamentos"
+                android:background="@color/background_layout"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingLeft="@dimen/dimen_4dp"
+                app:drawableEndCompat="@drawable/ic_expand_less"
+                android:layout_margin="@dimen/dimen_4dp"/>
 
         <LinearLayout
             android:id="@+id/drugs_data_lyt"
@@ -166,11 +167,13 @@
                 android:layout_marginTop="@dimen/dimen_4dp"
                 android:scrollbars="vertical"/>
 
+
             <ImageView
                 android:id="@+id/save_and_continue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 app:srcCompat="@drawable/ic_ok"
+                android:layout_marginTop="@dimen/dimen_22dp"
                 android:layout_margin="@dimen/dimen_10dp"
                 android:layout_gravity="right"/>
 
