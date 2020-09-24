@@ -2,9 +2,10 @@ package mz.org.fgh.idartlite.dao;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
-import mz.org.fgh.idartlite.model.Drug;
 
 import java.sql.SQLException;
+
+import mz.org.fgh.idartlite.model.Drug;
 
 public class DrugDaoImpl extends GenericDaoImpl<Drug, Integer> implements DrugDao {
 

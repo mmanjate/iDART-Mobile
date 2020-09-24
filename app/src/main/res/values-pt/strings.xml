@@ -95,6 +95,13 @@
     <string name="label_lista_medicamentos">Lista de Medicamentos *</string>
     <string name="drug_data_empty_filds">Todos os campos desse formulario são Obrigatorios.</string>
     <string name="drug_validate_date">A data de validade deve ser maior que a data de entrada.</string>
-
+    <string name="record_sucessfuly_removed">Registo removido com sucesso</string>
+    <string name="would_like_to_dispense">A Prescrição foi gravada com sucesso. Pretende aviar a mesma?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="prescription_cant_be_removed_msg">Esta Prescrção não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
+    <string name="no_patient_or_prescription">Não foi seleccionado um paciente ou prescrição.</string>
+    <string name="error_on_loading_data">Ocorreu um erro ao carregar os dados da base de dados</string>
+    <string name="save_error_msg">\"Ocorreu um erro ao gravar a prescrição. \"</string>
 
 </resources>

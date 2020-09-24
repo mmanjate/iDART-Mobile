@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.Serializable;
 import java.util.Map;
 
+import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.view.patient.PatientActivity;
 
 public abstract class BaseActivity extends AppCompatActivity implements GenericActivity {
 
@@ -20,10 +20,13 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
 
     protected User currentUser;
     protected Clinic currentClinic;
+    private ApplicationStep applicationStep;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        applicationStep = ApplicationStep.fastCreate(ApplicationStep.STEP_INIT);
 
         Intent intent = this.getIntent();
         if(intent != null){
@@ -85,5 +88,33 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
 
     public void setCurrentClinic(Clinic currentClinic) {
         this.currentClinic = currentClinic;
+    }
+
+    protected void changeApplicationStepToInit(){
+        this.applicationStep.changeToInit();
+    }
+
+    protected void changeApplicationStepToList(){
+        this.applicationStep.changeToList();
+    }
+
+    protected void changeApplicationStepToDisplay(){
+        this.applicationStep.changeToDisplay();
+    }
+
+    protected void changeApplicationStepToEdit(){
+        this.applicationStep.changeToEdit();
+    }
+
+    protected void changeApplicationStepToSave(){
+        this.applicationStep.changeToSave();
+    }
+
+    protected void changeApplicationStepToCreate(){
+        this.applicationStep.changetocreate();
+    }
+
+    public ApplicationStep getApplicationStep() {
+        return applicationStep;
     }
 }

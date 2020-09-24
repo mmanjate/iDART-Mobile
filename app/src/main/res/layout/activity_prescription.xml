@@ -11,6 +11,7 @@
             name="viewModel"
             type="mz.org.fgh.idartlite.viewmodel.PrescriptionVM" />
         <import type="mz.org.fgh.idartlite.model.Prescription"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,6 +93,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_calendar"
+                            android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.prescription.prescriptionDate)}"
                             android:paddingStart="@dimen/dimen_4dp"
                             android:paddingLeft="@dimen/dimen_4dp"/>
                         <TextView

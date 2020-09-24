@@ -5,7 +5,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.time.LocalDate;
@@ -18,6 +17,7 @@ import java.util.Objects;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.PrescriptionDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "prescription", daoClass = PrescriptionDaoImpl.class)
 public class Prescription extends BaseModel {
@@ -212,6 +212,7 @@ public class Prescription extends BaseModel {
 	}
 
 	public double getDurationInMonths(){
+		if (expiryDate == null) return  0;
 		return DateUtilitis.dateDiff(this.prescriptionDate, this.expiryDate, DateUtilitis.MONTH_FORMAT);
 	}
 
@@ -257,4 +258,19 @@ public class Prescription extends BaseModel {
 		return String.valueOf(noOfDaysBetween);
 
 	}
+
+    public String validate() {
+		if (this.prescriptionDate == null) return "A data da prescrição é obrigatória";
+		if(DateUtilitis.dateDiff(this.prescriptionDate, DateUtilitis.getCurrentDate(), DateUtilitis.DAY_FORMAT) < 0) return "A data da prescrição não pode ser menor que a data corrente.";
+		if(this.supply <= 0) return "A duração da prescrição deve ser indicada.";
+		if(this.dispenseType == null || !Utilities.stringHasValue(this.dispenseType.getDescription())) return "O campo tipo de dispensa é obrigatório.";
+		if(this.therapeuticRegimen == null || !Utilities.stringHasValue(this.therapeuticRegimen.getDescription())) return "O campo tipo de regime terapeutico é obrigatório.";
+		if(this.therapeuticLine == null || !Utilities.stringHasValue(this.therapeuticLine.getDescription())) return "O campo tipo de linha terapeutica é obrigatório.";
+
+		if (!Utilities.listHasElements(this.prescribedDrugs)) return "Por favor indique os medicamentos para esta prescrição";
+
+		if (isUrgent() && !Utilities.stringHasValue(this.urgentNotes)) return "Indicou que a prescrição é especial, por favor indique o motivo.";
+
+		return "";
+    }
 }
