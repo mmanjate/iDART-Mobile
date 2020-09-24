@@ -73,7 +73,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                     @Override
                     public void onItemClick(View view, int position) {
                         stock = stockList.get(position);
-                        stockPosition =position;
+                        stockPosition = position;
                         PopupMenu popup = new PopupMenu(view.getContext(),view);
                         MenuInflater inflater = popup.getMenuInflater();
                         popup.setOnMenuItemClickListener(StockEntranceFragment.this::onMenuItemClick);
@@ -84,7 +84,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                     @Override
                     public void onLongItemClick(View view, int position) {
                         stock = stockList.get(position);
-                        stockPosition =position;
+                        stockPosition = position;
                         PopupMenu popup = new PopupMenu(view.getContext(),view);
                         MenuInflater inflater = popup.getMenuInflater();
                         popup.setOnMenuItemClickListener(StockEntranceFragment.this::onMenuItemClick);
@@ -148,12 +148,9 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                 stockList.get(i).setListPosition(i+1);
             }
             rcvFragmentStock.getAdapter().notifyItemRemoved(position);
-            rcvFragmentStock.removeViewAt(position);
             rcvFragmentStock.getAdapter().notifyItemRangeChanged(position, rcvFragmentStock.getAdapter().getItemCount());
-
-
             try {
-                getRelatedViewModel().deleteStock(stockList.get(position));
+                getRelatedViewModel().deleteStock(stock);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
