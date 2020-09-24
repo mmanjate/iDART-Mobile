@@ -1,7 +1,6 @@
 package mz.org.fgh.idartlite.viewmodel;
 
 import android.app.Application;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
@@ -11,7 +10,6 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
@@ -127,6 +125,10 @@ public class PrescriptionVM extends BaseViewModel {
         return drugService.getAll();
     }
 
+    public List<Drug> getAllDrugsOfTheraputicRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException {
+        return drugService.getAllOfTherapeuticRegimen(therapeuticRegimen);
+    }
+
     public void setPrescriptionToSpetial(){
         urgentPrescription = !urgentPrescription;
         if (urgentPrescription) {
@@ -139,17 +141,43 @@ public class PrescriptionVM extends BaseViewModel {
     public void save(){
 
         getRelatedActivity().loadFormData();
-        try {
-            prescriptionService.createPrescription(this.prescription);
-            Utilities.displayConfirmationDialog(getRelatedActivity(), "Pretende aviar esta prescrição?", "Sim", "Não", getRelatedActivity()).show();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg)+e.getLocalizedMessage()).show();
+        String validationErrors = this.prescription.validate();
+        if (!Utilities.stringHasValue(validationErrors)) {
+            try {
+                if (getRelatedActivity().getApplicationStep().isapplicationstepcreate()) {
+                    prescriptionService.createPrescription(this.prescription);
+                } else if (getRelatedActivity().getApplicationStep().isApplicationStepEdit()) {
+                    prescriptionService.updatePrescription(this.prescription);
+                }
+
+                Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_dispense), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), getRelatedActivity()).show();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg) + e.getLocalizedMessage()).show();
+            }
+        }else {
+            Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
         }
     }
 
     public Prescription getLastPatientPrescription(Patient patient) throws SQLException {
 
         return  this.prescriptionService.getLastPatientPrescription(patient);
+    }
+
+    public String checkPrescriptionRemoveConditions() {
+        if (this.prescription.isSyncStatusReady(this.prescription.getSyncStatus())) return getRelatedActivity().getString(R.string.prescription_cant_be_removed_msg);
+
+        return "";
+    }
+
+    public void loadPrescribedDrugsOfPrescription() throws SQLException {
+        this.prescription.setPrescribedDrugs(prescriptionService.getAllOfPrescription(this.prescription));
+    }
+
+    public void loadLastPatientPrescription() throws SQLException {
+        this.prescription = prescriptionService.getLastPatientPrescription(this.prescription.getPatient());
+        this.prescription.setPrescribedDrugs(prescriptionService.getAllOfPrescription(this.prescription));
+        this.prescription.setId(0);
     }
 }

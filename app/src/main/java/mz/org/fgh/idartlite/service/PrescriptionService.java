@@ -1,15 +1,15 @@
 package mz.org.fgh.idartlite.service;
 
 import android.app.Application;
+
+import java.sql.SQLException;
+import java.util.List;
+
 import mz.org.fgh.idartlite.base.BaseService;
-import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.User;
-
-import java.sql.SQLException;
-import java.util.List;
 
 public class PrescriptionService extends BaseService {
 
@@ -28,15 +28,23 @@ public class PrescriptionService extends BaseService {
         savePriscribedDrus(prescription.getPrescribedDrugs());
     }
 
+
+
     public void savePriscribedDrus(List<PrescribedDrug> prescribedDrugs) throws SQLException {
         for (PrescribedDrug prescribedDrug: prescribedDrugs) {
             getDataBaseHelper().getPrescribedDrugDao().create(prescribedDrug);
         }
     }
 
+    public List<PrescribedDrug> getAllOfPrescription(Prescription prescription) throws SQLException {
+        return getDataBaseHelper().getPrescribedDrugDao().queryForEq(PrescribedDrug.COLUMN_PRESCRIPTION, prescription.getId());
+    }
+
 
     public void updatePrescription(Prescription prescription) throws SQLException {
         getDataBaseHelper().getPrescriptionDao().update(prescription);
+        getDataBaseHelper().getPrescribedDrugDao().deleteBuilder().where().eq(PrescribedDrug.COLUMN_PRESCRIPTION, prescription.getId());
+        getDataBaseHelper().getPrescribedDrugDao().create(prescription.getPrescribedDrugs());
     }
 
 

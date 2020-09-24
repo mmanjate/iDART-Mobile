@@ -1,7 +1,6 @@
 package mz.org.fgh.idartlite.base;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public abstract class BaseModel implements Serializable {
 
@@ -15,6 +14,20 @@ public abstract class BaseModel implements Serializable {
         this.listPosition = listPosition;
     }
 
+    public int getListPosition() {
+        return listPosition;
+    }
 
+    public boolean isSyncStatusReady(String syncStatus){
+        return syncStatus.equals(SYNC_SATUS_READY);
+    }
+
+    public boolean isSyncStatusSent(String syncStatus){
+        return syncStatus.equals(SYNC_SATUS_SENT);
+    }
+
+    public boolean isSyncStatusUpdated(String syncStatus){
+        return syncStatus.equals(SYNC_SATUS_UPDATED);
+    }
 
 }
