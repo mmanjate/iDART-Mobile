@@ -47,6 +47,7 @@ public class StockEntranceActivity extends BaseActivity {
     private ListbleAdapter listbleAdapter;
     ArrayAdapter<Drug> adapterSpinner;
     private Drug drug;
+    private boolean isEditForm = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class StockEntranceActivity extends BaseActivity {
                     stockEntranceBinding.imvAddSelectedDrug.setVisibility(View.GONE);
                     stockEntranceBinding.rcvSelectedDrugs.setVisibility(View.GONE);
                     stockEntranceBinding.spnDrugs.setSelection(adapterSpinner.getPosition(getRelatedViewModel().getStock().getDrug()));
+                    isEditForm = true;
                 }
 
                 if (getRelatedViewModel().getClinic() == null){
@@ -191,17 +193,16 @@ public class StockEntranceActivity extends BaseActivity {
                                 DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) > 0){
                                 loadDataForm();
                                 getRelatedViewModel().getStock().setUuid(Utilities.getNewUUID().toString());
-                                getRelatedViewModel().getStock().setSyncStatus(BaseModel.SYNC_SATUS_READY);
 
                             Listble listble = (Listble) getRelatedViewModel().getStock();
 
                             if (!selectedStock.contains(listble)) {
-                                listble.setListPosition(selectedStock.size()+1);
+                                listble.setListPosition(selectedStock.size() + 1);
                                 selectedStock.add(listble);
                                 getRelatedViewModel().initNewStock();
                                 Collections.sort(selectedStock);
-
                                 displaySelectedDrugs();
+                                cleanForm();
                             }else {
                                 Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_duplication_msg)).show();
                             }
@@ -226,23 +227,34 @@ public class StockEntranceActivity extends BaseActivity {
         getRelatedViewModel().getStock().setPrice(Double.valueOf(stockEntranceBinding.numeroPreco.getText().toString()));
         getRelatedViewModel().getStock().setUnitsReceived(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()));
         getRelatedViewModel().getStock().setClinic(getCurrentClinic());
+        getRelatedViewModel().getStock().setSyncStatus(BaseModel.SYNC_SATUS_READY);
+    }
+
+    private void cleanForm() {
+        stockEntranceBinding.dataValidade.setText("");
+        stockEntranceBinding.dataEntrada.setText("");
+        stockEntranceBinding.numeroLote.setText("");
+        stockEntranceBinding.numeroGuia.setText("");
+        stockEntranceBinding.numeroPreco.setText("");
+        stockEntranceBinding.numeroQuantidadeRecebida.setText("");
     }
 
     private void saveStock() throws SQLException {
         if(!this.selectedStock.isEmpty()){
-            if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
-                    DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) > 0) {
+            if(!isEditForm){
                 for (Listble listble : this.selectedStock){
-                    if(((Stock) listble).getId() == 0){
-                        stockService.saveStock((Stock) listble);
-                    }else{
-                        loadDataForm();
-                        stockService.saveStock(getRelatedViewModel().getStock());
-                    }
+                    stockService.saveStock((Stock) listble);
                 }
                 finish();
             }else {
-                Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
+                if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
+                        DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) > 0) {
+                    loadDataForm();
+                    stockService.saveStock(getRelatedViewModel().getStock());
+                    finish();
+                }else {
+                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
+                }
             }
         }else{
             Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_empty_filds)).show();
