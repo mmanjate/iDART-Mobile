@@ -29,13 +29,13 @@ import mz.org.fgh.idartlite.common.ListbleDialogListener;
 import mz.org.fgh.idartlite.databinding.FragmentStockEntranceBinding;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.patient.DispenseFragment;
 import mz.org.fgh.idartlite.viewmodel.StockEntranceVM;
 
 public class StockEntranceFragment extends GenericFragment implements ListbleDialogListener {
 
     private RecyclerView rcvFragmentStock;
     private List<Stock> stockList;
+    private Stock stock;
     private StockEntranceAdapter stockEntranceAdapter;
     private FragmentStockEntranceBinding fragmentStockEntranceBinding;
     int stockPosition;
@@ -72,7 +72,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                         getContext(), rcvFragmentStock, new ClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Stock stock = stockList.get(position);
+                        stock = stockList.get(position);
                         stockPosition =position;
                         PopupMenu popup = new PopupMenu(view.getContext(),view);
                         MenuInflater inflater = popup.getMenuInflater();
@@ -83,7 +83,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        Stock stock = stockList.get(position);
+                        stock = stockList.get(position);
                         stockPosition =position;
                         PopupMenu popup = new PopupMenu(view.getContext(),view);
                         MenuInflater inflater = popup.getMenuInflater();
@@ -106,6 +106,13 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
 
             case R.id.edit:
                 //Call activity to Edit
+                Intent intent = new Intent(getContext(), StockEntranceActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", getCurrentUser());
+                bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                bundle.putSerializable("stock", stock);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return true;
             case R.id.remove:
                 Utilities.displayDeleteConfirmationDialogFromList(StockEntranceFragment.this.getContext(),StockEntranceFragment.this.getString(R.string.list_item_delete_msg),stockPosition,StockEntranceFragment.this).show();
