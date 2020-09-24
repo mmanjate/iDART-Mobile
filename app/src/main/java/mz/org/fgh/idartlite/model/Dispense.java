@@ -19,6 +19,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @DatabaseTable(tableName = "Dispense", daoClass = DispenseDaoImpl.class)
@@ -52,8 +53,7 @@ public class Dispense extends BaseModel {
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
 
-    @ForeignCollectionField(eager=false)
-    private Collection<DispensedDrug> dispensedDrugs = new ArrayList<>();
+    private List<DispensedDrug> dispensedDrugs = new ArrayList<>();
 
     public Dispense() {
     }
@@ -115,11 +115,11 @@ public class Dispense extends BaseModel {
         this.syncStatus = syncStatus;
     }
 
-    public Collection<DispensedDrug> getDispensedDrugs() {
+    public List<DispensedDrug> getDispensedDrugs() {
         return dispensedDrugs;
     }
 
-    public void setDispensedDrugs(Collection<DispensedDrug> dispensedDrugs) {
+    public void setDispensedDrugs(List<DispensedDrug> dispensedDrugs) {
         this.dispensedDrugs = dispensedDrugs;
     }
 
