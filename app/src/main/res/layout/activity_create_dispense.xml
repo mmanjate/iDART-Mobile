@@ -28,7 +28,7 @@
 
             <include layout="@layout/app_bar" />
 
-            <include layout="@layout/pacient_info" bind:patient="@{viewModel.patient}"/>
+            <include layout="@layout/pacient_info" bind:patient="@{viewModel.dispense.prescription.patient}"/>
 
 
         </com.google.android.material.appbar.AppBarLayout>
