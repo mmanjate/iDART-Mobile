@@ -22,6 +22,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleAdapter;
@@ -44,8 +45,8 @@ public class StockEntranceActivity extends BaseActivity {
     private List<Listble> selectedStock;
     private RecyclerView rcvSelectedDrugs;
     private ListbleAdapter listbleAdapter;
+    ArrayAdapter<Drug> adapterSpinner;
     private Drug drug;
-    private Stock stock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +56,19 @@ public class StockEntranceActivity extends BaseActivity {
         stockService = new StockService(getApplication(), getCurrentUser());
         rcvSelectedDrugs = stockEntranceBinding.rcvSelectedDrugs;
         selectedStock = new ArrayList<>();
-        stock = new Stock();
         drug = new Drug();
 
         stockEntranceBinding.drugsDataLyt.setVisibility(View.GONE);
         getRelatedViewModel().setInitialDataVisible(true);
         getRelatedViewModel().setDrugDataVisible(false);
+
+        try {
+            populateDrugList();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        enventInitialization();
 
         Intent intent = this.getIntent();
         if(intent != null){
@@ -68,26 +76,30 @@ public class StockEntranceActivity extends BaseActivity {
             if(bundle != null) {
                 getRelatedViewModel().setClinic((Clinic) bundle.getSerializable("clinic"));
                 stockEntranceBinding.setClinic(getRelatedViewModel().getClinic());
+
+                if((Stock) bundle.getSerializable("stock") != null){
+                    getRelatedViewModel().setStock((Stock) bundle.getSerializable("stock"));
+                    selectedStock.add((Listble) getRelatedViewModel().getStock());
+                    Collections.sort(selectedStock);
+                    //displaySelectedDrugs();
+                    stockEntranceBinding.imvAddSelectedDrug.setVisibility(View.GONE);
+                    stockEntranceBinding.rcvSelectedDrugs.setVisibility(View.GONE);
+                    stockEntranceBinding.spnDrugs.setSelection(adapterSpinner.getPosition(getRelatedViewModel().getStock().getDrug()));
+                }
+
                 if (getRelatedViewModel().getClinic() == null){
                     throw new RuntimeException("Não foi seleccionado uma clinic para detalhar.");
                 }
             }
         }
-
-        enventInitialization();
-
-        try {
-            populateDrugList();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        stockEntranceBinding.setStock(getRelatedViewModel().getStock());
     }
 
     public void populateDrugList() throws SQLException {
         drugList = drugService.getAll();
-        ArrayAdapter<Drug> adapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        stockEntranceBinding.spnDrugs.setAdapter(adapter);
+        adapterSpinner = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugList);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        stockEntranceBinding.spnDrugs.setAdapter(adapterSpinner);
     }
 
     public void enventInitialization(){
@@ -177,26 +189,20 @@ public class StockEntranceActivity extends BaseActivity {
 
                         if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
                                 DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) > 0){
-                            drug = (Drug) stockEntranceBinding.spnDrugs.getSelectedItem();
-                            stock.setDrug(drug);
-                            stock.setExpiryDate(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT));
-                            stock.setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
-                            stock.setBatchNumber(stockEntranceBinding.numeroLote.getText().toString());
-                            stock.setOrderNumber(stockEntranceBinding.numeroGuia.getText().toString());
-                            stock.setPrice(Double.valueOf(stockEntranceBinding.numeroPreco.getText().toString()));
-                            stock.setUnitsReceived(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()));
-                            stock.setClinic(getCurrentClinic());
+                                loadDataForm();
+                                getRelatedViewModel().getStock().setUuid(Utilities.getNewUUID().toString());
+                                getRelatedViewModel().getStock().setSyncStatus(BaseModel.SYNC_SATUS_READY);
 
-                            Listble listble = (Listble) stock;
+                            Listble listble = (Listble) getRelatedViewModel().getStock();
 
                             if (!selectedStock.contains(listble)) {
                                 listble.setListPosition(selectedStock.size()+1);
                                 selectedStock.add(listble);
+                                getRelatedViewModel().initNewStock();
                                 Collections.sort(selectedStock);
 
                                 displaySelectedDrugs();
                             }else {
-
                                 Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_duplication_msg)).show();
                             }
                         }else {
@@ -210,12 +216,34 @@ public class StockEntranceActivity extends BaseActivity {
         });
     }
 
+    private void loadDataForm() {
+        drug = (Drug) stockEntranceBinding.spnDrugs.getSelectedItem();
+        getRelatedViewModel().getStock().setDrug(drug);
+        getRelatedViewModel().getStock().setExpiryDate(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT));
+        getRelatedViewModel().getStock().setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
+        getRelatedViewModel().getStock().setBatchNumber(stockEntranceBinding.numeroLote.getText().toString());
+        getRelatedViewModel().getStock().setOrderNumber(stockEntranceBinding.numeroGuia.getText().toString());
+        getRelatedViewModel().getStock().setPrice(Double.valueOf(stockEntranceBinding.numeroPreco.getText().toString()));
+        getRelatedViewModel().getStock().setUnitsReceived(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()));
+        getRelatedViewModel().getStock().setClinic(getCurrentClinic());
+    }
+
     private void saveStock() throws SQLException {
         if(!this.selectedStock.isEmpty()){
-            for (Listble listble : this.selectedStock){
-                stockService.saveStock((Stock) listble);
+            if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
+                    DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) > 0) {
+                for (Listble listble : this.selectedStock){
+                    if(((Stock) listble).getId() == 0){
+                        stockService.saveStock((Stock) listble);
+                    }else{
+                        loadDataForm();
+                        stockService.saveStock(getRelatedViewModel().getStock());
+                    }
+                }
+                finish();
+            }else {
+                Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
             }
-            finish();
         }else{
             Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_empty_filds)).show();
         }

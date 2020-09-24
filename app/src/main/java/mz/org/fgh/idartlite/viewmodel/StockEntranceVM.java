@@ -18,6 +18,7 @@ import mz.org.fgh.idartlite.view.stock.StockEntranceActivity;
 public class StockEntranceVM extends BaseViewModel {
 
     private Clinic clinic;
+    private Stock stock;
     private StockService stockService;
     private boolean initialDataVisible;
     private boolean drugDataVisible;
@@ -25,6 +26,7 @@ public class StockEntranceVM extends BaseViewModel {
     public StockEntranceVM(@NonNull Application application) {
         super(application);
         stockService = new StockService(getApplication(), getCurrentUser());
+        stock = new Stock();
     }
 
     public List<Stock> getStockByClinic(Clinic clinic) throws SQLException {
@@ -41,6 +43,14 @@ public class StockEntranceVM extends BaseViewModel {
 
     public void setClinic(Clinic clinic) {
         this.clinic = clinic;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 
     public StockEntranceActivity getRelatedActivity() {
@@ -66,5 +76,9 @@ public class StockEntranceVM extends BaseViewModel {
     public void setDrugDataVisible(boolean drugDataVisible) {
         this.drugDataVisible = drugDataVisible;
         notifyPropertyChanged(BR.drugDataVisible);
+    }
+
+    public void initNewStock(){
+        this.stock = new Stock();
     }
 }

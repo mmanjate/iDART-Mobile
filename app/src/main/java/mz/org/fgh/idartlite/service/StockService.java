@@ -1,6 +1,8 @@
 package mz.org.fgh.idartlite.service;
 
 import android.app.Application;
+
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
@@ -17,13 +19,10 @@ public class StockService extends BaseService {
     }
 
     public void saveStock(Stock stock) throws SQLException {
-        UUID uuid = UUID.randomUUID();
-        stock.setSyncStatus("R");
-        stock.setUuid(uuid.toString());
-        getDataBaseHelper().getStockDao().create(stock);
+        getDataBaseHelper().getStockDao().createOrUpdate(stock);
     }
 
-    public void udpateStock(Stock stock) throws SQLException {
+    public void updateStock(Stock stock) throws SQLException {
         getDataBaseHelper().getStockDao().update(stock);
     }
 
