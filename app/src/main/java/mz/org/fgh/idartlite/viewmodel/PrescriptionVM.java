@@ -147,4 +147,9 @@ public class PrescriptionVM extends BaseViewModel {
             Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg)+e.getLocalizedMessage()).show();
         }
     }
+
+    public Prescription getLastPatientPrescription(Patient patient) throws SQLException {
+
+        return  this.prescriptionService.getLastPatientPrescription(patient);
+    }
 }

@@ -22,4 +22,5 @@ public class DispenseTypeService extends BaseService {
     public List<DispenseType> getAll() throws SQLException {
         return getDataBaseHelper().getDispenseTypeDao().queryForAll();
     }
+
 }

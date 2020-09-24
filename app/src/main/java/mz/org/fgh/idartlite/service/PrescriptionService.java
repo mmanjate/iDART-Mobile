@@ -43,4 +43,9 @@ public class PrescriptionService extends BaseService {
     public void deletePrescription(Prescription prescription) throws SQLException {
         getDataBaseHelper().getPrescriptionDao().delete(prescription);
     }
+
+    public Prescription getLastPatientPrescription(Patient patient) throws SQLException {
+
+        return getDataBaseHelper().getPrescriptionDao().getLastPatientPrescription(patient);
+    }
 }
