@@ -25,6 +25,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.ClickListener;
+import mz.org.fgh.idartlite.adapter.StockEntranceAdapter;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
@@ -214,5 +215,23 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
     private Patient getSelectedPatient(){
         return getMyActivity().getPatient();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.rcvDispences = fragmentDispenseBinding.rcvDispenses;
+
+        try {
+            this.dispenseList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (Utilities.listHasElements(dispenseList)) {
+            dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
+            displayDataOnRecyclerView(rcvDispences, dispenseAdapter, getContext());
+        }
+    }
+
 
 }

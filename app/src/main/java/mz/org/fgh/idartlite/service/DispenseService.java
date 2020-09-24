@@ -22,6 +22,16 @@ public class DispenseService extends BaseService {
 
     public void createDispense(Dispense dispense) throws SQLException {
         getDataBaseHelper().getGenericDao(dispense).saveGenericObjectByClass(dispense);
+        if (dispense.getDispensedDrugs() != null) {
+            this.saveDispensedDrugs(dispense.getDispensedDrugs(), dispense);
+        }
+    }
+
+    public void saveDispensedDrugs(List<DispensedDrug> dispensedDrugs, Dispense dispense) throws SQLException {
+        for (DispensedDrug dispensedDrug: dispensedDrugs) {
+            dispensedDrug.setDispense(dispense);
+            getDataBaseHelper().getDispensedDrugDao().create(dispensedDrug);
+        }
     }
 
     public void udpateDispense(Dispense dispense) throws SQLException {
