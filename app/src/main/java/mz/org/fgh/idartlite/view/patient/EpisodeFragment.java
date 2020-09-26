@@ -38,6 +38,7 @@ import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.adapter.EpisodeAdapter;
+import mz.org.fgh.idartlite.view.stock.StockEntranceActivity;
 import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
 
 public class EpisodeFragment extends GenericFragment implements ListbleDialogListener {
@@ -49,6 +50,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
     private EpisodeAdapter episodeAdapter;
     private Dispense lastDispense;
     int position1;
+    private Episode episode;
 
 
     public EpisodeFragment() {
@@ -90,7 +92,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(getContext(), CreateEpisodeActivity.class);
+                    Intent intent = new Intent(getContext(), EpisodeActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("user", getCurrentUser());
                     bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
@@ -105,7 +107,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
                             getContext(), rcvEpisodes, new ClickListener.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
-                            Episode episode = episodeList.get(position);
+                             episode = episodeList.get(position);
                             position1=position;
                             PopupMenu popup = new PopupMenu(view.getContext(),view);
                             MenuInflater inflater = popup.getMenuInflater();
@@ -116,7 +118,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
 
                         @Override
                         public void onLongItemClick(View view, int position) {
-                            Episode episode = episodeList.get(position);
+                             episode = episodeList.get(position);
                             position1=position;
                             PopupMenu popup = new PopupMenu(view.getContext(),view);
                             MenuInflater inflater = popup.getMenuInflater();
@@ -146,10 +148,12 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
 
              //Por retirar chamando tela de criar, por ser editado
              case R.id.edit:
-                 Intent intent = new Intent(getContext(), CreateEpisodeActivity.class);
+                 //Call activity to Edit
+                 Intent intent = new Intent(getContext(), EpisodeActivity.class);
                  Bundle bundle = new Bundle();
                  bundle.putSerializable("user", getCurrentUser());
                  bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                 bundle.putSerializable("episode",episode);
                  bundle.putSerializable("patient", getMyActivity().getPatient());
                  intent.putExtras(bundle);
                  startActivity(intent);

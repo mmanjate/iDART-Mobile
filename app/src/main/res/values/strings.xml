@@ -67,7 +67,7 @@
     <string name="stock_entrance">Entrada</string>
     <string name="stock_inventory">Inventário</string>
     <string name="data_da_visita">Data da visita</string>
-    <string name="adicionar_episodio">Adicionar Episodio</string>
+    <string name="adicionar_episodio">Adicionar/Editar Episodio</string>
     <string name="motivo_de_inicio">Motivo de Inicio</string>
     <string name="motivo_de_fim">Motivo de Fim</string>
 
