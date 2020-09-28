@@ -33,6 +33,14 @@ public class DispensedDrug extends BaseModel {
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
 
+    public DispensedDrug() {
+    }
+
+    public DispensedDrug(Stock stock, Dispense dispense) {
+        this.stock = stock;
+        this.dispense = dispense;
+    }
+
     public int getId() {
         return id;
     }
