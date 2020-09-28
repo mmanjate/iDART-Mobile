@@ -332,7 +332,6 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
         params.put("patient", this.getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
-        nextActivity(getApplication(), DispenseFragment.class,params);
     }
 
     @Override
