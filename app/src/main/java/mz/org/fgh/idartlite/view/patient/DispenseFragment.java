@@ -233,5 +233,4 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
         }
     }
 
-
 }

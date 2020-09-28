@@ -12,8 +12,12 @@ import java.util.List;
 
 public class DispenseService extends BaseService {
 
+    private StockService stockService;
+
     public DispenseService(Application application, User currUser) {
         super(application, currUser);
+
+        this.stockService = new StockService(application, currUser);
     }
 
     public List<Dispense> getAllDispenseByPrescription(Prescription prescription) throws SQLException{
@@ -31,6 +35,8 @@ public class DispenseService extends BaseService {
         for (DispensedDrug dispensedDrug: dispensedDrugs) {
             dispensedDrug.setDispense(dispense);
             getDataBaseHelper().getDispensedDrugDao().create(dispensedDrug);
+
+            this.stockService.updateStock(dispensedDrug);
         }
     }
 
