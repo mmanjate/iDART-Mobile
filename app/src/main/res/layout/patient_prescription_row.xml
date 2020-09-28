@@ -74,15 +74,7 @@
                     android:layout_weight="0.5"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textViewOptions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:paddingLeft="@dimen/dimen_22dp"
-                        android:text="&#8942;"
-                        android:textAppearance="?android:textAppearanceLarge" />
+
                 </LinearLayout>
             </LinearLayout>
 

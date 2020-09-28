@@ -101,6 +101,8 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
                         }
                     }
                 }
+            }else {
+                throw new RuntimeException(getString(R.string.no_patient_or_prescription));
             }
         }
 
@@ -171,7 +173,9 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 TherapeuticRegimen regimen = (TherapeuticRegimen) adapterView.getItemAtPosition(i);
 
-                if (regimen.getId() > 0) {
+                getRelatedViewModel().getPrescription().setTherapeuticRegimen(regimen);
+
+                if (regimen.getId() > 0 && getRelatedViewModel().isSeeOnlyOfRegime()) {
                     reloadDrugsSpinnerByRegime(regimen);
                 }
             }
@@ -206,11 +210,16 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         });
     }
 
-    private void reloadDrugsSpinnerByRegime(TherapeuticRegimen regimen) {
+    public void reloadDrugsSpinnerByRegime(TherapeuticRegimen regimen) {
         List<Drug> drugs = new ArrayList<>();
         drugs.add(new Drug());
         try {
-            drugs.addAll(getRelatedViewModel().getAllDrugsOfTheraputicRegimen(regimen));
+            if (regimen != null && getRelatedViewModel().isSeeOnlyOfRegime()) {
+                drugs.addAll(getRelatedViewModel().getAllDrugsOfTheraputicRegimen(regimen));
+            }
+            else {
+                drugs.addAll(getRelatedViewModel().getAllDrugs());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -402,16 +411,16 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         return  new PrescribedDrug(drug, getRelatedViewModel().getPrescription());
     }
 
-    public void doAfterSave(){
+    public void doAfterPrescriptionSave(){
         Map<String, Object> params = new HashMap<>();
         params.put("prescription", getRelatedViewModel().getPrescription());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
-        nextActivity(getApplication(), CreateDispenseActivity.class,params);
+        nextActivity(CreateDispenseActivity.class,params);
     }
 
     @Override
     public void doOnConfirmed() {
-        doAfterSave();
+        doAfterPrescriptionSave();
     }
 }
