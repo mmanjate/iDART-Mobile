@@ -9,7 +9,10 @@
         <variable
             name="patient"
             type="mz.org.fgh.idartlite.model.Patient" />
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.PatientDetailsVM" />
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -136,7 +139,7 @@
                                 android:id="@+id/age"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{DateUtilitis.parseDateToDDMMYYYYString(patient.birthDate)}" />
+                                android:text="@{Utilities.parseIntToString(patient.age)}" />
 
                         </LinearLayout>
                     </LinearLayout>
