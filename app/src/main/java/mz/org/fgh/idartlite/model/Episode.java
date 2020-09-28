@@ -9,6 +9,7 @@ import mz.org.fgh.idartlite.dao.EpisodeDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -167,6 +168,19 @@ public class Episode extends BaseModel {
 
 	public String getStringEpisodeDate(){
 		return DateUtilitis.parseDateToDDMMYYYYString(this.episodeDate);
+	}
+
+	public String validateEpisodeData(){
+		if(episodeDate==null){
+			return "A data do Episodio e um dado obrigatorio.";
+		}
+		if(DateUtilitis.getDaysBetween(episodeDate, Calendar.getInstance().getTime()) >0){
+			return "A data do Episodio nao pode ser uma data futura.";
+		}
+		if(notes==null){
+			return "As Notas sao um dado obrigatorio.";
+		}
+		return "";
 	}
 
 }

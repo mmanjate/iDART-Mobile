@@ -9,6 +9,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
@@ -34,7 +35,7 @@ public class DispenseService extends BaseService {
 
 
     public void createDispense(Dispense dispense) throws SQLException {
-        getDataBaseHelper().getGenericDao(dispense).saveGenericObjectByClass(dispense);
+        getDataBaseHelper().getDispenseDao().create(dispense);
         if (dispense.getDispensedDrugs() != null) {
             this.saveDispensedDrugs(dispense.getDispensedDrugs(), dispense);
         }
@@ -50,31 +51,17 @@ public class DispenseService extends BaseService {
     }
 
     public void udpateDispense(Dispense dispense) throws SQLException {
-        getDataBaseHelper().getGenericDao(dispense).updateGenericObjectByClass(dispense);
+        getDataBaseHelper().getDispenseDao().update(dispense);
     }
 
     public void deleteDispense(Dispense dispense) throws SQLException {
-        getDataBaseHelper().getGenericDao(dispense).deleteGenericObjectByClass(dispense);
+        getDataBaseHelper().getDispenseDao().delete(dispense);
     }
 
-    public List<Dispense> getAllOfPrescription(Prescription prescription) throws SQLException {
-        return getDataBaseHelper().getDispenseDao().queryForEq(Dispense.COLUMN_PRESCRIPTION, prescription.getId());
-    }
 
     public List<Dispense> getAllOfPatient(Patient patient) throws SQLException {
 
-        QueryBuilder<Prescription, Integer> prescriptionQb = getDataBaseHelper().getPrescriptionDao().queryBuilder();
-        prescriptionQb.where().eq(Prescription.COLUMN_PATIENT_ID, patient.getId());
-
-        QueryBuilder<TherapeuticLine, Integer> therapeuticLineQb = getDataBaseHelper().getTherapeuticLineDao().queryBuilder();
-        prescriptionQb.join(therapeuticLineQb);
-
-        QueryBuilder<Dispense, Integer> dispenseQb =  getDataBaseHelper().getDispenseDao().queryBuilder();
-        dispenseQb.join(prescriptionQb);
-
-        List<Dispense> dispenses = dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,false).query();
-
-        return dispenses;
+       return getDataBaseHelper().getDispenseDao().getAllOfPatient(getApplication(),patient);
     }
 
     public long countAllOfPrescription(Prescription prescription) throws SQLException {
