@@ -11,6 +11,7 @@ import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
+import mz.org.fgh.idartlite.util.Utilities;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -27,10 +28,15 @@ public class EpisodeService extends BaseService {
         return getDataBaseHelper().getEpisodeDao().getAllByPatient(patient);
     }
 
+    public Episode getLatestByPatientAndSanitryUuid(Patient patient,String uuid) throws SQLException{
+        return getDataBaseHelper().getEpisodeDao().getLatestByPatientAndSanitryUuid(patient,uuid);
+    }
+
+
     public void createEpisode(Episode episode) throws SQLException {
-        UUID uuid = UUID.randomUUID();
+
         episode.setSyncStatus("R");
-        episode.setUuid(uuid.toString());
+        episode.setUuid(Utilities.getNewUUID().toString());
         getDataBaseHelper().getEpisodeDao().create(episode);
     }
     public void udpateEpisode(Episode episode) throws SQLException {

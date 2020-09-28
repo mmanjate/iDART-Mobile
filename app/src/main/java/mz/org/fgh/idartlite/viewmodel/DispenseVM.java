@@ -57,10 +57,12 @@ public class DispenseVM extends BaseViewModel {
         dispenseDrugService = new DispenseDrugService(application, getCurrentUser());
         this.drugService = new DrugService(application, getCurrentUser());
         this.stockService = new StockService(application, getCurrentUser());
+
     }
 
     public List<Dispense> gatAllOfPrescription(Prescription prescription) throws SQLException {
         return dispenseService.getAllOfPrescription(prescription);
+
     }
 
     public List<Dispense> gatAllOfPatient(Patient patient) throws SQLException {

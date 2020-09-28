@@ -16,13 +16,14 @@ public abstract class BaseService {
     protected static ExecutorService restServiceExecutor;
 
     protected User currentUser;
-
+    protected Application application;
 
     public BaseService(Application application, User currentUser) {
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
         restServiceExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
         this.currentUser = currentUser;
+        this.application=application;
     }
 
     protected IdartLiteDataBaseHelper getDataBaseHelper() {
@@ -35,5 +36,9 @@ public abstract class BaseService {
 
     public User getCurrentUser() {
         return currentUser;
+    }
+
+    public Application getApplication(){
+        return application;
     }
 }

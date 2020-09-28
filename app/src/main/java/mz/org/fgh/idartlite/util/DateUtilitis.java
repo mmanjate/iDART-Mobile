@@ -218,4 +218,19 @@ public class DateUtilitis {
         return data;
     }
 
+
+    /**
+     * Retorna o numero de dias entre as datas.
+     *
+     * @param date1 data inicial
+     * @param date2 data final
+     * @return numero de dias
+     */
+    public static long getDaysBetween(final Date date1, final Date date2)
+    {
+        return (date2.getTime()
+                - date1.getTime())
+                / (1000 * 60 * 60 * 24);
+    }
+
 }

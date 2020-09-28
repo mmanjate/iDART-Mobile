@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.patient.EpisodeActivity"
+    >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.EpisodeVM" />
+        <variable
+            name="patient"
+            type="mz.org.fgh.idartlite.model.Patient" />
+        <variable
+            name="episode"
+            type="mz.org.fgh.idartlite.model.Episode" />
+
+        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            app:elevation="6dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/app_bar" />
+
+            <include
+                layout="@layout/pacient_info"
+                bind:patient="@{patient}" />
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="1dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/initial_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:background="@color/background_layout"
+                        android:paddingLeft="@dimen/dimen_4dp"
+                        android:text="@string/adicionar_episodio"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        app:drawableEndCompat="@drawable/ic_row_dados_pessoais" />
+
+                    <LinearLayout
+                        android:id="@+id/initial_data_lyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            style="@style/input_labels"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/data_da_visita" />
+
+                        <EditText
+                            android:id="@+id/editEpisodeDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{DateUtilitis.formatToDDMMYYYY(episode.episodeDate)}"
+                            android:drawableLeft="@drawable/ic_calendar"
+                            android:paddingStart="@dimen/dimen_4dp"
+                            android:paddingLeft="@dimen/dimen_4dp" />
+
+                        <TextView
+                            style="@style/input_labels"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/motivo_de_inicio" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_baseline_format_list_bulleted_24"></TextView>
+
+                            <Spinner
+                                android:id="@+id/spn_start_reason"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="40" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/input_labels"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/motivo_de_fim" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_baseline_format_list_bulleted_24"></TextView>
+
+                            <Spinner
+                                android:id="@+id/spn_stop_reason"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="40"
+                                android:drawableLeft="@drawable/ic_baseline_format_list_bulleted_24" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/input_labels"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/notas" />
+
+                        <EditText
+                            android:id="@+id/editTextEpisodeObservation"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{episode.notes}"
+                            android:drawableLeft="@drawable/ic_round_notes_24"
+
+                            android:inputType="textMultiLine" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/save_and_continue"
+            android:layout_width="51dp"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="@dimen/dimen_18dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="32dp"
+            android:onClick="@{()->viewModel.save1()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_ok" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
