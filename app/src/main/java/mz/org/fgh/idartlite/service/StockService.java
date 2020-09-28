@@ -5,6 +5,7 @@ import android.app.Application;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
@@ -37,5 +38,20 @@ public class StockService extends BaseService {
 
     public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) throws SQLException {
         return getDataBaseHelper().getStockDao().queryBuilder().where().eq(Stock.COLUMN_CLINIC,clinic.getId()).and().eq(Stock.COLUMN_DRUG, drug.getId()).query();
+    }
+
+    public void updateStock(DispensedDrug dispensedDrug) throws SQLException {
+
+        Stock stock = dispensedDrug.getStock();
+
+        int actualStockMoviment = stock.getStockMoviment();
+
+        int quantitySupplied = dispensedDrug.getQuantitySupplied();
+
+        int remainingStock = actualStockMoviment - quantitySupplied;
+
+        stock.setStockMoviment(remainingStock);
+
+        this.updateStock(stock);
     }
 }
