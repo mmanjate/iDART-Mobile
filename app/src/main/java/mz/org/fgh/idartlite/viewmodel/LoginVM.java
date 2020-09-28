@@ -196,33 +196,6 @@ public class LoginVM extends BaseViewModel {
 
                      System.out.println("Regime ID "+tr.getId());
 
-                     diseaseType = new DiseaseType();
-                     diseaseType.setCode("102030");
-                     diseaseType.setDescription("HIV");
-                     diseaseTypeService.saveDiseaseType(diseaseType);
-                     diseaseType.setId(1);
-
-                     form = new Form();
-                     form.setUnit("1-1");
-                     form.setDescription("um de manha e um final do dia");
-                     formService.saveForm(form);
-                     form.setId(1);
-
-
-                     drug = new Drug();
-                     drug.setDescription("[DTG] DoluteGravir 50mg");
-                     drug.setPackSize(180);
-                     drug.setInstruction("1/1/1");
-                     drug.setFnmcode("D05019060-A");
-                     drug.setDiseaseType(diseaseType);
-                     drug.setForm(form);
-                     drugService.saveDrug(drug);
-                     drug.setId(1);
-
-
-
-                     List<PrescribedDrug> pds = new ArrayList<>();
-
                      //Create prescription
                      Prescription p = new Prescription();
                      p.setDispenseType(dt);
@@ -240,9 +213,9 @@ public class LoginVM extends BaseViewModel {
                      p.setUrgentNotes("Nao especial");
                      p.setUrgentPrescription("Nao especial");
                      p.setUuid("1");
-                     p.setPrescribedDrugs(pds);
                      this.prescriptionService.createPrescription(p);
 
+                     System.out.println("ID Prescicao: "+p.getId());
                      PrescribedDrug pd = new PrescribedDrug();
                      pd.setId(1);
                      pd.setDrug(drug);
@@ -257,8 +230,9 @@ public class LoginVM extends BaseViewModel {
                      stock.setPrice(50);
                      stock.setShelfNumber(80);
                      stock.setUnitsReceived(2390);
+                     stock.setStockMoviment(2390);
                      stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
-                     stockService.saveStock(stock);
+                     stockService.saveOrUpdateStock(stock);
 
                      List<DispensedDrug> dds = new ArrayList<>();
 
@@ -270,13 +244,7 @@ public class LoginVM extends BaseViewModel {
                      p.setId(1);
                      dispense.setPrescription(p);
                      dispense.setUuid("12");
-                     dispense.setDispensedDrugs(dds);
                      this.dispenseService.createDispense(dispense);
-                     dispense.setId(1);
-
-                     DispensedDrug dd = new DispensedDrug();
-                     dd.setId(1);
-                     dd.setStock(stock);
 
                      dispense = new Dispense();
                      dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
@@ -285,7 +253,6 @@ public class LoginVM extends BaseViewModel {
                      p.setId(1);
                      dispense.setPrescription(p);
                      dispense.setUuid("13");
-                     dispense.setDispensedDrugs(dds);
                      this.dispenseService.createDispense(dispense);
 
                      dispense = new Dispense();
@@ -323,6 +290,41 @@ public class LoginVM extends BaseViewModel {
                      clinic.setId(1);
                      user.setClinic(clinic);
                      userService.saveUser(user);
+
+                     diseaseType = new DiseaseType();
+                     diseaseType.setCode("102030");
+                     diseaseType.setDescription("HIV");
+                     diseaseTypeService.saveDiseaseType(diseaseType);
+                     diseaseType.setId(1);
+
+                     form = new Form();
+                     form.setUnit("1-1");
+                     form.setDescription("um de manha e um final do dia");
+                     formService.saveForm(form);
+                     form.setId(1);
+
+                     drug = new Drug();
+                     drug.setDescription("[DTG] DoluteGravir 50mg");
+                     drug.setPackSize(180);
+                     drug.setInstruction("1/1/1");
+                     drug.setFnmcode("D05019060-A");
+                     drug.setDiseaseType(diseaseType);
+                     drug.setForm(form);
+                     drugService.saveDrug(drug);
+                     drug.setId(1);
+
+                     stock = new Stock();
+                     stock.setBatchNumber("250845AD");
+                     stock.setClinic(clinic);
+                     stock.setDrug(drug);
+                     stock.setDateReceived(date);
+                     stock.setExpiryDate(date);
+                     stock.setOrderNumber("00001/001/2020");
+                     stock.setPrice(50);
+                     stock.setShelfNumber(80);
+                     stock.setUnitsReceived(2390);
+                     stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
+                     stockService.saveOrUpdateStock(stock);
 
                      setToastMessage(successUserCreation);
                  } else {

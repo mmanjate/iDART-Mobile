@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.base;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -44,19 +43,18 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         }
     }
 
-    public void nextActivity(Context context, Class clazz){
-        nextActivity(context, clazz, null);
+    public void nextActivity(Class clazz){
+        nextActivity(clazz, null);
     }
     /**
      * Move from one {@link android.app.Activity} to another
      *
-     * @param context
      * @param clazz
      * @param params
      */
-    public void nextActivity(Context context, Class clazz, Map<String, Object> params){
+    public void nextActivity(Class clazz, Map<String, Object> params){
 
-        Intent intent = new Intent(context, clazz);
+        Intent intent = new Intent(getApplication(), clazz);
         Bundle bundle = new Bundle();
 
         if (params != null && params.size() > 0){

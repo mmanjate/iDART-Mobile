@@ -17,6 +17,7 @@ import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.service.DispenseService;
 import mz.org.fgh.idartlite.service.DispenseTypeService;
 import mz.org.fgh.idartlite.service.DrugService;
 import mz.org.fgh.idartlite.service.PrescriptionService;
@@ -35,6 +36,10 @@ public class PrescriptionVM extends BaseViewModel {
     private DispenseTypeService dispenseTypeService;
     private DrugService drugService;
 
+    private DispenseService dispenseService;
+
+    private boolean seeOnlyOfRegime;
+
     private boolean initialDataVisible;
 
     private boolean drugDataVisible;
@@ -49,6 +54,8 @@ public class PrescriptionVM extends BaseViewModel {
         initServices(application);
 
         urgentPrescription = false;
+
+        this.seeOnlyOfRegime = true;
     }
 
     private void initNewPrescription() {
@@ -61,6 +68,7 @@ public class PrescriptionVM extends BaseViewModel {
         lineService = new TherapeuthicLineService(application, getCurrentUser());
         dispenseTypeService = new DispenseTypeService(application, getCurrentUser());
         drugService = new DrugService(application, getCurrentUser());
+        dispenseService = new DispenseService(application, getCurrentUser());
     }
 
     public List<Prescription> gatAllOfPatient(Patient patient) throws SQLException {
@@ -166,9 +174,18 @@ public class PrescriptionVM extends BaseViewModel {
     }
 
     public String checkPrescriptionRemoveConditions() {
-        if (this.prescription.isSyncStatusReady(this.prescription.getSyncStatus())) return getRelatedActivity().getString(R.string.prescription_cant_be_removed_msg);
+        try {
+            if (this.prescription.isSyncStatusReady(this.prescription.getSyncStatus())) return getRelatedActivity().getString(R.string.prescription_cant_be_removed_msg);
+            if (prescriptionHasDispenses()) return getRelatedActivity().getString(R.string.prescription_got_dispenses_msg);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         return "";
+    }
+
+    private boolean prescriptionHasDispenses() throws SQLException {
+        return dispenseService.countAllOfPrescription(this.prescription) > 0;
     }
 
     public void loadPrescribedDrugsOfPrescription() throws SQLException {
@@ -179,5 +196,21 @@ public class PrescriptionVM extends BaseViewModel {
         this.prescription = prescriptionService.getLastPatientPrescription(this.prescription.getPatient());
         this.prescription.setPrescribedDrugs(prescriptionService.getAllOfPrescription(this.prescription));
         this.prescription.setId(0);
+    }
+
+    @Bindable
+    public boolean isSeeOnlyOfRegime() {
+        return seeOnlyOfRegime;
+    }
+
+    public void setSeeOnlyOfRegime(boolean seeOnlyOfRegime) {
+        this.seeOnlyOfRegime = seeOnlyOfRegime;
+        notifyPropertyChanged(BR.seeOnlyOfRegime);
+    }
+
+    public void changeDrugsListingMode(){
+        this.seeOnlyOfRegime = !this.seeOnlyOfRegime;
+
+        getRelatedActivity().reloadDrugsSpinnerByRegime(this.prescription.getTherapeuticRegimen());
     }
 }

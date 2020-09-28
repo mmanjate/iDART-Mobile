@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
@@ -120,9 +121,18 @@ public class DispenseVM extends BaseViewModel {
         return drugService.getAll();
     }
 
-    public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) throws SQLException {
+    public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) {
 
-        return this.stockService.getAllStocksByClinicAndDrug(clinic, drug);
+        List<Stock> stocks = new ArrayList<>();
+
+        try {
+            stocks = this.stockService.getAllStocksByClinicAndDrug(clinic, drug);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.find_stock_list_error)+e.getLocalizedMessage()).show();
+        }
+
+        return stocks;
     }
 
     @Override

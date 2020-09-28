@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">iDartMobile</string>
     <string name="title_activity_patient">PatientActivity</string>
-    <string name="title_activity_stock">StockActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="title_activity_stock">StockActivity</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -32,52 +32,52 @@
     <string name="dispense">Aviamento</string>
     <string name="prescription">Prescrição</string>
     <string name="alert_ok">OK</string>
-    <string name="phone">Telefone: </string>
-    <string name="name">Nome: </string>
-    <string name="age">Idade: </string>
+    <string name="phone">Phone: </string>
+    <string name="name">Name: </string>
+    <string name="age">Age: </string>
     <string name="nid">NID: </string>
-    <string name="last_name">Apelido: </string>
-    <string name="gender">Genero: </string>
+    <string name="last_name">Last Name: </string>
+    <string name="gender">Gender: </string>
     <string name="button_ok">Ok</string>
     <string name="unidade_sanit_ria">Unidade Sanitária</string>
     <string name="genero">Genero</string>
     <string name="idade">Idade</string>
     <string name="telefone">Telefone</string>
+    <string name="data_levantamento">Data Levantamento</string>
 
     <string name="remover">Remover</string>
     <string name="editar">Editar</string>
 
-    <string name="data_episodio">data_episodio</string>
-    <string name="data_de_referencia">data_de_referencia</string>
-    <string name="data_prox_levantamento">data_prox_levantamento</string>
-    <string name="notas">notas</string>
+    <string name="data_episodio">Data Episodio:</string>
+    <string name="data_de_referencia">Data de Referencia:</string>
+    <string name="data_prox_levantamento">Data do Prox. Levan:</string>
+    <string name="notas">Notas:</string>
+    <string name="data">data</string>
     <string name="regime_terapeutico">regime_terapeutico</string>
     <string name="linha">regime_terapeutico</string>
     <string name="dura_o">dura_o</string>
-    <string name="data">data</string>
     <string name="dados_pessoais">Dados Pessoais</string>
     <string name="contacto_pessoais">Contacto</string>
     <string name="other_details_person">Outros</string>
     <string name="phone_person">Telefone:</string>
-    <string name="adress_person">Endreço</string>
-    <string name="date_tarv">Data Inicio TARV</string>
+    <string name="adress_person">Endreço:</string>
+    <string name="date_tarv">Data Inicio TARV:</string>
     <string name="farmacia">Farmácia</string>
     <string name="reason_to_stop">reasontostop</string>
     <string name="stock_entrance">Entrada</string>
     <string name="stock_inventory">Inventário</string>
-    <string name="data_da_visita">data da visita</string>
-    <string name="adicionar_episodio">adicionar_episodio</string>
-    <string name="motivo_de_inicio">motivo_de_inicio</string>
-    <string name="motivo_de_fim">motivo_de_de_fim</string>
+    <string name="data_da_visita">Data da visita</string>
+    <string name="adicionar_episodio">Adicionar Episodio</string>
+    <string name="motivo_de_inicio">Motivo de Inicio</string>
+    <string name="motivo_de_fim">Motivo de Fim</string>
 
     <string name="remove">Remover</string>
     <string name="cancel">Cancelar</string>
     <string name="list_item_delete_msg">Confirma remover o item?</string>
 
-    <string name="data_levantamento">Data Levantamento</string>
-    <string name="dt_proximo_levantamento">Próximo levantamento</string>
-
+    <string name="dt_proximo_levantamento">Próximo levantamento:</string>
     <string name="drug_data_duplication_msg">Não pode adicionar o mesmo medicamento duas vezes.</string>
+    <string name="stock_menor">A quantidade a aviar é maior que o stock do medicamento.</string>
     <string name="label_entrada_stock">Entrada de Stock - Dados Iniciais</string>
     <string name="label_numero_guia">Número da Guia *</string>
     <string name="label_data_entrada">Data da Entrada *</string>
@@ -89,8 +89,9 @@
     <string name="label_preco">Preço *</string>
 
     <string name="error_loading_form_data">\"Ocorreu um erro ao carregar os dados iniciais do formulário. \"</string>
+    <string name="save_error_msg">\"Ocorreu um erro ao gravar a prescrição. \"</string>
+    <string name="find_stock_list_error">\" Ocorreru um erro na busca da lista de stocks do medicamento. \"</string>
     <string name="record_saved">Registo gravado com sucesso.</string>
-
 
     <string name="label_lista_medicamentos">Lista de Medicamentos *</string>
     <string name="drug_data_empty_filds">Todos os campos desse formulario são Obrigatorios.</string>
@@ -101,7 +102,19 @@
     <string name="no">Não</string>
     <string name="prescription_cant_be_removed_msg">Esta Prescrção não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
     <string name="no_patient_or_prescription">Não foi seleccionado um paciente ou prescrição.</string>
-    <string name="error_on_loading_data">Ocorreu um erro ao carregar os dados da base de dados</string>
-    <string name="save_error_msg">\"Ocorreu um erro ao gravar a prescrição. \"</string>
-
+    <string name="error_on_loading_data">Ocorreu um erro ao carregar os dados da base de dados </string>
+    <string name="see_olny_regimen_grugs">Visualizar apenas medicamentos do regime terapêutico?</string>
+    <string name="drugs">Medicamentos *</string>
+    <string name="adicionar_prescri_o_dados_iniciais">Adicionar Prescrição - Dados Iniciais</string>
+    <string name="prescription_date">Data da Prescrição</string>
+    <string name="duration">Duração</string>
+    <string name="therapeutic_regimen">Regime Terapêutico</string>
+    <string name="therapeutic_line">Linha Terapêutica</string>
+    <string name="dispense_type">Tipo de Dispensa</string>
+    <string name="adicionar_prescri_o_medicamentos">Adicionar Prescrição - Medicamentos</string>
+    <string name="drug_list">Lista de Medicamentos *</string>
+    <string name="adicionar_prescri_o_prescri_o_especial">Adicionar Prescrição - Prescrição Especial</string>
+    <string name="prescri_o_especial">Prescrição Especial?</string>
+    <string name="motivo">Motivo *</string>
+    <string name="prescription_got_dispenses_msg">Esta prescrição já tem aviamentos registados, não pode ser removida.</string>
 </resources>

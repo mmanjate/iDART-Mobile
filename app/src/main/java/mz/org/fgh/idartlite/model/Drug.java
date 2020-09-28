@@ -41,6 +41,7 @@ public class Drug extends BaseModel implements Listble {
     @DatabaseField(columnName = COLUMN_DISEASE_TYPE, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private DiseaseType diseaseType;
 
+    private int quantity;
 
     public int getId() {
         return id;
@@ -69,9 +70,12 @@ public class Drug extends BaseModel implements Listble {
 
     @Override
     public int getQuantity() {
-        return 0;
+        return this.quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public void setDescription(String description) {
         this.description = description;

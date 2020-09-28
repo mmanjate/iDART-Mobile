@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.view.patient;
 
-import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -12,21 +11,17 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseModel;
@@ -36,22 +31,14 @@ import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleAdapter;
 import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.databinding.ActivityCreateDispenseBinding;
-import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
-import mz.org.fgh.idartlite.model.TherapeuticLine;
-import mz.org.fgh.idartlite.model.TherapeuticRegimen;
-import mz.org.fgh.idartlite.service.PrescriptionService;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.DispenseVM;
-import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
 
 public class CreateDispenseActivity extends BaseActivity  implements DialogListener {
 
@@ -179,16 +166,29 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
                 if (activityCreateDispenseBinding.spnDrugs.getSelectedItem() != null) {
                     Listble listble = (Listble) activityCreateDispenseBinding.spnDrugs.getSelectedItem();
 
-                    if (!selectedDrugs.contains(listble)) {
-                        listble.setListPosition(selectedDrugs.size() + 1);
-                        selectedDrugs.add(listble);
-                        Collections.sort(selectedDrugs);
+                    Drug drug = (Drug) listble;
 
-                        displaySelectedDrugs();
-                    } else {
+                    final int qtdADispensar = getQuantidadeADispensar(drug);
 
-                        Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.drug_data_duplication_msg)).show();
-                    }
+                    drug.setQuantity(qtdADispensar);
+
+                    listble = drug;
+
+                        if(!verifyIfExistStockToDispense(drug)){
+                            Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.stock_menor)).show();
+                            return;
+                        }
+
+                        if (!selectedDrugs.contains(listble)) {
+                            listble.setListPosition(selectedDrugs.size() + 1);
+                            selectedDrugs.add(listble);
+                            Collections.sort(selectedDrugs);
+
+                            displaySelectedDrugs();
+                        } else {
+
+                            Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.drug_data_duplication_msg)).show();
+                        }
 
                 }
             }
@@ -286,7 +286,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
     }
 
-    public void loadFormData() throws SQLException {
+    public void loadFormData(){
         getRelatedViewModel().getDispense().setSupply(((ValorSimples) activityCreateDispenseBinding.spnDuration.getSelectedItem()).getId());
         getRelatedViewModel().getDispense().setPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), "dd-MM-YYYY"));
         getRelatedViewModel().getDispense().setUuid(Utilities.getNewUUID().toString());
@@ -297,42 +297,68 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
         for (Listble drug : this.selectedDrugs){
 
-            dispensedDrugs.add(initNewPrescribedDrug((Drug) drug));
+            dispensedDrugs.add(initNewDispensedDrug((Drug) drug));
         }
 
         getRelatedViewModel().getDispense().setDispensedDrugs(dispensedDrugs);
 
     }
 
-    private DispensedDrug initNewPrescribedDrug(Drug drug) throws SQLException {
+    private DispensedDrug initNewDispensedDrug(Drug drug){
 
-        int quantitySupplied = Integer.valueOf(getRelatedViewModel().getDispense().getSupply()) * drug.getPackSize();
+        final int quantitySupplied = this.getQuantidadeADispensar(drug);
 
         List<Stock> stocks = getRelatedViewModel().getAllStocksByClinicAndDrug(getCurrentClinic(), drug);
 
         DispensedDrug dispensedDrug = new DispensedDrug();
 
-        //Ainda por melhorar pra pegar stock ainda com validade e gerar novo objecto DispenseDrug caso o primeiro nao cubra
-        //a quantidade aviada
         for (Stock stock:
              stocks) {
 
-            int stockQuantity = stock.getQuantity();
+            int stockQuantityMoviment = stock.getStockMoviment();
 
-            if(quantitySupplied < stockQuantity){
-
+            if(quantitySupplied <= stockQuantityMoviment){
                 dispensedDrug.setQuantitySupplied(quantitySupplied);
                 dispensedDrug.setStock(stock);
                 dispensedDrug.setSyncStatus(BaseModel.SYNC_SATUS_READY);
                 break;
             }
-
         }
         return dispensedDrug;
     }
 
+    public void doAfterSave(){
+        Map<String, Object> params = new HashMap<>();
+        params.put("patient", this.getPatient());
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        nextActivity(getApplication(), DispenseFragment.class,params);
+    }
+
     @Override
     public void doOnConfirmed() {
+       doAfterSave();
+    }
 
+    private boolean verifyIfExistStockToDispense(Drug drug){
+
+        final int qtdADispensar = this.getQuantidadeADispensar(drug);
+
+        List<Stock> stocks = getRelatedViewModel().getAllStocksByClinicAndDrug(getCurrentClinic(), drug);
+        for (Stock stock: stocks) {
+            int stockQuantityMoviment = stock.getStockMoviment();
+
+            if(qtdADispensar <= stockQuantityMoviment){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int getQuantidadeADispensar(Drug drug){
+
+        int supply = ((ValorSimples) activityCreateDispenseBinding.spnDuration.getSelectedItem()).getId();
+
+        return (supply/4) * drug.getPackSize();
     }
 }
