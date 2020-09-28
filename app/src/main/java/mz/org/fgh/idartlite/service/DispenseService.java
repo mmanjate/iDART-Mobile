@@ -3,6 +3,8 @@ package mz.org.fgh.idartlite.service;
 import android.app.Application;
 
 import com.j256.ormlite.stmt.QueryBuilder;
+import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.model.*;
 
 import java.sql.SQLException;
 import java.util.List;
