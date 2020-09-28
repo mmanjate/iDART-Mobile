@@ -269,7 +269,7 @@
 
 
                     </LinearLayout>
-                    <ImageView
+                     <ImageView
                         android:id="@+id/save_and_continue"
                         android:layout_width="60dp"
                         android:layout_height="60dp"

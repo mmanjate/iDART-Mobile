@@ -59,6 +59,8 @@
             android:label="@string/episode"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".view.patient.EpisodeActivity" android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

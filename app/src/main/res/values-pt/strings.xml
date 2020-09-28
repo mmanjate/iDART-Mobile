@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">iDartMobile</string>
     <string name="title_activity_patient">PatientActivity</string>
-    <string name="title_activity_stock">StockActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="title_activity_stock">StockActivity</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -43,6 +43,7 @@
     <string name="genero">Genero</string>
     <string name="idade">Idade</string>
     <string name="telefone">Telefone</string>
+    <string name="data_levantamento">Data Levantamento</string>
 
     <string name="remover">Remover</string>
     <string name="editar">Editar</string>
@@ -78,6 +79,7 @@
     <string name="dt_proximo_levantamento">Próximo levantamento</string>
 
     <string name="drug_data_duplication_msg">Não pode adicionar o mesmo medicamento duas vezes.</string>
+    <string name="stock_menor">A quantidade a aviar é maior que o stock do medicamento.</string>
     <string name="label_entrada_stock">Entrada de Stock - Dados Iniciais</string>
     <string name="label_numero_guia">Número da Guia *</string>
     <string name="label_data_entrada">Data da Entrada *</string>
@@ -89,6 +91,8 @@
     <string name="label_preco">Preço *</string>
 
     <string name="error_loading_form_data">\"Ocorreu um erro ao carregar os dados iniciais do formulário. \"</string>
+    <string name="save_error_msg">\"Ocorreu um erro ao gravar a prescrição. \"</string>
+    <string name="find_stock_list_error">\" Ocorreru um erro na busca da lista de stocks do medicamento. \"</string>
     <string name="record_saved">Registo gravado com sucesso.</string>
 
 
@@ -101,8 +105,7 @@
     <string name="no">Não</string>
     <string name="prescription_cant_be_removed_msg">Esta Prescrção não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
     <string name="no_patient_or_prescription">Não foi seleccionado um paciente ou prescrição.</string>
-    <string name="error_on_loading_data">Ocorreu um erro ao carregar os dados da base de dados</string>
-    <string name="save_error_msg">\"Ocorreu um erro ao gravar a prescrição. \"</string>
+    <string name="error_on_loading_data">Ocorreu um erro ao carregar os dados da base de dados </string>
     <string name="see_olny_regimen_grugs">Visualizar apenas medicamentos do regime terapêutico?</string>
     <string name="drugs">Medicamentos *</string>
     <string name="adicionar_prescri_o_dados_iniciais">Adicionar Prescrição - Dados Iniciais</string>

@@ -34,4 +34,9 @@ public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements 
     public List<Episode> getAllByPatient(Patient patient) throws SQLException {
         return queryBuilder().orderBy(Episode.COLUMN_EPISODE_DATE,true).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).query();
     }
+
+    @Override
+    public Episode getLatestByPatientAndSanitryUuid(Patient patient, String uuid) throws SQLException {
+        return queryBuilder().orderBy(Episode.COLUMN_EPISODE_DATE,true).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).eq(Episode.COLUMN_SANITARY_UNIT_UUID,uuid).queryForFirst();
+    }
 }
