@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import mz.org.fgh.idartlite.R;
@@ -15,6 +16,7 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
 import mz.org.fgh.idartlite.databinding.PacinteDetailsFragmentBinding;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.viewmodel.PatientDetailsVM;
 
 public class PatientDetailsFragment extends GenericFragment {
     Patient patient;
@@ -30,23 +32,78 @@ public class PatientDetailsFragment extends GenericFragment {
         pacinteDetailsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.pacinte_details_fragment, container,false);
         patient = getSelectedPatient();
         pacinteDetailsFragmentBinding.setPatient(patient);
-    return pacinteDetailsFragmentBinding.getRoot();
+        enventInitialization();
+        return pacinteDetailsFragmentBinding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
+    }
+
+    public void enventInitialization() {
+        pacinteDetailsFragmentBinding.initialData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(PatientDetailsFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                changeVisibilityToInitialData(view);
             }
-        });*/
+        });
+
+        pacinteDetailsFragmentBinding.contacto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeVisibilityToInitialData(view);
+            }
+        });
+
+        pacinteDetailsFragmentBinding.others.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeVisibilityToInitialData(view);
+            }
+        });
+    }
+
+    private void changeVisibilityToInitialData(View view) {
+        if (view.equals(pacinteDetailsFragmentBinding.initialData)){
+            if (pacinteDetailsFragmentBinding.personDataLyt.getVisibility() == View.VISIBLE){
+                pacinteDetailsFragmentBinding.personDataLyt.setVisibility(View.GONE);
+                switchLayout();
+            }else {
+                pacinteDetailsFragmentBinding.personDataLyt.setVisibility(View.VISIBLE);
+                switchLayout();
+            }
+        }else if (view.equals(pacinteDetailsFragmentBinding.contacto)){
+            if (pacinteDetailsFragmentBinding.contactDataLyt.getVisibility() == View.VISIBLE){
+                pacinteDetailsFragmentBinding.contactDataLyt.setVisibility(View.GONE);
+                switchLayout();
+            }else {
+                pacinteDetailsFragmentBinding.contactDataLyt.setVisibility(View.VISIBLE);
+                switchLayout();
+            }
+        }else if (view.equals(pacinteDetailsFragmentBinding.others)){
+            if (pacinteDetailsFragmentBinding.othersDataLyt.getVisibility() == View.VISIBLE){
+                pacinteDetailsFragmentBinding.othersDataLyt.setVisibility(View.GONE);
+                switchLayout();
+            }else {
+                pacinteDetailsFragmentBinding.othersDataLyt.setVisibility(View.VISIBLE);
+                switchLayout();
+            }
+        }
+    }
+
+    private void switchLayout(){
+        getRelatedViewModel().setInitialDataVisible(!getRelatedViewModel().isInitialDataVisible());
+        getRelatedViewModel().setContactDataVisible(!getRelatedViewModel().isContactDataVisible());
+        getRelatedViewModel().setOtherDataVisible(!getRelatedViewModel().isOtherDataVisible());
     }
 
     @Override
     public BaseViewModel initViewModel() {
-        return null;
+        return new ViewModelProvider(getMyActivity()).get(PatientDetailsVM.class);
+    }
+
+    public PatientDetailsVM getRelatedViewModel() {
+        return (PatientDetailsVM) super.getRelatedViewModel();
     }
 
     public PatientActivity getMyActivity(){

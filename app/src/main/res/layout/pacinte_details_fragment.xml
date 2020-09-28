@@ -9,6 +9,9 @@
         <variable
             name="patient"
             type="mz.org.fgh.idartlite.model.Patient" />
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.PatientDetailsVM" />
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
     </data>
 
