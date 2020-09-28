@@ -10,4 +10,11 @@
     <color name="list_icon">#DBDBDC</color>
     <color name="yellow">#F4BE36</color>
     <color name="input_labels">#6E6E6E</color>
+    <color name="hint_text_appearence">#a79991</color>
+    <color name="light_green">#A7FFCF</color>
+
+    <color name="theme_primary">#0f9d58</color>
+    <color name="theme_primary_text_inverted">#ffffff</color>
+    <color name="theme_secondary_text_inverted">#8affffff</color>
+    <color name="black">#3B3B40</color>
 </resources>

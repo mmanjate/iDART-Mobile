@@ -92,4 +92,6 @@ dependencies {
     // Testing
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
 
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
 }

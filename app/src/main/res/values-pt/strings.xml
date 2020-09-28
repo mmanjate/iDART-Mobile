@@ -117,4 +117,8 @@
     <string name="prescri_o_especial">Prescrição Especial?</string>
     <string name="motivo">Motivo *</string>
     <string name="prescription_got_dispenses_msg">Esta prescrição já tem aviamentos registados, não pode ser removida.</string>
+
+    <string name="find_stock_list_error">\" Ocorreru um erro na busca da lista de stocks do medicamento. \"</string>
+    <string name="stock_menor">A quantidade a aviar é maior que o stock do medicamento.</string>
+
 </resources>

@@ -37,7 +37,9 @@ public class DispenseService extends BaseService {
 
 
     public void createDispense(Dispense dispense) throws SQLException {
+
         getDataBaseHelper().getDispenseDao().create(dispense);
+
         if (dispense.getDispensedDrugs() != null) {
             this.saveDispensedDrugs(dispense.getDispensedDrugs(), dispense);
         }

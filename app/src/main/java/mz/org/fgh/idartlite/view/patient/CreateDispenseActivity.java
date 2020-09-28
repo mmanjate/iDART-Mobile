@@ -14,6 +14,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -77,6 +84,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
                 activityCreateDispenseBinding.setViewModel(getRelatedViewModel());
 
                 this.prescription = getRelatedViewModel().getDispense().getPrescription();
+
 
                 if (prescription == null) {
 
@@ -185,6 +193,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
                             Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.stock_menor)).show();
                             return;
                         }
+
 
                         if (!selectedDrugs.contains(listble)) {
                             listble.setListPosition(selectedDrugs.size() + 1);
@@ -354,7 +363,9 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
         params.put("patient", this.getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
+
         nextActivity(DispenseFragment.class, params);
+
     }
 
     @Override
