@@ -25,6 +25,7 @@ public class PrescriptionService extends BaseService {
 
     public void createPrescription(Prescription prescription) throws SQLException {
         getDataBaseHelper().getPrescriptionDao().create(prescription);
+        if(prescription.getPrescribedDrugs() != null)
         savePriscribedDrus(prescription.getPrescribedDrugs());
     }
 
