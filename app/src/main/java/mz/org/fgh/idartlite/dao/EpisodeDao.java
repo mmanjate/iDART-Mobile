@@ -10,4 +10,6 @@ import java.util.List;
 public interface EpisodeDao extends GenericDao<Episode, Integer>{
 
     public List<Episode> getAllByPatient(Patient patient) throws SQLException;
+
+    public Episode getLatestByPatientAndSanitryUuid(Patient patient,String uuid) throws SQLException;
 }

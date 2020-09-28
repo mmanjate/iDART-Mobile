@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -77,24 +79,49 @@ public class EpisodeVM extends BaseViewModel {
 
     public void save1(){
 
-
+        List<Episode> episodes=new ArrayList<>();
 
         getRelatedActivity().populateEpisode();
-        try {
-        if(DateUtilitis.dateDiff(getEpisode().getEpisodeDate(),
-                gatAllOfPatient(getPatient()).get(0).getEpisodeDate(), DateUtilitis.DAY_FORMAT) > 0){
-            episodeService.createEpisode(this.episode);
-            Utilities.displayAlertDialog( getRelatedActivity(),"Episodio Criado Com Sucesso").show();
+
+        String validationErros=episode.validateEpisodeData();
+
+        if(validationErros.isEmpty()){
+            try {
+                episodes= gatAllOfPatient(getPatient());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if(DateUtilitis.getDaysBetween(getEpisode().getEpisodeDate(),
+                        episodes.get(0).getEpisodeDate()) > 0){
+                    if (getEpisode().getId() == 0) {
+
+                        this.episode.setSanitaryUnit(episodes.get(0).getSanitaryUnit());
+                        this.episode.setUsUuid(episodes.get(0).getUsUuid());
+
+                        episodeService.createEpisode(this.episode);
+                    } else {
+                        episodeService.udpateEpisode(this.episode);
+                    }
+
+                    Utilities.displayAlertDialog( getRelatedActivity(),"Episodio Criado Com Sucesso").show();
+                }
+
+                else {
+                    Utilities.displayAlertDialog( getRelatedActivity(),"Data de Visita nao pode ser menor que a do primeiro episodio").show();
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg)+e.getLocalizedMessage()).show();
+            }
+        }
+        else {
+            Utilities.displayAlertDialog( getRelatedActivity(),validationErros).show();
         }
 
-            else {
-            Utilities.displayAlertDialog( getRelatedActivity(),"Data de Visita nao pode ser menor que a do primeiro episodio").show();
-        }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg)+e.getLocalizedMessage()).show();
-        }
     }
     public Patient getPatient() {
         return patient;

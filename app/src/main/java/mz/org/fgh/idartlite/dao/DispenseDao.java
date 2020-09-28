@@ -1,14 +1,22 @@
 package mz.org.fgh.idartlite.dao;
 
-import java.sql.SQLException;
-import java.util.List;
+import android.app.Application;
+
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.TherapeuticLine;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public interface DispenseDao extends GenericDao<Dispense, Integer> {
 
     List<Dispense> getAllByPrescription(Prescription prescription) throws SQLException;
 
     long countAllOfPrescription(Prescription prescription) throws SQLException;
+
+    public List<Dispense> getAllOfPatient(Application application, Patient patient) throws SQLException;
 }

@@ -36,6 +36,7 @@ import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.stock.StockEntranceActivity;
 import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
 
 import static android.R.*;
@@ -70,7 +71,6 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
                 }
                 if((Episode) bundle.getSerializable("episode") != null) {
                     getRelatedViewModel().setEpisode((Episode) bundle.getSerializable("episode"));
-                    populateEpisodeForEdit();
                     createEpisodeBinding.spnStopReason.setSelection(stopReasonSpinnerAdapter.getPosition(getRelatedViewModel().getEpisode().getStopReason()));
 
                 }
@@ -133,7 +133,10 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
     public void populateEpisode(){
 
-        getRelatedViewModel().getEpisode().setEpisodeDate(DateUtilitis.createDate(createEpisodeBinding.editEpisodeDate.getText().toString(),"dd-MM-YYYY"));
+
+if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
+    getRelatedViewModel().getEpisode().setEpisodeDate(DateUtilitis.createDate(createEpisodeBinding.editEpisodeDate.getText().toString(), "dd-MM-YYYY"));
+}
        getRelatedViewModel().getEpisode().setNotes(createEpisodeBinding.editTextEpisodeObservation.getText().toString());
        getRelatedViewModel().getEpisode().setPatient(getRelatedViewModel().getPatient());
        getRelatedViewModel().getEpisode().setStartReason(createEpisodeBinding.spnStartReason.getSelectedItem().toString());
@@ -142,19 +145,6 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
        }
     }
 
-    public void populateEpisodeForEdit(){
-
-
-      //  createEpisodeBinding.editEpisodeDate.setText(DateUtilitis.formatToDDMMYYYY(getRelatedViewModel().getEpisode().getEpisodeDate()));
-     //   createEpisodeBinding.editTextEpisodeObservation.setText(getRelatedViewModel().getEpisode().getNotes());
-      //  getRelatedViewModel().getEpisode().setEpisodeDate(DateUtilitis.createDate(createEpisodeBinding.editEpisodeDate.getText().toString(),"dd-MM-YYYY"));
-     //   getRelatedViewModel().getEpisode().setNotes(createEpisodeBinding.editTextEpisodeObservation.getText().toString());
-    //    getRelatedViewModel().getEpisode().setPatient(getRelatedViewModel().getPatient());
-    //    getRelatedViewModel().getEpisode().setStartReason(createEpisodeBinding.spnStartReason.getSelectedItem().toString());
-     //   if(!createEpisodeBinding.spnStopReason.getSelectedItem().toString().isEmpty()){
-     //       getRelatedViewModel().getEpisode().setStopReason(createEpisodeBinding.spnStopReason.getSelectedItem().toString());
-     //   }
-    }
 
 
     @Override
