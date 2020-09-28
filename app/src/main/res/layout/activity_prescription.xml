@@ -67,7 +67,7 @@
                         android:id="@+id/initial_data"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Adicionar Prescrição - Dados Iniciais"
+                        android:text="@string/adicionar_prescri_o_dados_iniciais"
                         android:background="@color/background_layout"
                         android:textColor="@color/white"
                         android:textSize="15sp"
@@ -85,7 +85,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Data da Prescrição"
+                            android:text="@string/prescription_date"
                             style="@style/input_labels"
                             />
                         <EditText
@@ -99,7 +99,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Duração"
+                            android:text="@string/duration"
                             style="@style/input_labels"
                             />
                         <Spinner
@@ -110,7 +110,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Regime Terapêutico"
+                            android:text="@string/therapeutic_regimen"
                             style="@style/input_labels"
                             />
                         <Spinner
@@ -121,7 +121,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Linha Terapêutica"
+                            android:text="@string/therapeutic_line"
                             style="@style/input_labels"
                             />
                         <Spinner
@@ -133,7 +133,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Tipo de Dispensa"
+                            android:text="@string/dispense_type"
                             style="@style/input_labels"
                             />
                         <Spinner
@@ -146,7 +146,7 @@
                         android:id="@+id/txv_drugs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Adicionar Prescrição - Medicamentos"
+                        android:text="@string/adicionar_prescri_o_medicamentos"
                         android:background="@color/background_layout"
                         android:textColor="@color/white"
                         android:textSize="15sp"
@@ -164,7 +164,24 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Medicamentos *"
+                            android:text="@string/see_olny_regimen_grugs"
+                            style="@style/input_labels"
+                            />
+
+
+                        <CheckBox
+                            android:id="@+id/cbx_drugs_listing_mode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/see_olny_regimen_grugs"
+                            android:checked="@{viewModel.seeOnlyOfRegime}"
+                            android:onClick="@{() -> viewModel.changeDrugsListingMode()}"/>
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/drugs"
                             style="@style/input_labels"
                             />
                         <Spinner
@@ -185,7 +202,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Lista de Medicamentos *"
+                            android:text="@string/drug_list"
                             style="@style/input_labels"
                             />
 
@@ -206,7 +223,7 @@
                         android:id="@+id/txv_urgent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Adicionar Prescrição - Prescrição Especial"
+                        android:text="@string/adicionar_prescri_o_prescri_o_especial"
                         android:background="@color/background_layout"
                         android:textColor="@color/white"
                         android:textSize="15sp"
@@ -224,7 +241,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Prescrição Especial?"
+                            android:text="@string/prescri_o_especial"
                             style="@style/input_labels"
                             />
 
@@ -233,14 +250,14 @@
                             android:id="@+id/cbx_urgent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Prescrição Especial?"
+                            android:text="@string/prescri_o_especial"
                             android:checked="@{viewModel.prescription.urgentPrescription == Prescription.URGENT_PRESCRIPTION}"
                             android:onClick="@{() -> viewModel.setPrescriptionToSpetial()}"/>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Motivo *"
+                            android:text="@string/motivo"
                             style="@style/input_labels"
                             />
                         <Spinner

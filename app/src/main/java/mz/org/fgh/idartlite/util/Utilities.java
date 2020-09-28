@@ -204,6 +204,21 @@ public class Utilities {
         return parsedList;
     }
 
+    /*@RequiresApi(api = Build.VERSION_CODES.N)
+    public static DatePickerDialog showDateDialog(Context context, DatePickerDialog.OnDateSetListener dateSetListener){
+
+        int mYear, mMonth, mDay;
+
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context);
+        dateSetListener.onDateSet();
+
+    }*/
+
     public static boolean stringHasValue(String string){
         return string != null && !string.isEmpty() && string.length() > 0;
     }

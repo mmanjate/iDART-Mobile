@@ -261,7 +261,9 @@ public class Prescription extends BaseModel {
 
     public String validate() {
 		if (this.prescriptionDate == null) return "A data da prescrição é obrigatória";
-		if(DateUtilitis.dateDiff(this.prescriptionDate, DateUtilitis.getCurrentDate(), DateUtilitis.DAY_FORMAT) < 0) return "A data da prescrição não pode ser menor que a data corrente.";
+		if(DateUtilitis.dateDiff(this.prescriptionDate, DateUtilitis.getCurrentDate(), DateUtilitis.DAY_FORMAT) > 0) {
+			return "A data da prescrição não pode ser maior que a data corrente.";
+		}
 		if(this.supply <= 0) return "A duração da prescrição deve ser indicada.";
 		if(this.dispenseType == null || !Utilities.stringHasValue(this.dispenseType.getDescription())) return "O campo tipo de dispensa é obrigatório.";
 		if(this.therapeuticRegimen == null || !Utilities.stringHasValue(this.therapeuticRegimen.getDescription())) return "O campo tipo de regime terapeutico é obrigatório.";
