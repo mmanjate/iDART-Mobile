@@ -9,6 +9,7 @@
         <variable
             name="viewModel"
             type="mz.org.fgh.idartlite.viewmodel.DispenseVM" />
+        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_calendar"
+                android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.dispense.pickupDate)}"
                 android:paddingStart="@dimen/dimen_4dp"
                 android:paddingLeft="@dimen/dimen_4dp" />
 
@@ -105,6 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_calendar"
+                android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.dispense.nextPickupDate)}"
                 android:paddingStart="@dimen/dimen_4dp"
                 android:paddingLeft="@dimen/dimen_4dp" />
 
