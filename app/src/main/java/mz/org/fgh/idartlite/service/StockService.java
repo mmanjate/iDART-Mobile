@@ -19,7 +19,7 @@ public class StockService extends BaseService {
         super(application, currUser);
     }
 
-    public void saveStock(Stock stock) throws SQLException {
+    public void saveOrUpdateStock(Stock stock) throws SQLException {
         getDataBaseHelper().getStockDao().createOrUpdate(stock);
     }
 

@@ -243,14 +243,14 @@ public class StockEntranceActivity extends BaseActivity {
         if(!this.selectedStock.isEmpty()){
             if(!isEditForm){
                 for (Listble listble : this.selectedStock){
-                    stockService.saveStock((Stock) listble);
+                    stockService.saveOrUpdateStock((Stock) listble);
                 }
                 finish();
             }else {
                 if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
                         DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) > 0) {
                     loadDataForm();
-                    stockService.saveStock(getRelatedViewModel().getStock());
+                    stockService.saveOrUpdateStock(getRelatedViewModel().getStock());
                     finish();
                 }else {
                     Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
