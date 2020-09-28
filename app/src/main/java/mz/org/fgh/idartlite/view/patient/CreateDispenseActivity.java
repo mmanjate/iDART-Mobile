@@ -1,18 +1,18 @@
 package mz.org.fgh.idartlite.view.patient;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -332,7 +332,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
         params.put("patient", this.getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
-        nextActivity(getApplication(), DispenseFragment.class,params);
+        nextActivity(DispenseFragment.class,params);
     }
 
     @Override

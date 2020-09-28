@@ -99,7 +99,7 @@ public class Utilities {
      *
      * @param mContext, Context of where to display
      */
-    public static AlertDialog genericDisplayAlertDialog(final Context mContext, final String alertMessage, DialogListener listener) {
+    private static AlertDialog genericDisplayAlertDialog(final Context mContext, final String alertMessage, DialogListener listener) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
                 .setMessage(alertMessage)
