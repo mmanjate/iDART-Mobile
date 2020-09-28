@@ -2,7 +2,6 @@ package mz.org.fgh.idartlite.service;
 
 import android.app.Application;
 
-import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
@@ -11,7 +10,6 @@ import mz.org.fgh.idartlite.model.User;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
 
 public class StockService extends BaseService {
 
