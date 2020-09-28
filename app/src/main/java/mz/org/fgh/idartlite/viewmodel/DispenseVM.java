@@ -60,11 +60,6 @@ public class DispenseVM extends BaseViewModel {
 
     }
 
-    public List<Dispense> gatAllOfPrescription(Prescription prescription) throws SQLException {
-        return dispenseService.getAllOfPrescription(prescription);
-
-    }
-
     public List<Dispense> gatAllOfPatient(Patient patient) throws SQLException {
         return dispenseService.getAllOfPatient(patient);
     }
