@@ -18,12 +18,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityStockEntranceBinding;
@@ -34,9 +37,10 @@ import mz.org.fgh.idartlite.service.DrugService;
 import mz.org.fgh.idartlite.service.StockService;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.patient.CreateDispenseActivity;
 import mz.org.fgh.idartlite.viewmodel.StockEntranceVM;
 
-public class StockEntranceActivity extends BaseActivity {
+public class StockEntranceActivity extends BaseActivity implements DialogListener {
 
     private ActivityStockEntranceBinding stockEntranceBinding;
     private DrugService drugService;
@@ -189,25 +193,30 @@ public class StockEntranceActivity extends BaseActivity {
                             stockEntranceBinding.numeroPreco.getText().length() != 0 &&
                             stockEntranceBinding.numeroQuantidadeRecebida.getText().length() != 0){
 
-                        if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
-                                DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) > 0){
+                        if(DateUtilitis.dateDiff(DateUtilitis.createDate(DateUtilitis.parseDateToDDMMYYYYString(Calendar.getInstance().getTime()),
+                                DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) >= 0) {
+                            if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
+                                    DateUtilitis.createDate(DateUtilitis.parseDateToDDMMYYYYString(Calendar.getInstance().getTime()), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) >= 60) {
                                 loadDataForm();
                                 getRelatedViewModel().getStock().setUuid(Utilities.getNewUUID().toString());
 
-                            Listble listble = (Listble) getRelatedViewModel().getStock();
+                                Listble listble = (Listble) getRelatedViewModel().getStock();
 
-                            if (!selectedStock.contains(listble)) {
-                                listble.setListPosition(selectedStock.size() + 1);
-                                selectedStock.add(listble);
-                                getRelatedViewModel().initNewStock();
-                                Collections.sort(selectedStock);
-                                displaySelectedDrugs();
-                                cleanForm();
+                                if (!selectedStock.contains(listble)) {
+                                    listble.setListPosition(selectedStock.size() + 1);
+                                    selectedStock.add(listble);
+                                    getRelatedViewModel().initNewStock();
+                                    Collections.sort(selectedStock);
+                                    displaySelectedDrugs();
+                                    cleanForm();
+                                }else {
+                                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_duplication_msg)).show();
+                                }
                             }else {
-                                Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_duplication_msg)).show();
+                                Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
                             }
                         }else {
-                            Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
+                            Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_entrada_date)).show();
                         }
                     }else {
                         Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_empty_filds)).show();
@@ -235,7 +244,7 @@ public class StockEntranceActivity extends BaseActivity {
         stockEntranceBinding.dataEntrada.setText("");
         stockEntranceBinding.numeroLote.setText("");
         stockEntranceBinding.numeroGuia.setText("");
-        stockEntranceBinding.numeroPreco.setText("");
+        stockEntranceBinding.numeroPreco.setText("0");
         stockEntranceBinding.numeroQuantidadeRecebida.setText("");
     }
 
@@ -313,5 +322,10 @@ public class StockEntranceActivity extends BaseActivity {
     @Override
     public BaseViewModel initViewModel() {
         return new ViewModelProvider(this).get(StockEntranceVM.class);
+    }
+
+    @Override
+    public void doOnConfirmed() {
+        nextActivity(StockActivity.class);
     }
 }

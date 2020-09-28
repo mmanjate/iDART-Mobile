@@ -220,20 +220,6 @@ public class LoginVM extends BaseViewModel {
                      pd.setId(1);
                      pd.setDrug(drug);
 
-                     stock = new Stock();
-                     stock.setBatchNumber("250845AD");
-                     stock.setClinic(clinic);
-                     stock.setDrug(drug);
-                     stock.setDateReceived(date);
-                     stock.setExpiryDate(date);
-                     stock.setOrderNumber("00001/001/2020");
-                     stock.setPrice(50);
-                     stock.setShelfNumber(80);
-                     stock.setUnitsReceived(2390);
-                     stock.setStockMoviment(2390);
-                     stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
-                     stockService.saveOrUpdateStock(stock);
-
                      List<DispensedDrug> dds = new ArrayList<>();
 
                      //Create Dispense
@@ -323,6 +309,20 @@ public class LoginVM extends BaseViewModel {
                      stock.setPrice(50);
                      stock.setShelfNumber(80);
                      stock.setUnitsReceived(2390);
+                     stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
+                     stockService.saveOrUpdateStock(stock);
+
+                     stock = new Stock();
+                     stock.setBatchNumber("250845AD");
+                     stock.setClinic(clinic);
+                     stock.setDrug(drug);
+                     stock.setDateReceived(date);
+                     stock.setExpiryDate(date);
+                     stock.setOrderNumber("00001/001/2020");
+                     stock.setPrice(50);
+                     stock.setShelfNumber(80);
+                     stock.setUnitsReceived(2390);
+                     stock.setStockMoviment(2390);
                      stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
                      stockService.saveOrUpdateStock(stock);
 
