@@ -17,20 +17,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
@@ -379,13 +370,15 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
         return dispensedDrug;
     }
 
-    public void doAfterSave(){
-
-       }
-
     @Override
     public void doOnConfirmed() {
-       doAfterSave();
+        Intent intent = new Intent(CreateDispenseActivity.this, PatientActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", getCurrentUser());
+        bundle.putSerializable("clinic", getCurrentClinic());
+        bundle.putSerializable("patient", this.getPatient());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override

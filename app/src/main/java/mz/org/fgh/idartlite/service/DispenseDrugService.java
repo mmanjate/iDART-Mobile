@@ -33,4 +33,5 @@ public class DispenseDrugService extends BaseService {
     public boolean checkStockIsDispensedDrug(Stock stock) throws SQLException {
         return getDataBaseHelper().getDispensedDrugDao().checkStockIsDispensedDrug(stock);
     }
+
 }

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
@@ -51,6 +52,9 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
 
         List<Dispense> dispenses = dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,false).query();
 
+        System.out.println(dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,false).prepareStatementString());
+
         return dispenses;
     }
+
 }

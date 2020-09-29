@@ -226,34 +226,6 @@ public class LoginVM extends BaseViewModel {
 
                      List<DispensedDrug> dds = new ArrayList<>();
 
-                     //Create Dispense
-                     Dispense dispense = new Dispense();
-                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(4);
-                     p.setId(1);
-                     dispense.setPrescription(p);
-                     dispense.setUuid("12");
-                     this.dispenseService.createDispense(dispense);
-
-                     dispense = new Dispense();
-                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(4);
-                     p.setId(1);
-                     dispense.setPrescription(p);
-                     dispense.setUuid("13");
-                     this.dispenseService.createDispense(dispense);
-
-                     dispense = new Dispense();
-                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(4);
-                     p.setId(1);
-                     dispense.setPrescription(p);
-                     dispense.setUuid("14");
-                     this.dispenseService.createDispense(dispense);
-
                      //Creating an Episode For Patient1
                      Episode episode=new Episode();
                      episode.setEpisodeDate(DateUtilitis.getDateFromDayAndMonthAndYear(26,9,2020));
@@ -264,17 +236,6 @@ public class LoginVM extends BaseViewModel {
                      episode.setUsUuid(Utilities.getNewUUID().toString());
                      episode.setPatient(patient);
                      episodeService.createEpisode(episode);
-
-                     Prescription prescription=new Prescription();
-                     prescription.setPatient(patient);
-                     prescription.setPrescriptionDate(date);
-
-                     prescription.setExpiryDate(date);
-                     prescription.setSupply(123);
-                     prescription.setPrescriptionSeq("111");
-                     prescriptionService.createPrescription(prescription);
-
-                     System.out.println("ID Dispensa: "+dispense.getId());
 
                      User user = new User();
                      user.setUserName("root");
@@ -335,7 +296,7 @@ public class LoginVM extends BaseViewModel {
                      stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
                      stockService.saveOrUpdateStock(stock);
 
-                     dispense = new Dispense();
+                     Dispense dispense = new Dispense();
                      dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
                      dispense.setPickupDate(DateUtilitis.getCurrentDate());
                      dispense.setSupply(4);
