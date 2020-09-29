@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import com.android.volley.Response;
 import com.android.volley.toolbox.ImageLoader;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,9 +54,9 @@ public class RESTServiceHandler {
     public Map<String, String> buildAuthHeaders(){
 
         Map<String, String> headerMap = new HashMap<>();
-        String credentials = this.user.getUserName() + ":" + this.user.getPassword();
-        String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-        headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
+//        String credentials = this.user.getUserName() + ":" + this.user.getPassword();
+//        String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+ //       headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
         return headerMap;
 
     }
@@ -62,4 +64,31 @@ public class RESTServiceHandler {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public static boolean getServerStatus(String url) {
+
+        boolean result = false;
+        int code = 200;
+        try {
+            URL siteURL = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(3000);
+            connection.connect();
+
+            code = connection.getResponseCode();
+            connection.disconnect();
+            if (code == 200) {
+                result = true;
+            } else {
+                result = true;
+            }
+        } catch (Exception e) {
+            result = false;
+        }
+
+        return result;
+    }
+
+
 }

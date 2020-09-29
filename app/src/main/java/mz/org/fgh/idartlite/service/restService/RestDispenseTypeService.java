@@ -1,0 +1,76 @@
+package mz.org.fgh.idartlite.service.restService;
+
+import android.app.Application;
+import android.util.Log;
+
+import androidx.collection.ArrayMap;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import java.util.Map;
+
+import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.rest.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.DispenseTypeService;
+
+public class RestDispenseTypeService extends BaseService {
+
+    private static final String TAG = "RestDispenseTypeService";
+    private  static DispenseTypeService dispenseTypeService;
+    
+    public RestDispenseTypeService(Application application, User currentUser) {
+        super(application, currentUser);
+
+        dispenseTypeService = new DispenseTypeService(application,currentUser);
+    }
+
+    public static void restGetAllDispenseType() {
+
+        String url = BaseService.baseUrl + "/simpledomain?description=eq.dispense_type";
+        dispenseTypeService = new DispenseTypeService(getApp(), null);
+
+            getRestServiceExecutor().execute(() -> {
+
+                RESTServiceHandler handler = new RESTServiceHandler();
+
+                Map<String, Object> params = new ArrayMap<String, Object>();
+                handler.addHeader("Content-Type", "Application/json");
+
+                handler.objectRequest(url, Request.Method.GET, params, Object[].class, new Response.Listener<Object[]>() {
+                    @Override
+                    public void onResponse(Object[] dispenseTypes) {
+
+                        if (dispenseTypes.length > 0) {
+                            for (Object dispenseType : dispenseTypes) {
+
+                                try {
+                                    if(!dispenseTypeService.checkDipsenseType(dispenseType)){
+                                        Log.i(TAG, "onResponse: " + dispenseType);
+                                        dispenseTypeService.saveDispoenseType(dispenseType);
+                                    }
+                                    else{
+                                        Log.i(TAG, "onResponse: "+dispenseType+" Ja Existe");
+                                    }
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(TAG, "onResponse: Error",e.getCause());
+                                }finally {
+                                    continue;
+                                }
+                            }
+                        }else
+                            Log.w(TAG, "Response Sem Info." + dispenseTypes.length);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Response", error.getMessage());
+                    }
+                });
+            });
+    }
+}
