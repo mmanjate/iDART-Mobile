@@ -16,7 +16,7 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:elevation="6dp">
+                >
 
                 <include layout="@layout/app_bar" />
 
@@ -29,7 +29,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:tabBackground="@color/tab_back"
-                    app:elevation="0dp"
                     app:tabTextColor="@color/colorPrimary"
                     android:minHeight="?attr/actionBarSize"
                     />
@@ -40,7 +39,7 @@
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.viewpager.widget.ViewPager>
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

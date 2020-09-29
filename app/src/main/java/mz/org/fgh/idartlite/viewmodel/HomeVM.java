@@ -55,4 +55,8 @@ public class HomeVM extends BaseViewModel {
     public String getAddress(){
         return getRelatedActivity().getCurrentClinic().getAddress();
     }
+
+    public void endSession(){
+
+    }
 }

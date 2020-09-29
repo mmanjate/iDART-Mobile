@@ -1,9 +1,11 @@
 package mz.org.fgh.idartlite.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -225,7 +227,7 @@ public class Utilities {
     }*/
 
     public static boolean stringHasValue(String string){
-        return string != null && !string.isEmpty() && string.length() > 0;
+        return string != null && !string.trim().isEmpty() && string.trim().length() > 0;
     }
 
     public static String parseIntToString(int toParse){
@@ -238,6 +240,11 @@ public class Utilities {
 
     public static UUID getNewUUID(){
         return UUID.randomUUID();
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService( Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow( activity.getCurrentFocus().getWindowToken(), 0);
     }
 
 }
