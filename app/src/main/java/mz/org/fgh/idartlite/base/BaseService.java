@@ -51,6 +51,7 @@ public abstract class BaseService {
         return app;
     }
 
+
     public Date getSqlDateFromString(String stringDate, String pattern) {
         SimpleDateFormat format = new SimpleDateFormat(pattern);
         try {
