@@ -2,6 +2,9 @@ package mz.org.fgh.idartlite.base;
 
 import android.app.Application;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,11 +15,13 @@ public abstract class BaseService {
 
     protected IdartLiteDataBaseHelper dataBaseHelper;
 
-    private static final int NUMBER_OF_THREADS = 4;
+    private static final int NUMBER_OF_THREADS = 10;
     protected static ExecutorService restServiceExecutor;
+    public static final String baseUrl = "http://10.10.2.115:3001";
 
     protected User currentUser;
     protected Application application;
+    public static Application app;
 
     public BaseService(Application application, User currentUser) {
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
@@ -24,6 +29,7 @@ public abstract class BaseService {
 
         this.currentUser = currentUser;
         this.application=application;
+        BaseService.app = application;
     }
 
     protected IdartLiteDataBaseHelper getDataBaseHelper() {
@@ -41,4 +47,20 @@ public abstract class BaseService {
     public Application getApplication(){
         return application;
     }
+    public static  Application getApp(){
+        return app;
+    }
+
+    public Date getSqlDateFromString(String stringDate, String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        try {
+            Date date = (Date) format.parse(stringDate);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }
