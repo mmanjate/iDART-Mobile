@@ -122,4 +122,6 @@
     <string name="nid_or_name_is_mandatory">Deve informar o nome ou nid para pesquisar.</string>
     <string name="cant_edit_prescription_msg">Não pode efectuar alterações sobre esta prescrição pois a mesma ja possui aviamentos registados.</string>
     <string name="cant_edit_synced_prescription">Não pode efectuar alterações sobre esta prescrição pois a mesma ja foi sincronizada com o iDART central.</string>
+    <string name="save_error_msg_episode">\"Ocorreu um erro ao gravar o Episodio. \"</string>
+
 </resources>

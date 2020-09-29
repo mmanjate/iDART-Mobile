@@ -31,14 +31,13 @@ import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
 import mz.org.fgh.idartlite.common.ListbleDialogListener;
-import mz.org.fgh.idartlite.common.RecyclerTouchListener;
 import mz.org.fgh.idartlite.databinding.FragmentEpisodeBinding;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.adapter.EpisodeAdapter;
-import mz.org.fgh.idartlite.view.stock.StockEntranceActivity;
+
 import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
 
 public class EpisodeFragment extends GenericFragment implements ListbleDialogListener {
@@ -85,12 +84,20 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
             displayDataOnRecyclerView(rcvEpisodes, episodeAdapter, getContext());
 
 
-
-
-
             fragmentEpisodeBinding.newEpisode.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    Episode episode = null;
+                    try {
+                         episode=getRelatedViewModel().findEpisodeWithStopReasonByPatient(getSelectedPatient());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    if(episode!=null){
+                        Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"Nao pode Criarum novo episodio para o paciente uma vez que ele ja tem um episodio de fim").show();
+                        return;
+                    }
 
                     Intent intent = new Intent(getContext(), EpisodeActivity.class);
                     Bundle bundle = new Bundle();
@@ -148,23 +155,26 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
 
              //Por retirar chamando tela de criar, por ser editado
              case R.id.edit:
-                 //Call activity to Edit
-                 Intent intent = new Intent(getContext(), EpisodeActivity.class);
-                 Bundle bundle = new Bundle();
-                 bundle.putSerializable("user", getCurrentUser());
-                 bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
-                 bundle.putSerializable("episode",episode);
-                 bundle.putSerializable("patient", getMyActivity().getPatient());
-                 intent.putExtras(bundle);
-                 startActivity(intent);
-                 return true;
+                 if(!episode.getSyncStatus().equals("R")) {
+                     //Call activity to Edit
+                     Intent intent = new Intent(getContext(), EpisodeActivity.class);
+                     Bundle bundle = new Bundle();
+                     bundle.putSerializable("user", getCurrentUser());
+                     bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                     bundle.putSerializable("episode", episode);
+                     bundle.putSerializable("patient", getMyActivity().getPatient());
+                     intent.putExtras(bundle);
+                     startActivity(intent);
+                     return true;
+                 }
+                 else {
+                     Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"O Episódio não pode ser editado uma vez que já foi sicronizado com a central").show();
+                     return true;
+                 }
 
              case R.id.remove:
 
               Utilities.displayDeleteConfirmationDialogFromList(EpisodeFragment.this.getContext(),EpisodeFragment.this.getString(R.string.list_item_delete_msg),position1,EpisodeFragment.this).show();
-                // Utilities.displayAlertDialog(EpisodeFragment.this.getContext(), String.valueOf(this.position1)).show();
-               //  Utilities.displayDeleteConfirmationDialog(EpisodeFragment.this.getContext(),EpisodeFragment.this.getString(R.string.list_item_delete_msg),EpisodeFragment.this,EpisodeFragment.this);
-
                  return true;
              default:
                 return false;
@@ -172,35 +182,6 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
 
     }
 
-
-
-
-
-
-    /*private void displayPrescriptions(RecyclerView rcvEpisodes) {
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        this.rcvEpisodes.setLayoutManager(mLayoutManager);
-        this.rcvEpisodes.setItemAnimator(new DefaultItemAnimator());
-        this.rcvEpisodes.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-
-        episodeAdapter = new EpisodeAdapter(this.rcvEpisodes, this.episodeList, getMyActivity());
-        this.rcvEpisodes.setAdapter(episodeAdapter);
-
-        this.rcvEpisodes.addOnItemTouchListener(new RecyclerTouchListener(getContext(), this.rcvEpisodes, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, final int position) {
-                //Values are passing to activity & to fragment as well
-                Toast.makeText(getContext(), "Single Click on position        :"+position,
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(getContext(), "Long press on position :"+position,
-                        Toast.LENGTH_LONG).show();
-            }
-        }));
-    }*/
 
     public PatientActivity getMyActivity(){
         return (PatientActivity) getActivity();
@@ -242,7 +223,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
             }
         }
         else {
-            Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"O Episodio nao pode ser removido uma vez que ja foi sicronizado com a central").show();
+            Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"O Episódio não pode ser editado uma vez que já foi sicronizado com a central").show();
         }
 
     }

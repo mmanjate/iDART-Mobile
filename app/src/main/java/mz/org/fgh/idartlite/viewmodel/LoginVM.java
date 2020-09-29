@@ -39,6 +39,7 @@ import mz.org.fgh.idartlite.model.*;
 import mz.org.fgh.idartlite.service.*;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.LoginActivity;
 import mz.org.fgh.idartlite.view.HomeActivity;
 
@@ -253,10 +254,12 @@ public class LoginVM extends BaseViewModel {
 
                      //Creating an Episode For Patient1
                      Episode episode=new Episode();
-                     episode.setEpisodeDate(date);
+                     episode.setEpisodeDate(DateUtilitis.getDateFromDayAndMonthAndYear(26,9,2020));
                      episode.setNotes("EPisodio teste ");
                      episode.setStartReason("Referido De");
-                     episode.setSyncStatus("R");
+                     episode.setSyncStatus("S");
+                     episode.setSanitaryUnit("Chabeco");
+                     episode.setUsUuid(Utilities.getNewUUID().toString());
                      episode.setPatient(patient);
                      episodeService.createEpisode(episode);
 

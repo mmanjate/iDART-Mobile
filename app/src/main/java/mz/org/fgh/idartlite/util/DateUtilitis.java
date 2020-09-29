@@ -233,4 +233,16 @@ public class DateUtilitis {
                 / (1000 * 60 * 60 * 24);
     }
 
+    public static Date getDateFromDayAndMonthAndYear(int day,
+                                                     int month,
+                                                     int year)
+    {
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        cal.set(Calendar.MONTH, month - 1);
+        cal.set(Calendar.YEAR, year);
+
+        return cal.getTime();
+    }
 }

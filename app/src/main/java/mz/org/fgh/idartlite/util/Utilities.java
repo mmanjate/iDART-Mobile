@@ -171,7 +171,6 @@ public class Utilities {
                 .setNegativeButton(negative, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        listener.doOnDeny();
                         dialog.dismiss();
 
                     }
