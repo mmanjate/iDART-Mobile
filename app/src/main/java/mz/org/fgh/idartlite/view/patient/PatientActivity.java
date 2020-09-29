@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.view.patient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
@@ -12,15 +13,10 @@ import com.google.android.material.tabs.TabLayout;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
-
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
-
-import mz.org.fgh.idartlite.model.Clinic;
-
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.view.patient.adapter.PatientTabAdapter;
-
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
 
@@ -51,6 +47,16 @@ public class PatientActivity extends BaseActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);

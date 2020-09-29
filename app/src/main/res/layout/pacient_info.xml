@@ -142,6 +142,12 @@
                         android:text="@{patient.gender}"
                         android:textStyle="bold" />
                 </LinearLayout>
+                <View
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.03"
+                    android:layout_marginBottom="@dimen/dimen_5dp"
+                    android:background="@color/white"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -164,6 +170,12 @@
                         android:text="@{Utilities.parseIntToString(patient.age)}"
                         android:textStyle="bold" />
                 </LinearLayout>
+                <View
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.03"
+                    android:layout_marginBottom="@dimen/dimen_5dp"
+                    android:background="@color/white"/>
 
                 <LinearLayout
                     android:layout_width="0dp"

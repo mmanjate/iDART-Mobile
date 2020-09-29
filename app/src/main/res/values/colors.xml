@@ -17,4 +17,8 @@
     <color name="theme_primary_text_inverted">#ffffff</color>
     <color name="theme_secondary_text_inverted">#8affffff</color>
     <color name="black">#3B3B40</color>
+
+    <color name="button_light_back">#2896CA</color>
+    <color name="button_dark_back">#247CA6</color>
+    <color name="button_stroke">#85D5FB</color>
 </resources>

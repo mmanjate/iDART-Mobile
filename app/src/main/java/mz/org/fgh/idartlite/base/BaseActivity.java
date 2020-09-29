@@ -40,7 +40,10 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         if (this.relatedViewModel != null) {
             this.relatedViewModel.setRelatedActivity(this);
             this.relatedViewModel.setCurrentUser(currentUser);
+            this.relatedViewModel.setCurrentClinic(currentClinic);
         }
+
+
     }
 
     public void nextActivity(Class clazz){

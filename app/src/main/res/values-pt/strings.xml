@@ -119,5 +119,7 @@
     <string name="prescri_o_especial">Prescrição Especial?</string>
     <string name="motivo">Motivo *</string>
     <string name="prescription_got_dispenses_msg">Esta prescrição já tem aviamentos registados, não pode ser removida.</string>
+    <string name="no_search_results">Não foi encontrado um paciente com o nome ou nid informado.</string>
+    <string name="nid_or_name_is_mandatory">Deve informar o nome ou nid para pesquisar.</string>
 
 </resources>
