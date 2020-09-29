@@ -14,6 +14,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +38,7 @@ import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleAdapter;
 import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.databinding.ActivityCreateDispenseBinding;
+import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
@@ -54,6 +62,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
     private Prescription prescription;
 
+    private ArrayAdapter<ValorSimples> valorSimplesArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +85,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
                 this.prescription = getRelatedViewModel().getDispense().getPrescription();
 
+
                 if (prescription == null) {
 
                     this.setPatient((Patient) bundle.getSerializable("patient"));
@@ -90,10 +100,15 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
                     }
                 }
 
+                if((Dispense) bundle.getSerializable("dispense") != null){
+                    getRelatedViewModel().setDispense((Dispense) bundle.getSerializable("dispense"));
+                }
             }
         }
 
         populateForm();
+
+        loadSelectedPrescriptionToForm();
 
         activityCreateDispenseBinding.dispenseDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +194,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
                             return;
                         }
 
+
                         if (!selectedDrugs.contains(listble)) {
                             listble.setListPosition(selectedDrugs.size() + 1);
                             selectedDrugs.add(listble);
@@ -194,6 +210,21 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             }
         });
 
+    }
+
+    private void loadSelectedPrescriptionToForm() {
+
+        activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(ValorSimples.fastCreate(getRelatedViewModel().getDispense().getSupply())));
+        if (this.selectedDrugs == null) selectedDrugs = new ArrayList<>();
+
+        int i = 1;
+        for (DispensedDrug dispensedDrugDrug : getRelatedViewModel().getDispense().getDispensedDrugs()){
+            Drug d = dispensedDrugDrug.getStock().getDrug();
+            d.setListPosition(i);
+            i++;
+            selectedDrugs.add(d);
+        }
+        displaySelectedDrugs();
     }
 
     private void populateForm() {
@@ -218,7 +249,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             durations.add(ValorSimples.fastCreate(20, Prescription.DURATION_FIVE_MONTHS));
             durations.add(ValorSimples.fastCreate(24, Prescription.DURATION_SIX_MONTHS));
 
-            ArrayAdapter<ValorSimples> valorSimplesArrayAdapter = new ArrayAdapter<ValorSimples>(getApplicationContext(), android.R.layout.simple_spinner_item, durations);
+            valorSimplesArrayAdapter = new ArrayAdapter<ValorSimples>(getApplicationContext(), android.R.layout.simple_spinner_item, durations);
             valorSimplesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             activityCreateDispenseBinding.spnDuration.setAdapter(valorSimplesArrayAdapter);
 
@@ -332,7 +363,9 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
         params.put("patient", this.getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
+
         nextActivity(DispenseFragment.class, params);
+
     }
 
     @Override

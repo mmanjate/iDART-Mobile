@@ -227,7 +227,7 @@ public class LoginVM extends BaseViewModel {
                      Dispense dispense = new Dispense();
                      dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
                      dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(0);
+                     dispense.setSupply(4);
                      p.setId(1);
                      dispense.setPrescription(p);
                      dispense.setUuid("12");
@@ -236,7 +236,7 @@ public class LoginVM extends BaseViewModel {
                      dispense = new Dispense();
                      dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
                      dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(0);
+                     dispense.setSupply(4);
                      p.setId(1);
                      dispense.setPrescription(p);
                      dispense.setUuid("13");
@@ -245,7 +245,7 @@ public class LoginVM extends BaseViewModel {
                      dispense = new Dispense();
                      dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
                      dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(0);
+                     dispense.setSupply(4);
                      p.setId(1);
                      dispense.setPrescription(p);
                      dispense.setUuid("14");
@@ -311,6 +311,7 @@ public class LoginVM extends BaseViewModel {
                      stock.setShelfNumber(80);
                      stock.setUnitsReceived(2390);
                      stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
+                     stock.setStockMoviment(2390);
                      stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
                      stockService.saveOrUpdateStock(stock);
 

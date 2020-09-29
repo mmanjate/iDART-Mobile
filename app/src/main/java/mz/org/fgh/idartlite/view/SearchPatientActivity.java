@@ -1,16 +1,16 @@
 package mz.org.fgh.idartlite.view;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -33,6 +33,8 @@ public class SearchPatientActivity extends BaseActivity {
     private List<Patient> patientList;
     private ActivitySearchPatientBinding searchPatientBinding;
     private ContentListPatientAdapter adapter;
+    private String searchParam;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +48,13 @@ public class SearchPatientActivity extends BaseActivity {
 
             }
         }
+
         searchPatientBinding.buttonSearch.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(Utilities.stringHasValue(searchPatientBinding.edtSearchParam.getText().toString())){
+                searchParam = searchPatientBinding.edtSearchParam.getText().toString();
+
+                if(Utilities.stringHasValue(searchParam.trim())){
                     searchPatient();
                     displaySearchResult();
                     if(!Utilities.listHasElements(patientList)){

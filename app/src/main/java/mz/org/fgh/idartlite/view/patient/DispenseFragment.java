@@ -21,7 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.ClickListener;
@@ -96,24 +98,12 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
                         getContext(), rcvDispences, new ClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Dispense dispense = dispenseList.get(position);
-                        dispensePosition=position;
-                        PopupMenu popup = new PopupMenu(view.getContext(),view);
-                        MenuInflater inflater = popup.getMenuInflater();
-                        popup.setOnMenuItemClickListener(DispenseFragment.this::onMenuItemClick);
-                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
-                        popup.show();
+                        displayPopupMenu(view, position);
                     }
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        Dispense dispense = dispenseList.get(position);
-                        dispensePosition=position;
-                        PopupMenu popup = new PopupMenu(view.getContext(),view);
-                        MenuInflater inflater = popup.getMenuInflater();
-                        popup.setOnMenuItemClickListener(DispenseFragment.this::onMenuItemClick);
-                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
-                        popup.show();
+                        displayPopupMenu(view, position);
                     }
 
                     @Override
@@ -123,6 +113,17 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
                 }
                 ));
 
+    }
+
+    private void displayPopupMenu(View view, int position) {
+        getRelatedViewModel().setDispense(dispenseList.get(position));
+        getRelatedViewModel().getDispense().setListPosition(position);
+
+        PopupMenu popup = new PopupMenu(view.getContext(), view);
+        MenuInflater inflater = popup.getMenuInflater();
+        popup.setOnMenuItemClickListener(DispenseFragment.this::onMenuItemClick);
+        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
+        popup.show();
     }
 
     /*private void displayPrescriptions() {
@@ -152,10 +153,13 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
 
     public boolean onMenuItemClick(MenuItem item){
         switch (item.getItemId()){
-
-
             case R.id.edit:
-                //Call activity to Edit
+                Map<String, Object> params = new HashMap<>();
+                params.put("patient", getMyActivity().getPatient());
+                params.put("user", getCurrentUser());
+                params.put("clinic", getMyActivity().getCurrentClinic());
+                params.put("dispense", getRelatedViewModel().getDispense());
+                nextActivity(getContext(), CreateDispenseActivity.class,params);
                 return true;
             case R.id.remove:
                 Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(),DispenseFragment.this.getString(R.string.list_item_delete_msg),dispensePosition,DispenseFragment.this).show();
