@@ -6,39 +6,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.DialogListener;
-import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.databinding.EpisodeActivityBinding;
-import mz.org.fgh.idartlite.databinding.EpisodeActivityBindingImpl;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.util.DateUtilitis;
-import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.stock.StockEntranceActivity;
 import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
 
-import static android.R.*;
+import static android.R.layout;
 
 public class EpisodeActivity extends BaseActivity implements DialogListener {
 
@@ -165,5 +152,10 @@ if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
     public void doOnConfirmed() {
         Intent intent = new Intent(EpisodeActivity.this, PatientActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void doOnDeny() {
+
     }
 }

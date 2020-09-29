@@ -251,7 +251,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/prescri_o_especial"
-                            android:checked="@{viewModel.prescription.urgentPrescription == Prescription.URGENT_PRESCRIPTION}"
+                            android:checked="@{viewModel.prescription.urgent}"
                             android:onClick="@{() -> viewModel.setPrescriptionToSpetial()}"/>
 
                         <TextView

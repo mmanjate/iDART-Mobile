@@ -21,4 +21,5 @@
     <color name="button_light_back">#2896CA</color>
     <color name="button_dark_back">#247CA6</color>
     <color name="button_stroke">#85D5FB</color>
+    <color name="logo">#01226D</color>
 </resources>

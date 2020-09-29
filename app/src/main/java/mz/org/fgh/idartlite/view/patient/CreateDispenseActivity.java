@@ -388,6 +388,11 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
        doAfterSave();
     }
 
+    @Override
+    public void doOnDeny() {
+
+    }
+
     private boolean verifyIfExistStockToDispense(Drug drug){
 
         final int qtdADispensar = this.getQuantidadeADispensar(drug);

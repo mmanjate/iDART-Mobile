@@ -1,12 +1,7 @@
 package mz.org.fgh.idartlite.view;
 
-import androidx.collection.ArrayMap;
-import androidx.databinding.BindingAdapter;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,25 +9,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
-import org.json.JSONObject;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.rest.ObjectRequest;
-import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.UserService;
 import mz.org.fgh.idartlite.viewmodel.LoginVM;
@@ -57,6 +46,14 @@ public class LoginActivity extends BaseActivity {
 
         userService = new UserService(getApplication(), getCurrentUser());
         spinnerFarmacia = findViewById(R.id.spinnerFarmacia);
+
+        Intent intent = this.getIntent();
+        if(intent != null){
+            Bundle bundle = intent.getExtras();
+            if(bundle != null) {
+                list = (List<Clinic>) bundle.getSerializable("clinicList");
+            }
+        }
 
         try {
             if(userService.checkIfUsertableIsEmpty()){

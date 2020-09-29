@@ -141,9 +141,12 @@ public class PrescriptionVM extends BaseViewModel {
         urgentPrescription = !urgentPrescription;
         if (urgentPrescription) {
             this.prescription.setUrgentPrescription(Prescription.URGENT_PRESCRIPTION);
+
         }else {
             this.prescription.setUrgentPrescription(Prescription.NOT_URGENT_PRESCRIPTION);
         }
+
+        getRelatedActivity().changeMotiveSpinnerStatus(urgentPrescription);
     }
 
     public void save(){
@@ -154,11 +157,13 @@ public class PrescriptionVM extends BaseViewModel {
             try {
                 if (getRelatedActivity().getApplicationStep().isapplicationstepcreate()) {
                     prescriptionService.createPrescription(this.prescription);
+                    Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_dispense), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), getRelatedActivity()).show();
                 } else if (getRelatedActivity().getApplicationStep().isApplicationStepEdit()) {
                     prescriptionService.updatePrescription(this.prescription);
+                    Utilities.displayAlertDialog(getRelatedActivity(), "A Prescrição foi actualizada com sucesso.", getRelatedActivity()).show();
                 }
 
-                Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_dispense), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), getRelatedActivity()).show();
+
             } catch (SQLException e) {
                 e.printStackTrace();
                 Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg) + e.getLocalizedMessage()).show();
@@ -175,7 +180,7 @@ public class PrescriptionVM extends BaseViewModel {
 
     public String checkPrescriptionRemoveConditions() {
         try {
-            if (this.prescription.isSyncStatusReady(this.prescription.getSyncStatus())) return getRelatedActivity().getString(R.string.prescription_cant_be_removed_msg);
+            if (!this.prescription.isSyncStatusReady(this.prescription.getSyncStatus())) return getRelatedActivity().getString(R.string.prescription_cant_be_removed_msg);
             if (prescriptionHasDispenses()) return getRelatedActivity().getString(R.string.prescription_got_dispenses_msg);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -212,5 +217,11 @@ public class PrescriptionVM extends BaseViewModel {
         this.seeOnlyOfRegime = !this.seeOnlyOfRegime;
 
         getRelatedActivity().reloadDrugsSpinnerByRegime(this.prescription.getTherapeuticRegimen());
+    }
+
+    public String prescriptionCanBeEdited() throws SQLException {
+        if (prescriptionHasDispenses()) return getRelatedActivity().getString(R.string.cant_edit_prescription_msg);
+        if (!this.prescription.isSyncStatusReady(this.prescription.getSyncStatus())) return getRelatedActivity().getString(R.string.cant_edit_synced_prescription);
+        return "";
     }
 }
