@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -131,7 +132,11 @@ public class Utilities {
                             if (baseModel != null){
                                 listener.remove(baseModel);
                             }else {
-                                listener.remove(position);
+                                try {
+                                    listener.remove(position);
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
                             }
                             dialog.dismiss();
                         }

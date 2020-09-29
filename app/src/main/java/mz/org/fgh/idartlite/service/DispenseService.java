@@ -3,6 +3,8 @@ package mz.org.fgh.idartlite.service;
 import android.app.Application;
 
 import com.j256.ormlite.stmt.QueryBuilder;
+import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.model.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -35,7 +37,9 @@ public class DispenseService extends BaseService {
 
 
     public void createDispense(Dispense dispense) throws SQLException {
+
         getDataBaseHelper().getDispenseDao().create(dispense);
+
         if (dispense.getDispensedDrugs() != null) {
             this.saveDispensedDrugs(dispense.getDispensedDrugs(), dispense);
         }
