@@ -102,7 +102,9 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
     }
 
     public void populateDrugList() throws SQLException {
-        drugList = drugService.getAll();
+        drugList = new ArrayList<Drug>();
+        drugList.add(0, new Drug());
+        drugList.addAll(drugService.getAll());
         adapterSpinner = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugList);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stockEntranceBinding.spnDrugs.setAdapter(adapterSpinner);
@@ -185,7 +187,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
             public void onClick(View view) {
                 if (selectedStock == null) selectedStock = new ArrayList<>();
 
-                if ( stockEntranceBinding.spnDrugs.getSelectedItem() != null){
+                if ( ((Drug) stockEntranceBinding.spnDrugs.getSelectedItem()).getId() != 0){
                     if(stockEntranceBinding.dataValidade.getText().length() != 0 &&
                             stockEntranceBinding.dataEntrada.getText().length() != 0 &&
                             stockEntranceBinding.numeroLote.getText().length() != 0 &&
@@ -221,6 +223,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                     }else {
                         Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_empty_filds)).show();
                     }
+                }else{
+                    Utilities.displayAlertDialog(StockEntranceActivity.this, "Deve Selecionar um Medicamento para dar entrada").show();
                 }
             }
         });
