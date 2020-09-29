@@ -9,6 +9,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/stock_inventory_fragment" />
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/stock_inventory_fragment"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 </FrameLayout>

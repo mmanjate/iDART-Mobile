@@ -19,5 +19,4 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements Stoc
     public StockDaoImpl(ConnectionSource connectionSource, DatabaseTableConfig tableConfig) throws SQLException {
         super(connectionSource, tableConfig);
     }
-
 }
