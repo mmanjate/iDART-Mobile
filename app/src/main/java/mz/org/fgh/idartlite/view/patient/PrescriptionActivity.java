@@ -434,6 +434,24 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
     @Override
     public void doOnConfirmed() {
-        doAfterPrescriptionSave();
+        if (getApplicationStep().isapplicationstepcreate()) {
+            doAfterPrescriptionSave();
+        }else {
+            doOnDeny();
+        }
+    }
+
+    @Override
+    public void doOnDeny() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("patient", getRelatedViewModel().getPrescription().getPatient());
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        params.put("requestedFragment", PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION);
+        nextActivity(PatientActivity.class,params);
+    }
+
+    public void changeMotiveSpinnerStatus(boolean b) {
+        prescriptionBinding.spnReson.setEnabled(b);
     }
 }

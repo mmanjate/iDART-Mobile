@@ -1,6 +1,12 @@
 package mz.org.fgh.idartlite.common;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.Objects;
+
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class ValorSimples {
 
@@ -64,11 +70,20 @@ public class ValorSimples {
 
     @Override
     public boolean equals(Object o) {
+
         if (!(o instanceof ValorSimples)) return false;
         ValorSimples that = (ValorSimples) o;
-        return id == that.id;
+
+        if (that == null || (that.id <= 0 && !Utilities.stringHasValue(that.description))) return false;
+
+        if (id > 0 && that.id > 0) return id == that.id;
+
+        if (Utilities.stringHasValue(this.description)) return this.description.equals(that.description);
+
+        return false;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int hashCode() {
         return Objects.hash(id);

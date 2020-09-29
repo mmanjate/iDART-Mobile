@@ -113,8 +113,7 @@ public class Utilities {
                         dialog.dismiss();
                     }
 
-                })
-                .setPositiveButton(android.R.string.ok, null);
+                });
 
         return builder.create();
     }
@@ -172,6 +171,7 @@ public class Utilities {
                 .setNegativeButton(negative, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
+                        listener.doOnDeny();
                         dialog.dismiss();
 
                     }

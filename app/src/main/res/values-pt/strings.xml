@@ -123,4 +123,6 @@
 
     <string name="no_search_results">Não foi encontrado um paciente com o nome ou nid informado.</string>
     <string name="nid_or_name_is_mandatory">Deve informar o nome ou nid para pesquisar.</string>
+    <string name="cant_edit_prescription_msg">Não pode efectuar alterações sobre esta prescrição pois a mesma ja possui aviamentos registados.</string>
+    <string name="cant_edit_synced_prescription">Não pode efectuar alterações sobre esta prescrição pois a mesma ja foi sincronizada com o iDART central.</string>
 </resources>

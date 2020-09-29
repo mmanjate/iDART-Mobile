@@ -16,6 +16,7 @@ import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.adapter.PatientTabAdapter;
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
@@ -27,6 +28,8 @@ public class PatientActivity extends BaseActivity {
     private ViewPager viewPager;
 
     private ActivityPatientBinding patientBinding;
+
+    private String selectedTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class PatientActivity extends BaseActivity {
                 if (getRelatedViewModel().getPatient() == null){
                     throw new RuntimeException("Não foi seleccionado um paciente para detalhar.");
                 }
+                this.selectedTab = (String) bundle.getSerializable("requestedFragment");
             }
         }
 
@@ -74,6 +78,15 @@ public class PatientActivity extends BaseActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_prescription);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_dispense);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_episode);
+
+        if (Utilities.stringHasValue(selectedTab) && selectedTab.equals(PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION)) {
+            tabLayout.getTabAt(1).select();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     public Patient getPatient() {
