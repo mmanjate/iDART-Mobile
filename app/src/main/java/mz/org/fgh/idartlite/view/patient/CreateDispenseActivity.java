@@ -1,6 +1,16 @@
 package mz.org.fgh.idartlite.view.patient;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.DatePickerDialog;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +49,7 @@ import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.stock.StockEntranceActivity;
 import mz.org.fgh.idartlite.viewmodel.DispenseVM;
 
 public class CreateDispenseActivity extends BaseActivity  implements DialogListener {
@@ -208,16 +219,28 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
     private void loadSelectedPrescriptionToForm() {
 
         activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(ValorSimples.fastCreate(getRelatedViewModel().getDispense().getSupply())));
-        if (this.selectedDrugs == null) selectedDrugs = new ArrayList<>();
 
-        int i = 1;
-        for (DispensedDrug dispensedDrugDrug : getRelatedViewModel().getDispense().getDispensedDrugs()){
-            Drug d = dispensedDrugDrug.getStock().getDrug();
-            d.setListPosition(i);
-            i++;
-            selectedDrugs.add(d);
+        if(getRelatedViewModel().getDispense() != null) {
+
+            if (this.selectedDrugs == null) selectedDrugs = new ArrayList<>();
+
+            List<DispensedDrug> dispensedDrugs = new ArrayList<>();
+
+            try {
+                dispensedDrugs = getRelatedViewModel().findDispensedDrugsByDispenseId(getRelatedViewModel().getDispense().getId());
+            } catch (SQLException ex) {
+            }
+
+            int i = 1;
+            for (DispensedDrug dispensedDrugDrug : dispensedDrugs) {
+                Drug d = dispensedDrugDrug.getStock().getDrug();
+                d.setListPosition(i);
+                i++;
+                selectedDrugs.add(d);
+            }
+            displaySelectedDrugs();
+
         }
-        displaySelectedDrugs();
     }
 
     private void populateForm() {
@@ -311,11 +334,16 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
     }
 
     public void loadFormData(){
+
+        if(activityCreateDispenseBinding.dispenseDate.getText().length() != 0){
+            getRelatedViewModel().getDispense().setPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), "dd-MM-YYYY"));
+        }
+        if(activityCreateDispenseBinding.nextPickupDate.getText().length() != 0 ){
+            getRelatedViewModel().getDispense().setNextPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), "dd-MM-YYYY"));
+        }
         getRelatedViewModel().getDispense().setSupply(((ValorSimples) activityCreateDispenseBinding.spnDuration.getSelectedItem()).getId());
-        getRelatedViewModel().getDispense().setPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), "dd-MM-YYYY"));
         getRelatedViewModel().getDispense().setUuid(Utilities.getNewUUID().toString());
         getRelatedViewModel().getDispense().setSyncStatus(BaseModel.SYNC_SATUS_READY);
-        getRelatedViewModel().getDispense().setNextPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), "dd-MM-YYYY"));
 
         List<DispensedDrug> dispensedDrugs = new ArrayList<>();
 
@@ -352,14 +380,8 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
     }
 
     public void doAfterSave(){
-        Map<String, Object> params = new HashMap<>();
-        params.put("patient", this.getPatient());
-        params.put("user", getCurrentUser());
-        params.put("clinic", getCurrentClinic());
 
-        nextActivity(DispenseFragment.class, params);
-
-    }
+       }
 
     @Override
     public void doOnConfirmed() {

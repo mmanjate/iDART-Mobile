@@ -66,6 +66,7 @@ public class LoginVM extends BaseViewModel {
     private TherapheuticRegimenService therapheuticRegimenService;
     private TherapeuthicLineService therapeuthicLineService;
     private EpisodeService episodeService;
+    private DispenseDrugService dispenseDrugService;
 
     private String successMessage      = "Login was successful!";
     private String successUserCreation = "User was successful create!";
@@ -125,6 +126,7 @@ public class LoginVM extends BaseViewModel {
         this.therapeuthicLineService = new TherapeuthicLineService(getApplication(), this.user);
         this.dispenseService = new DispenseService(getApplication(), this.user);
         this.episodeService = new EpisodeService(getApplication(), this.user);
+        this.dispenseDrugService = new DispenseDrugService(getApplication(), this.user);
 
     }
 
@@ -332,6 +334,24 @@ public class LoginVM extends BaseViewModel {
                      stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
                      stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
                      stockService.saveOrUpdateStock(stock);
+
+                     dispense = new Dispense();
+                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setSupply(4);
+                     p.setId(1);
+                     dispense.setPrescription(p);
+                     dispense.setUuid("14");
+                     this.dispenseService.createDispense(dispense);
+
+                     DispensedDrug dd = new DispensedDrug();
+                     dispense.setId(1);
+                     stock.setId(1);
+                     dd.setStock(stock);
+                     dd.setDispense(dispense);
+                     dd.setSyncStatus("R");
+                     dd.setQuantitySupplied(90);
+                     this.dispenseDrugService.createDispensedDrug(dd);
 
                      setToastMessage(successUserCreation);
                  } else {

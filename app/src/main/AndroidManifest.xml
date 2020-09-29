@@ -19,6 +19,8 @@
         <activity android:name=".view.patient.PrescriptionActivity" android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".view.patient.CreateDispenseActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
         <activity
             android:name=".view.stock.StockEntranceActivity"
             android:label="@string/title_activity_stock"

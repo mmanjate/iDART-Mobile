@@ -25,13 +25,13 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="baff84a6-a0fa-420b-9410-1ffa63f40974">
-        <schema name="main" object-types="table, view" />
+        <schema name="main" object-types="constraint, column, table, view, dataset trigger, index" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="baff84a6-a0fa-420b-9410-1ffa63f40974">
-      <console name="Connection" type="STANDARD" schema="main" session="Main">select * from &quot;Dispense&quot;</console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from "Dispense_drug"]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -39,6 +39,9 @@
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="baff84a6-a0fa-420b-9410-1ffa63f40974" />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="baff84a6-a0fa-420b-9410-1ffa63f40974" dataset="main.Dispense" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -80,7 +83,7 @@
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="$USER_HOME$/AndroidStudio/DeviceExplorer/emulator-5554/data/data/mz.org.fgh.idartlite/databases/idartlite.db" schema="main" />
+            <file path="$USER_HOME$/AndroidStudio/DeviceExplorer/emulator-5554/data/data/mz.org.fgh.idartlite/databases/databases/idartlite.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

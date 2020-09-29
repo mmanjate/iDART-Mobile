@@ -72,4 +72,21 @@ public class DispenseService extends BaseService {
         return getDataBaseHelper().getDispenseDao().countAllOfPrescription(prescription);
     }
 
+    public void saveOrUpdateDispense(Dispense dispense) throws SQLException {
+        getDataBaseHelper().getDispenseDao().createOrUpdate(dispense);
+
+        if (dispense.getDispensedDrugs() != null) {
+            this.saveOrUpdateDispensedDrugs(dispense.getDispensedDrugs(), dispense);
+        }
+    }
+
+    public void saveOrUpdateDispensedDrugs(List<DispensedDrug> dispensedDrugs, Dispense dispense) throws SQLException {
+        for (DispensedDrug dispensedDrug: dispensedDrugs) {
+            dispensedDrug.setDispense(dispense);
+            getDataBaseHelper().getDispensedDrugDao().createOrUpdate(dispensedDrug);
+
+            this.stockService.updateStock(dispensedDrug);
+        }
+    }
+
 }
