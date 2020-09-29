@@ -57,6 +57,10 @@ public class EpisodeVM extends BaseViewModel {
         return dispenseService.getAllOfPatient(patient).get(0);
     }
 
+    public Episode findEpisodeWithStopReasonByPatient(Patient patient) throws SQLException {
+        return episodeService.findEpisodeWithStopReasonByPatient(patient);
+    }
+
     public void createEpisode(Episode episode) throws SQLException {
         episodeService.createEpisode(episode);
     }
@@ -93,8 +97,8 @@ public class EpisodeVM extends BaseViewModel {
             }
 
             try {
-                if(DateUtilitis.getDaysBetween(getEpisode().getEpisodeDate(),
-                        episodes.get(0).getEpisodeDate()) > 0){
+                if(DateUtilitis.dateDiff(getEpisode().getEpisodeDate(),
+                        episodes.get(0).getEpisodeDate(),DateUtilitis.DAY_FORMAT) > 0){
                     if (getEpisode().getId() == 0) {
 
                         this.episode.setSanitaryUnit(episodes.get(0).getSanitaryUnit());
@@ -105,16 +109,16 @@ public class EpisodeVM extends BaseViewModel {
                         episodeService.udpateEpisode(this.episode);
                     }
 
-                    Utilities.displayAlertDialog( getRelatedActivity(),"Episodio Criado Com Sucesso").show();
+                    Utilities.displayAlertDialog( getRelatedActivity(),"Episódio Criado Com Sucesso",getRelatedActivity()).show();
                 }
 
                 else {
-                    Utilities.displayAlertDialog( getRelatedActivity(),"Data de Visita nao pode ser menor que a do primeiro episodio").show();
+                    Utilities.displayAlertDialog( getRelatedActivity(),"Data de Visita não pode ser menor que a do primeiro episodio").show();
                 }
 
             } catch (SQLException e) {
                 e.printStackTrace();
-                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg)+e.getLocalizedMessage()).show();
+                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg_episode)+e.getLocalizedMessage()).show();
             }
         }
         else {

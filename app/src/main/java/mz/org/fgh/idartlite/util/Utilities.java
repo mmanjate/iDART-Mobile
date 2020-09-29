@@ -112,9 +112,8 @@ public class Utilities {
                         if (listener != null) listener.doOnConfirmed();
                         dialog.dismiss();
                     }
-
                 })
-                .setPositiveButton(android.R.string.ok, null);
+               ;
 
         return builder.create();
     }

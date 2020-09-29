@@ -60,37 +60,38 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Inicio"
+                        android:text="@{episode.beginOrEnding}"
                         android:textSize="@dimen/dimen_12dp"
                         android:textStyle="bold"/>
 
-                    <TextView
-                        android:id="@+id/prescriptionId"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{episode.startReason}"
-                        android:paddingBottom="@dimen/dimen_10dp"
-                        android:textSize="@dimen/dimen_12dp"
-                        android:textStyle="bold"/>
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:orientation="horizontal">
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="@dimen/dimen_10dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/textStartReason"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="@{episode.stopReason!=null? episode.stopReason: episode.startReason}"
+                            android:textSize="@dimen/dimen_12dp"
+                            android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/textViewOptions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:onClick="showPopup"
-                        android:paddingLeft="@dimen/dimen_22dp"
-                        android:text="&#8942;"
-                        android:textAppearance="?android:textAppearanceLarge" />
+                        <TextView
+                            android:id="@+id/textUs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:paddingRight="@dimen/dimen_10dp"
+                            android:text="@{episode.sanitaryUnit}"
+                            android:textSize="@dimen/dimen_12dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -151,7 +152,7 @@
                         style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
                         android:layout_height="17.5dp"
-                        android:text="@{DateUtilitis.formatToDDMMYYYY(lastDispense.nextPickupDate)}" />
+                        android:text="@{episode.stopReason==null ? DateUtilitis.formatToDDMMYYYY(lastDispense.nextPickupDate):episode.noInfoString}" />
 
                     <TextView
                         android:id="@+id/notes"

@@ -32,6 +32,10 @@ public class EpisodeService extends BaseService {
         return getDataBaseHelper().getEpisodeDao().getLatestByPatientAndSanitryUuid(patient,uuid);
     }
 
+    public Episode findEpisodeWithStopReasonByPatient(Patient patient) throws SQLException {
+        return getDataBaseHelper().getEpisodeDao().findEpisodeWithStopReasonByPatient(patient);
+    }
+
 
     public void createEpisode(Episode episode) throws SQLException {
 
