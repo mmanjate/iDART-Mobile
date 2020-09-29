@@ -28,7 +28,6 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ValorSimples;
-import mz.org.fgh.idartlite.databinding.CreateActivityEpisodeBindingImpl;
 import mz.org.fgh.idartlite.databinding.EpisodeActivityBinding;
 import mz.org.fgh.idartlite.databinding.EpisodeActivityBindingImpl;
 import mz.org.fgh.idartlite.model.Episode;
@@ -135,7 +134,7 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
 
 if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
-    getRelatedViewModel().getEpisode().setEpisodeDate(DateUtilitis.createDate(createEpisodeBinding.editEpisodeDate.getText().toString(), "dd-MM-YYYY"));
+    getRelatedViewModel().getEpisode().setEpisodeDate(DateUtilitis.createDate(createEpisodeBinding.editEpisodeDate.getText().toString(), DateUtilitis.DATE_FORMAT));
 }
        getRelatedViewModel().getEpisode().setNotes(createEpisodeBinding.editTextEpisodeObservation.getText().toString());
        getRelatedViewModel().getEpisode().setPatient(getRelatedViewModel().getPatient());
@@ -164,7 +163,7 @@ if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
 
     @Override
     public void doOnConfirmed() {
-        Intent intent = new Intent(EpisodeActivity.this, EpisodeFragment.class);
+        Intent intent = new Intent(EpisodeActivity.this, PatientActivity.class);
         startActivity(intent);
     }
 }

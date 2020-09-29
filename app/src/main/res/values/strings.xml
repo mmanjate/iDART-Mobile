@@ -95,8 +95,7 @@
 
     <string name="label_lista_medicamentos">Lista de Medicamentos *</string>
     <string name="drug_data_empty_filds">Todos os campos desse formulario são Obrigatorios.</string>
-    <string name="drug_validate_date">A data de validade deve ser no minimo de dois meses (60 dias).</string>
-    <string name="drug_entrada_date">A Data de Entrada nao pode ser futura.</string>
+    <string name="drug_validate_date">A data de validade deve ser maior que a data de entrada.</string>
     <string name="record_sucessfuly_removed">Registo removido com sucesso</string>
     <string name="would_like_to_dispense">A Prescrição foi gravada com sucesso. Pretende aviar a mesma?</string>
     <string name="yes">Sim</string>
@@ -120,4 +119,7 @@
     <string name="prescription_got_dispenses_msg">Esta prescrição já tem aviamentos registados, não pode ser removida.</string>
     <string name="no_search_results">Não foi encontrado um paciente com o nome ou nid informado.</string>
     <string name="nid_or_name_is_mandatory">Deve informar o nome ou nid para pesquisar.</string>
+    <string name="save_error_msg_episode">\"Ocorreu um erro ao gravar o Episodio. \"</string>
+
+    <string name="drug_entrada_date">A Data de Entrada nao pode ser futura.</string>
 </resources>

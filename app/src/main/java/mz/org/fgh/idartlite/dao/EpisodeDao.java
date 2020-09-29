@@ -12,4 +12,6 @@ public interface EpisodeDao extends GenericDao<Episode, Integer>{
     public List<Episode> getAllByPatient(Patient patient) throws SQLException;
 
     public Episode getLatestByPatientAndSanitryUuid(Patient patient,String uuid) throws SQLException;
+
+    public Episode findEpisodeWithStopReasonByPatient(Patient patient) throws SQLException;
 }

@@ -172,15 +172,30 @@ public class Episode extends BaseModel {
 
 	public String validateEpisodeData(){
 		if(episodeDate==null){
-			return "A data do Episodio e um dado obrigatorio.";
+			return "A data do Episódio e um dado obrigatorio.";
 		}
-		if(DateUtilitis.getDaysBetween(episodeDate, Calendar.getInstance().getTime()) >0){
-			return "A data do Episodio nao pode ser uma data futura.";
+		if(DateUtilitis.dateDiff(episodeDate, Calendar.getInstance().getTime(),DateUtilitis.DAY_FORMAT) >=0){
+			return "A data do Episódio não pode ser uma data futura.";
 		}
-		if(notes==null){
-			return "As Notas sao um dado obrigatorio.";
+		if(stopReason.isEmpty()){
+			return "O Motivo de Fim é um dado obrigatorio.";
 		}
 		return "";
+	}
+
+	//Filling the Next PickUpDate Label
+	public String getNoInfoString(){
+		if(stopReason!=null){
+			return "Sem Info.";
+		}
+		return "";
+	}
+
+	public String getBeginOrEnding(){
+		if(stopReason!=null){
+			return "Fim";
+		}
+		return "Inicio";
 	}
 
 }
