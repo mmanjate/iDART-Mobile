@@ -20,6 +20,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.ListbleDialogListener;
+import mz.org.fgh.idartlite.model.Prescription;
 
 public class Utilities {
 
@@ -226,7 +227,7 @@ public class Utilities {
     }*/
 
     public static boolean stringHasValue(String string){
-        return string != null && !string.trim().isEmpty() && string.trim().length() > 0;
+        return string != null && !string.isEmpty() && string.length() > 0;
     }
 
     public static String parseIntToString(int toParse){
@@ -244,6 +245,26 @@ public class Utilities {
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService( Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow( activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public static String parseSupplyToLabel(int supply){
+
+       switch (supply){
+           case 2:
+               return Prescription.DURATION_TWO_WEEKS;
+           case 4:
+               return Prescription.DURATION_ONE_MONTH;
+           case 8:
+               return Prescription.DURATION_TWO_MONTHS;
+           case 12:
+               return Prescription.DURATION_THREE_MONTHS;
+           case 16:
+               return Prescription.DURATION_FOUR_MONTHS;
+           case 20:
+               return Prescription.DURATION_SIX_MONTHS;
+           default:
+               return "";
+       }
     }
 
 }

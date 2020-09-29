@@ -4,20 +4,17 @@ package mz.org.fgh.idartlite.model;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.ForeignCollection;
-import com.j256.ormlite.dao.LazyForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.DispenseDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.Utilities;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -166,5 +163,18 @@ public class Dispense extends BaseModel {
 
        return (int) noOfDaysBetween;
 
+    }
+
+    public String validate() {
+        if (this.pickupDate == null) return "A data da dispensa é obrigatória";
+        if (this.nextPickupDate == null) return "A data do próximo levantamento é obrigatória";
+        if(DateUtilitis.dateDiff(this.nextPickupDate, this.pickupDate, DateUtilitis.DAY_FORMAT) > 0) {
+            return "A data do próximo levantamento deve ser maior que a data do levantamentamento.";
+        }
+        if(this.supply <= 0) return "A duração da prescrição deve ser indicada.";
+
+        if (!Utilities.listHasElements(this.dispensedDrugs)) return "Por favor indique os medicamentos para esta dispensa.";
+
+        return "";
     }
 }

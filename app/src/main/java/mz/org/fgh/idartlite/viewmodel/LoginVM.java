@@ -66,6 +66,7 @@ public class LoginVM extends BaseViewModel {
     private TherapheuticRegimenService therapheuticRegimenService;
     private TherapeuthicLineService therapeuthicLineService;
     private EpisodeService episodeService;
+    private DispenseDrugService dispenseDrugService;
 
     private String successMessage      = "Login was successful!";
     private String successUserCreation = "User was successful create!";
@@ -125,6 +126,7 @@ public class LoginVM extends BaseViewModel {
         this.therapeuthicLineService = new TherapeuthicLineService(getApplication(), this.user);
         this.dispenseService = new DispenseService(getApplication(), this.user);
         this.episodeService = new EpisodeService(getApplication(), this.user);
+        this.dispenseDrugService = new DispenseDrugService(getApplication(), this.user);
 
     }
 
@@ -224,34 +226,6 @@ public class LoginVM extends BaseViewModel {
 
                      List<DispensedDrug> dds = new ArrayList<>();
 
-                     //Create Dispense
-                     Dispense dispense = new Dispense();
-                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(4);
-                     p.setId(1);
-                     dispense.setPrescription(p);
-                     dispense.setUuid("12");
-                     this.dispenseService.createDispense(dispense);
-
-                     dispense = new Dispense();
-                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(4);
-                     p.setId(1);
-                     dispense.setPrescription(p);
-                     dispense.setUuid("13");
-                     this.dispenseService.createDispense(dispense);
-
-                     dispense = new Dispense();
-                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(4);
-                     p.setId(1);
-                     dispense.setPrescription(p);
-                     dispense.setUuid("14");
-                     this.dispenseService.createDispense(dispense);
-
                      //Creating an Episode For Patient1
                      Episode episode=new Episode();
                      episode.setEpisodeDate(DateUtilitis.getDateFromDayAndMonthAndYear(26,9,2020));
@@ -262,17 +236,6 @@ public class LoginVM extends BaseViewModel {
                      episode.setUsUuid(Utilities.getNewUUID().toString());
                      episode.setPatient(patient);
                      episodeService.createEpisode(episode);
-
-                     Prescription prescription=new Prescription();
-                     prescription.setPatient(patient);
-                     prescription.setPrescriptionDate(date);
-
-                     prescription.setExpiryDate(date);
-                     prescription.setSupply(123);
-                     prescription.setPrescriptionSeq("111");
-                     prescriptionService.createPrescription(prescription);
-
-                     System.out.println("ID Dispensa: "+dispense.getId());
 
                      User user = new User();
                      user.setUserName("root");
@@ -332,6 +295,24 @@ public class LoginVM extends BaseViewModel {
                      stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
                      stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
                      stockService.saveOrUpdateStock(stock);
+
+                     Dispense dispense = new Dispense();
+                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
+                     dispense.setSupply(4);
+                     p.setId(1);
+                     dispense.setPrescription(p);
+                     dispense.setUuid("14");
+                     this.dispenseService.createDispense(dispense);
+
+                     DispensedDrug dd = new DispensedDrug();
+                     dispense.setId(1);
+                     stock.setId(1);
+                     dd.setStock(stock);
+                     dd.setDispense(dispense);
+                     dd.setSyncStatus("R");
+                     dd.setQuantitySupplied(90);
+                     this.dispenseDrugService.createDispensedDrug(dd);
 
                      setToastMessage(successUserCreation);
                  } else {

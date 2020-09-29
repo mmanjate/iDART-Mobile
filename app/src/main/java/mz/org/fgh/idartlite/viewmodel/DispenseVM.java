@@ -26,7 +26,6 @@ import mz.org.fgh.idartlite.service.DrugService;
 import mz.org.fgh.idartlite.service.PrescriptionService;
 import mz.org.fgh.idartlite.service.StockService;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.HomeActivity;
 import mz.org.fgh.idartlite.view.patient.CreateDispenseActivity;
 
 public class DispenseVM extends BaseViewModel {
@@ -139,16 +138,27 @@ public class DispenseVM extends BaseViewModel {
 
     public void save() {
 
+        getRelatedActivity().loadFormData();
+
+        String validationErrors = this.dispense.validate();
+
+        if (!Utilities.stringHasValue(validationErrors)) {
         try {
+            this.dispenseService.saveOrUpdateDispense(dispense);
+            Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!", getRelatedActivity()).show();
 
-            getRelatedActivity().loadFormData();
-
-            this.dispenseService.createDispense(this.dispense);
-            Utilities.displayConfirmationDialog(getRelatedActivity(), "Pretende aviar estes medicamentos?", "Sim", "Não", getRelatedActivity()).show();
         } catch (SQLException e) {
             e.printStackTrace();
             Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg)+e.getLocalizedMessage()).show();
-        }
+        }}
+        else {
+                Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
+            }
+    }
+
+    public List<DispensedDrug> findDispensedDrugsByDispenseId(int id) throws SQLException {
+
+        return this.dispenseDrugService.findDispensedDrugByDispenseId(id);
     }
 
 }

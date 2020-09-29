@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,7 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
     private FragmentDispenseBinding fragmentDispenseBinding;
     private DispenseAdapter dispenseAdapter;
     int dispensePosition;
+    private List<Prescription> prescriptionList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,14 +70,16 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
 
         this.rcvDispences = fragmentDispenseBinding.rcvDispenses;
 
+        this.dispenseList = new ArrayList<>();
+
         try {
             this.dispenseList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        if (Utilities.listHasElements(dispenseList)) {
-            dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
+        if (Utilities.listHasElements(this.dispenseList)) {
+            this.dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
             displayDataOnRecyclerView(rcvDispences, dispenseAdapter, getContext());
         }
 
