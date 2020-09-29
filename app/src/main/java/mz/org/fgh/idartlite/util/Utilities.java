@@ -112,8 +112,8 @@ public class Utilities {
                         if (listener != null) listener.doOnConfirmed();
                         dialog.dismiss();
                     }
-                })
-               ;
+
+                });
 
         return builder.create();
     }

@@ -1,12 +1,5 @@
 package mz.org.fgh.idartlite.view.stock;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +7,18 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
@@ -37,7 +35,6 @@ import mz.org.fgh.idartlite.service.DrugService;
 import mz.org.fgh.idartlite.service.StockService;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.patient.CreateDispenseActivity;
 import mz.org.fgh.idartlite.viewmodel.StockEntranceVM;
 
 public class StockEntranceActivity extends BaseActivity implements DialogListener {
@@ -331,5 +328,10 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
     @Override
     public void doOnConfirmed() {
         nextActivity(StockActivity.class);
+    }
+
+    @Override
+    public void doOnDeny() {
+
     }
 }

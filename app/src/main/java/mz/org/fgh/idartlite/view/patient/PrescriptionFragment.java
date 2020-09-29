@@ -34,6 +34,8 @@ import mz.org.fgh.idartlite.viewmodel.PrescriptionVM;
 
 public class PrescriptionFragment extends GenericFragment implements ListbleDialogListener {
 
+    public static final String FRAGMENT_CODE_PRESCRIPTION = "PrescriptionFragment";
+
     private RecyclerView rcvPrescriptions;
     private List<Prescription> prescriptionList;
 
@@ -114,14 +116,24 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
     public boolean onMenuItemClick(MenuItem item){
         switch (item.getItemId()){
             case R.id.edit:
-                Map<String, Object> params = new HashMap<>();
-                params.put("prescription", getRelatedViewModel().getPrescription());
-                params.put("user", getCurrentUser());
-                params.put("clinic", getMyActivity().getCurrentClinic());
-                nextActivity(getContext(), PrescriptionActivity.class,params);
+                try {
+                    String editErrors = getRelatedViewModel().prescriptionCanBeEdited();
+
+                if (Utilities.stringHasValue(editErrors)){
+                    Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(),editErrors).show();
+                }else {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("prescription", getRelatedViewModel().getPrescription());
+                    params.put("user", getCurrentUser());
+                    params.put("clinic", getMyActivity().getCurrentClinic());
+                    nextActivity(getContext(), PrescriptionActivity.class, params);
+                }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 return true;
             case R.id.remove:
-                Utilities.displayDeleteConfirmationDialogFromList(PrescriptionFragment.this.getContext(),PrescriptionFragment.this.getString(R.string.list_item_delete_msg),getRelatedViewModel().getPrescription().getListPosition(),PrescriptionFragment.this).show();
+                Utilities.displayDeleteConfirmationDialogFromList(PrescriptionFragment.this.getContext(),getString(R.string.list_item_delete_msg),getRelatedViewModel().getPrescription().getListPosition(),PrescriptionFragment.this).show();
                 return true;
             default:
                 return false;
