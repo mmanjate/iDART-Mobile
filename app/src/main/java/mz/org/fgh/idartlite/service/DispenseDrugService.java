@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.DispensedDrug;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 
 public class DispenseDrugService extends BaseService {
@@ -18,4 +19,7 @@ public class DispenseDrugService extends BaseService {
         getDataBaseHelper().getDispensedDrugDao().create(dispenseDrug);
     }
 
+    public boolean checkStockIsDispensedDrug(Stock stock) throws SQLException {
+        return getDataBaseHelper().getDispensedDrugDao().checkStockIsDispensedDrug(stock);
+    }
 }

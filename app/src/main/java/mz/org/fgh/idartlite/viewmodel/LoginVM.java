@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 
 import mz.org.fgh.idartlite.model.Clinic;
@@ -220,27 +221,13 @@ public class LoginVM extends BaseViewModel {
                      pd.setId(1);
                      pd.setDrug(drug);
 
-                     stock = new Stock();
-                     stock.setBatchNumber("250845AD");
-                     stock.setClinic(clinic);
-                     stock.setDrug(drug);
-                     stock.setDateReceived(date);
-                     stock.setExpiryDate(date);
-                     stock.setOrderNumber("00001/001/2020");
-                     stock.setPrice(50);
-                     stock.setShelfNumber(80);
-                     stock.setUnitsReceived(2390);
-                     stock.setStockMoviment(2390);
-                     stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
-                     stockService.saveOrUpdateStock(stock);
-
                      List<DispensedDrug> dds = new ArrayList<>();
 
                      //Create Dispense
                      Dispense dispense = new Dispense();
                      dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
                      dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(0);
+                     dispense.setSupply(4);
                      p.setId(1);
                      dispense.setPrescription(p);
                      dispense.setUuid("12");
@@ -249,7 +236,7 @@ public class LoginVM extends BaseViewModel {
                      dispense = new Dispense();
                      dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
                      dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(0);
+                     dispense.setSupply(4);
                      p.setId(1);
                      dispense.setPrescription(p);
                      dispense.setUuid("13");
@@ -258,7 +245,7 @@ public class LoginVM extends BaseViewModel {
                      dispense = new Dispense();
                      dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
                      dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(0);
+                     dispense.setSupply(4);
                      p.setId(1);
                      dispense.setPrescription(p);
                      dispense.setUuid("14");
@@ -323,6 +310,23 @@ public class LoginVM extends BaseViewModel {
                      stock.setPrice(50);
                      stock.setShelfNumber(80);
                      stock.setUnitsReceived(2390);
+                     stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
+                     stock.setStockMoviment(2390);
+                     stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
+                     stockService.saveOrUpdateStock(stock);
+
+                     stock = new Stock();
+                     stock.setBatchNumber("250845AD");
+                     stock.setClinic(clinic);
+                     stock.setDrug(drug);
+                     stock.setDateReceived(date);
+                     stock.setExpiryDate(date);
+                     stock.setOrderNumber("00001/001/2020");
+                     stock.setPrice(50);
+                     stock.setShelfNumber(80);
+                     stock.setUnitsReceived(2390);
+                     stock.setStockMoviment(2390);
+                     stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
                      stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
                      stockService.saveOrUpdateStock(stock);
 
