@@ -7,6 +7,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -44,6 +46,15 @@ public class StockActivity extends BaseActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -57,6 +68,12 @@ public class StockActivity extends BaseActivity {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_stock_entrance);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_stock_inventory);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_items, menu);
+        return true;
     }
 
     public Clinic getClinic(){
