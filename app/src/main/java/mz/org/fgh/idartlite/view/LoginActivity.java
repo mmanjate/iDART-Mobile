@@ -62,7 +62,7 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
             } else{
-                activityLoginBinding.textIcon.setVisibility(View.GONE);
+                //activityLoginBinding.textIcon.setVisibility(View.GONE);
                 activityLoginBinding.textFarmacia.setVisibility(View.GONE);
                 activityLoginBinding.spinnerFarmacia.setVisibility(View.GONE);
             }
