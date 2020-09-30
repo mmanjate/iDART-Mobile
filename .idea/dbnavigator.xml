@@ -23,11 +23,16 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="baff84a6-a0fa-420b-9410-1ffa63f40974">
+        <schema name="main" object-types="table, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="baff84a6-a0fa-420b-9410-1ffa63f40974">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from prescription;]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from clinic;]]></console>
+      <console name="Connection 1" type="STANDARD" schema="main" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -84,7 +89,7 @@
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="$USER_HOME$/AndroidStudio/DeviceExplorer/emulator-5554/data/data/mz.org.fgh.idartlite/databases/databases/idartlite.db" schema="main" />
+            <file path="$PROJECT_DIR$/../../../../../../AndroidStudio/DeviceExplorer/Nexus_5_API_22 [emulator-5554]/data/data/mz.org.fgh.idartlite/databases/idartlite.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

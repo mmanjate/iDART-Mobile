@@ -29,6 +29,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     public BaseViewModel(@NonNull Application application) {
         super(application);
         callbacks = new PropertyChangeRegistry();
+
     }
 
     @Override

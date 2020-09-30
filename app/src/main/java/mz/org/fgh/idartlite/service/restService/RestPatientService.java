@@ -10,9 +10,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.internal.LinkedTreeMap;
 
+import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
@@ -32,21 +34,21 @@ public class RestPatientService extends BaseService {
         patientService = new PatientService(getApplication(),null);
     }
 
-    public static void restGetAllPatient() {
+    public static void restGetAllPatient(RestResponseListener listener) {
 
         try {
+            clinicService = new ClinicService(getApp(),null);
+
             Clinic clinic = clinicService.getCLinic().get(0);
 
         patientService = new PatientService(getApp(),null);
 
-        String url = BaseService.baseUrl + "/sync_temp_patients?mainclinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
-//        String url = BaseService.baseUrl + "/sync_temp_patients?clinicuuid=eq.4a93cbf1-da0d-4657-bc41-93b30cd93b8e&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
+        String url = BaseService.baseUrl + "/sync_temp_patients?clinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
 
         if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {
 
                 RESTServiceHandler handler = new RESTServiceHandler();
-                //   handler.setUser(getCurrentUser());
 
                 Map<String, Object> params = new ArrayMap<String, Object>();
                 handler.addHeader("Content-Type", "Application/json");
@@ -72,8 +74,13 @@ public class RestPatientService extends BaseService {
                                     continue;
                                 }
                             }
-                        }else
+                        }else {
                             Log.w(TAG, "Response Sem Info." + patients.length);
+                        }
+
+                        if(listener != null){
+                            listener.doOnRestSucessResponse(null);
+                        }
                     }
 
                 }, new Response.ErrorListener() {

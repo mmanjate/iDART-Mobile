@@ -18,11 +18,13 @@ import java.util.List;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.service.UserService;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.LoginVM;
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements RestResponseListener {
     private ActivityLoginBinding activityLoginBinding;
     private List<Clinic> list;
     private UserService userService;
@@ -32,7 +34,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         activityLoginBinding.setViewModel(getRelatedViewModel());
-        activityLoginBinding.executePendingBindings();
+//        activityLoginBinding.executePendingBindings();
         userService = new UserService(getApplication(), getCurrentUser());
         list = new ArrayList<Clinic>();
         Intent intent = this.getIntent();
@@ -76,6 +78,39 @@ public class LoginActivity extends BaseActivity {
         activityLoginBinding.spinnerFarmacia.setAdapter(adapterSpinnerClinic);
         activityLoginBinding.spinnerFarmacia.setVisibility(View.VISIBLE);
     }
+
+
+    public void runRestUserAccess(){
+        final String[] auth_access = {null};
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+             //   showLoading(LoginActivity.this ,getString(R.string.authenticate),getString(R.string.loading));
+
+            }
+        });
+        new Thread(new Runnable() {
+            public void run() {
+                // do here some long operation
+
+                auth_access[0] = userService.getUserAuthentication(currentClinic.getUuid(), currentUser.getUserName(), currentUser.getPassword(), LoginActivity.this);
+
+                    /*while (!Utilities.stringHasValue(auth_access[0])){
+                        Thread.sleep(2000);
+                    }
+
+                    if (auth_access[0].equals(userService.auth)) {
+                        getRelatedViewModel().setUserAuthentic(true);
+                    }else
+                        getRelatedViewModel().setUserAuthentic(false);*/
+
+//                   hideLoading();
+
+            }
+        }).start();
+
+    }
+
     @Override
     public LoginVM getRelatedViewModel() {
         return (LoginVM) super.getRelatedViewModel();
@@ -83,5 +118,31 @@ public class LoginActivity extends BaseActivity {
     @Override
     public BaseViewModel initViewModel() {
         return new ViewModelProvider(this).get(LoginVM.class);
+    }
+
+
+    @Override
+    public void doOnRestSucessResponse(String flag) {
+        if (Utilities.stringHasValue(flag)){
+            if (flag.equals(userService.auth)) {
+                getRelatedViewModel().setUserAuthentic(true);
+
+                try {
+                    getRelatedViewModel().saveUserSettingsAndProcced();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Utilities.displayAlertDialog(LoginActivity.this, "Ocorreu um erro ao guardar as configuracoes do utilizados.").show();
+                }
+            }else {
+                getRelatedViewModel().setUserAuthentic(false);
+                Utilities.displayAlertDialog(LoginActivity.this, "Os dados do utilizador sao invalidos").show();
+            }
+        }
+
+    }
+
+    @Override
+    public void doOnRestErrorResponse(String errormsg) {
+
     }
 }
