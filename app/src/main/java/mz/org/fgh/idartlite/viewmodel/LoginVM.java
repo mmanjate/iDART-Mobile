@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.base.BaseModel;
@@ -68,10 +70,11 @@ public class LoginVM extends BaseViewModel {
     private EpisodeService episodeService;
     private DispenseDrugService dispenseDrugService;
 
-    private String successMessage      = "Login was successful!";
+    private String successMessage = "Login was successful!";
     private String successUserCreation = "User was successful create!";
-    private String errorMessage        = "User Name or Password not valid!";
-    private String mandatoryField      = "User Name and Password are mandatory!";
+    private String errorMessage = "User Name or Password not valid!";
+    private String restErrorMessage = "Rest Access: User Name or Password not valid!";
+    private String mandatoryField = "User Name and Password are mandatory!";
 
     @Bindable
     private String toastMessage = null;
@@ -106,6 +109,16 @@ public class LoginVM extends BaseViewModel {
         notifyPropertyChanged(BR.userPassword);
     }
 
+    @Bindable
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic c) {
+        clinic = c;
+        notifyPropertyChanged(BR.clinic);
+    }
+
     public LoginVM(@NonNull Application application) throws SQLException {
         super(application);
         user = new User();
@@ -130,212 +143,71 @@ public class LoginVM extends BaseViewModel {
 
     }
 
-     public void login(){
-         try {
-             if (getUserName().length() == 0 || getUserPassword().length() == 0) {
-                 setToastMessage(mandatoryField);
-             } else {
+    public void login() {
+        try {
+            if (getUserName() != null && getUserPassword() != null) {
+                if (getUserName().length() == 0 || getUserPassword().length() == 0) {
+                    setToastMessage(mandatoryField);
+                } else {
 
-                 if (userService.checkIfUsertableIsEmpty()) {
-                     pharmacyType = new PharmacyType();
-                     pharmacyType.setDescription("qualquer");
-                     pharmacyTypeService.savePharmacyType(pharmacyType);
-                     pharmacyType.setId(1);
+                    if (userService.checkIfUsertableIsEmpty()) {
+                        final boolean[] resultado = {false};
 
-                     clinic.setAddress("Av.Mateus Munguambe");
-                     clinic.setClinicName("Farmácia Indico");
-                     clinic.setPhone("82665382");
-                     clinic.setCode("3da5f12714555ded1f0e40824b2c8568");
-                     clinic.setUuid("3da5f12714555ded1f0e40824b2c8568");
-                     clinic.setPharmacyType(pharmacyType);
-                     clinicService.saveClinic(clinic);
+                        new Thread(new Runnable() {
+                            public void run() {
+                                // do here some long operation
+                                try {
+                                    Thread.sleep(2000);
+                                    resultado[0] = userService.getUserAuthentication(currentClinic.getUuid(), user.getUserName(), user.getPassword());
 
-                     Patient patient = new Patient();
-                     clinic.setId(1);
-                     patient.setAddress("Matola");
-                     Date date = Calendar.getInstance().getTime();
-                     patient.setBirthDate(date);
-                     patient.setFirstName("Antonio Mateus");
-                     patient.setPhone("82665382");
-                     patient.setLastName("Munguambe");
-                     patient.setGender("Masculino");
-                     patient.setNid("0101010101/2020/00001");
-                     patient.setUuid("0101010101/2020/00001");
-                     patient.setClinic(clinic);
-                     patientService.savePatient(patient);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
 
-                     patient.setAddress("CS Chabeco");
-                     date = Calendar.getInstance().getTime();
-                     clinic.setId(1);
-                     patient.setBirthDate(date);
-                     patient.setFirstName("Engels Mateus");
-                     patient.setLastName("Nhantumbo");
-                     patient.setPhone("826219264");
-                     patient.setGender("Masculino");
-                     patient.setNid("0101010101/2020/63254");
-                     patient.setClinic(clinic);
-                     patientService.savePatient(patient);
+                        if (true) {
+                            System.out.println(currentClinic);
+                            System.out.println(user.getUserName());
+                            clinicService.saveClinic(currentClinic);
+                            user.setClinic(clinicService.getCLinic().get(0));
+                            userService.saveUser(user);
+                            // so para teste
+                            Intent intent = new Intent(getApplication(), HomeActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("user", user);
+                            bundle.putSerializable("clinic", clinicService.getCLinic().get(0));
+                            intent.putExtras(bundle);
+                            getRelatedActivity().startActivity(intent);
+                            setToastMessage(successUserCreation);
+                        } else {
+                            setToastMessage(restErrorMessage);
+                        }
 
-                     //Create DispenseType
-                     DispenseType dt = new DispenseType();
-                     dt.setCode("MENSAL");
-                     dt.setDescription("Mensal");
-                     this.dispenseTypeService.createDispenseType(dt);
 
-                     System.out.println("DispenseType ID "+dt.getId());
-
-                     //Create Therapheuticline
-                     TherapeuticLine tl = new TherapeuticLine();
-                     tl.setCode("AZT+3TC+NVP");
-                     tl.setDescription("AZITROMICINA+LAMIVUDINA");
-                     this.therapeuthicLineService.createTherapheuticLine(tl);
-
-                     System.out.println("TherapeuticLine ID "+tl.getId()+"CODE LINHA"+tl.getCode());
-
-                     //Create TherapeuticRegimen
-                     TherapeuticRegimen tr = new TherapeuticRegimen();
-                     tr.setRegimenCode("AZT+3TC+NVP");
-                     tr.setDescription("AZITROMICINA");
-                     this.therapheuticRegimenService.createTherapheuticRegimen(tr);
-
-                     System.out.println("Regime ID "+tr.getId());
-
-                     //Create prescription
-                     Prescription p = new Prescription();
-                     p.setDispenseType(dt);
-                     p.setExpiryDate(DateUtilitis.getCurrentDate());
-                     patient.setId(1);
-                     p.setPatient(patient);
-                     p.setPrescriptionDate(DateUtilitis.getCurrentDate());
-                     p.setPrescriptionSeq("01010101");
-                     p.setSupply(0);
-                     p.setSyncStatus("ready");
-                     tl.setId(1);
-                     p.setTherapeuticLine(tl);
-                     tr.setId(1);
-                     p.setTherapeuticRegimen(tr);
-                     p.setUrgentNotes("Nao especial");
-                     p.setUrgentPrescription("Nao especial");
-                     p.setUuid("1");
-                     this.prescriptionService.createPrescription(p);
-
-                     System.out.println("ID Prescicao: "+p.getId());
-                     PrescribedDrug pd = new PrescribedDrug();
-                     pd.setId(1);
-                     pd.setDrug(drug);
-
-                     List<DispensedDrug> dds = new ArrayList<>();
-
-                     //Creating an Episode For Patient1
-                     Episode episode=new Episode();
-                     episode.setEpisodeDate(DateUtilitis.getDateFromDayAndMonthAndYear(26,9,2020));
-                     episode.setNotes("EPisodio teste ");
-                     episode.setStartReason("Referido De");
-                     episode.setSyncStatus("S");
-                     episode.setSanitaryUnit("Chabeco");
-                     episode.setUsUuid(Utilities.getNewUUID().toString());
-                     episode.setPatient(patient);
-                     episodeService.createEpisode(episode);
-
-                     User user = new User();
-                     user.setUserName("root");
-                     user.setPassword("root");
-                     clinic.setId(1);
-                     user.setClinic(clinic);
-                     userService.saveUser(user);
-
-                     diseaseType = new DiseaseType();
-                     diseaseType.setCode("102030");
-                     diseaseType.setDescription("HIV");
-                     diseaseTypeService.saveDiseaseType(diseaseType);
-                     diseaseType.setId(1);
-
-                     form = new Form();
-                     form.setUnit("1-1");
-                     form.setDescription("um de manha e um final do dia");
-                     formService.saveForm(form);
-                     form.setId(1);
-
-                     drug = new Drug();
-                     drug.setDescription("[DTG] DoluteGravir 50mg");
-                     drug.setPackSize(180);
-                     drug.setInstruction("1/1/1");
-                     drug.setFnmcode("D05019060-A");
-                     drug.setDiseaseType(diseaseType);
-                     drug.setForm(form);
-                     drugService.saveDrug(drug);
-                     drug.setId(1);
-
-                     stock = new Stock();
-                     stock.setBatchNumber("250845AD");
-                     stock.setClinic(clinic);
-                     stock.setDrug(drug);
-                     stock.setDateReceived(date);
-                     stock.setExpiryDate(date);
-                     stock.setOrderNumber("00001/001/2020");
-                     stock.setPrice(50);
-                     stock.setShelfNumber(80);
-                     stock.setUnitsReceived(2390);
-                     stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
-                     stock.setStockMoviment(2390);
-                     stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
-                     stockService.saveOrUpdateStock(stock);
-
-                     stock = new Stock();
-                     stock.setBatchNumber("250845AD");
-                     stock.setClinic(clinic);
-                     stock.setDrug(drug);
-                     stock.setDateReceived(date);
-                     stock.setExpiryDate(date);
-                     stock.setOrderNumber("00001/001/2020");
-                     stock.setPrice(50);
-                     stock.setShelfNumber(80);
-                     stock.setUnitsReceived(2390);
-                     stock.setStockMoviment(2390);
-                     stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
-                     stock.setUuid("3da5f12714555ded1f0e40824b2c8568");
-                     stockService.saveOrUpdateStock(stock);
-
-                     Dispense dispense = new Dispense();
-                     dispense.setNextPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setPickupDate(DateUtilitis.getCurrentDate());
-                     dispense.setSupply(4);
-                     p.setId(1);
-                     dispense.setPrescription(p);
-                     dispense.setUuid("14");
-                     this.dispenseService.createDispense(dispense);
-
-                     DispensedDrug dd = new DispensedDrug();
-                     dispense.setId(1);
-                     stock.setId(1);
-                     dd.setStock(stock);
-                     dd.setDispense(dispense);
-                     dd.setSyncStatus("R");
-                     dd.setQuantitySupplied(90);
-                     this.dispenseDrugService.createDispensedDrug(dd);
-
-                     setToastMessage(successUserCreation);
-                 } else {
-                     if (!userService.login(user)) {
-                         if(!clinicService.getCLinic().isEmpty()){
-                             clinic = clinicService.getCLinic().get(0);
-                         }
-                         Intent intent = new Intent(getApplication(), HomeActivity.class);
-                         Bundle bundle = new Bundle();
-                         bundle.putSerializable("user",user);
-                         bundle.putSerializable("clinic",clinic);
-                         intent.putExtras(bundle);
-                         getRelatedActivity().startActivity(intent);
-                         setToastMessage(successMessage);
-                     } else {
-                         setToastMessage(errorMessage);
-                     }
-                 }
-             }
-         }catch (SQLException e) {
-             Log.i("INFO DB", "Erro ao fazer Login: " + e.getMessage());
-             e.printStackTrace();
-         }
+                    } else {
+                        if (!userService.login(user)) {
+                            if (!clinicService.getCLinic().isEmpty()) {
+                                clinic = clinicService.getCLinic().get(0);
+                            }
+                            Intent intent = new Intent(getApplication(), HomeActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("user", user);
+                            bundle.putSerializable("clinic", clinic);
+                            intent.putExtras(bundle);
+                            getRelatedActivity().startActivity(intent);
+                            setToastMessage(successMessage);
+                        } else {
+                            setToastMessage(errorMessage);
+                        }
+                    }
+                }
+            } else
+                setToastMessage(mandatoryField);
+        } catch (SQLException e) {
+            Log.i("INFO DB", "Erro ao fazer Login: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override

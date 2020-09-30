@@ -13,6 +13,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.ClinicService;
@@ -34,12 +35,12 @@ public class RestPatientService extends BaseService {
     public static void restGetAllPatient() {
 
         try {
-        //    Clinic clinic = clinicService.getCLinic().get(0);
+            Clinic clinic = clinicService.getCLinic().get(0);
 
         patientService = new PatientService(getApp(),null);
 
-//        String url = BaseService.baseUrl + "/sync_temp_patients?mainclinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
-        String url = BaseService.baseUrl + "/sync_temp_patients?clinicuuid=eq.4a93cbf1-da0d-4657-bc41-93b30cd93b8e&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
+        String url = BaseService.baseUrl + "/sync_temp_patients?mainclinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
+//        String url = BaseService.baseUrl + "/sync_temp_patients?clinicuuid=eq.4a93cbf1-da0d-4657-bc41-93b30cd93b8e&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
 
         if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {

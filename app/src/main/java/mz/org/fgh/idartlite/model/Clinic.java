@@ -114,12 +114,7 @@ public class Clinic extends BaseModel {
 
 	@Override
 	public String toString() {
-		return "Clinic{" +
-				"code='" + code + '\'' +
-				", clinicName='" + clinicName + '\'' +
-				", phone='" + phone + '\'' +
-				", address='" + address + '\'' +
-				", uuid='" + uuid + '\'' +
-				'}';
+		return  clinicName +" - " + address.subSequence(0,address.indexOf(" "));
 	}
+
 }
