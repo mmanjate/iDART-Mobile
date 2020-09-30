@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.view.patient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
@@ -81,7 +82,15 @@ public class PatientActivity extends BaseActivity {
 
         if (Utilities.stringHasValue(selectedTab) && selectedTab.equals(PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION)) {
             tabLayout.getTabAt(1).select();
+        }else if(Utilities.stringHasValue(selectedTab) && selectedTab.equals(DispenseFragment.FRAGMENT_CODE_DISPENSE)){
+            tabLayout.getTabAt(2).select();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_items, menu);
+        return true;
     }
 
     @Override

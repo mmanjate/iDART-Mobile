@@ -44,6 +44,8 @@ import mz.org.fgh.idartlite.viewmodel.DispenseVM;
 
 public class DispenseFragment extends GenericFragment implements ListbleDialogListener {
 
+    public static final String FRAGMENT_CODE_DISPENSE = "DispenseFragment";
+
     public DispenseFragment() {
         // Required empty public constructor
     }

@@ -3,10 +3,12 @@ package mz.org.fgh.idartlite.view.stock;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -64,6 +66,18 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         getRelatedViewModel().setInitialDataVisible(true);
         getRelatedViewModel().setDrugDataVisible(false);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         try {
             populateDrugList();
         } catch (SQLException e) {
@@ -96,6 +110,12 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
             }
         }
         stockEntranceBinding.setStock(getRelatedViewModel().getStock());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_items, menu);
+        return true;
     }
 
     public void populateDrugList() throws SQLException {
