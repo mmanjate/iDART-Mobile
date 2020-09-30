@@ -14,7 +14,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.SecondSplashActivity"></activity>
         <activity android:name=".view.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +34,7 @@
             android:name=".view.stock.StockEntranceActivity"
             android:label="@string/title_activity_stock"
             android:screenOrientation="sensor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.stock.StockActivity"
             android:label="@string/title_activity_stock"
@@ -50,9 +52,7 @@
         <activity
             android:name=".view.LoginActivity"
             android:screenOrientation="sensor"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".view.HomeActivity"
             android:screenOrientation="sensor"

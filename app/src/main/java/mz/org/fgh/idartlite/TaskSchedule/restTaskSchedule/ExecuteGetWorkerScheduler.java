@@ -15,7 +15,7 @@ import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetPatientDataWorkerS
 public class ExecuteGetWorkerScheduler {
 
     private static final String TAG = "ExecuteWorkerScheduler";
-    private static final int JOB_ID = 1000;
+    public static final int JOB_ID = 1000;
     private Context context;
 
     public ExecuteGetWorkerScheduler(Context context) {
