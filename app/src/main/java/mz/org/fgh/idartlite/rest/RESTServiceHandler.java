@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.rest;
 
+import android.os.StrictMode;
 import android.util.Base64;
 import android.widget.ImageView;
 
@@ -66,6 +67,9 @@ public class RESTServiceHandler {
     }
 
     public static boolean getServerStatus(String url) {
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         boolean result = false;
         int code = 200;

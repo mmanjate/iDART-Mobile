@@ -36,14 +36,11 @@ public class RestClinicService extends BaseService {
 
     public List<Clinic> restGetAllClinic() {
 
-        String url = BaseService.baseUrl + "/clinic";
+        String url = BaseService.baseUrl + "/clinic?facilitytype=neq.Unidade%20Sanitária&mainclinic=eq.false";
         clinicService = new ClinicService(getApplication(), null);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
         ArrayList<Clinic> clinicList = new ArrayList<>();
         RESTServiceHandler handler = new RESTServiceHandler();
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
         if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {
