@@ -74,8 +74,8 @@ public class LoginActivity extends BaseActivity {
                 });
             } else{
                 textFarmacia = findViewById(R.id.textFarmacia);
-                textIcon = findViewById(R.id.textIcon);
-                textIcon.setVisibility(View.GONE);
+               /* textIcon = findViewById(R.id.textIcon);
+                textIcon.setVisibility(View.GONE);*/
                 textFarmacia.setVisibility(View.GONE);
                 spinnerFarmacia.setVisibility(View.GONE);
             }
