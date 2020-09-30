@@ -2,37 +2,24 @@ package mz.org.fgh.idartlite.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.collection.ArrayMap;
+import androidx.lifecycle.Observer;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.gson.internal.LinkedTreeMap;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecuteGetWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.rest.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.restService.RestClinicService;
 import mz.org.fgh.idartlite.util.Utilities;
-
-import static mz.org.fgh.idartlite.base.BaseService.getRestServiceExecutor;
 
 public class SplashActivity extends BaseActivity {
 
@@ -53,6 +40,19 @@ public class SplashActivity extends BaseActivity {
         ExecuteGetWorkerScheduler executeGetWorkerScheduler = new ExecuteGetWorkerScheduler(getApplicationContext());
         executeGetWorkerScheduler.initConfigTaskWork();
 
+        WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData("TASK ID " + ExecuteGetWorkerScheduler.JOB_ID).observe(this, new Observer<List<WorkInfo>>() {
+            @Override
+            public void onChanged(List<WorkInfo> workInfos) {
+                for (WorkInfo workInfo : workInfos){
+                    if (workInfo.getState().isFinished()) {
+                        break;
+                    }
+
+                }
+
+            }
+        });
+
         new Thread(new Runnable() {
             public void run() {
                 // do here some long operation
@@ -65,6 +65,7 @@ public class SplashActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                 }
+
 
                 Map<String, Object> params = new HashMap<>();
                 params.put("clinicList", clinicList);
