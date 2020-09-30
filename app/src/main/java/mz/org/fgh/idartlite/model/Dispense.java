@@ -168,8 +168,8 @@ public class Dispense extends BaseModel {
     public String validate() {
         if (this.pickupDate == null) return "A data da dispensa é obrigatória";
         if (this.nextPickupDate == null) return "A data do próximo levantamento é obrigatória";
-        if(DateUtilitis.dateDiff(this.nextPickupDate, this.pickupDate, DateUtilitis.DAY_FORMAT) > 0) {
-            return "A data do próximo levantamento deve ser maior que a data do levantamentamento.";
+        if(DateUtilitis.dateDiff( this.pickupDate, DateUtilitis.getCurrentDate(), DateUtilitis.DAY_FORMAT) > 0) {
+            return "A data do levantamento não pode ser maior que a data corrente.";
         }
         if(this.supply <= 0) return "A duração da prescrição deve ser indicada.";
 

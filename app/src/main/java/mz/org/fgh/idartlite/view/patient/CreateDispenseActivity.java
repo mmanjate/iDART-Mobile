@@ -21,7 +21,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
@@ -326,11 +328,12 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
     public void loadFormData(){
 
+
         if(activityCreateDispenseBinding.dispenseDate.getText().length() != 0){
-            getRelatedViewModel().getDispense().setPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), "dd-MM-YYYY"));
+            getRelatedViewModel().getDispense().setPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), DateUtilitis.DATE_FORMAT));
         }
         if(activityCreateDispenseBinding.nextPickupDate.getText().length() != 0 ){
-            getRelatedViewModel().getDispense().setNextPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), "dd-MM-YYYY"));
+            getRelatedViewModel().getDispense().setNextPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), DateUtilitis.DATE_FORMAT));
         }
         getRelatedViewModel().getDispense().setSupply(((ValorSimples) activityCreateDispenseBinding.spnDuration.getSelectedItem()).getId());
         getRelatedViewModel().getDispense().setUuid(Utilities.getNewUUID().toString());
@@ -372,13 +375,12 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
     @Override
     public void doOnConfirmed() {
-        Intent intent = new Intent(CreateDispenseActivity.this, PatientActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", getCurrentUser());
-        bundle.putSerializable("clinic", getCurrentClinic());
-        bundle.putSerializable("patient", this.getPatient());
-        intent.putExtras(bundle);
-        startActivity(intent);
+        Map<String, Object> params = new HashMap<>();
+        params.put("patient", this.getPatient());
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        params.put("requestedFragment", DispenseFragment.FRAGMENT_CODE_DISPENSE);
+        nextActivity(PatientActivity.class,params);
     }
 
     @Override

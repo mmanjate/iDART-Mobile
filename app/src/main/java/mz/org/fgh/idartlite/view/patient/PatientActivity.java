@@ -81,6 +81,8 @@ public class PatientActivity extends BaseActivity {
 
         if (Utilities.stringHasValue(selectedTab) && selectedTab.equals(PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION)) {
             tabLayout.getTabAt(1).select();
+        }else if(Utilities.stringHasValue(selectedTab) && selectedTab.equals(DispenseFragment.FRAGMENT_CODE_DISPENSE)){
+            tabLayout.getTabAt(2).select();
         }
     }
 
