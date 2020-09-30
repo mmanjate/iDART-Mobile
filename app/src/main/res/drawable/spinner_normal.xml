@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:bottom="@dimen/dimen_1dp"
         android:left="@dimen/dimen_1dp"
@@ -12,8 +13,15 @@
             <corners
                 android:radius="@dimen/dimen_2dp" />
 
+            <padding android:bottom="3dp" android:left="3dp" android:right="3dp" android:top="3dp" />
+
             <solid android:color="#00ffffff" />
+
         </shape>
+        <item >
+            <bitmap android:gravity="left|center" app:srcCompat="@drawable/ic_add" />
+        </item>
     </item>
+
 
 </layer-list>
