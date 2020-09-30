@@ -20,7 +20,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
@@ -262,11 +264,12 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
 
     private void cleanForm() {
         stockEntranceBinding.dataValidade.setText("");
-        stockEntranceBinding.dataEntrada.setText("");
+        //stockEntranceBinding.dataEntrada.setText("");
         stockEntranceBinding.numeroLote.setText("");
-        stockEntranceBinding.numeroGuia.setText("");
+        //stockEntranceBinding.numeroGuia.setText("");
         stockEntranceBinding.numeroPreco.setText("0");
         stockEntranceBinding.numeroQuantidadeRecebida.setText("");
+        stockEntranceBinding.spnDrugs.setSelection(0);
     }
 
     private void saveStock() throws SQLException {
@@ -275,13 +278,15 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                 for (Listble listble : this.selectedStock){
                     stockService.saveOrUpdateStock((Stock) listble);
                 }
-                finish();
+                Utilities.displayAlertDialog(StockEntranceActivity.this, "Salvo com sucesso",StockEntranceActivity.this).show();
+                //finish();
             }else {
                 if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
                         DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) > 0) {
                     loadDataForm();
                     stockService.saveOrUpdateStock(getRelatedViewModel().getStock());
-                    finish();
+                    Utilities.displayAlertDialog(StockEntranceActivity.this, "Alterado com sucesso",StockEntranceActivity.this).show();
+                    //finish();
                 }else {
                     Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
                 }
@@ -347,7 +352,11 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
 
     @Override
     public void doOnConfirmed() {
-        nextActivity(StockActivity.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("clinic", getRelatedViewModel().getClinic());
+        params.put("user", getCurrentUser());
+        nextActivity(StockActivity.class, params);
+        finish();
     }
 
     @Override
