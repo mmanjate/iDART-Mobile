@@ -54,7 +54,11 @@ public class EpisodeVM extends BaseViewModel {
     }
 
     public Dispense getLastDispenseOfPatient(Patient patient) throws SQLException {
-        return dispenseService.getAllOfPatient(patient).get(0);
+        //If Patient doesnt Have Dispenses , nao e suposto nao ter dispensas, sempre tera ao menos uma
+        if(!dispenseService.getAllOfPatient(patient).isEmpty()){
+            return dispenseService.getAllOfPatient(patient).get(0);
+        }
+        return new Dispense();
     }
 
     public Episode findEpisodeWithStopReasonByPatient(Patient patient) throws SQLException {

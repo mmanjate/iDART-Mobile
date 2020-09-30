@@ -151,6 +151,11 @@ if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
     @Override
     public void doOnConfirmed() {
         Intent intent = new Intent(EpisodeActivity.this, PatientActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", getCurrentUser());
+        bundle.putSerializable("clinic", getCurrentClinic());
+        bundle.putSerializable("patient", getRelatedViewModel().getPatient());
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
