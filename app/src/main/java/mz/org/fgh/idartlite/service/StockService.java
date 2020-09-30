@@ -49,6 +49,7 @@ public class StockService extends BaseService {
         int remainingStock = actualStockMoviment - quantitySupplied;
 
         stock.setStockMoviment(remainingStock);
+        stock.setSyncStatus(Stock.SYNC_SATUS_READY);
 
         this.updateStock(stock);
     }
