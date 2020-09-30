@@ -73,7 +73,10 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
         try {
             this.episodeList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
             this.lastDispense=getRelatedViewModel().getLastDispenseOfPatient(getSelectedPatient());
-            firstEpisode=episodeList.get(0);
+            if(!episodeList.isEmpty()) {
+                //get First
+                firstEpisode = episodeList.get(0);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
