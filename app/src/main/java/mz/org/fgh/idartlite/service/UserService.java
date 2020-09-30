@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -18,7 +19,8 @@ import mz.org.fgh.idartlite.util.Utilities;
 public class UserService extends BaseService {
 
     private static final String TAG = "UserService";
-
+    public final String auth = "USER_AUTHENTIC";
+    public final String[] nonauth = {"NOT_AUTHENTIC"};
 
     public UserService(Application application, User currUser) {
         super(application, currUser);
@@ -36,9 +38,9 @@ public class UserService extends BaseService {
         getDataBaseHelper().getUserDao().saveGenericObjectByClass(user);
     }
 
-    public boolean getUserAuthentication(String clinicuuid, String username, String password) {
+    public String getUserAuthentication(String clinicuuid, String username, String password, RestResponseListener listener) {
 
-        final int[] controllength = {0};
+        final String[] result = {null};
 
         if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {
@@ -52,9 +54,14 @@ public class UserService extends BaseService {
                     @Override
                     public void onResponse(Object[] response) {
 
+
                         if (response.length > 0) {
-                            controllength[0] = 1;
+                          result[0] = auth;
+                        }else {
+                            result[0] = nonauth[0];
                         }
+
+                        listener.doOnRestSucessResponse(result[0]);
 
                         Log.d("Response", response.toString());
                     }
@@ -70,10 +77,6 @@ public class UserService extends BaseService {
             Toast.makeText(getApplication(), "Servidor offline, por favor tente mais tarde", Toast.LENGTH_LONG).show();
 
         }
-
-        if (controllength[0] == 0)
-            return true;
-        else
-            return true;
+        return result[0];
     }
 }

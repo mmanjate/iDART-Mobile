@@ -24,7 +24,7 @@ public class RestGetPatientDataWorkerScheduler extends Worker {
         try {
             if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
                 Log.d(TAG, "doWork: Sync Patient Data");
-                RestPatientService.restGetAllPatient();
+                RestPatientService.restGetAllPatient(null);
             } else {
                 Log.e(TAG, "Response Servidor Offline");
                 return Result.failure();

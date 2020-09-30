@@ -9,19 +9,22 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.UserService;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.HomeActivity;
 import mz.org.fgh.idartlite.view.LoginActivity;
 import mz.org.fgh.idartlite.view.SecondSplashActivity;
+
 public class LoginVM extends BaseViewModel {
-    private User user;
-    private Clinic clinic;
     private UserService userService;
     private ClinicService clinicService;
     private String successMessage = "Login was successful!";
@@ -29,71 +32,96 @@ public class LoginVM extends BaseViewModel {
     private String errorMessage = "User Name or Password not valid!";
     private String restErrorMessage = "Rest Access: User Name or Password not valid!";
     private String mandatoryField = "User Name and Password are mandatory!";
+    private boolean userAuthentic = false;
+
     @Bindable
     private String toastMessage = null;
+
     public String getToastMessage() {
         return toastMessage;
     }
+
     private void setToastMessage(String toastMessage) {
         this.toastMessage = toastMessage;
         notifyPropertyChanged(BR.toastMessage);
     }
+
     public void setUserName(String userName) {
-        user.setUserName(userName);
+            currentUser.setUserName(userName);
         notifyPropertyChanged(BR.userName);
     }
+
     @Bindable
     public String getUserName() {
-        return user.getUserName();
+            return currentUser.getUserName();
     }
+
     @Bindable
     public String getUserPassword() {
-        return user.getPassword();
+            return currentUser.getPassword();
+
     }
+
     public void setUserPassword(String password) {
-        user.setPassword(password);
+            currentUser.setPassword(password);
         notifyPropertyChanged(BR.userPassword);
+
     }
+
     @Bindable
     public Clinic getClinic() {
-        return clinic;
+        return currentClinic;
     }
+
     public void setClinic(Clinic c) {
-        clinic = c;
+        currentClinic = c;
         notifyPropertyChanged(BR.clinic);
     }
+
+    public boolean isUserAuthentic() {
+        return userAuthentic;
+    }
+
+    public void setUserAuthentic(boolean userAuthentic) {
+        this.userAuthentic = userAuthentic;
+    }
+
     public LoginVM(@NonNull Application application) throws SQLException {
         super(application);
-        user = new User();
-        clinic = currentClinic;
-        userService = new UserService(getApplication(), this.user);
-        clinicService = new ClinicService(getApplication(), this.user);
+        this.currentUser = new User();
+
+        userService = new UserService(getApplication(), getCurrentUser());
+        clinicService = new ClinicService(getApplication(), getCurrentUser());
     }
+
+    public void saveLogingUser() throws SQLException {
+        currentUser.setClinic(clinicService.getCLinic().get(0));
+        userService.saveUser(currentUser);
+    }
+
+    public void saveUserClinic() throws SQLException {
+        clinicService.saveClinic(currentClinic);
+    }
+
     public void login() {
+
+        getRelatedActivity().setCurrentUser(currentUser);
+        getRelatedActivity().setCurrentClinic(getCurrentClinic());
+
         try {
             if (getUserName() != null && getUserPassword() != null) {
                 if (getUserName().length() == 0 || getUserPassword().length() == 0) {
                     setToastMessage(mandatoryField);
                 } else {
                     if (userService.checkIfUsertableIsEmpty()) {
-                        Intent intent = new Intent(getApplication(), SecondSplashActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("user", this.user);
-                        bundle.putSerializable("clinic", currentClinic);
-                        intent.putExtras(bundle);
-                        getRelatedActivity().startActivity(intent);
+                        getRelatedActivity().runRestUserAccess();
+
                     } else {
-                        if (!userService.login(user)) {
+                        if (!userService.login(currentUser)) {
                             if (!clinicService.getCLinic().isEmpty()) {
-                                clinic = clinicService.getCLinic().get(0);
+                                currentClinic = clinicService.getCLinic().get(0);
                             }
-                            Intent intent = new Intent(getApplication(), HomeActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("user", user);
-                            bundle.putSerializable("clinic", clinic);
-                            intent.putExtras(bundle);
-                            getRelatedActivity().startActivity(intent);
-                            setToastMessage(successMessage);
+                            moveToHome();
                         } else {
                             setToastMessage(errorMessage);
                         }
@@ -106,8 +134,30 @@ public class LoginVM extends BaseViewModel {
             e.printStackTrace();
         }
     }
+
     @Override
     public LoginActivity getRelatedActivity() {
         return (LoginActivity) super.getRelatedActivity();
+    }
+
+    public void saveUserSettingsAndProcced() throws SQLException {
+        saveUserClinic();
+        saveLogingUser();
+
+        moveToSecondSplsh();
+    }
+
+    public void moveToSecondSplsh() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("user", this.currentUser);
+        params.put("clinic", currentClinic);
+        getRelatedActivity().nextActivity(SecondSplashActivity.class, params);
+    }
+
+    private void moveToHome() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("user", this.currentUser);
+        params.put("clinic", currentClinic);
+        getRelatedActivity().nextActivity(HomeActivity.class, params);
     }
 }

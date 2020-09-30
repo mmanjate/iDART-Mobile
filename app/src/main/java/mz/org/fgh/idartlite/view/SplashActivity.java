@@ -19,6 +19,13 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.restService.RestClinicService;
+import mz.org.fgh.idartlite.service.restService.RestDiseaseTypeService;
+import mz.org.fgh.idartlite.service.restService.RestDispenseTypeService;
+import mz.org.fgh.idartlite.service.restService.RestDrugService;
+import mz.org.fgh.idartlite.service.restService.RestFormService;
+import mz.org.fgh.idartlite.service.restService.RestPharmacyTypeService;
+import mz.org.fgh.idartlite.service.restService.RestTherapeuticLineService;
+import mz.org.fgh.idartlite.service.restService.RestTherapeuticRegimenService;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public class SplashActivity extends BaseActivity {
@@ -37,27 +44,18 @@ public class SplashActivity extends BaseActivity {
         restClinicService = new RestClinicService(getApplication(), null);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
 
-        ExecuteGetWorkerScheduler executeGetWorkerScheduler = new ExecuteGetWorkerScheduler(getApplicationContext());
-        executeGetWorkerScheduler.initConfigTaskWork();
-
-        WorkManager.getInstance(getApplicationContext()).getWorkInfosByTagLiveData("TASK ID " + ExecuteGetWorkerScheduler.JOB_ID).observe(this, new Observer<List<WorkInfo>>() {
-            @Override
-            public void onChanged(List<WorkInfo> workInfos) {
-                for (WorkInfo workInfo : workInfos){
-                    if (workInfo.getState().isFinished()) {
-                        break;
-                    }
-
-                }
-
-            }
-        });
-
         new Thread(new Runnable() {
             public void run() {
-                // do here some long operation
-                clinicList = restClinicService.restGetAllClinic();
 
+                RestDispenseTypeService.restGetAllDispenseType();
+                RestPharmacyTypeService.restGetAllPharmacyType();
+                RestFormService.restGetAllForms();
+                RestDiseaseTypeService.restGetAllDiseaseType();
+                RestDrugService.restGetAllDrugs();
+                RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
+                RestTherapeuticLineService.restGetAllTherapeuticLine();
+
+                clinicList = restClinicService.restGetAllClinic();
                 while (!Utilities.listHasElements(clinicList)) {
                     try {
                         Thread.sleep(2000);
@@ -65,13 +63,10 @@ public class SplashActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                 }
-
-
                 Map<String, Object> params = new HashMap<>();
                 params.put("clinicList", clinicList);
                 nextActivity(LoginActivity.class, params);
 
-//                startActivityForResult(new Intent(SplashActivity.this, LoginActivity.class), 0);
             }
         }).start();
     }

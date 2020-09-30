@@ -30,8 +30,9 @@ public class ExecuteGetWorkerScheduler {
                 .setRequiresCharging(true)
                 .build();
 
-        PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetConfigWorkerScheduler.class, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MINUTES)
+        PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetConfigWorkerScheduler.class, 7, TimeUnit.DAYS)
                 .setConstraints(constraints)
+                .setInitialDelay(7,TimeUnit.DAYS)
                 .addTag("TASK ID " + JOB_ID)
                 .build();
 
@@ -45,8 +46,9 @@ public class ExecuteGetWorkerScheduler {
                 .setRequiresCharging(true)
                 .build();
 
-        PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetPatientDataWorkerScheduler.class, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MINUTES)
+        PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetPatientDataWorkerScheduler.class, 8, TimeUnit.MINUTES)
                 .setConstraints(constraints)
+                .setInitialDelay(8,TimeUnit.HOURS)
                 .addTag("TASK ID " + JOB_ID)
                 .build();
 

@@ -115,8 +115,8 @@ public class Clinic extends BaseModel {
 	@Override
 	public String toString() {
 		if(clinicName == null && address == null){
-			return "";
-		}else {
+			return " ";
+		}else{
 			return  clinicName +" - " + address.subSequence(0,address.indexOf(" "));
 		}
 	}

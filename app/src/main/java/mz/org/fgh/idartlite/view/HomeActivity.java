@@ -22,7 +22,6 @@ public class HomeActivity extends BaseActivity {
 
         activityHomeBinding.executePendingBindings();
 
-
         ExecuteGetWorkerScheduler executeGetWorkerScheduler = new ExecuteGetWorkerScheduler(getApplicationContext());
         executeGetWorkerScheduler.initDataTaskWork();
     }
