@@ -101,7 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.clinicName}"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_marginBottom="@dimen/dimen_10dp"
@@ -122,7 +122,7 @@
                 <TextView
                     android:id="@+id/textViewTelefone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="@{viewModel.phone}"
                     android:textColor="@color/white"
                     android:textSize="12sp"
