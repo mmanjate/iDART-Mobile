@@ -66,7 +66,7 @@ public class SplashActivity extends BaseActivity {
                 Map<String, Object> params = new HashMap<>();
                 params.put("clinicList", clinicList);
                 nextActivity(LoginActivity.class, params);
-
+                finish();
             }
         }).start();
     }
