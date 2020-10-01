@@ -2,6 +2,9 @@ package mz.org.fgh.idartlite.view;
 
 import android.os.Bundle;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecuteGetWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseActivity;
@@ -42,7 +45,10 @@ public class SecondSplashActivity extends BaseActivity implements RestResponseLi
 
     @Override
     public void doOnRestSucessResponse(String flag) {
-        nextActivity(HomeActivity.class);
+        Map<String, Object> params = new HashMap<>();
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        nextActivity(HomeActivity.class, params);
         finish();
     }
 

@@ -7,6 +7,8 @@
         <variable
             name="viewModel"
             type="mz.org.fgh.idartlite.viewmodel.HomeVM" />
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -71,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingBottom="50dp"
+            android:paddingBottom="20dp"
             android:paddingTop="@dimen/dimen_18dp"
             android:background="@color/colorPrimary"
             android:orientation="horizontal">
@@ -93,7 +95,7 @@
             <LinearLayout
                 android:layout_width="@dimen/dimen_0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
                 <TextView
@@ -101,10 +103,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.currentClinic.clinicName}"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_8dp"
 
                      />
 
@@ -116,7 +118,7 @@
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     app:drawableStartCompat="@drawable/ic_location"
-                    android:layout_marginBottom="@dimen/dimen_5dp"
+                    android:layout_marginBottom="@dimen/dimen_12dp"
                     />
 
                 <TextView
@@ -124,6 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.currentClinic.phone}"
+                    android:visibility="@{Utilities.stringHasValue(viewModel.currentClinic.phone) ? View.VISIBLE : View.GONE}"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     app:drawableStartCompat="@drawable/ic_call"/>
@@ -188,7 +191,7 @@
                 android:layout_weight="1"
                 android:layout_gravity="bottom|center"
                 android:contentDescription="@string/content_description_logo"
-                app:srcCompat="@mipmap/logo_idart" />
+                app:srcCompat="@mipmap/logo_graphic" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_0dp"
