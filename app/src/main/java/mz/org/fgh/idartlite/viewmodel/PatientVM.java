@@ -13,6 +13,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.service.EpisodeService;
 import mz.org.fgh.idartlite.service.PatientService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.SearchPatientActivity;
@@ -21,6 +22,8 @@ public class PatientVM extends BaseViewModel {
 
     private Patient patient;
     private PatientService patientService;
+    private EpisodeService episodeService;
+
     
     public String searchParam;
     public List<Patient> searchResults;
@@ -28,10 +31,20 @@ public class PatientVM extends BaseViewModel {
     public PatientVM(@NonNull Application application) {
         super(application);
         patientService = new PatientService(application, getCurrentUser());
+        episodeService = new EpisodeService(application,getCurrentUser());
+
     }
 
     public List<Patient> searchPatient(String param, Clinic clinic) throws SQLException {
         return patientService.searchPatientByParamAndClinic(param,clinic);
+    }
+
+    public void loadPatientEpisodes() throws SQLException {
+        this.patient.setEpisodes(episodeService.getAllEpisodesByPatient(this.patient));
+        
+        if (!Utilities.listHasElements(this.patient.getEpisodes())){
+            throw new RuntimeException(getRelatedActivity().getString(R.string.no_episode_found));
+        }
     }
 
     public void initSearch(){

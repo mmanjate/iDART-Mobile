@@ -3,10 +3,13 @@ package mz.org.fgh.idartlite.base;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.pm.PackageInfoCompat;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -22,6 +25,8 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     protected User currentUser;
     protected Clinic currentClinic;
     private ApplicationStep applicationStep;
+
+    private PackageInfo pinfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +51,19 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         }
 
 
+        try {
+            pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public long getAppVersionNumber(){
+        return PackageInfoCompat.getLongVersionCode(pinfo);
+    }
+
+    public String getAppVersionName(){
+        return pinfo.versionName;
     }
 
     public void nextActivity(Class clazz){
@@ -120,4 +138,5 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     public ApplicationStep getApplicationStep() {
         return applicationStep;
     }
+
 }

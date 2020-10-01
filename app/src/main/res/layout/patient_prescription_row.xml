@@ -54,7 +54,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="ID Prescricao"
+                        android:text="ID Prescriçãoo"
                         android:textSize="@dimen/dimen_12dp"
                         android:textStyle="bold"/>
 
@@ -142,7 +142,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"
-                        android:text="@{Utilities.parseDoubleToString(prescription.durationInMonths)}"/>
+                        android:text="@{prescription.durationToUserUI}"/>
 
                 </LinearLayout>
                 <LinearLayout

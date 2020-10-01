@@ -109,6 +109,7 @@ public class LoginVM extends BaseViewModel {
                             currentClinic = clinicService.getCLinic().get(0);
                             getRelatedActivity().changeViewToNormalMode();
                             moveToHome();
+                            this.getRelatedActivity().savingSharedPreferences();
                         }else {
                             getRelatedActivity().changeViewToNormalMode();
                             Utilities.displayAlertDialog(getRelatedActivity(), "Não foi encontrada a configuração da farmácia.").show();

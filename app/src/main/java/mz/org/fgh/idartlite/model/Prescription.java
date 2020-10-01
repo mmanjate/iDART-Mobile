@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.model;
 
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.PrescriptionDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilitis;
@@ -215,6 +217,18 @@ public class Prescription extends BaseModel {
 		if (expiryDate == null) return  0;
 		return DateUtilitis.dateDiff(this.prescriptionDate, this.expiryDate, DateUtilitis.MONTH_FORMAT);
 	}
+	
+	public String getDurationToUserUI(){
+		if (this.supply == 2) return DURATION_TWO_WEEKS;
+		if (this.supply == 4) return DURATION_ONE_MONTH;
+		if (this.supply == 8) return DURATION_THREE_MONTHS;
+		if (this.supply == 12) return DURATION_THREE_MONTHS;
+		if (this.supply == 16) return DURATION_FOUR_MONTHS;
+		if (this.supply == 20) return DURATION_FIVE_MONTHS;
+		if (this.supply == 24) return DURATION_SIX_MONTHS;
+
+		return "Não definido";
+	}
 
 	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 	@Override
@@ -259,19 +273,19 @@ public class Prescription extends BaseModel {
 
 	}
 
-    public String validate() {
-		if (this.prescriptionDate == null) return "A data da prescrição é obrigatória";
+    public String validate(Context context) {
+		if (this.prescriptionDate == null) return context.getString(R.string.prescription_date_mandatory);
 		if(DateUtilitis.dateDiff(this.prescriptionDate, DateUtilitis.getCurrentDate(), DateUtilitis.DAY_FORMAT) > 0) {
-			return "A data da prescrição não pode ser maior que a data corrente.";
+			return context.getString(R.string.prescription_date_not_correct);
 		}
-		if(this.supply <= 0) return "A duração da prescrição deve ser indicada.";
-		if(this.dispenseType == null || !Utilities.stringHasValue(this.dispenseType.getDescription())) return "O campo tipo de dispensa é obrigatório.";
-		if(this.therapeuticRegimen == null || !Utilities.stringHasValue(this.therapeuticRegimen.getDescription())) return "O campo tipo de regime terapeutico é obrigatório.";
-		if(this.therapeuticLine == null || !Utilities.stringHasValue(this.therapeuticLine.getDescription())) return "O campo tipo de linha terapeutica é obrigatório.";
+		if(this.supply <= 0) return context.getString(R.string.prescription_durationmandatory);
+		if(this.dispenseType == null || !Utilities.stringHasValue(this.dispenseType.getDescription())) return context.getString(R.string.prescription_dispense_type_mandatory);
+		if(this.therapeuticRegimen == null || !Utilities.stringHasValue(this.therapeuticRegimen.getDescription())) return context.getString(R.string.regimen_mandatory);
+		if(this.therapeuticLine == null || !Utilities.stringHasValue(this.therapeuticLine.getDescription())) return context.getString(R.string.prescription_line_mandatory);
 
-		if (!Utilities.listHasElements(this.prescribedDrugs)) return "Por favor indique os medicamentos para esta prescrição";
+		if (!Utilities.listHasElements(this.prescribedDrugs)) return context.getString(R.string.prescription_drugs_mandatory);
 
-		if (isUrgent() && !Utilities.stringHasValue(this.urgentNotes)) return "Indicou que a prescrição é especial, por favor indique o motivo.";
+		if (isUrgent() && !Utilities.stringHasValue(this.urgentNotes)) return context.getString(R.string.prescription_urgent_notes_mandatory);
 
 		return "";
     }

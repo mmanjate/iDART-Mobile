@@ -92,7 +92,7 @@
             android:drawableLeft="@drawable/ic_lock"
             android:text="@={viewModel.userPassword}"/>
         <CheckBox
-            android:id="@+id/cbx_drugs_listing_mode"
+            android:id="@+id/cbx_remember_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_10dp"
@@ -167,7 +167,7 @@
             android:layout_weight="0.4"
             android:textSize="12sp"
             android:textColor="@color/black"
-            android:text="iDART Lite v1.0"
+            android:text="@{viewModel.appVersionName}"
             android:gravity="top|center"/>
 
     </LinearLayout>
