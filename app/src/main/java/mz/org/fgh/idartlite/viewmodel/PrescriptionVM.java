@@ -10,6 +10,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
@@ -108,8 +109,8 @@ public class PrescriptionVM extends BaseViewModel {
     }
 
     @Override
-    public PrescriptionActivity getRelatedActivity() {
-        return (PrescriptionActivity) super.getRelatedActivity();
+    public BaseActivity getRelatedActivity() {
+        return super.getRelatedActivity();
     }
 
     public void setDrugDataVisible(boolean drugDataVisible) {
@@ -146,21 +147,21 @@ public class PrescriptionVM extends BaseViewModel {
             this.prescription.setUrgentPrescription(Prescription.NOT_URGENT_PRESCRIPTION);
         }
 
-        getRelatedActivity().changeMotiveSpinnerStatus(urgentPrescription);
+        ((PrescriptionActivity)getRelatedActivity()).changeMotiveSpinnerStatus(urgentPrescription);
     }
 
     public void save(){
 
-        getRelatedActivity().loadFormData();
+        ((PrescriptionActivity)getRelatedActivity()).loadFormData();
         String validationErrors = this.prescription.validate();
         if (!Utilities.stringHasValue(validationErrors)) {
             try {
                 if (getRelatedActivity().getApplicationStep().isapplicationstepcreate()) {
                     prescriptionService.createPrescription(this.prescription);
-                    Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_dispense), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), getRelatedActivity()).show();
+                    Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_dispense), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), ((PrescriptionActivity)getRelatedActivity())).show();
                 } else if (getRelatedActivity().getApplicationStep().isApplicationStepEdit()) {
                     prescriptionService.updatePrescription(this.prescription);
-                    Utilities.displayAlertDialog(getRelatedActivity(), "A Prescrição foi actualizada com sucesso.", getRelatedActivity()).show();
+                    Utilities.displayAlertDialog(getRelatedActivity(), "A Prescrição foi actualizada com sucesso.", ((PrescriptionActivity)getRelatedActivity())).show();
                 }
 
 
@@ -216,7 +217,7 @@ public class PrescriptionVM extends BaseViewModel {
     public void changeDrugsListingMode(){
         this.seeOnlyOfRegime = !this.seeOnlyOfRegime;
 
-        getRelatedActivity().reloadDrugsSpinnerByRegime(this.prescription.getTherapeuticRegimen());
+        ((PrescriptionActivity)getRelatedActivity()).reloadDrugsSpinnerByRegime(this.prescription.getTherapeuticRegimen());
     }
 
     public String prescriptionCanBeEdited() throws SQLException {

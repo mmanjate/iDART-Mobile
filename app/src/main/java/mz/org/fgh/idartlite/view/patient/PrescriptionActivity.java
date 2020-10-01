@@ -122,6 +122,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         if (getApplicationStep().isapplicationstepcreate()){
             try {
                 getRelatedViewModel().loadLastPatientPrescription();
+                getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.getCurrentDate());
             } catch (SQLException e) {
                 e.printStackTrace();
                 Utilities.displayAlertDialog(PrescriptionActivity.this, getString(R.string.error_on_loading_data)+e.getLocalizedMessage()).show();
