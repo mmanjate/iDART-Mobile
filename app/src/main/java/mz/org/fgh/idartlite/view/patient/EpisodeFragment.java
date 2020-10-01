@@ -42,7 +42,7 @@ import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
 
 public class EpisodeFragment extends GenericFragment implements ListbleDialogListener {
 
-    public static final String FRAGMENT_CODE_EPISODE = "DispenseFragment";
+    public static final String FRAGMENT_CODE_EPISODE = "EpisodeFragment";
 
     private RecyclerView rcvEpisodes;
     private List<Episode> episodeList;
@@ -160,7 +160,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
 
              //Por retirar chamando tela de criar, por ser editado
              case R.id.edit:
-                 if(!episode.getSyncStatus().equals("R")) {
+                 if(episode.getSyncStatus().equals("R")) {
                      //Call activity to Edit
                      Intent intent = new Intent(getContext(), EpisodeActivity.class);
                      Bundle bundle = new Bundle();
@@ -210,7 +210,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
     @Override
     public void remove(int position) {
 
-        if(!episodeList.get(position).getSyncStatus().equals("R")){
+        if(episodeList.get(position).getSyncStatus().equals("R")){
         episodeList.remove(episodeList.get(position));
 
         for (int i = 0; i < episodeList.size(); i++){
@@ -222,7 +222,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
 
 
             try {
-                getRelatedViewModel().deleteEpisode(episodeList.get(position));
+                getRelatedViewModel().deleteEpisode(episode);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
