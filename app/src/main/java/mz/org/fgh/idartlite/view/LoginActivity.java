@@ -1,10 +1,12 @@
 package mz.org.fgh.idartlite.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,11 +22,20 @@ import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.service.UserService;
+import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.LoginVM;
 public class LoginActivity extends BaseActivity implements RestResponseListener {
     private ActivityLoginBinding activityLoginBinding;
     private List<Clinic> clinicList;
+
+    private static final String LOG_USR_NAME = "log_name";
+
+    private static final String LOG_USR_PASS = "log_pass";
+
+    private static final String LOG_SHARED_FILE_NAME = "log_cred";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +76,35 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
             e.printStackTrace();
             Utilities.displayAlertDialog(LoginActivity.this, "Ocorreu um erro ao verificar as configuração de utilizadores.").show();
         }
+
+        getSharedPreferencesData();
+    }
+
+    public void savingSharedPreferences(){
+                if(activityLoginBinding.cbxRememberMe.isChecked()){
+
+                    SecurePreferences preferences = new SecurePreferences(getApplicationContext(), LOG_SHARED_FILE_NAME,  true);
+
+                    preferences.put(LOG_USR_NAME,activityLoginBinding.inUserName.getText().toString());
+                    preferences.put(LOG_USR_PASS,activityLoginBinding.inPassword.getText().toString());
+                }
+    }
+
+    private void getSharedPreferencesData() {
+
+
+        SecurePreferences sp = new SecurePreferences(getApplicationContext(),LOG_SHARED_FILE_NAME, true);
+
+        if (sp.containsKey(LOG_USR_NAME)) {
+            String user = sp.getString(LOG_USR_NAME);
+            activityLoginBinding.inUserName.setText(user.toString());
+            this.getRelatedViewModel().setUserName(user.toString());
+        }
+        if (sp.containsKey(LOG_USR_PASS)) {
+            String pass = sp.getString(LOG_USR_PASS);
+            activityLoginBinding.inPassword.setText(pass.toString());
+            this.getRelatedViewModel().setUserPassword(pass.toString());
+        }
     }
 
     public void changeViewToAuthenticatingMode(){
@@ -76,7 +116,6 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
         activityLoginBinding.button.setVisibility(View.VISIBLE);
         activityLoginBinding.loginProgressBox.setVisibility(View.GONE);
     }
-
     public void populateSpinner() {
         ArrayAdapter<Clinic> adapterSpinnerClinic = new ArrayAdapter<Clinic>(this, android.R.layout.simple_spinner_item, clinicList);
         adapterSpinnerClinic.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

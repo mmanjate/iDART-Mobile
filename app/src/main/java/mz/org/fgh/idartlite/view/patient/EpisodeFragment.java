@@ -42,6 +42,8 @@ import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
 
 public class EpisodeFragment extends GenericFragment implements ListbleDialogListener {
 
+    public static final String FRAGMENT_CODE_EPISODE = "DispenseFragment";
+
     private RecyclerView rcvEpisodes;
     private List<Episode> episodeList;
     private Episode firstEpisode;
