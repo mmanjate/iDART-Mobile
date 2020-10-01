@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
-import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -26,27 +24,26 @@ import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.LoginVM;
 public class LoginActivity extends BaseActivity implements RestResponseListener {
     private ActivityLoginBinding activityLoginBinding;
-    private List<Clinic> list;
-    private UserService userService;
-    private ArrayAdapter<Clinic> adapterSpinnerClinic;
+    private List<Clinic> clinicList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         activityLoginBinding.setViewModel(getRelatedViewModel());
-//        activityLoginBinding.executePendingBindings();
-        userService = new UserService(getApplication(), getCurrentUser());
-        list = new ArrayList<Clinic>();
+
+        clinicList = new ArrayList<Clinic>();
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
-                list.add(0, new Clinic());
-                list.addAll((List<Clinic>) bundle.getSerializable("clinicList"));
+                clinicList.add(0, new Clinic());
+                clinicList.addAll((List<Clinic>) bundle.getSerializable("clinicList"));
             }
         }
+
         try {
-            if(userService.checkIfUsertableIsEmpty()){
+            if(getRelatedViewModel().appHasUsersOnDB()){
                 populateSpinner();
                 activityLoginBinding.spinnerFarmacia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -59,57 +56,24 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
                     }
                 });
             } else{
-                //activityLoginBinding.textIcon.setVisibility(View.GONE);
                 activityLoginBinding.textFarmacia.setVisibility(View.GONE);
                 activityLoginBinding.spinnerFarmacia.setVisibility(View.GONE);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Utilities.displayAlertDialog(LoginActivity.this, "Ocorreu um erro ao verificar as configuração de utilizadores.").show();
         }
     }
-    @BindingAdapter({"toastMessage"})
-    public static void runTostMessage(View view, String message) {
-        if (message != null)
-            Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT).show();
-    }
+
     public void populateSpinner() {
-        adapterSpinnerClinic = new ArrayAdapter<Clinic>(this, android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<Clinic> adapterSpinnerClinic = new ArrayAdapter<Clinic>(this, android.R.layout.simple_spinner_item, clinicList);
         adapterSpinnerClinic.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         activityLoginBinding.spinnerFarmacia.setAdapter(adapterSpinnerClinic);
         activityLoginBinding.spinnerFarmacia.setVisibility(View.VISIBLE);
     }
 
 
-    public void runRestUserAccess(){
-        final String[] auth_access = {null};
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-             //   showLoading(LoginActivity.this ,getString(R.string.authenticate),getString(R.string.loading));
 
-            }
-        });
-        new Thread(new Runnable() {
-            public void run() {
-                // do here some long operation
-
-                auth_access[0] = userService.getUserAuthentication(currentClinic.getUuid(), currentUser.getUserName(), currentUser.getPassword(), LoginActivity.this);
-
-                    /*while (!Utilities.stringHasValue(auth_access[0])){
-                        Thread.sleep(2000);
-                    }
-
-                    if (auth_access[0].equals(userService.auth)) {
-                        getRelatedViewModel().setUserAuthentic(true);
-                    }else
-                        getRelatedViewModel().setUserAuthentic(false);*/
-
-//                   hideLoading();
-
-            }
-        }).start();
-
-    }
 
     @Override
     public LoginVM getRelatedViewModel() {
@@ -124,7 +88,7 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
     @Override
     public void doOnRestSucessResponse(String flag) {
         if (Utilities.stringHasValue(flag)){
-            if (flag.equals(userService.auth)) {
+            if (flag.equals(UserService.auth)) {
                 getRelatedViewModel().setUserAuthentic(true);
 
                 try {

@@ -19,8 +19,8 @@ import mz.org.fgh.idartlite.util.Utilities;
 public class UserService extends BaseService {
 
     private static final String TAG = "UserService";
-    public final String auth = "USER_AUTHENTIC";
-    public final String[] nonauth = {"NOT_AUTHENTIC"};
+    public static final String auth = "USER_AUTHENTIC";
+    public static final String[] nonauth = {"NOT_AUTHENTIC"};
 
     public UserService(Application application, User currUser) {
         super(application, currUser);

@@ -22,7 +22,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     protected User currentUser;
     protected Clinic currentClinic;
     private ApplicationStep applicationStep;
-    protected  ProgressDialog syncProgress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,14 +71,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
             intent.putExtras(bundle);
         }
         startActivity(intent);
-    }
-
-    public void showLoading(Context context, String title, String msg) {
-        syncProgress = ProgressDialog.show(context, title, msg);
-        syncProgress.setCancelable(true);
-    }
-    public void hideLoading() {
-        if (syncProgress != null && syncProgress.isShowing()) syncProgress.dismiss();
     }
 
     public BaseViewModel getRelatedViewModel() {

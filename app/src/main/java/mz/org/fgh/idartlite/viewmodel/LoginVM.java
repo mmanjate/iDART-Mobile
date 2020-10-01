@@ -27,27 +27,19 @@ import mz.org.fgh.idartlite.view.SecondSplashActivity;
 public class LoginVM extends BaseViewModel {
     private UserService userService;
     private ClinicService clinicService;
-    private String successMessage = "Login was successful!";
-    private String successUserCreation = "User was successful create!";
-    private String errorMessage = "User Name or Password not valid!";
-    private String restErrorMessage = "Rest Access: User Name or Password not valid!";
-    private String mandatoryField = "User Name and Password are mandatory!";
     private boolean userAuthentic = false;
 
-    @Bindable
-    private String toastMessage = null;
 
-    public String getToastMessage() {
-        return toastMessage;
-    }
+    public LoginVM(@NonNull Application application) throws SQLException {
+        super(application);
+        this.currentUser = new User();
 
-    private void setToastMessage(String toastMessage) {
-        this.toastMessage = toastMessage;
-        notifyPropertyChanged(BR.toastMessage);
+        userService = new UserService(getApplication(), getCurrentUser());
+        clinicService = new ClinicService(getApplication(), getCurrentUser());
     }
 
     public void setUserName(String userName) {
-            currentUser.setUserName(userName);
+        currentUser.setUserName(userName);
         notifyPropertyChanged(BR.userName);
     }
 
@@ -86,13 +78,7 @@ public class LoginVM extends BaseViewModel {
         this.userAuthentic = userAuthentic;
     }
 
-    public LoginVM(@NonNull Application application) throws SQLException {
-        super(application);
-        this.currentUser = new User();
 
-        userService = new UserService(getApplication(), getCurrentUser());
-        clinicService = new ClinicService(getApplication(), getCurrentUser());
-    }
 
     public void saveLogingUser() throws SQLException {
         currentUser.setClinic(clinicService.getCLinic().get(0));
@@ -108,31 +94,40 @@ public class LoginVM extends BaseViewModel {
         getRelatedActivity().setCurrentUser(currentUser);
         getRelatedActivity().setCurrentClinic(getCurrentClinic());
 
-        try {
-            if (getUserName() != null && getUserPassword() != null) {
-                if (getUserName().length() == 0 || getUserPassword().length() == 0) {
-                    setToastMessage(mandatoryField);
-                } else {
-                    if (userService.checkIfUsertableIsEmpty()) {
-                        getRelatedActivity().runRestUserAccess();
+        String loginErrors = getCurrentUser().validadeToLogin();
 
-                    } else {
-                        if (!userService.login(currentUser)) {
-                            if (!clinicService.getCLinic().isEmpty()) {
-                                currentClinic = clinicService.getCLinic().get(0);
-                            }
+        try {
+            if (!Utilities.stringHasValue(loginErrors)) {
+                if (userService.checkIfUsertableIsEmpty()) {
+                    runRestUserAccess();
+
+                } else {
+                    if (!userService.login(currentUser)) {
+                        if (Utilities.listHasElements(clinicService.getCLinic())) {
+                            currentClinic = clinicService.getCLinic().get(0);
                             moveToHome();
-                        } else {
-                            setToastMessage(errorMessage);
+                        }else {
+                            Utilities.displayAlertDialog(getRelatedActivity(), "Não foi encontrada a configuração da farmácia.").show();
                         }
+                    } else {
+                        Utilities.displayAlertDialog(getRelatedActivity(), "Utilizador e/ou senha inválida").show();
                     }
                 }
             } else
-                setToastMessage(mandatoryField);
+                Utilities.displayAlertDialog(getRelatedActivity(), loginErrors);
         } catch (SQLException e) {
+            Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao autenticar os dados, "+e.getLocalizedMessage()).show();
             Log.i("INFO DB", "Erro ao fazer Login: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public void runRestUserAccess(){
+        userService.getUserAuthentication(currentClinic.getUuid(), currentUser.getUserName(), currentUser.getPassword(), getRelatedActivity());
+    }
+
+    public boolean appHasUsersOnDB() throws SQLException {
+        return userService.checkIfUsertableIsEmpty();
     }
 
     @Override
