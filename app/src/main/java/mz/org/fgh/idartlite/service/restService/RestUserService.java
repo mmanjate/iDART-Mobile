@@ -24,7 +24,7 @@ public class RestUserService extends BaseService {
 
     public void restGetUser(String clinicuuid){
 
-        String url = BaseService.baseUrl + "/users";
+        String url = BaseService.baseUrl + "/users?username=eq."+currentUser.getUserName()+"&password=eq."+currentUser.getPassword()+"&clinicuuid=eq."+clinicuuid;
 
         getRestServiceExecutor().execute(() -> {
 
@@ -37,7 +37,7 @@ public class RestUserService extends BaseService {
             params.put("clinicuuid", "eq."+clinicuuid);
             handler.addHeader("Content-Type","Application/json");
 
-            handler.objectRequest(url, Request.Method.GET, params, User[].class, new Response.Listener<User[]>() {
+            handler.objectRequest(url, Request.Method.GET, null, User[].class, new Response.Listener<User[]>() {
                 @Override
                 public void onResponse(User[] response) {
                     Log.d("Response", response.toString());

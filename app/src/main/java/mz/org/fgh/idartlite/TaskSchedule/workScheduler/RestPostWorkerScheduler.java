@@ -1,12 +1,28 @@
 package mz.org.fgh.idartlite.TaskSchedule.workScheduler;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.util.List;
+
+import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.rest.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.DispenseService;
+import mz.org.fgh.idartlite.service.restService.RestDispenseService;
+import mz.org.fgh.idartlite.service.restService.RestPatientService;
+
 public class RestPostWorkerScheduler extends Worker {
+
+    private static final String TAG = "RestPostWorkerScheduler";
+    List<Dispense> dispenseList;
+    
+    protected DispenseService dispenseService;
+    
     public RestPostWorkerScheduler(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
@@ -14,6 +30,26 @@ public class RestPostWorkerScheduler extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        return null;
+        try {
+            dispenseService = new DispenseService(BaseService.getApp(),null);
+            if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+                Log.d(TAG, "doWork: Sync Patient Data");
+                dispenseList = dispenseService.getAllDispenseByStatus("R");
+                if(dispenseList.size() > 0) {
+                    for (Dispense dispense : dispenseList) {
+                        RestDispenseService.restPostDispense(dispense);
+                    }
+                }else
+                    Log.d(TAG, "doWork: Sem Aviamentos para syncronizar");
+            } else {
+                Log.e(TAG, "Response Servidor Offline");
+                return Result.failure();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.failure();
+        }
+
+        return Result.success();
     }
 }

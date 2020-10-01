@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonRequest;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,19 +26,32 @@ public class ObjectRequest<T> extends JsonRequest<T> {
     private final Response.Listener<T> listener;
     private int mMethod;
     private String mUrl;
-    private String mRequestBody;
+    private JSONObject mRequestBody;
     private static final String PROTOCOL_CHARSET="utf-8";
     private static final String TAG="ObjectRequest";
     private Map<String, String> mHeaders;
     private Map<String, Object> mParams;
+    private JSONObject jParams;
 
-    public ObjectRequest(int method, String url, Map<String, Object> params, Class clazz, Response.Listener<T> listener, Response.ErrorListener errorListener) {
+//    public ObjectRequest(int method, String url, Map<String, Object> params, Class clazz, Response.Listener<T> listener, Response.ErrorListener errorListener) {
+//        super(method, url, gson.toJson(params), listener, errorListener);
+//        this.clazz = clazz;
+//        this.listener = listener;
+//        if(params!=null){
+//            mParams = params;
+//            mRequestBody = gson.toJson(params);
+//        }
+//        this.mMethod = method;
+//        this.mUrl = url;
+//    }
+
+    public ObjectRequest(int method, String url, JSONObject params, Class clazz, Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(method, url, gson.toJson(params), listener, errorListener);
         this.clazz = clazz;
         this.listener = listener;
         if(params!=null){
-            mParams = params;
-            mRequestBody = gson.toJson(params);
+            jParams = params;
+            mRequestBody = params;
         }
         this.mMethod = method;
         this.mUrl = url;
@@ -83,7 +97,7 @@ public class ObjectRequest<T> extends JsonRequest<T> {
     @Override
     public byte[] getBody() {
         try {
-            return mRequestBody == null? null : mRequestBody.getBytes(PROTOCOL_CHARSET);
+            return mRequestBody == null? null : mRequestBody.toString().getBytes(PROTOCOL_CHARSET);
         }catch (UnsupportedEncodingException e) {
             Log.e(TAG, "Unsupported Encoding while trying to get the bytes of " + mRequestBody + "using " + PROTOCOL_CHARSET);
             return null;

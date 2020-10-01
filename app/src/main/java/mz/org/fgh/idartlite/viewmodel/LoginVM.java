@@ -14,11 +14,13 @@ import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecutePostWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.UserService;
+import mz.org.fgh.idartlite.service.restService.RestPatientService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.HomeActivity;
 import mz.org.fgh.idartlite.view.LoginActivity;
@@ -104,6 +106,8 @@ public class LoginVM extends BaseViewModel {
                     runRestUserAccess();
 
                 } else {
+                    // colocar no lugar certo
+                    RestPatientService.restGetAllPatient(null);
                     if (!userService.login(currentUser)) {
                         if (Utilities.listHasElements(clinicService.getCLinic())) {
                             currentClinic = clinicService.getCLinic().get(0);

@@ -31,21 +31,20 @@ public class PrescriptionService extends BaseService {
 
     }
 
-    public List<Prescription> getAllPrescriptionsByPatient(Patient patient) throws SQLException{
+    public List<Prescription> getAllPrescriptionsByPatient(Patient patient) throws SQLException {
         return getDataBaseHelper().getPrescriptionDao().getAllByPatient(patient);
     }
 
 
     public void createPrescription(Prescription prescription) throws SQLException {
         getDataBaseHelper().getPrescriptionDao().create(prescription);
-        if(prescription.getPrescribedDrugs() != null)
-        savePriscribedDrus(prescription.getPrescribedDrugs());
+        if (prescription.getPrescribedDrugs() != null)
+            savePriscribedDrus(prescription.getPrescribedDrugs());
     }
 
 
-
     public void savePriscribedDrus(List<PrescribedDrug> prescribedDrugs) throws SQLException {
-        for (PrescribedDrug prescribedDrug: prescribedDrugs) {
+        for (PrescribedDrug prescribedDrug : prescribedDrugs) {
             getDataBaseHelper().getPrescribedDrugDao().create(prescribedDrug);
         }
     }
@@ -71,7 +70,7 @@ public class PrescriptionService extends BaseService {
         return getDataBaseHelper().getPrescriptionDao().getLastPatientPrescription(patient);
     }
 
-    public void saveLastPrescriptionFromRest(LinkedTreeMap<String, Object> patient,Patient localPatient) {
+    public void saveLastPrescriptionFromRest(LinkedTreeMap<String, Object> patient, Patient localPatient) {
 
         try {
             Prescription prescription = new Prescription();
@@ -81,7 +80,8 @@ public class PrescriptionService extends BaseService {
             TherapeuticLine therapeuticLine = therapeuticLineService.getTherapeuticLine(Objects.requireNonNull(patient.get("linhanome")).toString());
 
             prescription.setPrescriptionDate(getSqlDateFromString(Objects.requireNonNull(patient.get("prescriptiondate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
-            prescription.setExpiryDate(getSqlDateFromString(Objects.requireNonNull(patient.get("prescriptionenddate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+            if (patient.get("prescriptionenddate") != null)
+                prescription.setExpiryDate(getSqlDateFromString(Objects.requireNonNull(patient.get("prescriptionenddate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
             prescription.setPatient(localPatient);
             prescription.setPrescriptionSeq("0001");
             prescription.setSupply(Math.round(Float.parseFloat(Objects.requireNonNull(patient.get("duration")).toString())));

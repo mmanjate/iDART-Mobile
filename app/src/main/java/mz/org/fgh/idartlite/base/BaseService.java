@@ -65,5 +65,11 @@ public abstract class BaseService {
     }
 
 
+    public static String getStringDateFromDate(Date date, String pattern) {
+        SimpleDateFormat datetemp = new SimpleDateFormat(pattern);
+        String data = datetemp.format(date);
+        return data;
+
+    }
 
 }

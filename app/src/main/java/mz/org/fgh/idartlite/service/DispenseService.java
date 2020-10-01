@@ -17,6 +17,9 @@ import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.User;
 
+import static mz.org.fgh.idartlite.model.Clinic.COLUMN_UUID;
+import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
+
 public class DispenseService extends BaseService {
 
     private StockService stockService;
@@ -87,6 +90,17 @@ public class DispenseService extends BaseService {
 
             this.stockService.updateStock(dispensedDrug);
         }
+    }
+
+    public List<Dispense> getAllDispenseByStatus(String status) throws SQLException {
+
+        List<Dispense> typeList = getDataBaseHelper().getDispenseDao().queryForEq(COLUMN_SYNC_STATUS, status);
+
+        if (typeList != null)
+            if (!typeList.isEmpty())
+                return typeList;
+
+        return null;
     }
 
 }
