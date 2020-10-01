@@ -12,6 +12,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.sql.SQLException;
+
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
@@ -48,6 +50,12 @@ public class PatientActivity extends BaseActivity {
                 }
                 this.selectedTab = (String) bundle.getSerializable("requestedFragment");
             }
+        }
+        try {
+            getRelatedViewModel().loadPatientEpisodes();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Utilities.displayAlertDialog(PatientActivity.this, getString(R.string.error_loading_patient_data)).show();
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);

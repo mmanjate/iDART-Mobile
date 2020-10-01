@@ -39,7 +39,7 @@
     <string name="last_name">Last Name: </string>
     <string name="gender">Gender: </string>
     <string name="button_ok">Ok</string>
-    <string name="unidade_sanit_ria">Unidade Sanitária</string>
+    <string name="unidade_sanit_ria">Unidade Sanitária: </string>
     <string name="genero">Genero</string>
     <string name="idade">Idade</string>
     <string name="telefone">Telefone</string>
@@ -125,5 +125,15 @@
     <string name="save_error_msg_episode">\"Ocorreu um erro ao gravar o Episodio. \"</string>
     <string name="loading">\" Por favor, aguarde ...\"</string>
     <string name="authenticate">Autenticando ...</string>
+    <string name="prescription_date_mandatory">A data da prescrição é obrigatória</string>
+    <string name="prescription_date_not_correct">A data da prescrição não pode ser maior que a data corrente.</string>
+    <string name="prescription_durationmandatory">A duração da prescrição deve ser indicada.</string>
+    <string name="prescription_dispense_type_mandatory">O campo tipo de dispensa é obrigatório.</string>
+    <string name="regimen_mandatory">O campo tipo de regime terapeutico é obrigatório.</string>
+    <string name="prescription_line_mandatory">O campo tipo de linha terapeutica é obrigatório.</string>
+    <string name="prescription_drugs_mandatory">Por favor indique os medicamentos para esta prescrição</string>
+    <string name="prescription_urgent_notes_mandatory">Indicou que a prescrição é especial, por favor indique o motivo.</string>
+    <string name="error_loading_patient_data">Ocorreu um erro ao carregar os dados do paciente.</string>
+    <string name="no_episode_found">Não foi encontrado nenhum episódio do paciente seleccionado</string>
 
 </resources>

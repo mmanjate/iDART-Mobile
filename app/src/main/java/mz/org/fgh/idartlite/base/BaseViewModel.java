@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.base;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.pm.PackageInfoCompat;
 import androidx.databinding.Observable;
 import androidx.databinding.PropertyChangeRegistry;
 import androidx.lifecycle.AndroidViewModel;
@@ -74,5 +75,13 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public void setCurrentClinic(Clinic currentClinic) {
         this.currentClinic = currentClinic;
+    }
+
+    public String getAppVersionNumber(){
+        return "iDART Mobile v"+getRelatedActivity().getAppVersionNumber();
+    }
+
+    public String getAppVersionName(){
+        return "iDART Mobile v"+getRelatedActivity().getAppVersionName();
     }
 }

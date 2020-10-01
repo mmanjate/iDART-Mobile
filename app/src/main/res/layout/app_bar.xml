@@ -7,7 +7,4 @@
     android:background="@color/list_icon"
     android:gravity="center_vertical"
     app:theme="@style/MyToolbarTheme"
-    >
-
-
-</androidx.appcompat.widget.Toolbar>
+   />

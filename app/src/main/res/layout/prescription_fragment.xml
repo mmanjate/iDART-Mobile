@@ -2,23 +2,41 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.patient.PrescriptionFragment"
     >
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context=".view.patient.PrescriptionFragment">
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/initial_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lista de Prescrições"
+                android:background="@color/background_layout"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:padding="5dp"
+                app:drawableEndCompat="@drawable/ic_row_dados_pessoais"
+                android:layout_margin="@dimen/dimen_5dp"/>
 
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_prescriptions"
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_prescriptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"/>
+        </LinearLayout>
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_4dp"
-        android:scrollbars="vertical"/>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -34,5 +52,5 @@
 
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </FrameLayout>
 </layout>
