@@ -16,6 +16,8 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecuteGetWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.RestResponseListener;
+import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.restService.RestClinicService;
@@ -28,7 +30,7 @@ import mz.org.fgh.idartlite.service.restService.RestTherapeuticLineService;
 import mz.org.fgh.idartlite.service.restService.RestTherapeuticRegimenService;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity implements RestResponseListener, DialogListener {
 
     private static final String TAG = "SplashActivity";
 
@@ -55,7 +57,7 @@ public class SplashActivity extends BaseActivity {
                 RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
                 RestTherapeuticLineService.restGetAllTherapeuticLine();
 
-                clinicList = restClinicService.restGetAllClinic();
+                clinicList = restClinicService.restGetAllClinic(SplashActivity.this);
                 while (!Utilities.listHasElements(clinicList)) {
                     try {
                         Thread.sleep(2000);
@@ -82,4 +84,30 @@ public class SplashActivity extends BaseActivity {
         return null;
     }
 
+    @Override
+    public void doOnRestSucessResponse(String flag) {
+
+    }
+
+    @Override
+    public void doOnRestErrorResponse(String errormsg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Utilities.displayAlertDialog(SplashActivity.this, errormsg, SplashActivity.this).show();
+            }
+        });
+
+    }
+
+    @Override
+    public void doOnConfirmed() {
+        finishAffinity();
+        System.exit(0);
+    }
+
+    @Override
+    public void doOnDeny() {
+
+    }
 }

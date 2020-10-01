@@ -6,16 +6,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import mz.org.fgh.idartlite.dao.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.rest.ExecutorThreadProvider;
 
 public abstract class BaseService {
 
     protected IdartLiteDataBaseHelper dataBaseHelper;
 
-    private static final int NUMBER_OF_THREADS = 4;
+
     protected static ExecutorService restServiceExecutor;
     public static final String baseUrl = "http://10.10.2.154:3001";
 
@@ -25,7 +25,7 @@ public abstract class BaseService {
 
     public BaseService(Application application, User currentUser) {
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
-        restServiceExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+        restServiceExecutor = ExecutorThreadProvider.getInstance().getExecutorService();
 
         this.currentUser = currentUser;
         this.application=application;
