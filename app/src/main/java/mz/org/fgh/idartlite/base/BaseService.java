@@ -17,7 +17,7 @@ public abstract class BaseService {
 
     private static final int NUMBER_OF_THREADS = 4;
     protected static ExecutorService restServiceExecutor;
-    public static final String baseUrl = "http://10.10.2.115:3001";
+    public static final String baseUrl = "http://10.10.2.154:3001";
 
     protected User currentUser;
     protected Application application;

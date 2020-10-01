@@ -6,6 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.UserDaoImpl;
+import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "user", daoClass = UserDaoImpl.class)
 public class User extends BaseModel {
@@ -61,5 +62,12 @@ public class User extends BaseModel {
 
     public void setClinic(Clinic clinic) {
         this.clinic = clinic;
+    }
+
+    public String validadeToLogin() {
+        if (!Utilities.stringHasValue(this.userName)) return "O campo Utilizador deve ser preenchido.";
+        if (!Utilities.stringHasValue(this.password)) return "O campo Senha deve ser preenchido.";
+
+        return "";
     }
 }
