@@ -218,20 +218,24 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                                 DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) >= 0) {
                             if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
                                     DateUtilitis.createDate(DateUtilitis.parseDateToDDMMYYYYString(Calendar.getInstance().getTime()), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) >= 60) {
-                                loadDataForm();
-                                getRelatedViewModel().getStock().setUuid(Utilities.getNewUUID().toString());
+                                if(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()) != 0) {
+                                    loadDataForm();
+                                    getRelatedViewModel().getStock().setUuid(Utilities.getNewUUID().toString());
 
-                                Listble listble = (Listble) getRelatedViewModel().getStock();
+                                    Listble listble = (Listble) getRelatedViewModel().getStock();
 
-                                if (!selectedStock.contains(listble)) {
-                                    listble.setListPosition(selectedStock.size() + 1);
-                                    selectedStock.add(listble);
-                                    getRelatedViewModel().initNewStock();
-                                    Collections.sort(selectedStock);
-                                    displaySelectedDrugs();
-                                    cleanForm();
+                                    if (!selectedStock.contains(listble)) {
+                                        listble.setListPosition(selectedStock.size() + 1);
+                                        selectedStock.add(listble);
+                                        getRelatedViewModel().initNewStock();
+                                        Collections.sort(selectedStock);
+                                        displaySelectedDrugs();
+                                        cleanForm();
+                                    } else {
+                                        Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_duplication_msg)).show();
+                                    }
                                 }else {
-                                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_duplication_msg)).show();
+                                    Utilities.displayAlertDialog(StockEntranceActivity.this, "A quantidade nao pode ser igual a zero.").show();
                                 }
                             }else {
                                 Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
@@ -259,6 +263,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         getRelatedViewModel().getStock().setPrice(Double.valueOf(stockEntranceBinding.numeroPreco.getText().toString()));
         getRelatedViewModel().getStock().setUnitsReceived(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()));
         getRelatedViewModel().getStock().setClinic(getCurrentClinic());
+        getRelatedViewModel().getStock().setStockMoviment(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()));
         getRelatedViewModel().getStock().setSyncStatus(BaseModel.SYNC_SATUS_READY);
     }
 
@@ -283,10 +288,14 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
             }else {
                 if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
                         DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) > 0) {
-                    loadDataForm();
-                    stockService.saveOrUpdateStock(getRelatedViewModel().getStock());
-                    Utilities.displayAlertDialog(StockEntranceActivity.this, "Alterado com sucesso",StockEntranceActivity.this).show();
-                    //finish();
+                    if(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()) != 0) {
+                        loadDataForm();
+                        stockService.saveOrUpdateStock(getRelatedViewModel().getStock());
+                        Utilities.displayAlertDialog(StockEntranceActivity.this, "Alterado com sucesso", StockEntranceActivity.this).show();
+                        //finish();
+                    }else{
+                        Utilities.displayAlertDialog(StockEntranceActivity.this, "A quantidade nao pode ser igual a zero.").show();
+                    }
                 }else {
                     Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
                 }
