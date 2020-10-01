@@ -139,13 +139,18 @@ public class DispenseVM extends BaseViewModel {
     public void save() {
 
         getRelatedActivity().loadFormData();
-
         String validationErrors = this.dispense.validate();
 
         if (!Utilities.stringHasValue(validationErrors)) {
         try {
+            boolean isNewDispense = true;
+            if(dispense.getId() > 0)
+                isNewDispense = false;
             this.dispenseService.saveOrUpdateDispense(dispense);
-            Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!", getRelatedActivity()).show();
+            if(isNewDispense)
+                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!", getRelatedActivity()).show();
+            else
+                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi actualizado com sucesso!", getRelatedActivity()).show();
 
         } catch (SQLException e) {
             e.printStackTrace();

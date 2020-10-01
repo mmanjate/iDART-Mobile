@@ -39,7 +39,7 @@ public class Prescription extends BaseModel {
 	public static final String DURATION_TWO_WEEKS = "2 Semanas";
 	public static final String DURATION_ONE_MONTH = "1 Mês";
 	public static final String DURATION_TWO_MONTHS = "2 Meses";
-	public static final String DURATION_THREE_MONTHS = "3 Mêeses";
+	public static final String DURATION_THREE_MONTHS = "3 Meses";
 	public static final String DURATION_FOUR_MONTHS = "4 Meses";
 	public static final String DURATION_FIVE_MONTHS = "5 Meses";
 	public static final String DURATION_SIX_MONTHS = "6 Meses";

@@ -245,4 +245,18 @@ public class DateUtilitis {
 
         return cal.getTime();
     }
+
+    public static String getDateAfterAddingDaysToGivenDate(final String oldDate, int daysToAdd){
+
+        SimpleDateFormat sdf = new SimpleDateFormat(DateUtilitis.DATE_FORMAT);
+        Calendar c = Calendar.getInstance();
+        try{
+            c.setTime(sdf.parse(oldDate));
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        c.add(Calendar.DAY_OF_MONTH,daysToAdd);
+
+        return sdf.format(c.getTime());
+    }
 }
