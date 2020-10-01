@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
@@ -34,7 +35,7 @@ public class RestClinicService extends BaseService {
         super(application, currentUser);
     }
 
-    public List<Clinic> restGetAllClinic() {
+    public List<Clinic> restGetAllClinic(RestResponseListener listener) {
 
         String url = BaseService.baseUrl + "/clinic?facilitytype=neq.Unidade%20Sanitária&mainclinic=eq.false";
         clinicService = new ClinicService(getApplication(), null);
@@ -86,7 +87,10 @@ public class RestClinicService extends BaseService {
 
         } else {
             Log.e(TAG, "Response Servidor Offline");
-            Toast.makeText(getApplication(),"Servidor offline, por favor tente mais tarde",Toast.LENGTH_LONG).show();
+            if (listener != null){
+                listener.doOnRestErrorResponse("Servidor offline, por favor tente mais tarde");
+            }
+            //Toast.makeText(getApplication(),"Servidor offline, por favor tente mais tarde",Toast.LENGTH_LONG).show();
         }
 
         return clinicList;
