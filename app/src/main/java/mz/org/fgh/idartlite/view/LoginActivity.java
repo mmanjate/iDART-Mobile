@@ -32,6 +32,8 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         activityLoginBinding.setViewModel(getRelatedViewModel());
 
+        changeViewToNormalMode();
+
         clinicList = new ArrayList<Clinic>();
         Intent intent = this.getIntent();
         if(intent != null){
@@ -65,6 +67,16 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
         }
     }
 
+    public void changeViewToAuthenticatingMode(){
+        activityLoginBinding.button.setVisibility(View.GONE);
+        activityLoginBinding.loginProgressBox.setVisibility(View.VISIBLE);
+    }
+
+    public void changeViewToNormalMode(){
+        activityLoginBinding.button.setVisibility(View.VISIBLE);
+        activityLoginBinding.loginProgressBox.setVisibility(View.GONE);
+    }
+
     public void populateSpinner() {
         ArrayAdapter<Clinic> adapterSpinnerClinic = new ArrayAdapter<Clinic>(this, android.R.layout.simple_spinner_item, clinicList);
         adapterSpinnerClinic.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -87,6 +99,14 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
 
     @Override
     public void doOnRestSucessResponse(String flag) {
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        changeViewToNormalMode();
+
         if (Utilities.stringHasValue(flag)){
             if (flag.equals(UserService.auth)) {
                 getRelatedViewModel().setUserAuthentic(true);

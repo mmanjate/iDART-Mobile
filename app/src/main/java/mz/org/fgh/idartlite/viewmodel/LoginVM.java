@@ -91,6 +91,8 @@ public class LoginVM extends BaseViewModel {
 
     public void login() {
 
+        getRelatedActivity().changeViewToAuthenticatingMode();
+
         getRelatedActivity().setCurrentUser(currentUser);
         getRelatedActivity().setCurrentClinic(getCurrentClinic());
 
@@ -105,17 +107,23 @@ public class LoginVM extends BaseViewModel {
                     if (!userService.login(currentUser)) {
                         if (Utilities.listHasElements(clinicService.getCLinic())) {
                             currentClinic = clinicService.getCLinic().get(0);
+                            getRelatedActivity().changeViewToNormalMode();
                             moveToHome();
                         }else {
+                            getRelatedActivity().changeViewToNormalMode();
                             Utilities.displayAlertDialog(getRelatedActivity(), "Não foi encontrada a configuração da farmácia.").show();
                         }
                     } else {
+                        getRelatedActivity().changeViewToNormalMode();
                         Utilities.displayAlertDialog(getRelatedActivity(), "Utilizador e/ou senha inválida").show();
                     }
                 }
             } else
+                getRelatedActivity().changeViewToNormalMode();
+
                 Utilities.displayAlertDialog(getRelatedActivity(), loginErrors);
         } catch (SQLException e) {
+            getRelatedActivity().changeViewToNormalMode();
             Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao autenticar os dados, "+e.getLocalizedMessage()).show();
             Log.i("INFO DB", "Erro ao fazer Login: " + e.getMessage());
             e.printStackTrace();
