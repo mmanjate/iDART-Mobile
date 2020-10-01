@@ -12,7 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
@@ -150,13 +152,13 @@ if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
 
     @Override
     public void doOnConfirmed() {
-        Intent intent = new Intent(EpisodeActivity.this, PatientActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", getCurrentUser());
-        bundle.putSerializable("clinic", getCurrentClinic());
-        bundle.putSerializable("patient", getRelatedViewModel().getPatient());
-        intent.putExtras(bundle);
-        startActivity(intent);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("patient", this.getPatient());
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        params.put("requestedFragment", EpisodeFragment.FRAGMENT_CODE_EPISODE);
+        nextActivity(PatientActivity.class,params);
     }
 
     @Override
