@@ -153,7 +153,7 @@ public class PrescriptionVM extends BaseViewModel {
     public void save(){
 
         ((PrescriptionActivity)getRelatedActivity()).loadFormData();
-        String validationErrors = this.prescription.validate();
+        String validationErrors = this.prescription.validate(getRelatedActivity());
         if (!Utilities.stringHasValue(validationErrors)) {
             try {
                 if (getRelatedActivity().getApplicationStep().isapplicationstepcreate()) {

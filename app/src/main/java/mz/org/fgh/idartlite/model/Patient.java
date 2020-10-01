@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @DatabaseTable(tableName = "patient", daoClass = PatientDaoImpl.class)
@@ -62,6 +63,8 @@ public class Patient extends BaseModel {
 
 	@DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
 	private Clinic clinic;
+
+	private List<Episode> episodes;
 
 	public int getId() {
 		return id;
@@ -153,6 +156,19 @@ public class Patient extends BaseModel {
 
 	public String getDateString(){
 		return DateUtilitis.parseDateToDDMMYYYYString(this.birthDate);
+	}
+
+	public List<Episode> getEpisodes() {
+		return episodes;
+	}
+
+	public void setEpisodes(List<Episode> episodes) {
+		this.episodes = episodes;
+	}
+
+	public Episode getReferenceEpisode(){
+		if (!Utilities.listHasElements(this.episodes)) return null;
+		return this.episodes.get(0);
 	}
 
 	public int getAge() {

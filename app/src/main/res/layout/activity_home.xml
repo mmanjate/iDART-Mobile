@@ -196,7 +196,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_0dp"
                 android:layout_weight="1"
-                android:text="iDART Lite v1.0"
+                android:text="@{viewModel.appVersionName}"
                 android:gravity="top|center"/>
 
         </LinearLayout>
