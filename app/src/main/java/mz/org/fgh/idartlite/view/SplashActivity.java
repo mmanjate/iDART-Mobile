@@ -14,6 +14,7 @@ import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecuteGetWorkerScheduler;
+import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecutePostWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.RestResponseListener;
@@ -22,6 +23,7 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.restService.RestClinicService;
 import mz.org.fgh.idartlite.service.restService.RestDiseaseTypeService;
+import mz.org.fgh.idartlite.service.restService.RestDispenseService;
 import mz.org.fgh.idartlite.service.restService.RestDispenseTypeService;
 import mz.org.fgh.idartlite.service.restService.RestDrugService;
 import mz.org.fgh.idartlite.service.restService.RestFormService;
@@ -45,6 +47,9 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
         setContentView(R.layout.activity_splash);
         restClinicService = new RestClinicService(getApplication(), null);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
+
+        ExecutePostWorkerScheduler executePostWorkerScheduler = new ExecutePostWorkerScheduler(getApplicationContext());
+        executePostWorkerScheduler.initPostDataTaskWork();
 
         new Thread(new Runnable() {
             public void run() {
