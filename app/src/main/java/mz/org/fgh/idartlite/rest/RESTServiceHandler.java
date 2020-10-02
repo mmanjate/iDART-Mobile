@@ -6,6 +6,9 @@ import android.widget.ImageView;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.ImageLoader;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -30,13 +33,31 @@ public class RESTServiceHandler {
         mHeaders.put(key,value);
     }
 
-    public <T> void objectRequest(String url, int method, Map<String, Object> params, Class clazz, Response.Listener<T> response, Response.ErrorListener error) {
+//    public <T> void objectRequest(String url, int method, Map<String, Object> params, Class clazz, Response.Listener<T> response, Response.ErrorListener error) {
+//        String tag_json_arry = "object_req";
+//
+//        ObjectRequest objectRequest;
+//
+//        if (params != null) {
+//            objectRequest = new ObjectRequest<T>(method, url, params, clazz, response, error);
+//            objectRequest.setHeaders(mHeaders);
+//        } else {
+//            objectRequest = new ObjectRequest<T>(method, url, null, clazz, response, error);
+//            objectRequest.setHeaders(mHeaders);
+//        }
+//
+//        IdartLiteApplication.getInstance().addToRequestQueue(objectRequest, tag_json_arry);
+//
+//    }
+
+
+    public <T> void objectRequest(String url, int method, JSONObject input, Class clazz, Response.Listener<T> response, Response.ErrorListener error) {
         String tag_json_arry = "object_req";
 
         ObjectRequest objectRequest;
 
-        if (params != null) {
-            objectRequest = new ObjectRequest<T>(method, url, params, clazz, response, error);
+        if (input != null) {
+            objectRequest = new ObjectRequest<T>(method, url, input, clazz, response, error);
             objectRequest.setHeaders(mHeaders);
         } else {
             objectRequest = new ObjectRequest<T>(method, url, null, clazz, response, error);

@@ -33,7 +33,7 @@ public class ExecuteGetWorkerScheduler {
         PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetConfigWorkerScheduler.class, 7, TimeUnit.DAYS)
                 .setConstraints(constraints)
                 .setInitialDelay(7,TimeUnit.DAYS)
-                .addTag("TASK ID " + JOB_ID)
+                .addTag("CONF_ID " + JOB_ID)
                 .build();
 
        WorkManager.getInstance(context).enqueue(periodicConfigDataWorkRequest);
@@ -46,10 +46,10 @@ public class ExecuteGetWorkerScheduler {
                 .setRequiresCharging(true)
                 .build();
 
-        PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetPatientDataWorkerScheduler.class, 8, TimeUnit.MINUTES)
+        PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetPatientDataWorkerScheduler.class, 8, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .setInitialDelay(8,TimeUnit.HOURS)
-                .addTag("TASK ID " + JOB_ID)
+                .addTag("PATIENT_ID " + JOB_ID)
                 .build();
 
         WorkManager.getInstance(context).enqueue(periodicPatientDataWorkRequest);

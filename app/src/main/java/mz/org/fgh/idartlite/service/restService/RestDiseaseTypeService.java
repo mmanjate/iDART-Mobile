@@ -39,7 +39,7 @@ public class RestDiseaseTypeService extends BaseService {
                 Map<String, Object> params = new ArrayMap<String, Object>();
                 handler.addHeader("Content-Type", "Application/json");
 
-                handler.objectRequest(url, Request.Method.GET, params, Object[].class, new Response.Listener<Object[]>() {
+                handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
                     @Override
                     public void onResponse(Object[] diseases) {
 

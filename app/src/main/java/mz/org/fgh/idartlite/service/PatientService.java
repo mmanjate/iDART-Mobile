@@ -85,7 +85,6 @@ public class PatientService extends BaseService {
         try {
 
             Clinic clinic = clinicService.getClinic(Objects.requireNonNull(patient.get("clinicuuid")).toString());
-          //  Clinic clinic = clinicService.getCLinic().get(0);
 
             String concatAdrees = getFullAdreess(Objects.requireNonNull(patient.get("address1")).toString(),
                     Objects.requireNonNull(patient.get("address2")).toString(),

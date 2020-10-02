@@ -55,6 +55,8 @@ public class EpisodeService extends BaseService {
             Episode episode = new Episode();
             episode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(patient.get("prescriptiondate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
             episode.setPatient(localPatient);
+            episode.setSanitaryUnit(Objects.requireNonNull(patient.get("mainclinicname")).toString());
+            episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
             episode.setStartReason("Referido De");
             episode.setNotes("Referido De");
             episode.setSyncStatus("U");
