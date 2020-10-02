@@ -120,7 +120,6 @@ public class DispenseVM extends BaseViewModel {
     public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) {
 
         List<Stock> stocks = new ArrayList<>();
-
         try {
             stocks = this.stockService.getAllStocksByClinicAndDrug(clinic, drug);
         } catch (SQLException e) {

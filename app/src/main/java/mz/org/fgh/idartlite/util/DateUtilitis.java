@@ -249,6 +249,7 @@ public class DateUtilitis {
     public static String getDateAfterAddingDaysToGivenDate(final String oldDate, int daysToAdd){
 
         SimpleDateFormat sdf = new SimpleDateFormat(DateUtilitis.DATE_FORMAT);
+
         Calendar c = Calendar.getInstance();
         try{
             c.setTime(sdf.parse(oldDate));

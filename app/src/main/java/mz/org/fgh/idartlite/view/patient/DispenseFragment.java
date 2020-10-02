@@ -189,7 +189,6 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
             rcvDispences.removeViewAt(position);
             rcvDispences.getAdapter().notifyItemRangeChanged(position, rcvDispences.getAdapter().getItemCount());
 
-
             try {
                 getRelatedViewModel().deleteDispense(dispenseList.get(position));
             } catch (SQLException e) {

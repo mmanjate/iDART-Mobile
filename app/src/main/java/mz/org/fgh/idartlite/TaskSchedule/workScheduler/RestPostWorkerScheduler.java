@@ -35,6 +35,7 @@ public class RestPostWorkerScheduler extends Worker {
             if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
                 Log.d(TAG, "doWork: Sync Patient Data");
                 dispenseList = dispenseService.getAllDispenseByStatus("R");
+                if(dispenseList != null)
                 if(dispenseList.size() > 0) {
                     for (Dispense dispense : dispenseList) {
                         RestDispenseService.restPostDispense(dispense);

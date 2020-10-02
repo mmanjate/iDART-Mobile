@@ -178,6 +178,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
                     String pickUpdate = activityCreateDispenseBinding.dispenseDate.getText().toString();
 
                     int daysToAdd = 0;
+
                     if (duracaoDoAviamento == 2) {
                         daysToAdd = Dispense.DURATION_TWO_WEEKS;
                     } else if (duracaoDoAviamento == 4) {

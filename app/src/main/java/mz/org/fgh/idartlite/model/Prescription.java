@@ -284,7 +284,6 @@ public class Prescription extends BaseModel {
 		if(this.therapeuticLine == null || !Utilities.stringHasValue(this.therapeuticLine.getDescription())) return context.getString(R.string.prescription_line_mandatory);
 
 		if (!Utilities.listHasElements(this.prescribedDrugs)) return context.getString(R.string.prescription_drugs_mandatory);
-
 		if (isUrgent() && !Utilities.stringHasValue(this.urgentNotes)) return context.getString(R.string.prescription_urgent_notes_mandatory);
 
 		return "";

@@ -64,7 +64,6 @@ public class Dispense extends BaseModel {
     public Dispense() {
     }
 
-
     public int getId() {
         return id;
     }
@@ -184,7 +183,6 @@ public class Dispense extends BaseModel {
             return "A data do levantamento não pode ser maior que a data do próximo levantamento.";
         }
         if(this.supply <= 0) return "A duração da prescrição deve ser indicada.";
-
         if (!Utilities.listHasElements(this.dispensedDrugs)) return "Por favor indique os medicamentos para esta dispensa.";
 
         return "";
