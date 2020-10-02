@@ -41,7 +41,7 @@ public class Prescription extends BaseModel {
 	public static final String DURATION_TWO_WEEKS = "2 Semanas";
 	public static final String DURATION_ONE_MONTH = "1 Mês";
 	public static final String DURATION_TWO_MONTHS = "2 Meses";
-	public static final String DURATION_THREE_MONTHS = "3 Mêeses";
+	public static final String DURATION_THREE_MONTHS = "3 Meses";
 	public static final String DURATION_FOUR_MONTHS = "4 Meses";
 	public static final String DURATION_FIVE_MONTHS = "5 Meses";
 	public static final String DURATION_SIX_MONTHS = "6 Meses";
@@ -284,7 +284,6 @@ public class Prescription extends BaseModel {
 		if(this.therapeuticLine == null || !Utilities.stringHasValue(this.therapeuticLine.getDescription())) return context.getString(R.string.prescription_line_mandatory);
 
 		if (!Utilities.listHasElements(this.prescribedDrugs)) return context.getString(R.string.prescription_drugs_mandatory);
-
 		if (isUrgent() && !Utilities.stringHasValue(this.urgentNotes)) return context.getString(R.string.prescription_urgent_notes_mandatory);
 
 		return "";
