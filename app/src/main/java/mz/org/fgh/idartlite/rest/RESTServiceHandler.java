@@ -10,11 +10,17 @@ import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.ObjectOutput;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.base.IdartLiteApplication;
 import mz.org.fgh.idartlite.model.User;
 
@@ -30,26 +36,8 @@ public class RESTServiceHandler {
     }
 
     public void addHeader(String key, String value) {
-        mHeaders.put(key,value);
+        mHeaders.put(key, value);
     }
-
-//    public <T> void objectRequest(String url, int method, Map<String, Object> params, Class clazz, Response.Listener<T> response, Response.ErrorListener error) {
-//        String tag_json_arry = "object_req";
-//
-//        ObjectRequest objectRequest;
-//
-//        if (params != null) {
-//            objectRequest = new ObjectRequest<T>(method, url, params, clazz, response, error);
-//            objectRequest.setHeaders(mHeaders);
-//        } else {
-//            objectRequest = new ObjectRequest<T>(method, url, null, clazz, response, error);
-//            objectRequest.setHeaders(mHeaders);
-//        }
-//
-//        IdartLiteApplication.getInstance().addToRequestQueue(objectRequest, tag_json_arry);
-//
-//    }
-
 
     public <T> void objectRequest(String url, int method, JSONObject input, Class clazz, Response.Listener<T> response, Response.ErrorListener error) {
         String tag_json_arry = "object_req";
@@ -73,12 +61,10 @@ public class RESTServiceHandler {
         imageLoader.get(url, ImageLoader.getImageListener(imageView, icon_loading, icon_error));
     }
 
-    public Map<String, String> buildAuthHeaders(){
+    public Map<String, String> buildAuthHeaders() {
 
         Map<String, String> headerMap = new HashMap<>();
-//        String credentials = this.user.getUserName() + ":" + this.user.getPassword();
-//        String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
- //       headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
+        headerMap.put("Authorization", "Bearer " + getJWTPermission("postgres", "postgres"));
         return headerMap;
 
     }
@@ -115,5 +101,55 @@ public class RESTServiceHandler {
         return result;
     }
 
+    public static String getJWTPermission(String username, String pass) {
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        HttpURLConnection connection = null;
+        String url = BaseService.baseUrl + "/rpc/login";
+        String parameters = "{\"username\":\"" + username + "\",\"pass\":\"" + pass + "\"}";
+
+        String result = "";
+        int code = 200;
+        try {
+            URL siteURL = new URL(url);
+            connection = (HttpURLConnection) siteURL.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+            writer.write(parameters);
+            writer.flush();
+            connection.setConnectTimeout(3000);
+            connection.connect();
+            Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+
+            for (int c; (c = in.read()) >= 0; ) {
+                result = result.concat(String.valueOf((char) c));
+                System.out.print((char) c);
+            }
+
+            result = result.replace("[{", "{");
+            result = result.replace("}]", "}");
+            if (result.contains("{")) {
+                JSONObject jsonObj = new JSONObject(result);
+                try {
+                    result = jsonObj.get("token").toString();
+                } catch (Exception e) {
+                    connection.disconnect();
+                    e.printStackTrace();
+                }
+            }
+            code = connection.getResponseCode();
+            connection.disconnect();
+            if (code == 200) {
+                return result;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            if (connection != null)
+                connection.disconnect();
+            return null;
+        }
+    }
 }
