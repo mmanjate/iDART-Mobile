@@ -53,6 +53,8 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
     int position1;
     private Episode episode;
 
+    private boolean viewDetails;
+
 
     public EpisodeFragment() {
     }
@@ -93,14 +95,9 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
                 @Override
                 public void onClick(View view) {
 
-                    Episode episode = null;
-                    try {
-                         episode=getRelatedViewModel().findEpisodeWithStopReasonByPatient(getSelectedPatient());
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    if(episode!=null){
-                        Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"Nao pode Criarum novo episodio para o paciente uma vez que ele ja tem um episodio de fim").show();
+
+                    if(getRelatedViewModel().patientHasEndingEpisode(getSelectedPatient())){
+                        Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"Nao pode Criar um novo episodio para o paciente uma vez que ele ja tem um episodio de fim").show();
                         return;
                     }
 
@@ -161,7 +158,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
              //Por retirar chamando tela de criar, por ser editado
              case R.id.edit:
                  if(episode.getSyncStatus().equals("R")) {
-                     //Call activity to Edit
+                     //Call activity to Edit viewDetails
                      Intent intent = new Intent(getContext(), EpisodeActivity.class);
                      Bundle bundle = new Bundle();
                      bundle.putSerializable("user", getCurrentUser());
@@ -181,6 +178,19 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
 
               Utilities.displayDeleteConfirmationDialogFromList(EpisodeFragment.this.getContext(),EpisodeFragment.this.getString(R.string.list_item_delete_msg),position1,EpisodeFragment.this).show();
                  return true;
+             case R.id.viewDetails:
+
+                 //Call activity to Edit
+                 //viewDetails=true;
+                 Intent intent = new Intent(getContext(), EpisodeActivity.class);
+                 Bundle bundle = new Bundle();
+                 bundle.putSerializable("user", getCurrentUser());
+                 bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                 bundle.putSerializable("episode", episode);
+                 bundle.putSerializable("patient", getMyActivity().getPatient());
+                 bundle.putSerializable("viewDetails", true);
+                 intent.putExtras(bundle);
+                 startActivity(intent);
              default:
                 return false;
          }

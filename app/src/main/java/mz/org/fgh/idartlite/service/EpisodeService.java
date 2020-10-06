@@ -14,6 +14,7 @@ import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.patient.EpisodeFragment;
 
 public class EpisodeService extends BaseService {
 
@@ -68,5 +69,20 @@ public class EpisodeService extends BaseService {
         }
     }
 
+    public boolean patientHasEndingEpisode(Patient patient){
+        Episode episode = null;
+        try {
+            episode=this.findEpisodeWithStopReasonByPatient(patient);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(episode!=null){
+          return true;
+        }
+        else {
+            return false;
+        }
+
+    }
 
 }

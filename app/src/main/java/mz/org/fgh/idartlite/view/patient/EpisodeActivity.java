@@ -62,6 +62,11 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
                     createEpisodeBinding.spnStopReason.setSelection(stopReasonSpinnerAdapter.getPosition(getRelatedViewModel().getEpisode().getStopReason()));
 
                 }
+
+                if((boolean) bundle.getSerializable("viewDetails") == true) {
+                    disableFieldsToView();
+
+                }
             }
         }
         createEpisodeBinding.setEpisode(getRelatedViewModel().getEpisode());
@@ -93,6 +98,17 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
     }
 
+
+    private void disableFieldsToView(){
+        createEpisodeBinding.spnStartReason.setEnabled(false);
+        createEpisodeBinding.spnStartReason.setClickable(false);
+        createEpisodeBinding.editTextEpisodeObservation.setEnabled(false);
+        createEpisodeBinding.editTextEpisodeObservation.setClickable(false);
+        createEpisodeBinding.editEpisodeDate.setEnabled(false);
+        createEpisodeBinding.editEpisodeDate.setClickable(false);
+        createEpisodeBinding.saveAndContinue.setVisibility(View.GONE);
+    }
+
     private void loadSpinnerValues() {
         List<ValorSimples> spinnerReasonToStartArray =  new ArrayList<ValorSimples>();
         spinnerReasonToStartArray.add(ValorSimples.fastCreate("Referido De"));
@@ -102,6 +118,11 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
         spinnerReasonToStopArray.add("");
         spinnerReasonToStopArray.add("Referido para mesma US");
         spinnerReasonToStopArray.add("Abandono");
+        spinnerReasonToStopArray.add("Parametros Laboratoriais");
+        spinnerReasonToStopArray.add("Gravidez");
+        spinnerReasonToStopArray.add("Tuberculose");
+        spinnerReasonToStopArray.add("Falha de adesao");
+        spinnerReasonToStopArray.add("A pedido do paciente");
         spinnerReasonToStopArray.add("Óbito");
 
         ArrayAdapter<ValorSimples> adapter = new ArrayAdapter<ValorSimples>(getApplicationContext(), layout.simple_spinner_item, spinnerReasonToStartArray);
