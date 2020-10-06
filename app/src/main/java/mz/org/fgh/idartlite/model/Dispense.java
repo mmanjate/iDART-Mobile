@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.model;
 
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -29,6 +30,14 @@ public class Dispense extends BaseModel {
     public static final String COLUMN_UUID = "uuid";
     public static final String COLUMN_SYNC_STATUS = "sync_status";
 
+    public static final int DURATION_TWO_WEEKS = 15;
+    public static final int DURATION_ONE_MONTH = 30;
+    public static final int DURATION_TWO_MONTHS = 60;
+    public static final int DURATION_THREE_MONTHS = 90;
+    public static final int DURATION_FOUR_MONTHS = 120;
+    public static final int DURATION_FIVE_MONTHS = 150;
+    public static final int DURATION_SIX_MONTHS = 180;
+
     @DatabaseField(columnName = "id", generatedId = true)
     private int id;
 
@@ -54,7 +63,6 @@ public class Dispense extends BaseModel {
 
     public Dispense() {
     }
-
 
     public int getId() {
         return id;
@@ -171,8 +179,10 @@ public class Dispense extends BaseModel {
         if(DateUtilitis.dateDiff( this.pickupDate, DateUtilitis.getCurrentDate(), DateUtilitis.DAY_FORMAT) > 0) {
             return "A data do levantamento não pode ser maior que a data corrente.";
         }
+        if(DateUtilitis.dateDiff(this.pickupDate, this.nextPickupDate, DateUtilitis.DAY_FORMAT) > 0) {
+            return "A data do levantamento não pode ser maior que a data do próximo levantamento.";
+        }
         if(this.supply <= 0) return "A duração da prescrição deve ser indicada.";
-
         if (!Utilities.listHasElements(this.dispensedDrugs)) return "Por favor indique os medicamentos para esta dispensa.";
 
         return "";

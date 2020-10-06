@@ -164,7 +164,6 @@ public class PrescriptionVM extends BaseViewModel {
                     Utilities.displayAlertDialog(getRelatedActivity(), "A Prescrição foi actualizada com sucesso.", ((PrescriptionActivity)getRelatedActivity())).show();
                 }
 
-
             } catch (SQLException e) {
                 e.printStackTrace();
                 Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg) + e.getLocalizedMessage()).show();

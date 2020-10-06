@@ -261,6 +261,8 @@ public class Utilities {
            case 16:
                return Prescription.DURATION_FOUR_MONTHS;
            case 20:
+               return Prescription.DURATION_FIVE_MONTHS;
+           case 24:
                return Prescription.DURATION_SIX_MONTHS;
            default:
                return "";

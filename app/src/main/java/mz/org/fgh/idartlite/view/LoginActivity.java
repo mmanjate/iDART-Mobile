@@ -1,12 +1,10 @@
 package mz.org.fgh.idartlite.view;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,7 +20,8 @@ import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.service.UserService;
+import mz.org.fgh.idartlite.service.restService.RestUserService;
+import mz.org.fgh.idartlite.service.restService.RestUserService;
 import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.LoginVM;
@@ -124,7 +123,7 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
         changeViewToNormalMode();
 
         if (Utilities.stringHasValue(flag)){
-            if (flag.equals(UserService.auth)) {
+            if (flag.equals(RestUserService.auth)) {
 
                 try {
                     getRelatedViewModel().saveUserSettingsAndProcced();

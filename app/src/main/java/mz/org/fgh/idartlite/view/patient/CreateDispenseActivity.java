@@ -11,6 +11,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +168,38 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             }
         });
 
+        activityCreateDispenseBinding.spnDuration.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    int duracaoDoAviamento = ((ValorSimples) adapterView.getItemAtPosition(i)).getId();
+                    String pickUpdate = activityCreateDispenseBinding.dispenseDate.getText().toString();
+
+                    int daysToAdd = 0;
+
+                    if (duracaoDoAviamento == 2) {
+                        daysToAdd = Dispense.DURATION_TWO_WEEKS;
+                    } else if (duracaoDoAviamento == 4) {
+                        daysToAdd = Dispense.DURATION_ONE_MONTH;
+                    } else if (duracaoDoAviamento == 8) {
+                        daysToAdd = Dispense.DURATION_TWO_MONTHS;
+                    } else if (duracaoDoAviamento == 12) {
+                        daysToAdd = Dispense.DURATION_THREE_MONTHS;
+                    } else if (duracaoDoAviamento == 16) {
+                        daysToAdd = Dispense.DURATION_FOUR_MONTHS;
+                    } else if (duracaoDoAviamento == 20) {
+                        daysToAdd = Dispense.DURATION_FIVE_MONTHS;
+                    } else if (duracaoDoAviamento == 24) {
+                        daysToAdd = Dispense.DURATION_SIX_MONTHS;
+                    }
+                    String nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(pickUpdate, daysToAdd);
+                    activityCreateDispenseBinding.nextPickupDate.setText(nextPickUpDate);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         activityCreateDispenseBinding.imvAddSelectedDrug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,19 +209,14 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
                     Listble listble = (Listble) activityCreateDispenseBinding.spnDrugs.getSelectedItem();
 
                     Drug drug = (Drug) listble;
-
                     final int qtdADispensar = getQuantidadeADispensar(drug);
-
                     drug.setQuantity(qtdADispensar);
-
                     listble = drug;
 
                         if(!verifyIfExistStockToDispense(drug)){
                             Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.stock_menor)).show();
                             return;
                         }
-
-
                         if (!selectedDrugs.contains(listble)) {
                             listble.setListPosition(selectedDrugs.size() + 1);
                             selectedDrugs.add(listble);
@@ -240,7 +269,15 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             drugs.add(new Drug());
             drugs.addAll(getRelatedViewModel().getAllDrugs());
 
-            ArrayAdapter<Drug> drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugs);
+            List<Drug> drugsToDisplay = new ArrayList<>();
+
+            for (Drug drug:
+                 drugs) {
+                if(this.verifyIfDrugHasAtLeastOneStock(drug))
+                    drugsToDisplay.add(drug);
+            }
+
+            ArrayAdapter<Drug> drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugsToDisplay);
             drugArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             activityCreateDispenseBinding.spnDrugs.setAdapter(drugArrayAdapter);
 
@@ -329,7 +366,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             getRelatedViewModel().getDispense().setPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), DateUtilitis.DATE_FORMAT));
         }
         if(activityCreateDispenseBinding.nextPickupDate.getText().length() != 0 ){
-            getRelatedViewModel().getDispense().setNextPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), DateUtilitis.DATE_FORMAT));
+            getRelatedViewModel().getDispense().setNextPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.nextPickupDate.getText().toString(), DateUtilitis.DATE_FORMAT));
         }
         getRelatedViewModel().getDispense().setSupply(((ValorSimples) activityCreateDispenseBinding.spnDuration.getSelectedItem()).getId());
         getRelatedViewModel().getDispense().setUuid(Utilities.getNewUUID().toString());
@@ -397,6 +434,12 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             }
         }
         return false;
+    }
+
+    private boolean verifyIfDrugHasAtLeastOneStock(Drug drug){
+
+        return getRelatedViewModel().getAllStocksByClinicAndDrug(getCurrentClinic(), drug).size() > 0;
+
     }
 
     private int getQuantidadeADispensar(Drug drug){
