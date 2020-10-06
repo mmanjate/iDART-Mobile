@@ -61,8 +61,8 @@ public class EpisodeVM extends BaseViewModel {
         return new Dispense();
     }
 
-    public Episode findEpisodeWithStopReasonByPatient(Patient patient) throws SQLException {
-        return episodeService.findEpisodeWithStopReasonByPatient(patient);
+    public boolean patientHasEndingEpisode(Patient patient) {
+        return episodeService.patientHasEndingEpisode(patient);
     }
 
     public void createEpisode(Episode episode) throws SQLException {

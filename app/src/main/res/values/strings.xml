@@ -47,6 +47,7 @@
 
     <string name="remover">Remover</string>
     <string name="editar">Editar</string>
+    <string name="visualizar_detalhes">Visualizar Detalhes</string>
 
     <string name="data_episodio">Data Episódio:</string>
     <string name="data_de_referencia">Data de Referencia:</string>
