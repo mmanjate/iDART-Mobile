@@ -12,17 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.databinding.ListableItemBinding;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListbleDialogListener {
 
-    private Activity activity;
+    private BaseActivity activity;
     private List<Listble> listbles;
     private RecyclerView recyclerView;
 
-    public ListbleRecycleViewAdapter(RecyclerView recyclerView, List<Listble> listbles, Activity activity) {
+    public ListbleRecycleViewAdapter(RecyclerView recyclerView, List<Listble> listbles, BaseActivity activity) {
         this.activity = activity;
         this.listbles = listbles;
         this.recyclerView = recyclerView;
@@ -37,10 +38,18 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         ((ListbleViewHolder) viewHolder).listableItemBinding.setListble(listbles.get(position));
+        ((ListbleViewHolder) viewHolder).listableItemBinding.setStep(activity.getApplicationStep());
         ((ListbleViewHolder) viewHolder).listableItemBinding.imvRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utilities.displayDeleteConfirmationDialogFromList(activity, activity.getString(R.string.list_item_delete_msg), position, ListbleRecycleViewAdapter.this).show();
+            }
+        });
+
+        ((ListbleViewHolder) viewHolder).listableItemBinding.imvEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.getRelatedViewModel().setSelectedListble(listbles.get(position));
             }
         });
     }

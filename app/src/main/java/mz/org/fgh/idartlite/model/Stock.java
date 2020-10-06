@@ -243,4 +243,9 @@ public class Stock extends BaseModel implements Listble {
     public int compareTo(Object o) {
         return 0;
     }
+
+    @Override
+    public String getLote() {
+        return null;
+    }
 }

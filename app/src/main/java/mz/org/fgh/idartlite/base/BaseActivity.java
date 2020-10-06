@@ -106,6 +106,11 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     public BaseViewModel getRelatedViewModel() {
         return relatedViewModel;
     }

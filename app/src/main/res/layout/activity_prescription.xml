@@ -94,6 +94,7 @@
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_calendar"
                             android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.prescription.prescriptionDate)}"
+                            android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:paddingStart="@dimen/dimen_4dp"
                             android:paddingLeft="@dimen/dimen_4dp"/>
                         <TextView
@@ -105,6 +106,7 @@
                         <Spinner
                             android:id="@+id/spn_duration"
                             android:layout_width="fill_parent"
+                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:layout_height="wrap_content"/>
                             />
                         <TextView
@@ -116,6 +118,7 @@
                         <Spinner
                             android:id="@+id/spn_regime"
                             android:layout_width="fill_parent"
+                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:layout_height="wrap_content"/>
 
                         <TextView
@@ -127,6 +130,7 @@
                         <Spinner
                             android:id="@+id/spn_line"
                             android:layout_width="fill_parent"
+                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:layout_height="wrap_content"
                             />
 
@@ -139,6 +143,7 @@
                         <Spinner
                             android:id="@+id/spn_dispense_type"
                             android:layout_width="fill_parent"
+                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:layout_height="wrap_content"
                             />
                     </LinearLayout>
@@ -174,6 +179,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/see_olny_regimen_grugs"
+                            android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:checked="@{viewModel.seeOnlyOfRegime}"
                             android:onClick="@{() -> viewModel.changeDrugsListingMode()}"/>
 
@@ -188,6 +194,7 @@
                             android:id="@+id/spn_drugs"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:padding="@dimen/dimen_4dp"
                             />
 
@@ -196,6 +203,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/ic_save"
+                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:layout_margin="@dimen/dimen_10dp"
                             android:layout_gravity="center"/>
 
@@ -251,6 +259,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/prescri_o_especial"
+                            android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:checked="@{viewModel.prescription.urgent}"
                             android:onClick="@{() -> viewModel.setPrescriptionToSpetial()}"/>
 
@@ -264,6 +273,7 @@
                             android:id="@+id/spn_reson"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:padding="@dimen/dimen_4dp"
                             />
 
@@ -275,6 +285,7 @@
                         android:layout_height="60dp"
                         app:srcCompat="@drawable/ic_ok"
                         android:layout_marginTop="@dimen/dimen_22dp"
+                         android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                         android:layout_margin="@dimen/dimen_18dp"
                         android:onClick="@{() -> viewModel.save()}"
                         android:layout_gravity="right"/>

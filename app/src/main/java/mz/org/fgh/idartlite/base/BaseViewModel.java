@@ -10,6 +10,8 @@ import androidx.databinding.PropertyChangeRegistry;
 import androidx.lifecycle.AndroidViewModel;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.common.ApplicationStep;
+import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 
@@ -20,6 +22,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     protected User currentUser;
     protected Clinic currentClinic;
+
+    private Listble selectedListble;
 
     public BaseActivity getRelatedActivity() {
         return relatedActivity;
@@ -81,11 +85,23 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         notifyPropertyChanged(BR.currentClinic);
     }
 
+    public ApplicationStep getCurrentStep(){
+        return getRelatedActivity().getApplicationStep();
+    }
+
     public String getAppVersionNumber(){
         return "iDART Mobile v"+getRelatedActivity().getAppVersionNumber();
     }
 
     public String getAppVersionName(){
         return "iDART Mobile v"+getRelatedActivity().getAppVersionName();
+    }
+
+    public Listble getSelectedListble() {
+        return selectedListble;
+    }
+
+    public void setSelectedListble(Listble selectedListble) {
+        this.selectedListble = selectedListble;
     }
 }

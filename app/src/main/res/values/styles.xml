@@ -21,6 +21,9 @@
     <style name="MyToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
         <item name="colorControlNormal">#1A3963</item>
         <item name="titleTextColor">#1C3B65</item>
+        <item name="android:textColorPrimary">#1C3B65</item>
+        <item name="android:textColorSecondary">#1C3B65</item>
+        <item name="actionMenuTextColor">#1C3B65</item>
     </style>
 
     <style name="pacient_nid">

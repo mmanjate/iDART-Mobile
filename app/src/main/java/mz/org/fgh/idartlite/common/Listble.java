@@ -14,6 +14,10 @@ public interface Listble<T extends BaseModel> extends Comparable<T>{
 
     int getQuantity();
 
+    default String getLote() {
+        return null;
+    }
+
     @Override
     int compareTo(T t);
 }

@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.common;
+package mz.org.fgh.idartlite.base;
 
 import android.app.Application;
 
