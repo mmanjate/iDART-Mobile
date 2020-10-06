@@ -63,7 +63,7 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
                 }
 
-                if((boolean) bundle.getSerializable("viewDetails") == true) {
+                if(bundle.getSerializable("viewDetails")!= null && (boolean) bundle.getSerializable("viewDetails") == true) {
                     disableFieldsToView();
 
                 }
