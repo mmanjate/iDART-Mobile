@@ -1,8 +1,6 @@
 package mz.org.fgh.idartlite.view.patient;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -10,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -33,7 +30,7 @@ import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.common.ListbleAdapter;
+import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
 import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.databinding.ActivityCreateDispenseBinding;
 import mz.org.fgh.idartlite.model.Dispense;
@@ -54,7 +51,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
     private RecyclerView rcvSelectedDrugs;
 
-    private ListbleAdapter listbleAdapter;
+    private ListbleRecycleViewAdapter listbleRecycleViewAdapter;
 
     private Patient patient;
 
@@ -348,16 +345,16 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
     }
 
     private void displaySelectedDrugs() {
-        if (listbleAdapter != null) {
-            listbleAdapter.notifyDataSetChanged();
+        if (listbleRecycleViewAdapter != null) {
+            listbleRecycleViewAdapter.notifyDataSetChanged();
         } else {
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             rcvSelectedDrugs.setLayoutManager(mLayoutManager);
             rcvSelectedDrugs.setItemAnimator(new DefaultItemAnimator());
             rcvSelectedDrugs.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 0));
 
-            listbleAdapter = new ListbleAdapter(rcvSelectedDrugs, this.selectedDrugs, this);
-            rcvSelectedDrugs.setAdapter(listbleAdapter);
+            listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvSelectedDrugs, this.selectedDrugs, this);
+            rcvSelectedDrugs.setAdapter(listbleRecycleViewAdapter);
         }
 
     }

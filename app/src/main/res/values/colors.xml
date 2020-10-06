@@ -22,4 +22,7 @@
     <color name="button_dark_back">#247CA6</color>
     <color name="button_stroke">#85D5FB</color>
     <color name="logo">#01226D</color>
+
+    <color name="spinner_back_color">#DFEAF7</color>
+
 </resources>

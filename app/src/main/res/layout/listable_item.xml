@@ -6,11 +6,11 @@
     >
 
     <data>
-        <variable
-            name="listble"
-            type="mz.org.fgh.idartlite.common.Listble" />
+        <variable name="listble" type="mz.org.fgh.idartlite.common.Listble" />
+        <variable name="step" type="mz.org.fgh.idartlite.common.ApplicationStep" />
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="android.view.View"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +33,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:padding="2dp"
                 android:gravity="right"
                 android:text="@{Utilities.parseIntToString(listble.position)}" />
@@ -41,7 +41,7 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.050"
+                android:layout_weight="0.030"
                 android:background="@color/white"/>
             <TextView
                 android:layout_width="0dp"
@@ -55,7 +55,23 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.050"
+                android:layout_weight="0.030"
+                android:visibility="@{Utilities.stringHasValue(listble.lote) ? View.VISIBLE : View.GONE}"
+                android:background="@color/white"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:padding="2dp"
+                android:visibility="@{Utilities.stringHasValue(listble.lote) ? View.VISIBLE : View.GONE}"
+                android:paddingStart="@dimen/dimen_4dp"
+                android:text="@{listble.lote}"
+                android:paddingLeft="@dimen/dimen_4dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.030"
                 android:visibility="@{listble.quantity > 0 ? View.VISIBLE : View.GONE}"
                 android:background="@color/white"/>
             <TextView
@@ -70,14 +86,31 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.050"
+                android:layout_weight="0.030"
+                android:visibility="@{step.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                android:background="@color/white"/>
+
+            <ImageView
+                android:id="@+id/imv_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:visibility="@{step.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                app:srcCompat="@drawable/ic_baseline_edit_24"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.030"
+                android:visibility="@{step.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                 android:background="@color/white"/>
 
             <ImageView
                 android:id="@+id/imv_remove"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
+                android:visibility="@{step.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                 app:srcCompat="@drawable/ic_remove"/>
 
 

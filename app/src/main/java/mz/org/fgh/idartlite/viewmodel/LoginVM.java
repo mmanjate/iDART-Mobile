@@ -10,12 +10,14 @@ import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecutePostWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.ClinicService;
@@ -31,8 +33,14 @@ public class LoginVM extends BaseViewModel {
     private RestUserService restUserService;
     private UserService userService;
     private ClinicService clinicService;
-    private boolean userAuthentic = false;
 
+    private Clinic selectedClinic;
+
+    private List<Clinic> clinicList;
+
+    private boolean authenticating;
+
+    private boolean remeberMe;
 
     public LoginVM(@NonNull Application application) {
         super(application);
@@ -55,12 +63,12 @@ public class LoginVM extends BaseViewModel {
 
     @Bindable
     public String getUserPassword() {
-            return currentUser.getPassword();
+        return currentUser.getPassword();
 
     }
 
     public void setUserPassword(String password) {
-            currentUser.setPassword(password);
+        currentUser.setPassword(password);
         notifyPropertyChanged(BR.userPassword);
 
     }
@@ -75,14 +83,6 @@ public class LoginVM extends BaseViewModel {
         notifyPropertyChanged(BR.clinic);
     }
 
-    public boolean isUserAuthentic() {
-        return userAuthentic;
-    }
-
-    public void setUserAuthentic(boolean userAuthentic) {
-        this.userAuthentic = userAuthentic;
-    }
-
 
 
     public void saveLogingUser() throws SQLException {
@@ -95,13 +95,20 @@ public class LoginVM extends BaseViewModel {
     }
 
     public void login() {
-
         getRelatedActivity().changeViewToAuthenticatingMode();
 
+        if (getCurrentClinic() == null || getCurrentClinic().getId() < 0){
+            getRelatedActivity().changeViewToNormalMode();
+            Utilities.displayAlertDialog(getRelatedActivity(), "O campo Farmácia deve ser preenchido.").show();
+
+        }
+
+        getCurrentUser().setUserName(getUserName().trim());
         getRelatedActivity().setCurrentUser(currentUser);
         getRelatedActivity().setCurrentClinic(getCurrentClinic());
 
         String loginErrors = getCurrentUser().validadeToLogin();
+
 
         try {
             if (!Utilities.stringHasValue(loginErrors)) {
@@ -142,8 +149,15 @@ public class LoginVM extends BaseViewModel {
         restUserService.getUserAuthentication(currentClinic.getUuid(), currentUser.getUserName(), currentUser.getPassword(), getRelatedActivity());
     }
 
-    public boolean appHasUsersOnDB() throws SQLException {
-        return userService.checkIfUsertableIsEmpty();
+    public boolean appHasUsersOnDB(){
+        boolean usersOnDB = false;
+        try {
+            usersOnDB = userService.checkIfUsertableIsEmpty();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao verificar as configuração de utilizadores.").show();
+        }
+        return usersOnDB;
     }
 
     @Override
@@ -170,5 +184,50 @@ public class LoginVM extends BaseViewModel {
         params.put("user", this.currentUser);
         params.put("clinic", currentClinic);
         getRelatedActivity().nextActivity(HomeActivity.class, params);
+    }
+
+    @Bindable
+    public Listble getSelectedClinic() {
+        return selectedClinic;
+    }
+
+    public void setSelectedClinic(Listble selectedClinic) {
+        this.selectedClinic = (Clinic) selectedClinic;
+        setCurrentClinic(this.selectedClinic);
+        notifyPropertyChanged(BR.selectedClinic);
+    }
+
+    @Bindable
+    public List<Clinic> getClinicList() {
+        return clinicList;
+    }
+
+    public void setClinicList(List<Clinic> clinicList) {
+        this.clinicList = clinicList;
+        notifyPropertyChanged(BR.clinicList);
+    }
+
+    @Bindable
+    public boolean isAuthenticating() {
+        return authenticating;
+    }
+
+    public void setAuthenticating(boolean authenticating) {
+        this.authenticating = authenticating;
+        notifyPropertyChanged(BR.authenticating);
+    }
+
+    @Bindable
+    public boolean isRemeberMe() {
+        return remeberMe;
+    }
+
+    public void setRemeberMe(boolean remeberMe) {
+        this.remeberMe = remeberMe;
+        notifyPropertyChanged(BR.remeberMe);
+    }
+
+    public void changeRemeberMeStatus(){
+        setRemeberMe(!isRemeberMe());
     }
 }

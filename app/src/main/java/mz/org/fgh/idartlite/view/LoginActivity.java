@@ -17,8 +17,10 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.RestResponseListener;
+import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.service.restService.RestUserService;
 import mz.org.fgh.idartlite.service.restService.RestUserService;
 import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -53,39 +55,26 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
             }
         }
 
-        try {
-            if(getRelatedViewModel().appHasUsersOnDB()){
-                populateSpinner();
-                activityLoginBinding.spinnerFarmacia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        currentClinic = (Clinic) parent.getSelectedItem();
-                        getRelatedViewModel().setCurrentClinic(currentClinic);
-                    }
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-            } else{
-                activityLoginBinding.textFarmacia.setVisibility(View.GONE);
-                activityLoginBinding.spinnerFarmacia.setVisibility(View.GONE);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Utilities.displayAlertDialog(LoginActivity.this, "Ocorreu um erro ao verificar as configuração de utilizadores.").show();
+        if (Utilities.listHasElements(clinicList)) {
+            loadClinicAdapters();
         }
 
         getSharedPreferencesData();
     }
 
+    public void loadClinicAdapters() {
+        ListableSpinnerAdapter adapter = new ListableSpinnerAdapter(this, R.layout.simple_spinner_item, clinicList);
+        activityLoginBinding.setClinicAdapter(adapter);
+    }
+
     public void savingSharedPreferences(){
-                if(activityLoginBinding.cbxRememberMe.isChecked()){
+        if(getRelatedViewModel().isRemeberMe()){
 
-                    SecurePreferences preferences = new SecurePreferences(getApplicationContext(), LOG_SHARED_FILE_NAME,  true);
+            SecurePreferences preferences = new SecurePreferences(getApplicationContext(), LOG_SHARED_FILE_NAME,  true);
 
-                    preferences.put(LOG_USR_NAME,activityLoginBinding.inUserName.getText().toString());
-                    preferences.put(LOG_USR_PASS,activityLoginBinding.inPassword.getText().toString());
-                }
+            preferences.put(LOG_USR_NAME,getCurrentUser().getUserName());
+            preferences.put(LOG_USR_PASS,getCurrentUser().getPassword());
+        }
     }
 
     private void getSharedPreferencesData() {
@@ -95,34 +84,23 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
 
         if (sp.containsKey(LOG_USR_NAME)) {
             String user = sp.getString(LOG_USR_NAME);
-            activityLoginBinding.inUserName.setText(user.toString());
+            //activityLoginBinding.inUserName.setText(user.toString());
             this.getRelatedViewModel().setUserName(user.toString());
         }
         if (sp.containsKey(LOG_USR_PASS)) {
             String pass = sp.getString(LOG_USR_PASS);
-            activityLoginBinding.inPassword.setText(pass.toString());
+            //activityLoginBinding.inPassword.setText(pass.toString());
             this.getRelatedViewModel().setUserPassword(pass.toString());
         }
     }
 
     public void changeViewToAuthenticatingMode(){
-        activityLoginBinding.button.setVisibility(View.GONE);
-        activityLoginBinding.loginProgressBox.setVisibility(View.VISIBLE);
+        getRelatedViewModel().setAuthenticating(true);
     }
 
     public void changeViewToNormalMode(){
-        activityLoginBinding.button.setVisibility(View.VISIBLE);
-        activityLoginBinding.loginProgressBox.setVisibility(View.GONE);
+        getRelatedViewModel().setAuthenticating(false);
     }
-    public void populateSpinner() {
-        ArrayAdapter<Clinic> adapterSpinnerClinic = new ArrayAdapter<Clinic>(this, android.R.layout.simple_spinner_item, clinicList);
-        adapterSpinnerClinic.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        activityLoginBinding.spinnerFarmacia.setAdapter(adapterSpinnerClinic);
-        activityLoginBinding.spinnerFarmacia.setVisibility(View.VISIBLE);
-    }
-
-
-
 
     @Override
     public LoginVM getRelatedViewModel() {
@@ -138,7 +116,7 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
     public void doOnRestSucessResponse(String flag) {
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -146,7 +124,6 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
 
         if (Utilities.stringHasValue(flag)){
             if (flag.equals(RestUserService.auth)) {
-                getRelatedViewModel().setUserAuthentic(true);
 
                 try {
                     getRelatedViewModel().saveUserSettingsAndProcced();
@@ -155,7 +132,6 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
                     Utilities.displayAlertDialog(LoginActivity.this, "Ocorreu um erro ao guardar as configuracoes do utilizados.").show();
                 }
             }else {
-                getRelatedViewModel().setUserAuthentic(false);
                 Utilities.displayAlertDialog(LoginActivity.this, "Os dados do utilizador sao invalidos").show();
             }
         }
@@ -163,7 +139,5 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
     }
 
     @Override
-    public void doOnRestErrorResponse(String errormsg) {
-
-    }
+    public void doOnRestErrorResponse(String errormsg) {}
 }
