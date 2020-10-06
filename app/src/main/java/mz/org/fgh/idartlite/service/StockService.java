@@ -22,35 +22,23 @@ public class StockService extends BaseService {
         getDataBaseHelper().getStockDao().createOrUpdate(stock);
     }
 
-    public void updateStock(Stock stock) throws SQLException {
-        getDataBaseHelper().getStockDao().update(stock);
-    }
-
     public void deleteStock(Stock stock) throws SQLException {
         getDataBaseHelper().getStockDao().delete(stock);
     }
 
     public List<Stock> getStockByClinic(Clinic clinic) throws SQLException {
-        return getDataBaseHelper().getStockDao().queryBuilder().where().eq(Stock.COLUMN_CLINIC,clinic.getId()).query();
+        return getDataBaseHelper().getStockDao().getStockByClinic(clinic);
+    }
+
+    public List<Stock> getStockByOrderNumber(String orderNumber, Clinic clinic) throws SQLException {
+        return getDataBaseHelper().getStockDao().getStockByOrderNumber(orderNumber, clinic);
     }
 
     public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) throws SQLException {
-        return getDataBaseHelper().getStockDao().queryBuilder().where().eq(Stock.COLUMN_CLINIC,clinic.getId()).and().eq(Stock.COLUMN_DRUG, drug.getId()).query();
+        return getDataBaseHelper().getStockDao().getAllStocksByClinicAndDrug(clinic, drug);
     }
 
     public void updateStock(DispensedDrug dispensedDrug) throws SQLException {
-
-        Stock stock = dispensedDrug.getStock();
-
-        int actualStockMoviment = stock.getStockMoviment();
-
-        int quantitySupplied = dispensedDrug.getQuantitySupplied();
-
-        int remainingStock = actualStockMoviment - quantitySupplied;
-
-        stock.setStockMoviment(remainingStock);
-        stock.setSyncStatus(Stock.SYNC_SATUS_READY);
-
-        this.updateStock(stock);
+        getDataBaseHelper().getStockDao().updateStock(dispensedDrug);
     }
 }
