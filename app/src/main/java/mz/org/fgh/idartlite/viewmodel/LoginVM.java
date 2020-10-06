@@ -21,22 +21,25 @@ import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.UserService;
 import mz.org.fgh.idartlite.service.restService.RestPatientService;
+import mz.org.fgh.idartlite.service.restService.RestUserService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.HomeActivity;
 import mz.org.fgh.idartlite.view.LoginActivity;
 import mz.org.fgh.idartlite.view.SecondSplashActivity;
 
 public class LoginVM extends BaseViewModel {
+    private RestUserService restUserService;
     private UserService userService;
     private ClinicService clinicService;
     private boolean userAuthentic = false;
 
 
-    public LoginVM(@NonNull Application application) throws SQLException {
+    public LoginVM(@NonNull Application application) {
         super(application);
         this.currentUser = new User();
 
         userService = new UserService(getApplication(), getCurrentUser());
+        restUserService = new RestUserService(getApplication(), getCurrentUser());
         clinicService = new ClinicService(getApplication(), getCurrentUser());
     }
 
@@ -136,7 +139,7 @@ public class LoginVM extends BaseViewModel {
     }
 
     public void runRestUserAccess(){
-        userService.getUserAuthentication(currentClinic.getUuid(), currentUser.getUserName(), currentUser.getPassword(), getRelatedActivity());
+        restUserService.getUserAuthentication(currentClinic.getUuid(), currentUser.getUserName(), currentUser.getPassword(), getRelatedActivity());
     }
 
     public boolean appHasUsersOnDB() throws SQLException {

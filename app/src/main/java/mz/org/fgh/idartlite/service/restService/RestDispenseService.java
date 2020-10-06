@@ -52,7 +52,6 @@ public class RestDispenseService extends BaseService {
         dispenseService = new DispenseService(getApp(), null);
         dispenseDrugService = new DispenseDrugService(getApp(), null);
 
-
         try {
             getRestServiceExecutor().execute(() -> {
 
