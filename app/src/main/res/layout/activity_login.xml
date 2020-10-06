@@ -1,175 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
 <data>
-
     <variable
         name="viewModel"
         type="mz.org.fgh.idartlite.viewmodel.LoginVM" />
+
+    <variable name="clinicAdapter" type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
+    <import type="android.view.View"/>
 </data>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_0dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
-
-        <View
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_0dp"
-            android:layout_weight="0.7"/>
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="@dimen/dimen_18dp"
-            android:contentDescription="@string/logImage"
-            app:srcCompat="@drawable/ic_baseline_account_circle_24" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_0dp"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/dimen_18dp"
-        android:paddingRight="@dimen/dimen_18dp"
-        android:layout_weight="2.5">
-        <TextView
-            android:id="@+id/textFarmacia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/login_text_style"
-            android:text="Farmácia"/>
-        <Spinner
-            android:id="@+id/spinnerFarmacia"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/spinner_back"
-            android:padding="8dp"
-            android:layout_marginBottom="@dimen/dimen_10dp"
-            android:spinnerMode="dropdown"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/login_text_style"
-            android:text="Utilizador"/>
-
-        <EditText
-            android:id="@+id/inUserName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_border"
-            android:inputType="text"
-            android:padding="8dp"
-            android:drawableLeft="@drawable/ic_person"
-            android:layout_marginBottom="@dimen/dimen_10dp"
-            android:text="@={viewModel.userName}" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/login_text_style"
-            android:text="Senha"/>
-        <EditText
-            android:id="@+id/inPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_border"
-            android:inputType="textPassword"
-            android:padding="8dp"
-            android:layout_marginBottom="@dimen/dimen_10dp"
-            android:drawableLeft="@drawable/ic_lock"
-            android:text="@={viewModel.userPassword}"/>
-        <CheckBox
-            android:id="@+id/cbx_remember_me"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_10dp"
-            android:text="Remember Me"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_shape"
-                android:padding="@dimen/dimen_4dp"
-                android:onClick="@{()-> viewModel.login()}"
-                android:text="@string/login"
-                android:layout_marginBottom="@dimen/dimen_8dp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/login_progress_box"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="@dimen/dimen_0dp"
+                android:orientation="vertical"
+                android:layout_weight="1">
 
-                <ProgressBar
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0dp"
+                    android:layout_weight="0.7"/>
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:padding="@dimen/dimen_10dp"
-                    android:layout_gravity="right"/>
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginBottom="@dimen/dimen_18dp"
+                    android:contentDescription="@string/logImage"
+                    app:srcCompat="@drawable/ic_baseline_account_circle_24" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0dp"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dimen_18dp"
+                android:paddingRight="@dimen/dimen_18dp"
+                android:layout_weight="2.5">
+                <TextView
+                    android:id="@+id/textFarmacia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/login_text_style"
+                    android:visibility="@{viewModel.appHasUsersOnDB() ? View.VISIBLE : View.GONE}"
+                    android:text="Farmácia"/>
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:prompt="@string/farmacia"
+                    style="@style/login_spinner_style"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:visibility="@{viewModel.appHasUsersOnDB() ? View.VISIBLE : View.GONE}"
+                    app:adapter="@{clinicAdapter}"
+                    bind:selectedOpt="@={viewModel.selectedClinic}"
+                    />
+
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Autenticando, aguarde por favor..."
-                    android:layout_weight="3"
-                    android:textSize="16sp"
-                    android:textColor="@color/logo"
-                    android:gravity="left"
-                    android:layout_gravity="center_vertical"/>
+                    style="@style/login_text_style"
+                    android:text="Utilizador"/>
+
+                <EditText
+                    android:id="@+id/inUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:drawableLeft="@drawable/ic_person"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:text="@={viewModel.userName}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/login_text_style"
+                    android:text="Senha"/>
+                <EditText
+                    android:id="@+id/inPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border"
+                    android:inputType="textPassword"
+                    android:padding="8dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:drawableLeft="@drawable/ic_lock"
+                    android:text="@={viewModel.userPassword}"/>
+                <CheckBox
+                    android:id="@+id/cbx_remember_me"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:checked="@{viewModel.remeberMe}"
+                    android:onClick="@{() -> viewModel.changeRemeberMeStatus()}"
+                    android:text="Remember Me"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_shape"
+                        android:padding="@dimen/dimen_4dp"
+                        android:onClick="@{()-> viewModel.login()}"
+                        android:text="@string/login"
+                        android:layout_marginBottom="@dimen/dimen_8dp"
+                        android:visibility="@{!viewModel.authenticating ? View.VISIBLE : View.GONE}"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+
+                    <LinearLayout
+                        android:id="@+id/login_progress_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{viewModel.authenticating? View.VISIBLE : View.GONE}"
+                        android:orientation="horizontal">
+
+                        <ProgressBar
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="@dimen/dimen_10dp"
+                            android:layout_gravity="right"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Autenticando, aguarde por favor..."
+                            android:layout_weight="3"
+                            android:textSize="16sp"
+                            android:textColor="@color/logo"
+                            android:gravity="left"
+                            android:layout_gravity="center_vertical"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/login_text_style"
+                    android:textSize="12dp"
+                    android:gravity="center"
+                    android:text="Forgot your password?"/>
             </LinearLayout>
-        </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0dp"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.6"
+                    android:layout_gravity="bottom|center"
+                    android:contentDescription="@string/content_description_logo"
+                    android:layout_marginBottom="@dimen/dimen_5dp"
+                    app:srcCompat="@mipmap/logo_graphic" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_0dp"
+                    android:layout_weight="0.4"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:text="@{viewModel.appVersionName}"
+                    android:gravity="top|center"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/login_text_style"
-            android:textSize="12dp"
-            android:gravity="center"
-            android:text="Forgot your password?"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_0dp"
-        android:layout_weight="0.5"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.6"
-            android:layout_gravity="bottom|center"
-            android:contentDescription="@string/content_description_logo"
-            android:layout_marginBottom="@dimen/dimen_5dp"
-            app:srcCompat="@mipmap/logo_graphic" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen_0dp"
-            android:layout_weight="0.4"
-            android:textSize="12sp"
-            android:textColor="@color/black"
-            android:text="@{viewModel.appVersionName}"
-            android:gravity="top|center"/>
-
-    </LinearLayout>
-    </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </layout>

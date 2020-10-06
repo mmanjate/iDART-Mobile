@@ -116,4 +116,35 @@
         <item name="android:layout_marginBottom">@dimen/dimen_5dp</item>
     </style>
 
+    <style name="bottom_border_edit_text_style">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:background">@drawable/bottom_border_edit_text_border</item>
+        <item name="android:layout_marginTop">@dimen/dimen_30dp</item>
+        <item name="android:paddingLeft">@dimen/dimen_15dp</item>
+        <item name="android:paddingRight">@dimen/dimen_15dp</item>
+        <item name="android:paddingTop">@dimen/dimen_15dp</item>
+        <item name="android:paddingBottom">@dimen/dimen_15dp</item>
+    </style>
+
+    <style name="login_spinner_style" parent="android:Widget.Spinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/login_spinner_back</item>
+        <item name="android:paddingTop">@dimen/dimen_5dp</item>
+        <item name="android:paddingBottom">@dimen/dimen_5dp</item>
+        <item name="android:paddingLeft">@dimen/dimen_8dp</item>
+        <item name="android:paddingRight">@dimen/dimen_50dp</item>
+        <item name="android:popupBackground">@color/spinner_back_color</item>
+
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="spinner_label">
+
+
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:typeface">sans</item>
+    </style>
+
 </resources>

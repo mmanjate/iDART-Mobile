@@ -30,7 +30,7 @@ import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.common.ListbleAdapter;
+import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityStockEntranceBinding;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
@@ -49,7 +49,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
     private List<Drug> drugList;
     private List<Listble> selectedStock;
     private RecyclerView rcvSelectedDrugs;
-    private ListbleAdapter listbleAdapter;
+    private ListbleRecycleViewAdapter listbleRecycleViewAdapter;
     ArrayAdapter<Drug> adapterSpinner;
     private Drug drug;
     private boolean isEditForm = false;
@@ -306,16 +306,16 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
     }
 
     private void displaySelectedDrugs(){
-        if (listbleAdapter != null) {
-            listbleAdapter.notifyDataSetChanged();
+        if (listbleRecycleViewAdapter != null) {
+            listbleRecycleViewAdapter.notifyDataSetChanged();
         }else {
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             rcvSelectedDrugs.setLayoutManager(mLayoutManager);
             rcvSelectedDrugs.setItemAnimator(new DefaultItemAnimator());
             rcvSelectedDrugs.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 0));
 
-            listbleAdapter = new ListbleAdapter(rcvSelectedDrugs, this.selectedStock, this);
-            rcvSelectedDrugs.setAdapter(listbleAdapter);
+            listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvSelectedDrugs, this.selectedStock, this);
+            rcvSelectedDrugs.setAdapter(listbleRecycleViewAdapter);
         }
 
     }

@@ -58,5 +58,8 @@ public class HomeVM extends BaseViewModel {
 
     public void endSession(){
 
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction("mz.org.fgh.idartlite.ACTION_LOGOUT");
+        getRelatedActivity().sendBroadcast(broadcastIntent);
     }
 }

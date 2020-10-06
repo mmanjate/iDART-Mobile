@@ -1,11 +1,14 @@
 package mz.org.fgh.idartlite.base;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +20,7 @@ import java.util.Map;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.view.LoginActivity;
 
 public abstract class BaseActivity extends AppCompatActivity implements GenericActivity {
 
@@ -56,6 +60,17 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("mz.org.fgh.idartlite.ACTION_LOGOUT");
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("onReceive","Logout in progress");
+                nextActivity(LoginActivity.class);
+                finish();
+            }
+        }, intentFilter);
     }
 
     public long getAppVersionNumber(){

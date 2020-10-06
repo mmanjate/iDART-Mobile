@@ -5,12 +5,14 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.dao.ClinicDaoImpl;
+import mz.org.fgh.idartlite.util.Utilities;
 
 import java.util.Objects;
 
 @DatabaseTable(tableName = "clinic", daoClass = ClinicDaoImpl.class)
-public class Clinic extends BaseModel {
+public class Clinic extends BaseModel implements Listble {
 
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_CODE = "password";
@@ -41,8 +43,42 @@ public class Clinic extends BaseModel {
 	@DatabaseField(columnName = COLUMN_PHARMACY_TYPE_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
 	private PharmacyType pharmacyType;
 
+	public Clinic() {
+	}
+
+	public Clinic(int id, String clinicName) {
+		this.id = id;
+		this.clinicName = clinicName;
+	}
+
+	public Clinic(int id, String code, String clinicName) {
+		this.id = id;
+		this.code = code;
+		this.clinicName = clinicName;
+	}
+
 	public int getId() {
 		return id;
+	}
+
+	@Override
+	public int getPosition() {
+		return 0;
+	}
+
+	@Override
+	public String getDescription() {
+		return clinicName;
+	}
+
+	@Override
+	public int getQuantity() {
+		return 0;
+	}
+
+	@Override
+	public int compareTo(BaseModel baseModel) {
+		return 0;
 	}
 
 	public void setId(int id) {
@@ -102,6 +138,7 @@ public class Clinic extends BaseModel {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Clinic clinic = (Clinic) o;
+		if (!Utilities.stringHasValue(code) || !Utilities.stringHasValue(clinic.code)) return false;
 		return code.equals(clinic.code) &&
 				uuid.equals(clinic.uuid);
 	}
@@ -121,4 +158,8 @@ public class Clinic extends BaseModel {
 		}
 	}
 
+	@Override
+	public int compareTo(Object o) {
+		return 0;
+	}
 }

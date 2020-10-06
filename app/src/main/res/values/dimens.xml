@@ -16,4 +16,8 @@
     <dimen name="dimen_2dp">2dp</dimen>
     <dimen name="dimen_0dp">0dp</dimen>
     <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_50dp">50dp</dimen>
+    <dimen name="dimen_30dp">30dp</dimen>
+    <dimen name="dimen_m3dp">-3dp</dimen>
+    <dimen name="dimen_25dp">25dp</dimen>
 </resources>

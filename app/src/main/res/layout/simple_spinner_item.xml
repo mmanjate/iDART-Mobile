@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/spinner_back_color"
+    android:padding="@dimen/dimen_4dp">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dimen_25dp"
+        android:paddingBottom="@dimen/dimen_4dp"
+        android:paddingTop="@dimen/dimen_4dp"
+        android:layout_margin="@dimen/dimen_4dp"
+        style="@style/spinner_label"
+        android:text="Farmácia"
+        />
+
+
+
+
+</LinearLayout>

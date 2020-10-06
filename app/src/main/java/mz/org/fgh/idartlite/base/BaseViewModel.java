@@ -4,10 +4,12 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.pm.PackageInfoCompat;
+import androidx.databinding.Bindable;
 import androidx.databinding.Observable;
 import androidx.databinding.PropertyChangeRegistry;
 import androidx.lifecycle.AndroidViewModel;
 
+import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 
@@ -69,12 +71,14 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         this.currentUser = currentUser;
     }
 
+    @Bindable
     public Clinic getCurrentClinic() {
         return currentClinic;
     }
 
     public void setCurrentClinic(Clinic currentClinic) {
         this.currentClinic = currentClinic;
+        notifyPropertyChanged(BR.currentClinic);
     }
 
     public String getAppVersionNumber(){
