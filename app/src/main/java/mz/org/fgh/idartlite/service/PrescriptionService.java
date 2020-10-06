@@ -74,7 +74,6 @@ public class PrescriptionService extends BaseService {
 
         try {
             Prescription prescription = new Prescription();
-//            Patient localPatient = getPatient(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
 
             TherapeuticRegimen therapeuticRegimen = therapeuticRegimenService.getTherapeuticRegimenFromDescription(Objects.requireNonNull(patient.get("regimenome")).toString());
             TherapeuticLine therapeuticLine = therapeuticLineService.getTherapeuticLine(Objects.requireNonNull(patient.get("linhanome")).toString());

@@ -65,6 +65,7 @@ public class TherapeuthicLineService extends BaseService {
         try {
             LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) line;
 
+            localLine.setId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
             localLine.setCode((Objects.requireNonNull(itemresult.get("linhanome")).toString()));
             localLine.setDescription((Objects.requireNonNull(itemresult.get("linhanome")).toString()));
             createTherapheuticLine(localLine);

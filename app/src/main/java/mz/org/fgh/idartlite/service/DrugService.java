@@ -84,12 +84,13 @@ public class DrugService extends BaseService {
             DiseaseType diseaseType = diseaseTypeService.getdDiseaseType((Objects.requireNonNull(itemresult.get("tipodoenca")).toString()));
             Form form = formService.getForm((Objects.requireNonNull(itemSubResult.get("form")).toString()));
 
+            localDrug.setId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
             localDrug.setDescription((Objects.requireNonNull(itemresult.get("name")).toString()));
             localDrug.setDiseaseType(diseaseType);
             localDrug.setFnmcode((Objects.requireNonNull(itemresult.get("atccode_id")).toString()));
             localDrug.setForm(form);
             localDrug.setInstruction((Objects.requireNonNull(itemresult.get("dispensinginstructions1")).toString()));
-            localDrug.setPackSize(Math.round(Float.parseFloat(Objects.requireNonNull(itemresult.get("packsize")).toString())));
+            localDrug.setPackSize((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("packsize")).toString()));
 
             saveDrug(localDrug);
 
