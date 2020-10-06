@@ -26,7 +26,7 @@
     <string name="input_search_patient">pesquisar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="stock_entrance_fragment">Lista de Entrada de Stock</string>
-    <string name="stock_inventory_fragment">Inventário Inactivo por em quanto.</string>
+    <string name="stock_inventory_fragment">Inventário Inactivo por enquanto.</string>
     <string name="general_info">Visão Geral</string>
     <string name="episode">Episódio</string>
     <string name="dispense">Aviamento</string>
