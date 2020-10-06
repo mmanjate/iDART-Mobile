@@ -33,6 +33,10 @@ public class StockEntranceVM extends BaseViewModel {
         return stockService.getStockByClinic(clinic);
     }
 
+    public List<Stock> getStockByOrderNumber(String orderNumber, Clinic clinic) throws SQLException {
+        return stockService.getStockByOrderNumber(orderNumber, clinic);
+    }
+
     public void deleteStock(Stock stock) throws SQLException {
         this.stockService.deleteStock(stock);
     }
