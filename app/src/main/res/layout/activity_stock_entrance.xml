@@ -137,11 +137,12 @@
                         android:padding="@dimen/dimen_4dp">
 
                         <TextView
+                            android:id="@+id/txtdrugs"
+                            style="@style/input_labels"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/label_medicamentos"
-                            style="@style/input_labels"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -150,6 +151,7 @@
                             android:padding="@dimen/dimen_4dp">
 
                             <TextView
+                                android:id="@+id/txtimage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -165,6 +167,7 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/txtlote"
                             style="@style/input_labels"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -179,11 +182,12 @@
                             android:drawableLeft="@drawable/ic_numero_guia" />
 
                         <TextView
+                            android:id="@+id/txtvalidade"
                             style="@style/input_labels"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/label_data_validade"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/data_validade"
@@ -195,6 +199,7 @@
                             android:paddingLeft="@dimen/dimen_4dp" />
 
                         <TextView
+                            android:id="@+id/txtquantidade"
                             style="@style/input_labels"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -210,6 +215,7 @@
                             android:inputType="number" />
 
                         <TextView
+                            android:id="@+id/txtpreco"
                             style="@style/input_labels"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -233,11 +239,12 @@
                             android:layout_gravity="center"/>
 
                         <TextView
+                            android:id="@+id/txtlistadrugs"
+                            style="@style/input_labels"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/label_lista_medicamentos"
-                            style="@style/input_labels"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rcv_selected_drugs"
