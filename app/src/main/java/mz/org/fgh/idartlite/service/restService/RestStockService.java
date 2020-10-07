@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
@@ -30,6 +31,50 @@ public class RestStockService extends BaseService {
         super(application, currentUser);
     }
 
+    public static void restPostStockCenter(Clinic clinic) {
+
+        String url = BaseService.baseUrl + "/stockcenter?on_conflict=id";
+
+        stockService = new StockService(getApp(), null);
+
+        try {
+            getRestServiceExecutor().execute(() -> {
+
+                RESTServiceHandler handler = new RESTServiceHandler();
+
+                try {
+                    Map<String, Object> stockcenter = new ArrayMap<>();
+                    stockcenter.put("id",clinic.getId());
+                    stockcenter.put("stockcentername",clinic.getClinicName());
+                    stockcenter.put("preferred",false);
+                    stockcenter.put("clinicuuid",clinic.getUuid());
+
+                    Gson g = new Gson();
+                    String restObject = g.toJson(stockcenter);
+
+                    handler.addHeader("Content-Type", "application/json");
+                    JSONObject jsonObject = new JSONObject(restObject);
+
+                    handler.objectRequest(url, Request.Method.POST, jsonObject, Object[].class, new Response.Listener<Object[]>() {
+
+                        @Override
+                        public void onResponse(Object[] response) {
+                            Log.d(TAG, "onResponse: StockCenter enviado ");
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d(TAG, "onErrorResponse: Erro no POST :" + error.getMessage());
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void restPostStock(Stock stok) {
 
@@ -85,7 +130,7 @@ public class RestStockService extends BaseService {
         restStock.put("drug", stock.getDrug().getId());
         restStock.put("batchnumber", stock.getBatchNumber());
         restStock.put("datereceived", stock.getDateReceived());
-     //   restStock.put("stockcenter", "ssvvvv");
+        restStock.put("stockcenter", stock.getClinic().getId());
         restStock.put("expirydate", stock.getExpiryDate());
         restStock.put("modified", "T");
         restStock.put("shelfnumber", "0");

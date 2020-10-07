@@ -10,7 +10,11 @@ import androidx.collection.ArrayMap;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,10 +25,12 @@ import java.util.Objects;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
+import mz.org.fgh.idartlite.service.StockService;
 
 public class RestClinicService extends BaseService {
     private static final String TAG = "RestClinicService";
@@ -94,4 +100,5 @@ public class RestClinicService extends BaseService {
         }
         return clinicList;
     }
+
 }
