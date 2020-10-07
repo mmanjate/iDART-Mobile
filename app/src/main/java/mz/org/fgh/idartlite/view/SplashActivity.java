@@ -48,8 +48,10 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
         restClinicService = new RestClinicService(getApplication(), null);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
 
+        // retirar apos os testes.
         ExecutePostWorkerScheduler executePostWorkerScheduler = new ExecutePostWorkerScheduler(getApplicationContext());
-        executePostWorkerScheduler.initPostDataTaskWork();
+        executePostWorkerScheduler.initPostPatientDataTaskWork();
+        executePostWorkerScheduler.initPostStockDataTaskWork();
 
         new Thread(new Runnable() {
             public void run() {
