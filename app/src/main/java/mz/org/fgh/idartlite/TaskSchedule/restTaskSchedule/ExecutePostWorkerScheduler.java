@@ -9,7 +9,8 @@ import androidx.work.WorkManager;
 
 import java.util.concurrent.TimeUnit;
 
-import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestPostWorkerScheduler;
+import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestPostConfigDataWorkerScheduler;
+import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestPostPatientDataWorkerScheduler;
 
 public class ExecutePostWorkerScheduler {
 
@@ -22,17 +23,34 @@ public class ExecutePostWorkerScheduler {
         this.context = context;
     }
 
-    public void initPostDataTaskWork() {
+    public void initPostPatientDataTaskWork() {
 
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .setRequiresCharging(true)
                 .build();
 
-        PeriodicWorkRequest periodicPostDataWorkRequest = new PeriodicWorkRequest.Builder(RestPostWorkerScheduler.class, 8, TimeUnit.HOURS)
+        PeriodicWorkRequest periodicPostDataWorkRequest = new PeriodicWorkRequest.Builder(RestPostPatientDataWorkerScheduler.class, 8, TimeUnit.HOURS)
                 .setConstraints(constraints)
                // .setInitialDelay(8,TimeUnit.HOURS)
                 .addTag("DISPENSE_ID " + JOB_ID)
+                .build();
+
+        WorkManager.getInstance(context).enqueue(periodicPostDataWorkRequest);
+    }
+
+
+    public void initPostStockDataTaskWork() {
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(true)
+                .build();
+
+        PeriodicWorkRequest periodicPostDataWorkRequest = new PeriodicWorkRequest.Builder(RestPostConfigDataWorkerScheduler.class, 8, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                // .setInitialDelay(8,TimeUnit.HOURS)
+                .addTag("STOCK_ID " + JOB_ID)
                 .build();
 
         WorkManager.getInstance(context).enqueue(periodicPostDataWorkRequest);

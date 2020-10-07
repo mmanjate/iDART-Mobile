@@ -26,10 +26,13 @@ public class SecondSplashActivity extends BaseActivity implements RestResponseLi
         setContentView(R.layout.activity_second_splash);
 
         ExecuteGetWorkerScheduler executeGetWorkerScheduler = new ExecuteGetWorkerScheduler(getApplicationContext());
-        ExecutePostWorkerScheduler executePostWorkerScheduler = new ExecutePostWorkerScheduler(getApplicationContext());
-        executePostWorkerScheduler.initPostDataTaskWork();
         executeGetWorkerScheduler.initConfigTaskWork();
         executeGetWorkerScheduler.initDataTaskWork();
+
+        ExecutePostWorkerScheduler executePostWorkerScheduler = new ExecutePostWorkerScheduler(getApplicationContext());
+        executePostWorkerScheduler.initPostPatientDataTaskWork();
+        executePostWorkerScheduler.initPostStockDataTaskWork();
+
 
         new Thread(new Runnable() {
             public void run() {
