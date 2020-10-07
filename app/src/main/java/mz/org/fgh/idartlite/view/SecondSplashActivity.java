@@ -14,6 +14,7 @@ import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.UserService;
 import mz.org.fgh.idartlite.service.restService.RestPatientService;
+import mz.org.fgh.idartlite.service.restService.RestStockService;
 
 public class SecondSplashActivity extends BaseActivity implements RestResponseListener {
 
@@ -33,9 +34,9 @@ public class SecondSplashActivity extends BaseActivity implements RestResponseLi
         executePostWorkerScheduler.initPostPatientDataTaskWork();
         executePostWorkerScheduler.initPostStockDataTaskWork();
 
-
         new Thread(new Runnable() {
             public void run() {
+                RestStockService.restPostStockCenter(getCurrentClinic());
                 RestPatientService.restGetAllPatient(SecondSplashActivity.this);
             }
         }).start();
