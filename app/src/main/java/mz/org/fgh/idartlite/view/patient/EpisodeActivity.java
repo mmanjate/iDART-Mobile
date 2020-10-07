@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -106,7 +107,6 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
                 datePickerDialog.show();
             }
         });
-
 
     }
 

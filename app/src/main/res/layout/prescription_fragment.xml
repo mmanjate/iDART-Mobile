@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.patient.PrescriptionFragment"
     >
+    <data>
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.PrescriptionVM" />
+    </data>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -46,6 +51,7 @@
             app:srcCompat="@drawable/ic_plus"
             android:layout_gravity="bottom|end"
             app:elevation="6dp"
+            android:onClick="@{() -> viewModel.requestForNewRecord()}"
             android:layout_margin="@dimen/fab_margin"
             app:pressedTranslationZ="12dp"/>
 

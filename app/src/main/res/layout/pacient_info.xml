@@ -197,7 +197,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@{patient.phone}"
+                        android:text='@{Utilities.stringHasValue(patient.phone) ? patient.phone : "Não indicado"}'
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>

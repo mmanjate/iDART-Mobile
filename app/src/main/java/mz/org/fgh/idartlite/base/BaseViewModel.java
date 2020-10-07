@@ -3,7 +3,6 @@ package mz.org.fgh.idartlite.base;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.pm.PackageInfoCompat;
 import androidx.databinding.Bindable;
 import androidx.databinding.Observable;
 import androidx.databinding.PropertyChangeRegistry;
@@ -20,10 +19,12 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private PropertyChangeRegistry callbacks;
     private BaseActivity relatedActivity;
 
-    protected User currentUser;
-    protected Clinic currentClinic;
+    private boolean viewListEditButton;
+    private boolean viewListRemoveButton;
 
     private Listble selectedListble;
+
+    private User currUser;
 
     public BaseActivity getRelatedActivity() {
         return relatedActivity;
@@ -68,20 +69,22 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     }
 
     public User getCurrentUser() {
-        return currentUser;
+        if (getRelatedActivity() == null) return this.currUser;
+
+        return getRelatedActivity().getCurrentUser();
     }
 
     public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+        getRelatedActivity().setCurrentUser(currentUser);
     }
 
     @Bindable
     public Clinic getCurrentClinic() {
-        return currentClinic;
+        return getRelatedActivity().currentClinic;
     }
 
     public void setCurrentClinic(Clinic currentClinic) {
-        this.currentClinic = currentClinic;
+        getRelatedActivity().setCurrentClinic(currentClinic);
         notifyPropertyChanged(BR.currentClinic);
     }
 
@@ -103,5 +106,29 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public void setSelectedListble(Listble selectedListble) {
         this.selectedListble = selectedListble;
+    }
+
+    public boolean isViewListEditButton() {
+        return viewListEditButton;
+    }
+
+    public void setViewListEditButton(boolean viewListEditButton) {
+        this.viewListEditButton = viewListEditButton;
+    }
+
+    public boolean isViewListRemoveButton() {
+        return viewListRemoveButton;
+    }
+
+    public void setViewListRemoveButton(boolean viewListRemoveButton) {
+        this.viewListRemoveButton = viewListRemoveButton;
+    }
+
+    public User getCurrUser() {
+        return currUser;
+    }
+
+    public void setCurrUser(User currUser) {
+        this.currUser = currUser;
     }
 }

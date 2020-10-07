@@ -139,4 +139,5 @@
     <string name="prescription_urgent_notes_mandatory">Indicou que a prescrição é especial, por favor indique o motivo.</string>
     <string name="error_loading_patient_data">Ocorreu um erro ao carregar os dados do paciente.</string>
     <string name="no_episode_found">Não foi encontrado nenhum episódio do paciente seleccionado</string>
+    <string name="new_prescription_creation">A ultima prescrição ainda não teve todos os aviamentos efectuados, confirma anular a mesma e criar nova?</string>
 </resources>
