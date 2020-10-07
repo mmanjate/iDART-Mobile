@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,6 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         fragmentStockEntranceBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_stock_entrance, container,false);
         return fragmentStockEntranceBinding.getRoot();
     }
@@ -111,7 +111,6 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                 //Call activity to Edit
                 try {
                     List<Stock> listStock = getRelatedViewModel().getStockByOrderNumber(stock.getOrderNumber(), getMyActivity().getCurrentClinic());
-                    boolean isEdit = true;
                     List<Stock> auxList = new ArrayList<Stock>();
                     for(Stock estoque : listStock){
                         if(estoque.getSyncStatus().equals("R")){
@@ -119,13 +118,21 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                         }
                     }
                     if (!auxList.isEmpty()) {
-                        try {
-                            if (dispenseDrugService.checkStockIsDispensedDrug(stock)) {
+                        boolean isUsedStock = false;
+                        for(Stock st : auxList){
+                            if(dispenseDrugService.checkStockIsDispensedDrug(st)){
+                                isUsedStock = true;
+                            } else {
+                                auxList.remove(st);
+                            }
+                        }
+                            if (isUsedStock) {
                                 Intent intent = new Intent(getContext(), StockEntranceActivity.class);
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("user", getCurrentUser());
                                 bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
-                                bundle.putSerializable("stock", stock);
+                                bundle.putSerializable("listStock", (Serializable) auxList);
+                                bundle.putSerializable("mode", "edit");
                                 intent.putExtras(bundle);
                                 startActivity(intent);
                                 return true;
@@ -133,10 +140,6 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                                 Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(), "O Stock nao pode ser actualizado uma vez que ja foi utilizado para dispensar medicamentos").show();
                                 return false;
                             }
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                            return false;
-                        }
                     } else {
                         Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(), "O Stock nao pode ser actualizado uma vez que ja foi sicronizado com a central").show();
                         return false;
@@ -147,6 +150,23 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
             case R.id.remove:
                 Utilities.displayDeleteConfirmationDialogFromList(StockEntranceFragment.this.getContext(), StockEntranceFragment.this.getString(R.string.list_item_delete_msg), stockPosition,StockEntranceFragment.this).show();
                 return true;
+
+            case R.id.viewDetails:
+                try {
+                    List<Stock> listStock = getRelatedViewModel().getStockByOrderNumber(stock.getOrderNumber(), getMyActivity().getCurrentClinic());
+                    Intent intent = new Intent(getContext(), StockEntranceActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("user", getCurrentUser());
+                    bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                    bundle.putSerializable("listStock", (Serializable) listStock);
+                    bundle.putSerializable("mode", "view");
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    return true;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    return false;
+                }
             default:
                 return false;
         }
@@ -158,39 +178,41 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
         super.onResume();
         try {
             this.stockList = getRelatedViewModel().getStockByClinic(getMyActivity().getCurrentClinic());
+            if (Utilities.listHasElements(stockList)) {
+                stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, this.stockList, getMyActivity());
+                displayDataOnRecyclerView(rcvFragmentStock, stockEntranceAdapter, getContext());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-
-        if (Utilities.listHasElements(stockList)) {
-            stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, this.stockList, getMyActivity());
-            displayDataOnRecyclerView(rcvFragmentStock, stockEntranceAdapter, getContext());
         }
     }
 
     @Override
     public void remove(int position) throws SQLException {
+        try {
+            List<Stock> removeStockList = getRelatedViewModel().getStockByOrderNumber(stockList.get(position).getOrderNumber(), getMyActivity().getCurrentClinic());
 
-        if(stockList.get(position).getSyncStatus().equals("R")){
-            if(dispenseDrugService.checkStockIsDispensedDrug(stockList.get(position))){
-                stockList.remove(stockList.get(position));
-
-                for (int i = 0; i < stockList.size(); i++){
-                    stockList.get(i).setListPosition(i+1);
+            for (Stock stRemove : removeStockList){
+                if(stRemove.getSyncStatus().equals("R")){
+                    if(dispenseDrugService.checkStockIsDispensedDrug(stRemove)){
+                        getRelatedViewModel().deleteStock(stRemove);
+                        stockList.remove(stockList.get(position));
+                        for (int i = 0; i < stockList.size(); i++){
+                            stockList.get(i).setListPosition(i+1);
+                        }
+                        rcvFragmentStock.getAdapter().notifyItemRemoved(position);
+                        rcvFragmentStock.getAdapter().notifyItemRangeChanged(position, rcvFragmentStock.getAdapter().getItemCount());
+                    }
+                    else {
+                        Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),"O Stock nao pode ser removido uma vez que ja foi utilizado para dispensar medicamentos").show();
+                    }
                 }
-                rcvFragmentStock.getAdapter().notifyItemRemoved(position);
-                rcvFragmentStock.getAdapter().notifyItemRangeChanged(position, rcvFragmentStock.getAdapter().getItemCount());
-                try {
-                    getRelatedViewModel().deleteStock(stock);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                else {
+                    Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),"O Stock nao pode ser removido uma vez que ja foi sicronizado com a central").show();
                 }
-            }else {
-                Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),"O Stock nao pode ser removido uma vez que ja foi utilizado para dispensar medicamentos").show();
             }
-        }
-        else {
-            Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),"O Stock nao pode ser removido uma vez que ja foi sicronizado com a central").show();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

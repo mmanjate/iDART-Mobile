@@ -15,12 +15,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="4">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -29,46 +34,16 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Número da Guia"
-                    android:textSize="@dimen/dimen_18dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/prescriptionId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="@{stock.orderNumber}"
-                    android:textSize="@dimen/dimen_18dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/dimen_10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_gravity="bottom"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -80,15 +55,21 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="Medicamento:" />
+                            android:text="Número da Guia: "
+                            android:layout_weight="1"
+                            android:textSize="@dimen/dimen_18dp"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
 
                         <TextView
-                            android:id="@+id/medicamento"
+                            android:id="@+id/prescriptionId"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{stock.drug.description}" />
+                            android:text="@{stock.orderNumber}"
+                            android:textSize="@dimen/dimen_18dp"
+                            android:textStyle="bold"
+                            android:gravity="center" />
 
                     </LinearLayout>
 
@@ -101,102 +82,43 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="Lote:" />
-
-                        <TextView
-                            android:id="@+id/lote"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@{stock.batchNumber}" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="Data Entrada:" />
+                            android:textStyle="bold"
+                            android:text="Data Entrada:"
+                            android:gravity="center" />
 
                         <TextView
                             android:id="@+id/dataEntrada"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:textStyle="bold"
                             android:text="@{DateUtilitis.formatToDDMMYYYY(stock.dateReceived)}" />
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="Quantidade:" />
-
-                        <TextView
-                            android:id="@+id/quantidade"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@{Utilities.parseIntToString(stock.unitsReceived)}" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="Validade:" />
-
-                        <TextView
-                            android:id="@+id/validade"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(stock.expiryDate)}" />
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="12">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        bind:srcCompat="@drawable/ic_baseline_autorenew_24" />
                 </LinearLayout>
             </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                bind:srcCompat="@drawable/ic_baseline_autorenew_24" />
         </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     </LinearLayout>
 </layout>
