@@ -52,11 +52,7 @@ public class SearchPatientActivity extends BaseActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_items, menu);
-        return true;
-    }
+
 
     public void displaySearchResult() {
         recyclerPatient = searchPatientBinding.reyclerPatient;
