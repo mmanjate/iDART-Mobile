@@ -97,6 +97,8 @@ public class LoginVM extends BaseViewModel {
     public void login() {
         getRelatedActivity().changeViewToAuthenticatingMode();
 
+
+
         if (getCurrentClinic() == null || getCurrentClinic().getId() < 0){
             getRelatedActivity().changeViewToNormalMode();
             Utilities.displayAlertDialog(getRelatedActivity(), "O campo Farmácia deve ser preenchido.").show();
@@ -106,6 +108,8 @@ public class LoginVM extends BaseViewModel {
         getCurrentUser().setUserName(getUserName().trim());
         getRelatedActivity().setCurrentUser(currentUser);
         getRelatedActivity().setCurrentClinic(getCurrentClinic());
+
+
 
         String loginErrors = getCurrentUser().validadeToLogin();
 
