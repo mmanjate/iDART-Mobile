@@ -24,20 +24,18 @@ public class DispenseService extends BaseService {
 
     private StockService stockService;
 
+    private PrescriptionService prescriptionService;
+
     public DispenseService(Application application, User currUser) {
         super(application, currUser);
 
         this.stockService = new StockService(application, currUser);
+        this.prescriptionService = new PrescriptionService(application, currUser);
     }
 
     public List<Dispense> getAllDispenseByPrescription(Prescription prescription) throws SQLException{
         return getDataBaseHelper().getDispenseDao().getAllByPrescription(prescription);
     }
-
-    public List<Dispense> getCountAllOfPrescription(Prescription prescription) throws SQLException{
-        return getDataBaseHelper().getDispenseDao().getAllByPrescription(prescription);
-    }
-
 
     public void createDispense(Dispense dispense) throws SQLException {
 
@@ -80,6 +78,12 @@ public class DispenseService extends BaseService {
 
         if (dispense.getDispensedDrugs() != null) {
             this.saveOrUpdateDispensedDrugs(dispense.getDispensedDrugs(), dispense);
+        }
+
+        if(dispense.getPrescription().getExpiryDate() != null){
+            Prescription prescription = dispense.getPrescription();
+            prescription.setExpiryDate(dispense.getPickupDate());
+            this.prescriptionService.updatePrescription(prescription);
         }
     }
 
