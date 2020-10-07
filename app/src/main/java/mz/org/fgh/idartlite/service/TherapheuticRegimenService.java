@@ -9,6 +9,7 @@ import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -83,7 +84,7 @@ public class TherapheuticRegimenService extends BaseService {
             localRegimen.setDescription(Objects.requireNonNull(itemresult.get("regimeesquema")).toString());
             createTherapheuticRegimen(localRegimen);
 
-            regimenDrugsService.saveRegimenDrug(localRegimen,(Object[]) Objects.requireNonNull(itemresult.get("drug")));
+            regimenDrugsService.saveRegimenDrug(localRegimen, (ArrayList) Objects.requireNonNull(itemresult.get("drug")));
 
         } catch (SQLException e) {
             e.printStackTrace();

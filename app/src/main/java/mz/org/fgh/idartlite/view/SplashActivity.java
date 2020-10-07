@@ -56,11 +56,11 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
         new Thread(new Runnable() {
             public void run() {
 
-                RestDispenseTypeService.restGetAllDispenseType();
                 RestPharmacyTypeService.restGetAllPharmacyType();
                 RestFormService.restGetAllForms();
-                RestDiseaseTypeService.restGetAllDiseaseType();
                 RestDrugService.restGetAllDrugs();
+                RestDiseaseTypeService.restGetAllDiseaseType();
+                RestDispenseTypeService.restGetAllDispenseType();
                 RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
                 RestTherapeuticLineService.restGetAllTherapeuticLine();
 

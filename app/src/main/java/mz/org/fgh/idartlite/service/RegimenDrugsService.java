@@ -5,6 +5,7 @@ import android.app.Application;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.BaseService;
@@ -27,9 +28,9 @@ public class RegimenDrugsService extends BaseService {
         getDataBaseHelper().getRegimenDrugDao().create(regimenDrug);
     }
 
-    public void saveRegimenDrug(TherapeuticRegimen regimen, Object[] drugs) {
+    public void saveRegimenDrug(TherapeuticRegimen regimen, ArrayList drugs) {
 
-        if (drugs.length > 0) {
+        if (drugs.size() > 0) {
             for (Object drug : drugs) {
                 try {
                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) drug;

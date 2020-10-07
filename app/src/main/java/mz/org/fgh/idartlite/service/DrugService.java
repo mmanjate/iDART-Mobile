@@ -17,12 +17,13 @@ import mz.org.fgh.idartlite.model.RegimenDrug;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
 
+import static java.util.Objects.*;
 import static mz.org.fgh.idartlite.model.Drug.COLUMN_FNMCODE;
 
 public class DrugService extends BaseService {
 
-    protected DiseaseTypeService diseaseTypeService  =  new DiseaseTypeService(getApplication(),null);
-    protected FormService formService = new FormService(getApplication(),null);
+    protected DiseaseTypeService diseaseTypeService = new DiseaseTypeService(getApplication(), null);
+    protected FormService formService = new FormService(getApplication(), null);
 
     public DrugService(Application application, User currentUser) {
         super(application, currentUser);
@@ -47,7 +48,7 @@ public class DrugService extends BaseService {
 
     public Drug getDrug(String code) throws SQLException {
 
-        List<Drug> typeList = getDataBaseHelper().getDrugDao().queryForEq(COLUMN_FNMCODE,code);
+        List<Drug> typeList = getDataBaseHelper().getDrugDao().queryForEq(COLUMN_FNMCODE, code);
 
         if (typeList != null)
             if (!typeList.isEmpty())
@@ -62,35 +63,38 @@ public class DrugService extends BaseService {
         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) (Object) drug;
         try {
 
-            Drug localDrug = getDrug(Objects.requireNonNull(itemresult.get("atccode_id")).toString());
+            Drug localDrug = getDrug(requireNonNull(itemresult.get("atccode_id")).toString());
 
-            if(localDrug != null)
+            if (localDrug != null)
                 result = true;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
 
-    public void saveOnDrug(Object drug){
+    public void saveOnDrug(Object drug) {
         Drug localDrug = new Drug();
 
         try {
             LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) (Object) drug;
 
-            LinkedTreeMap<String, Object> itemSubResult = (LinkedTreeMap<String, Object>) Objects.requireNonNull(itemresult.get("form"));
+            LinkedTreeMap<String, Object> itemSubResult = (LinkedTreeMap<String, Object>) requireNonNull(itemresult.get("form"));
 
-            DiseaseType diseaseType = diseaseTypeService.getdDiseaseType((Objects.requireNonNull(itemresult.get("tipodoenca")).toString()));
-            Form form = formService.getForm((Objects.requireNonNull(itemSubResult.get("form")).toString()));
+            DiseaseType diseaseType = diseaseTypeService.getdDiseaseType((requireNonNull(itemresult.get("tipodoenca")).toString()));
+            Form form = formService.getForm((requireNonNull(itemSubResult.get("form")).toString()));
 
-            localDrug.setId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
-            localDrug.setDescription((Objects.requireNonNull(itemresult.get("name")).toString()));
+            localDrug.setId((int) Float.parseFloat(requireNonNull(itemresult.get("id")).toString()));
+            localDrug.setDescription((requireNonNull(itemresult.get("name")).toString()));
             localDrug.setDiseaseType(diseaseType);
-            localDrug.setFnmcode((Objects.requireNonNull(itemresult.get("atccode_id")).toString()));
+            localDrug.setFnmcode((requireNonNull(itemresult.get("atccode_id")).toString()));
             localDrug.setForm(form);
-            localDrug.setInstruction((Objects.requireNonNull(itemresult.get("dispensinginstructions1")).toString()));
-            localDrug.setPackSize((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("packsize")).toString()));
+            if (itemresult.get("dispensinginstructions1") != null)
+                localDrug.setInstruction((requireNonNull(itemresult.get("dispensinginstructions1")).toString()));
+            else
+                localDrug.setInstruction("");
+            localDrug.setPackSize((int) Float.parseFloat(requireNonNull(itemresult.get("packsize")).toString()));
 
             saveDrug(localDrug);
 
