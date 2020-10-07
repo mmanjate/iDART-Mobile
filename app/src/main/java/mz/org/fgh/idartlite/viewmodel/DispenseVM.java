@@ -18,6 +18,7 @@ import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
@@ -57,6 +58,7 @@ public class DispenseVM extends BaseViewModel {
         dispenseDrugService = new DispenseDrugService(application, getCurrentUser());
         this.drugService = new DrugService(application, getCurrentUser());
         this.stockService = new StockService(application, getCurrentUser());
+        this.setViewListRemoveButton(true);
 
     }
 
@@ -138,32 +140,58 @@ public class DispenseVM extends BaseViewModel {
 
     public void save() {
 
-        ((CreateDispenseActivity)getRelatedActivity()).loadFormData();
-        String validationErrors = this.dispense.validate();
+        ((CreateDispenseActivity) getRelatedActivity()).loadFormData();
 
-        if (!Utilities.stringHasValue(validationErrors)) {
-        try {
-            boolean isNewDispense = true;
-            if(dispense.getId() > 0)
-                isNewDispense = false;
-            this.dispenseService.saveOrUpdateDispense(dispense);
-            if(isNewDispense)
-                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!", (CreateDispenseActivity)getRelatedActivity()).show();
-            else
-                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi actualizado com sucesso!", (CreateDispenseActivity)getRelatedActivity()).show();
+        String validationErrors ="";
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg)+e.getLocalizedMessage()).show();
-        }}
-        else {
+        validationErrors =  ((CreateDispenseActivity) getRelatedActivity()).validateDispenseDurationByPrescription();
+
+        if(!Utilities.stringHasValue(validationErrors)) {
+
+            validationErrors =  ((CreateDispenseActivity) getRelatedActivity()).validateStockForSelectedDrugs();
+
+            if(!Utilities.stringHasValue(validationErrors)){
+
+            validationErrors = this.dispense.validate();
+
+            if (!Utilities.stringHasValue(validationErrors)) {
+                try {
+                    boolean isNewDispense = true;
+                    if (dispense.getId() > 0)
+                        isNewDispense = false;
+                    this.dispenseService.saveOrUpdateDispense(dispense);
+                    if (isNewDispense)
+                        Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!",  ((CreateDispenseActivity) getRelatedActivity())).show();
+                    else
+                        Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi actualizado com sucesso!",  ((CreateDispenseActivity) getRelatedActivity())).show();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg) + e.getLocalizedMessage()).show();
+                }
+            } else {
                 Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
             }
+        }else {
+            Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
+        }}else{
+            Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
+        }
     }
 
     public List<DispensedDrug> findDispensedDrugsByDispenseId(int id) throws SQLException {
 
         return this.dispenseDrugService.findDispensedDrugByDispenseId(id);
+    }
+
+    public List<Dispense> getAllDispensesByPrescription(Prescription prescription) throws SQLException {
+
+        return  this.dispenseService.getAllDispenseByPrescription(prescription);
+    }
+
+    public List<PrescribedDrug> getAllPrescribedDrugsByPrescription(Prescription prescription) throws SQLException {
+
+        return this.prescriptionService.getAllOfPrescription(prescription);
     }
 
 }

@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +37,7 @@ import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.util.DateUtilitis;
@@ -105,6 +105,8 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
         populateForm();
 
         loadSelectedPrescriptionToForm();
+
+        this.loadPrescribedDrugsOfLastPatientPrescription();
 
         activityCreateDispenseBinding.dispenseDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,8 +194,16 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
                     } else if (duracaoDoAviamento == 24) {
                         daysToAdd = Dispense.DURATION_SIX_MONTHS;
                     }
-                    String nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(pickUpdate, daysToAdd);
+                    String nextPickUpDate = "";
+
+                    if(pickUpdate.length() ==0)
+                        nextPickUpDate = DateUtilitis.formatToDDMMYYYY(DateUtilitis.getCurrentDate());
+                    else
+                        nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(pickUpdate, daysToAdd);
+
                     activityCreateDispenseBinding.nextPickupDate.setText(nextPickUpDate);
+                    if(duracaoDoAviamento != 0)
+                    setDispenseQuantityForEachSelectedDrug();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -245,6 +255,43 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             }
         });
 
+    }
+
+    private void setDispenseQuantityForEachSelectedDrug(){
+        List<Listble> tempSelectedDrugs = new ArrayList<>();
+
+        tempSelectedDrugs.addAll(this.selectedDrugs);
+
+        this.selectedDrugs.removeAll(this.selectedDrugs);
+
+        int i = 1;
+        int qtdADispensar;
+        for (Listble selected:tempSelectedDrugs
+        ) {
+            Drug drug = (Drug)selected;
+            qtdADispensar = getQuantidadeADispensar(drug);
+            drug.setQuantity(qtdADispensar);
+            drug.setListPosition(i);
+            i++;
+            this.selectedDrugs.add(drug);
+            Collections.sort(this.selectedDrugs);
+        }
+        displaySelectedDrugs();
+    }
+
+    private void loadPrescribedDrugsOfLastPatientPrescription(){
+
+        List<PrescribedDrug> prescribedDrugs = this.getPrescribedDrugsByPrescription();
+        int i = 1;
+        for (PrescribedDrug pd:prescribedDrugs
+             ) {
+           Drug drug = pd.getDrug();
+           drug.setListPosition(i);
+           i++;
+           selectedDrugs.add(drug);
+           Collections.sort(selectedDrugs);
+        }
+        displaySelectedDrugs();
     }
 
     private void loadSelectedPrescriptionToForm() {
@@ -373,8 +420,6 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
     }
 
     public void loadFormData(){
-
-
         if(activityCreateDispenseBinding.dispenseDate.getText().length() != 0){
             getRelatedViewModel().getDispense().setPickupDate(DateUtilitis.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(), DateUtilitis.DATE_FORMAT));
         }
@@ -461,4 +506,74 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
         return (supply/4) * drug.getPackSize();
     }
+
+    public String validateDispenseDurationByPrescription(){
+
+        String prescriptionExpireDate = DateUtilitis.formatToDDMMYYYY(this.prescription.getExpiryDate());
+
+        if (prescriptionExpireDate != null) {
+            return "A última prescrição " +
+                    "do paciente não pode ser aviada, porque já atingiu o limite de aviamentos. VALIDADE DA PRESCRIÇÃO: " + prescriptionExpireDate;
+        }else{
+
+        int prescriptionSupply = this.prescription.getSupply();
+
+                try {
+
+                    List<Dispense> prescriptionDispenses = getRelatedViewModel().getAllDispensesByPrescription(this.prescription);
+
+                    int totalOfDispenseSupplies = 0;
+                    int remainingSupplyWeeks;
+                    int currentDispenseSupply = getRelatedViewModel().getDispense().getSupply();
+
+                    for (Dispense dispense : prescriptionDispenses
+                    ) {
+                        totalOfDispenseSupplies = totalOfDispenseSupplies + dispense.getSupply();
+                    }
+
+                    remainingSupplyWeeks = prescriptionSupply - totalOfDispenseSupplies;
+                    totalOfDispenseSupplies = totalOfDispenseSupplies + currentDispenseSupply;
+                    if (currentDispenseSupply > remainingSupplyWeeks)
+                        return "Não pode se aviar medicamentos por um periodo maior que a validade restante da prescrição.\n VALIDADE RESTANTE DA PRESCRIÇÃO: "+Utilities.parseSupplyToLabel(remainingSupplyWeeks);
+                    if (currentDispenseSupply > prescriptionSupply)
+                        return "Não pode se aviar medicamentos por um periodo maior que a validade da prescrição. \n VALIDADE DA PRESCRIÇÃO: "+Utilities.parseSupplyToLabel(prescriptionSupply);
+                    else if (totalOfDispenseSupplies > prescriptionSupply)
+                        return "A dispensa só pode ser aviada para " +Utilities.parseSupplyToLabel(remainingSupplyWeeks);
+
+                    if(totalOfDispenseSupplies == prescriptionSupply)
+                        getRelatedViewModel().getDispense().getPrescription().setExpiryDate(getRelatedViewModel().getDispense().getPickupDate());
+
+                } catch (SQLException ex) {
+
+                }}
+        return "";
+    }
+
+    public String validateStockForSelectedDrugs(){
+
+        StringBuilder emptyStockDrugs = new StringBuilder("");
+
+        for (Listble lt:this.selectedDrugs
+             ) {
+            Drug drug = (Drug)lt;
+            if(!this.verifyIfExistStockToDispense(drug)){
+                emptyStockDrugs.append(drug.getDescription()+"\n");
+            }
+        }
+        if(emptyStockDrugs.toString().trim().length() !=0)
+        return "Os medicamentos abaixo listados não possuem stock suficiente para a quantidade a aviar:\n\n"+emptyStockDrugs;
+        else
+            return  emptyStockDrugs.toString();
+    }
+
+    private List<PrescribedDrug> getPrescribedDrugsByPrescription(){
+
+        List<PrescribedDrug> prescribedDrugs = new ArrayList<>();
+        try {
+            prescribedDrugs = getRelatedViewModel().getAllPrescribedDrugsByPrescription(this.prescription);
+        }catch (SQLException ex){
+        }
+        return prescribedDrugs;
+    }
+
 }
