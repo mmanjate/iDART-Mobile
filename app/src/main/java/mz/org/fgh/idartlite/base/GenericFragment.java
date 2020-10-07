@@ -28,7 +28,7 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
         this.relatedViewModel = initViewModel();
         if (this.relatedViewModel != null) {
             this.relatedViewModel.setRelatedActivity(getMyActivity());
-            this.relatedViewModel.setCurrentUser(getMyActivity().getCurrentUser());
+            this.relatedViewModel.setCurrUser(getMyActivity().getCurrentUser());
         }
     }
 
@@ -45,18 +45,18 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
     }
 
     public void nextActivity(Context context, Class clazz){
-        nextActivity(context, clazz, null);
+        nextActivity(clazz, null);
     }
+
     /**
      * Move from one {@link android.app.Activity} to another
      *
-     * @param context
      * @param clazz
      * @param params
      */
-    public void nextActivity(Context context, Class clazz, Map<String, Object> params){
+    public void nextActivity(Class clazz, Map<String, Object> params){
 
-        Intent intent = new Intent(context, clazz);
+        Intent intent = new Intent(getContext(), clazz);
         Bundle bundle = new Bundle();
 
         if (params != null && params.size() > 0){
@@ -75,23 +75,7 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(context, 0));
-
-        //episodeAdapter = new EpisodeAdapter(recyclerView, this.episodeList, getMyActivity());
         recyclerView.setAdapter(adapter);
 
-        /*recyclerView.addOnItemTouchListener(new RecyclerTouchListener(context, recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, final int position) {
-                //Values are passing to activity & to fragment as well
-                Toast.makeText(context, "Single Click on position        :"+position,
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(context, "Long press on position :"+position,
-                        Toast.LENGTH_LONG).show();
-            }
-        }));*/
     }
 }

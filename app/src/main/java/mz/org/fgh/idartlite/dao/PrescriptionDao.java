@@ -12,4 +12,6 @@ public interface PrescriptionDao extends GenericDao<Prescription, Integer>{
     public List<Prescription> getAllByPatient(Patient patient) throws SQLException;
 
     public Prescription getLastPatientPrescription(Patient patient) throws SQLException;
+
+    public void closePrescription(Prescription prescription) throws SQLException;
 }

@@ -59,6 +59,7 @@ public class RestClinicService extends BaseService {
                                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) clinic;
 
                                     Clinic clinicRest = new Clinic();
+                                    clinicRest.setId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
                                     clinicRest.setCode(Objects.requireNonNull(itemresult.get("code")).toString());
                                     clinicRest.setClinicName(Objects.requireNonNull(itemresult.get("clinicname")).toString());
                                     clinicRest.setPharmacyType(pharmacyTypeService.getPharmacyType(Objects.requireNonNull(itemresult.get("facilitytype")).toString()));
@@ -90,9 +91,7 @@ public class RestClinicService extends BaseService {
             if (listener != null){
                 listener.doOnRestErrorResponse("Servidor offline, por favor tente mais tarde");
             }
-            //Toast.makeText(getApplication(),"Servidor offline, por favor tente mais tarde",Toast.LENGTH_LONG).show();
         }
-
         return clinicList;
     }
 }

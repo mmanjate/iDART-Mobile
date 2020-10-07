@@ -38,7 +38,8 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         ((ListbleViewHolder) viewHolder).listableItemBinding.setListble(listbles.get(position));
-        ((ListbleViewHolder) viewHolder).listableItemBinding.setStep(activity.getApplicationStep());
+        ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListEditButton(activity.isViewListEditButton());
+        ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
         ((ListbleViewHolder) viewHolder).listableItemBinding.imvRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -165,7 +165,7 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
                 params.put("user", getCurrentUser());
                 params.put("clinic", getMyActivity().getCurrentClinic());
                 params.put("dispense", getRelatedViewModel().getDispense());
-                nextActivity(getContext(), CreateDispenseActivity.class,params);
+                nextActivity(CreateDispenseActivity.class,params);
                 return true;
             case R.id.remove:
                 Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(),DispenseFragment.this.getString(R.string.list_item_delete_msg),dispensePosition,DispenseFragment.this).show();

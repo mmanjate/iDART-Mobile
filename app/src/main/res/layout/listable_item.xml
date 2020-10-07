@@ -7,7 +7,10 @@
 
     <data>
         <variable name="listble" type="mz.org.fgh.idartlite.common.Listble" />
-        <variable name="step" type="mz.org.fgh.idartlite.common.ApplicationStep" />
+
+        <variable name="viewListEditButton" type="boolean" />
+        <variable name="viewListRemoveButton" type="boolean" />
+
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="android.view.View"/>
 
@@ -87,7 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
-                android:visibility="@{step.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                android:visibility="@{!viewListEditButton ? View.GONE : View.VISIBLE}"
                 android:background="@color/white"/>
 
             <ImageView
@@ -95,14 +98,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:visibility="@{step.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                android:visibility="@{!viewListEditButton ? View.GONE : View.VISIBLE}"
                 app:srcCompat="@drawable/ic_baseline_edit_24"/>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
-                android:visibility="@{step.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                android:visibility="@{ !viewListRemoveButton ? View.GONE : View.VISIBLE}"
                 android:background="@color/white"/>
 
             <ImageView
@@ -110,7 +113,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:visibility="@{step.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                android:visibility="@{!viewListRemoveButton ? View.GONE : View.VISIBLE}"
                 app:srcCompat="@drawable/ic_remove"/>
 
 

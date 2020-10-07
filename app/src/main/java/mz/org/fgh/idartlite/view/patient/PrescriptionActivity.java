@@ -28,6 +28,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
@@ -78,30 +79,12 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         getRelatedViewModel().setInitialDataVisible(true);
         getRelatedViewModel().setDrugDataVisible(false);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
                 getRelatedViewModel().getPrescription().setPatient((Patient) bundle.getSerializable("patient"));
-
-                    changeApplicationStepToCreate();
-
                 if (getRelatedViewModel().getPrescription().getPatient() == null){
-
-                    changeApplicationStepToEdit();
-
                     getRelatedViewModel().setPrescription((Prescription) bundle.getSerializable("prescription"));
                     if (getRelatedViewModel().getPrescription() == null) {
                         throw new RuntimeException(getString(R.string.no_patient_or_prescription));
@@ -114,15 +97,17 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
                         }
                     }
                 }
+
             }else {
                 throw new RuntimeException(getString(R.string.no_patient_or_prescription));
             }
         }
 
-        if (getApplicationStep().isapplicationstepcreate()){
+        if (getApplicationStep().isApplicationstepCreate()){
             try {
                 getRelatedViewModel().loadLastPatientPrescription();
                 getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.getCurrentDate());
+                getRelatedViewModel().getPrescription().setExpiryDate(null);
             } catch (SQLException e) {
                 e.printStackTrace();
                 Utilities.displayAlertDialog(PrescriptionActivity.this, getString(R.string.error_on_loading_data)+e.getLocalizedMessage()).show();
@@ -222,6 +207,22 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
                }
             }
         });
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        if (getApplicationStep().isApplicationStepDisplay()){
+            disableAllSpinners();
+        }
     }
 
     public void reloadDrugsSpinnerByRegime(TherapeuticRegimen regimen) {
@@ -416,7 +417,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
         getRelatedViewModel().getPrescription().setPrescribedDrugs(prescribedDrugs);
 
-        if (getApplicationStep().isapplicationstepcreate()) getRelatedViewModel().getPrescription().setUuid(Utilities.getNewUUID().toString());
+        if (getApplicationStep().isApplicationstepCreate()) getRelatedViewModel().getPrescription().setUuid(Utilities.getNewUUID().toString());
 
         getRelatedViewModel().getPrescription().setSyncStatus(BaseModel.SYNC_SATUS_READY);
     }
@@ -435,7 +436,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
     @Override
     public void doOnConfirmed() {
-        if (getApplicationStep().isapplicationstepcreate()) {
+        if (getApplicationStep().isApplicationstepCreate()) {
             doAfterPrescriptionSave();
         }else {
             doOnDeny();
@@ -454,5 +455,23 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
     public void changeMotiveSpinnerStatus(boolean b) {
         prescriptionBinding.spnReson.setEnabled(b);
+    }
+
+    private void changeAllSpinnersStatus(boolean status){
+        prescriptionBinding.spnDispenseType.setEnabled(status);
+        prescriptionBinding.spnLine.setEnabled(status);
+        prescriptionBinding.spnRegime.setEnabled(status);
+        prescriptionBinding.spnDrugs.setEnabled(status);
+        prescriptionBinding.spnDuration.setEnabled(status);
+        prescriptionBinding.spnReson.setEnabled(status);
+
+    }
+
+    public void disableAllSpinners(){
+        changeAllSpinnersStatus(false);
+    }
+
+    public void enableAllSpinners(){
+        changeAllSpinnersStatus(true);
     }
 }

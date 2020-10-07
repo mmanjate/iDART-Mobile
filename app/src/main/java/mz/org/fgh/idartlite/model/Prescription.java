@@ -90,6 +90,8 @@ public class Prescription extends BaseModel {
 
 	private List<PrescribedDrug> prescribedDrugs;
 
+	private List<Dispense> dispenses;
+
 	public int getId() {
 		return id;
 	}
@@ -288,4 +290,32 @@ public class Prescription extends BaseModel {
 
 		return "";
     }
+
+	public List<Dispense> getDispenses() {
+		return dispenses;
+	}
+
+	public void setDispenses(List<Dispense> dispenses) {
+		this.dispenses = dispenses;
+	}
+
+	public boolean isClosed() {
+		if (!Utilities.listHasElements(this.dispenses) && this.expiryDate == null) return false;
+
+		if (this.supply > getTotalDispenseSupplied()) return false;
+
+		return true;
+	}
+
+	public int getTotalDispenseSupplied(){
+		int totalDispenseSupply = 0;
+
+		if (!Utilities.listHasElements(this.dispenses)) return 0;
+
+		for (Dispense dispense : this.dispenses){
+			totalDispenseSupply += dispense.getSupply();
+		}
+
+		return totalDispenseSupply;
+	}
 }
