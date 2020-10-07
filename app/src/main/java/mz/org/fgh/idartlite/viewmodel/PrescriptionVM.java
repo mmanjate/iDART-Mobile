@@ -6,12 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
@@ -25,9 +28,11 @@ import mz.org.fgh.idartlite.service.PrescriptionService;
 import mz.org.fgh.idartlite.service.TherapeuthicLineService;
 import mz.org.fgh.idartlite.service.TherapheuticRegimenService;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.patient.PatientActivity;
 import mz.org.fgh.idartlite.view.patient.PrescriptionActivity;
+import mz.org.fgh.idartlite.view.patient.PrescriptionFragment;
 
-public class PrescriptionVM extends BaseViewModel {
+public class PrescriptionVM extends BaseViewModel implements DialogListener {
 
     private PrescriptionService prescriptionService;
 
@@ -36,6 +41,8 @@ public class PrescriptionVM extends BaseViewModel {
     private TherapeuthicLineService lineService;
     private DispenseTypeService dispenseTypeService;
     private DrugService drugService;
+
+    private PrescriptionFragment relatedListingFragment;
 
     private DispenseService dispenseService;
 
@@ -61,6 +68,23 @@ public class PrescriptionVM extends BaseViewModel {
 
     private void initNewPrescription() {
         this.prescription = new Prescription();
+
+    }
+
+    public void requestForNewRecord(){
+        try {
+            this.prescription = prescriptionService.getLastPatientPrescription(((PatientActivity)getRelatedActivity()).getPatient());
+
+            this.prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
+
+            if (!this.prescription.isClosed()){
+                Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.new_prescription_creation), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
+            }else {
+                doOnConfirmed();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initServices(@NonNull Application application) {
@@ -156,7 +180,7 @@ public class PrescriptionVM extends BaseViewModel {
         String validationErrors = this.prescription.validate(getRelatedActivity());
         if (!Utilities.stringHasValue(validationErrors)) {
             try {
-                if (getRelatedActivity().getApplicationStep().isapplicationstepcreate()) {
+                if (getRelatedActivity().getApplicationStep().isApplicationstepCreate()) {
                     prescriptionService.createPrescription(this.prescription);
                     Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_dispense), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), ((PrescriptionActivity)getRelatedActivity())).show();
                 } else if (getRelatedActivity().getApplicationStep().isApplicationStepEdit()) {
@@ -223,5 +247,39 @@ public class PrescriptionVM extends BaseViewModel {
         if (prescriptionHasDispenses()) return getRelatedActivity().getString(R.string.cant_edit_prescription_msg);
         if (!this.prescription.isSyncStatusReady(this.prescription.getSyncStatus())) return getRelatedActivity().getString(R.string.cant_edit_synced_prescription);
         return "";
+    }
+
+    public PrescriptionFragment getRelatedListingFragment() {
+        return relatedListingFragment;
+    }
+
+    public void setRelatedListingFragment(PrescriptionFragment relatedListingFragment) {
+        this.relatedListingFragment = relatedListingFragment;
+    }
+
+    @Override
+    public void doOnConfirmed() {
+        try {
+            prescriptionService.closePrescription(this.prescription);
+            initNewPrescription();
+            this.prescription.setPatient(((PatientActivity)getRelatedActivity()).getPatient());
+
+            getRelatedListingFragment().startPrescriptionActivity();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void doOnDeny() {}
+
+    public void backToPreviusActivity(){
+        Map<String, Object> params = new HashMap<>();
+        params.put("patient", getPrescription().getPatient());
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        params.put("requestedFragment", PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION);
+        getRelatedActivity().nextActivity(PatientActivity.class,params);
     }
 }

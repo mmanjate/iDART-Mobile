@@ -60,6 +60,9 @@ public class PrescriptionService extends BaseService {
         getDataBaseHelper().getPrescribedDrugDao().create(prescription.getPrescribedDrugs());
     }
 
+    public void closePrescription(Prescription prescription) throws SQLException {
+        getDataBaseHelper().getPrescriptionDao().closePrescription(prescription);
+    }
 
     public void deletePrescription(Prescription prescription) throws SQLException {
         getDataBaseHelper().getPrescriptionDao().delete(prescription);

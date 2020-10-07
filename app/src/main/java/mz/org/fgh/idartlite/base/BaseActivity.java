@@ -40,20 +40,23 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
 
         applicationStep = ApplicationStep.fastCreate(ApplicationStep.STEP_INIT);
 
+
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
                 currentUser = (User) bundle.getSerializable("user");
+                if (currentUser == null) currentUser = new User();
+
                 currentClinic = (Clinic) bundle.getSerializable("clinic");
+                applicationStep = ApplicationStep.fastCreate((String) bundle.getSerializable("step"));
             }
         }
 
         this.relatedViewModel = initViewModel();
         if (this.relatedViewModel != null) {
             this.relatedViewModel.setRelatedActivity(this);
-            if (currentUser != null) this.relatedViewModel.setCurrentUser(currentUser);
-            if (currentClinic != null) this.relatedViewModel.setCurrentClinic(currentClinic);
+            this.relatedViewModel.setCurrUser(currentUser);
         }
 
 
@@ -73,6 +76,11 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
                 finish();
             }
         }, intentFilter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     public long getAppVersionNumber(){
@@ -167,4 +175,20 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         return applicationStep;
     }
 
+
+    public boolean isViewListEditButton() {
+        return getRelatedViewModel().isViewListEditButton();
+    }
+
+    public void setViewListEditButton(boolean viewListEditButton) {
+        this.relatedViewModel.setViewListEditButton(viewListEditButton);
+    }
+
+    public boolean isViewListRemoveButton() {
+        return getRelatedViewModel().isViewListRemoveButton();
+    }
+
+    public void setViewListRemoveButton(boolean viewListRemoveButton) {
+        this.relatedViewModel.setViewListRemoveButton(viewListRemoveButton);
+    }
 }

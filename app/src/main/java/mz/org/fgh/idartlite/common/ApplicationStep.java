@@ -8,6 +8,7 @@ public class ApplicationStep {
     public static final String STEP_LIST = "LIST";
     public static final String STEP_DISPLAY = "DYSPLAY";
     public static final String STEP_CREATE = "CREATE";
+    public static final String STEP_REMOVE= "REMOVE";
 
     private int id;
     private String descrption;
@@ -64,11 +65,15 @@ public class ApplicationStep {
         return this.code.equals(STEP_LIST);
     }
 
+    public boolean isApplicationStepRemove(){
+        return this.code.equals(STEP_REMOVE);
+    }
+
     public boolean isApplicationStepDisplay(){
         return this.code.equals(STEP_DISPLAY);
     }
 
-    public boolean isapplicationstepcreate(){
+    public boolean isApplicationstepCreate(){
         return this.code.equals(STEP_CREATE);
     }
 
@@ -90,6 +95,10 @@ public class ApplicationStep {
 
     public void changeToDisplay(){
         this.code = STEP_DISPLAY;
+    }
+
+    public void changeToRemove(){
+        this.code = STEP_REMOVE;
     }
 
     public void changetocreate(){
