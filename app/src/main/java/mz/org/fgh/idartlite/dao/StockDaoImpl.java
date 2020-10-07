@@ -37,7 +37,7 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements Stoc
 
     @Override
     public boolean checkStockExist(String orderNumber, Clinic clinic) throws SQLException {
-        return queryBuilder().where().eq(Stock.COLUMN_CLINIC, clinic.getId()).and().eq(Stock.COLUMN_ORDER_NUMBER, orderNumber).query().isEmpty();
+        return queryBuilder().where().eq(Stock.COLUMN_CLINIC, clinic.getId()).and().like(Stock.COLUMN_ORDER_NUMBER, "%" + orderNumber + "%").query().isEmpty();
     }
 
     @Override

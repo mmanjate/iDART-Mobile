@@ -340,6 +340,9 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                     }
                     Utilities.displayAlertDialog(StockEntranceActivity.this, "Salvo com sucesso",StockEntranceActivity.this).show();
                 }else {
+                    selectedStock.clear();
+                    Collections.sort(selectedStock);
+                    displaySelectedDrugs();
                     Utilities.displayAlertDialog(StockEntranceActivity.this, "O numero dessa guia ja existe no sistema.").show();
                 }
             }else {
