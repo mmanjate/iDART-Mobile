@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.appcompat.widget.Toolbar;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
@@ -44,6 +46,17 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
         super.onCreate(savedInstanceState);
         createEpisodeBinding = DataBindingUtil.setContentView(this, R.layout.episode_activity);
         createEpisodeBinding.setViewModel(getRelatedViewModel());
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         this.loadSpinnerValues();
         Intent intent = this.getIntent();
@@ -94,7 +107,6 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
                 datePickerDialog.show();
             }
         });
-
 
     }
 

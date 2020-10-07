@@ -44,7 +44,6 @@ public class LoginVM extends BaseViewModel {
 
     public LoginVM(@NonNull Application application) {
         super(application);
-        this.currentUser = new User();
 
         userService = new UserService(getApplication(), getCurrentUser());
         restUserService = new RestUserService(getApplication(), getCurrentUser());
@@ -52,65 +51,62 @@ public class LoginVM extends BaseViewModel {
     }
 
     public void setUserName(String userName) {
-        currentUser.setUserName(userName);
+        getRelatedActivity().getCurrentUser().setUserName(userName);
         notifyPropertyChanged(BR.userName);
     }
 
     @Bindable
     public String getUserName() {
-            return currentUser.getUserName();
+            return getRelatedActivity().getCurrentUser().getUserName();
     }
 
     @Bindable
     public String getUserPassword() {
-        return currentUser.getPassword();
+        return getRelatedActivity().getCurrentUser().getPassword();
 
     }
 
     public void setUserPassword(String password) {
-        currentUser.setPassword(password);
+        getRelatedActivity().getCurrentUser().setPassword(password);
         notifyPropertyChanged(BR.userPassword);
 
     }
 
     @Bindable
     public Clinic getClinic() {
-        return currentClinic;
+        return getCurrentClinic();
     }
 
     public void setClinic(Clinic c) {
-        currentClinic = c;
+        setCurrentClinic(c);
         notifyPropertyChanged(BR.clinic);
     }
 
 
 
     public void saveLogingUser() throws SQLException {
-        currentUser.setClinic(clinicService.getCLinic().get(0));
-        userService.saveUser(currentUser);
+        getRelatedActivity().getCurrentUser().setClinic(clinicService.getCLinic().get(0));
+        userService.saveUser(getRelatedActivity().getCurrentUser());
     }
 
     public void saveUserClinic() throws SQLException {
-        clinicService.saveClinic(currentClinic);
+        clinicService.saveClinic(getCurrentClinic());
     }
 
     public void login() {
         getRelatedActivity().changeViewToAuthenticatingMode();
 
-        if (getCurrentClinic() == null || getCurrentClinic().getId() < 0){
+        if ((getCurrentClinic() == null || getCurrentClinic().getId() < 0) && appHasUsersOnDB()){
             getRelatedActivity().changeViewToNormalMode();
             Utilities.displayAlertDialog(getRelatedActivity(), "O campo Farmácia deve ser preenchido.").show();
-
+        return;
         }
 
-        getCurrentUser().setUserName(getUserName().trim());
-        getRelatedActivity().setCurrentUser(currentUser);
-        getRelatedActivity().setCurrentClinic(getCurrentClinic());
-
-        String loginErrors = getCurrentUser().validadeToLogin();
-
-
         try {
+            getCurrentUser().setUserName(getUserName().trim());
+
+            String loginErrors = getCurrentUser().validadeToLogin();
+
             if (!Utilities.stringHasValue(loginErrors)) {
                 if (userService.checkIfUsertableIsEmpty()) {
                     runRestUserAccess();
@@ -118,13 +114,13 @@ public class LoginVM extends BaseViewModel {
                 } else {
                     // colocar no lugar certo
                     RestPatientService.restGetAllPatient(null);
-                    if (!userService.login(currentUser)) {
+                    if (!userService.login(getCurrentUser())) {
                         if (Utilities.listHasElements(clinicService.getCLinic())) {
-                            currentClinic = clinicService.getCLinic().get(0);
+                            setCurrentClinic(clinicService.getCLinic().get(0));
                             getRelatedActivity().changeViewToNormalMode();
                             moveToHome();
                             this.getRelatedActivity().savingSharedPreferences();
-                        }else {
+                        } else {
                             getRelatedActivity().changeViewToNormalMode();
                             Utilities.displayAlertDialog(getRelatedActivity(), "Não foi encontrada a configuração da farmácia.").show();
                         }
@@ -133,10 +129,12 @@ public class LoginVM extends BaseViewModel {
                         Utilities.displayAlertDialog(getRelatedActivity(), "Utilizador e/ou senha inválida").show();
                     }
                 }
-            } else
+            } else {
                 getRelatedActivity().changeViewToNormalMode();
 
-                Utilities.displayAlertDialog(getRelatedActivity(), loginErrors);
+                Utilities.displayAlertDialog(getRelatedActivity(), loginErrors).show();
+
+            }
         } catch (SQLException e) {
             getRelatedActivity().changeViewToNormalMode();
             Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao autenticar os dados, "+e.getLocalizedMessage()).show();
@@ -146,7 +144,7 @@ public class LoginVM extends BaseViewModel {
     }
 
     public void runRestUserAccess(){
-        restUserService.getUserAuthentication(currentClinic.getUuid(), currentUser.getUserName(), currentUser.getPassword(), getRelatedActivity());
+        restUserService.getUserAuthentication(getCurrentClinic().getUuid(), getRelatedActivity().getCurrentUser().getUserName(), getRelatedActivity().getCurrentUser().getPassword(), getRelatedActivity());
     }
 
     public boolean appHasUsersOnDB(){
@@ -174,15 +172,15 @@ public class LoginVM extends BaseViewModel {
 
     public void moveToSecondSplsh() {
         Map<String, Object> params = new HashMap<>();
-        params.put("user", this.currentUser);
-        params.put("clinic", currentClinic);
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
         getRelatedActivity().nextActivity(SecondSplashActivity.class, params);
     }
 
     private void moveToHome() {
         Map<String, Object> params = new HashMap<>();
-        params.put("user", this.currentUser);
-        params.put("clinic", currentClinic);
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
         getRelatedActivity().nextActivity(HomeActivity.class, params);
     }
 

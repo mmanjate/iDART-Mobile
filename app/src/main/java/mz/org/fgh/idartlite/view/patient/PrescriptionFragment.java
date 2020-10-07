@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.view.patient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -24,6 +25,7 @@ import mz.org.fgh.idartlite.adapter.ClickListener;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
+import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.common.ListbleDialogListener;
 import mz.org.fgh.idartlite.databinding.PrescriptionFragmentBinding;
 import mz.org.fgh.idartlite.model.Patient;
@@ -58,6 +60,7 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
         this.rcvPrescriptions = prescriptionFragmentBinding.rcvPrescriptions;
 
 
+        prescriptionFragmentBinding.setViewModel(getRelatedViewModel());
 
         try {
             this.prescriptionList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
@@ -70,17 +73,6 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
             displayDataOnRecyclerView(rcvPrescriptions, prescriptionAdapter, getContext());
         }
 
-        prescriptionFragmentBinding.newPrescription.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Map<String, Object> params = new HashMap<>();
-                params.put("patient", getMyActivity().getPatient());
-                params.put("user", getCurrentUser());
-                params.put("clinic", getMyActivity().getCurrentClinic());
-                nextActivity(getContext(), PrescriptionActivity.class,params);
-            }
-        });
 
         rcvPrescriptions.addOnItemTouchListener(
                 new ClickListener(getContext(), rcvPrescriptions, new ClickListener.OnItemClickListener() {
@@ -100,6 +92,17 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
                     }
                 }
             ));
+
+        getRelatedViewModel().setRelatedListingFragment(this);
+    }
+
+    public void startPrescriptionActivity(){
+        Map<String, Object> params = new HashMap<>();
+        params.put("patient", getMyActivity().getPatient());
+        params.put("user", getCurrentUser());
+        params.put("clinic", getMyActivity().getCurrentClinic());
+        params.put("step", ApplicationStep.STEP_CREATE);
+        nextActivity(PrescriptionActivity.class,params);
     }
 
     private void displayPopupMenu(View view, int position) {
@@ -126,7 +129,8 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
                     params.put("prescription", getRelatedViewModel().getPrescription());
                     params.put("user", getCurrentUser());
                     params.put("clinic", getMyActivity().getCurrentClinic());
-                    nextActivity(getContext(), PrescriptionActivity.class, params);
+                    params.put("step", ApplicationStep.STEP_EDIT);
+                    nextActivity(PrescriptionActivity.class, params);
                 }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -135,6 +139,14 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
             case R.id.remove:
                 Utilities.displayDeleteConfirmationDialogFromList(PrescriptionFragment.this.getContext(),getString(R.string.list_item_delete_msg),getRelatedViewModel().getPrescription().getListPosition(),PrescriptionFragment.this).show();
                 return true;
+
+            case R.id.viewDetails:
+                Map<String, Object> params = new HashMap<>();
+                params.put("prescription", getRelatedViewModel().getPrescription());
+                params.put("user", getCurrentUser());
+                params.put("clinic", getMyActivity().getCurrentClinic());
+                params.put("step", ApplicationStep.STEP_DISPLAY);
+                nextActivity(PrescriptionActivity.class, params);
             default:
                 return false;
         }

@@ -11,6 +11,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
@@ -131,13 +132,13 @@ public class DispenseVM extends BaseViewModel {
     }
 
     @Override
-    public CreateDispenseActivity getRelatedActivity(){
-        return (CreateDispenseActivity) super.getRelatedActivity();
+    public BaseActivity getRelatedActivity(){
+        return  super.getRelatedActivity();
     }
 
     public void save() {
 
-        getRelatedActivity().loadFormData();
+        ((CreateDispenseActivity)getRelatedActivity()).loadFormData();
         String validationErrors = this.dispense.validate();
 
         if (!Utilities.stringHasValue(validationErrors)) {
@@ -147,9 +148,9 @@ public class DispenseVM extends BaseViewModel {
                 isNewDispense = false;
             this.dispenseService.saveOrUpdateDispense(dispense);
             if(isNewDispense)
-                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!", getRelatedActivity()).show();
+                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!", (CreateDispenseActivity)getRelatedActivity()).show();
             else
-                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi actualizado com sucesso!", getRelatedActivity()).show();
+                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi actualizado com sucesso!", (CreateDispenseActivity)getRelatedActivity()).show();
 
         } catch (SQLException e) {
             e.printStackTrace();
