@@ -96,34 +96,17 @@ public class LoginVM extends BaseViewModel {
     public void login() {
         getRelatedActivity().changeViewToAuthenticatingMode();
 
-
-
-        if ((appHasUsersOnDB() && getCurrentClinic() == null) || (appHasUsersOnDB() && getCurrentClinic().getUuid()== null) ){
         if ((getCurrentClinic() == null || getCurrentClinic().getId() < 0) && appHasUsersOnDB()){
             getRelatedActivity().changeViewToNormalMode();
             Utilities.displayAlertDialog(getRelatedActivity(), "O campo Farmácia deve ser preenchido.").show();
         return;
         }
-        String loginErrors = getCurrentUser().validadeToLogin();
-
-
-
-
-
-
 
         try {
-            if (!Utilities.stringHasValue(loginErrors)) {
-                getCurrentUser().setUserName(getUserName().trim());
-                getRelatedActivity().setCurrentUser(currentUser);
-                getRelatedActivity().setCurrentClinic(getCurrentClinic());
-        getCurrentUser().setUserName(getUserName().trim());
+            getCurrentUser().setUserName(getUserName().trim());
 
+            String loginErrors = getCurrentUser().validadeToLogin();
 
-        String loginErrors = getCurrentUser().validadeToLogin();
-
-
-        try {
             if (!Utilities.stringHasValue(loginErrors)) {
                 if (userService.checkIfUsertableIsEmpty()) {
                     runRestUserAccess();
@@ -152,14 +135,12 @@ public class LoginVM extends BaseViewModel {
                 Utilities.displayAlertDialog(getRelatedActivity(), loginErrors).show();
 
             }
-        }
-             catch (SQLException e) {
+        } catch (SQLException e) {
             getRelatedActivity().changeViewToNormalMode();
             Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao autenticar os dados, "+e.getLocalizedMessage()).show();
             Log.i("INFO DB", "Erro ao fazer Login: " + e.getMessage());
             e.printStackTrace();
         }
-
     }
 
     public void runRestUserAccess(){
