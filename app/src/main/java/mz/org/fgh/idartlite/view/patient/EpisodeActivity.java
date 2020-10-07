@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.appcompat.widget.Toolbar;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
@@ -46,6 +47,17 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
         createEpisodeBinding = DataBindingUtil.setContentView(this, R.layout.episode_activity);
         createEpisodeBinding.setViewModel(getRelatedViewModel());
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         this.loadSpinnerValues();
         Intent intent = this.getIntent();
         if(intent != null){
@@ -64,7 +76,7 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
                 }
 
-                if((boolean) bundle.getSerializable("viewDetails") == true) {
+                if(bundle.getSerializable("viewDetails")!= null && (boolean) bundle.getSerializable("viewDetails") == true) {
                     disableFieldsToView();
 
                 }

@@ -1,7 +1,9 @@
 package mz.org.fgh.idartlite.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -23,6 +25,7 @@ import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.view.patient.EpisodeActivity;
 import mz.org.fgh.idartlite.view.patient.PatientActivity;
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
@@ -50,9 +53,30 @@ public class SearchPatientActivity extends BaseActivity {
             }
         });
 
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+      getMenuInflater().inflate(R.menu.toolbar_items, menu);
 
+        return true;
+    }
+    //Handling Action Bar button click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            //Back button
+            case R.id.about:
+                //If this activity started from other activity
+                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     public void displaySearchResult() {
         recyclerPatient = searchPatientBinding.reyclerPatient;

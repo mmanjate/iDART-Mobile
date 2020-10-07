@@ -105,32 +105,44 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                 ));
     }
 
-    public boolean onMenuItemClick(MenuItem item){
+    public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.edit:
                 //Call activity to Edit
-                if(stock.getSyncStatus().equals("R")){
-                    try {
-                        if(dispenseDrugService.checkStockIsDispensedDrug(stock)){
-                            Intent intent = new Intent(getContext(), StockEntranceActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("user", getCurrentUser());
-                            bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
-                            bundle.putSerializable("stock", stock);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                            return true;
-                        }else {
-                            Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),"O Stock nao pode ser actualizado uma vez que ja foi utilizado para dispensar medicamentos").show();
+                try {
+                    List<Stock> listStock = getRelatedViewModel().getStockByOrderNumber(stock.getOrderNumber(), getMyActivity().getCurrentClinic());
+                    boolean isEdit = true;
+                    List<Stock> auxList = new ArrayList<Stock>();
+                    for(Stock estoque : listStock){
+                        if(estoque.getSyncStatus().equals("R")){
+                            auxList.add(estoque);
+                        }
+                    }
+                    if (!auxList.isEmpty()) {
+                        try {
+                            if (dispenseDrugService.checkStockIsDispensedDrug(stock)) {
+                                Intent intent = new Intent(getContext(), StockEntranceActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("user", getCurrentUser());
+                                bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                                bundle.putSerializable("stock", stock);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                                return true;
+                            } else {
+                                Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(), "O Stock nao pode ser actualizado uma vez que ja foi utilizado para dispensar medicamentos").show();
+                                return false;
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                             return false;
                         }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                    } else {
+                        Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(), "O Stock nao pode ser actualizado uma vez que ja foi sicronizado com a central").show();
                         return false;
                     }
-                }else {
-                    Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),"O Stock nao pode ser actualizado uma vez que ja foi sicronizado com a central").show();
-                    return false;
+                }catch (SQLException e) {
+                    e.printStackTrace();
                 }
             case R.id.remove:
                 Utilities.displayDeleteConfirmationDialogFromList(StockEntranceFragment.this.getContext(), StockEntranceFragment.this.getString(R.string.list_item_delete_msg), stockPosition,StockEntranceFragment.this).show();

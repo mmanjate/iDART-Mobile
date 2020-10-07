@@ -96,12 +96,27 @@ public class LoginVM extends BaseViewModel {
     public void login() {
         getRelatedActivity().changeViewToAuthenticatingMode();
 
+
+
+        if ((appHasUsersOnDB() && getCurrentClinic() == null) || (appHasUsersOnDB() && getCurrentClinic().getUuid()== null) ){
         if ((getCurrentClinic() == null || getCurrentClinic().getId() < 0) && appHasUsersOnDB()){
             getRelatedActivity().changeViewToNormalMode();
             Utilities.displayAlertDialog(getRelatedActivity(), "O campo Farmácia deve ser preenchido.").show();
-
+        return;
         }
+        String loginErrors = getCurrentUser().validadeToLogin();
 
+
+
+
+
+
+
+        try {
+            if (!Utilities.stringHasValue(loginErrors)) {
+                getCurrentUser().setUserName(getUserName().trim());
+                getRelatedActivity().setCurrentUser(currentUser);
+                getRelatedActivity().setCurrentClinic(getCurrentClinic());
         getCurrentUser().setUserName(getUserName().trim());
 
 
@@ -122,7 +137,7 @@ public class LoginVM extends BaseViewModel {
                             getRelatedActivity().changeViewToNormalMode();
                             moveToHome();
                             this.getRelatedActivity().savingSharedPreferences();
-                        }else {
+                        } else {
                             getRelatedActivity().changeViewToNormalMode();
                             Utilities.displayAlertDialog(getRelatedActivity(), "Não foi encontrada a configuração da farmácia.").show();
                         }
@@ -131,16 +146,20 @@ public class LoginVM extends BaseViewModel {
                         Utilities.displayAlertDialog(getRelatedActivity(), "Utilizador e/ou senha inválida").show();
                     }
                 }
-            } else
+            } else {
                 getRelatedActivity().changeViewToNormalMode();
 
-                Utilities.displayAlertDialog(getRelatedActivity(), loginErrors);
-        } catch (SQLException e) {
+                Utilities.displayAlertDialog(getRelatedActivity(), loginErrors).show();
+
+            }
+        }
+             catch (SQLException e) {
             getRelatedActivity().changeViewToNormalMode();
             Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao autenticar os dados, "+e.getLocalizedMessage()).show();
             Log.i("INFO DB", "Erro ao fazer Login: " + e.getMessage());
             e.printStackTrace();
         }
+
     }
 
     public void runRestUserAccess(){
