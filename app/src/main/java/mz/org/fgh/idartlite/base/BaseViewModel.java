@@ -24,7 +24,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     private Listble selectedListble;
 
-    private User currUser;
+    private User currentUser;
+    private Clinic currentClinic;
 
     public BaseActivity getRelatedActivity() {
         return relatedActivity;
@@ -67,24 +68,13 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     protected void notifyPropertyChanged(int fieldId) {
         callbacks.notifyCallbacks(this, fieldId, null);
     }
-
-    public User getCurrentUser() {
-        if (getRelatedActivity() == null) return this.currUser;
-
-        return getRelatedActivity().getCurrentUser();
-    }
-
-    public void setCurrentUser(User currentUser) {
-        getRelatedActivity().setCurrentUser(currentUser);
-    }
-
     @Bindable
     public Clinic getCurrentClinic() {
-        return getRelatedActivity().currentClinic;
+        return this.currentClinic;
     }
 
     public void setCurrentClinic(Clinic currentClinic) {
-        getRelatedActivity().setCurrentClinic(currentClinic);
+        this.currentClinic = currentClinic;
         notifyPropertyChanged(BR.currentClinic);
     }
 
@@ -93,10 +83,12 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     }
 
     public String getAppVersionNumber(){
+        if (getRelatedActivity() == null) return null;
         return "iDART Mobile v"+getRelatedActivity().getAppVersionNumber();
     }
 
     public String getAppVersionName(){
+        if (getRelatedActivity() == null) return null;
         return "iDART Mobile v"+getRelatedActivity().getAppVersionName();
     }
 
@@ -124,11 +116,13 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         this.viewListRemoveButton = viewListRemoveButton;
     }
 
-    public User getCurrUser() {
-        return currUser;
+    @Bindable
+    public User getCurrentUser() {
+        return currentUser;
     }
 
-    public void setCurrUser(User currUser) {
-        this.currUser = currUser;
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+        notifyPropertyChanged(BR.currentUser);
     }
 }

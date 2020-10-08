@@ -20,6 +20,7 @@ import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.restService.RestUserService;
 import mz.org.fgh.idartlite.service.restService.RestUserService;
 import mz.org.fgh.idartlite.util.SecurePreferences;
@@ -59,6 +60,8 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
             loadClinicAdapters();
         }
 
+
+
         getSharedPreferencesData();
     }
 
@@ -79,6 +82,8 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
 
     private void getSharedPreferencesData() {
 
+
+        if (getCurrentUser() == null) setCurrentUser(new User());
 
         SecurePreferences sp = new SecurePreferences(getApplicationContext(),LOG_SHARED_FILE_NAME, true);
 

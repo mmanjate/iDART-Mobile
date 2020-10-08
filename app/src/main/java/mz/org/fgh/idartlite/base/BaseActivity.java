@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.base;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,8 +27,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
 
     protected BaseViewModel relatedViewModel;
 
-    protected User currentUser;
-    protected Clinic currentClinic;
     private ApplicationStep applicationStep;
 
     private PackageInfo pinfo;
@@ -41,23 +38,26 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         applicationStep = ApplicationStep.fastCreate(ApplicationStep.STEP_INIT);
 
 
+        this.relatedViewModel = initViewModel();
+
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
-                currentUser = (User) bundle.getSerializable("user");
-                if (currentUser == null) currentUser = new User();
+                if (this.relatedViewModel != null) {
+                    this.relatedViewModel.setRelatedActivity(this);
+                    this.relatedViewModel.setCurrentUser((User) bundle.getSerializable("user"));
+                    this.relatedViewModel.setCurrentClinic((Clinic) bundle.getSerializable("clinic"));
+                }
 
-                currentClinic = (Clinic) bundle.getSerializable("clinic");
+                if (this.relatedViewModel.getCurrentUser() == null) this.relatedViewModel.setCurrentUser(new User());
+
                 applicationStep = ApplicationStep.fastCreate((String) bundle.getSerializable("step"));
             }
         }
 
-        this.relatedViewModel = initViewModel();
-        if (this.relatedViewModel != null) {
-            this.relatedViewModel.setRelatedActivity(this);
-            this.relatedViewModel.setCurrUser(currentUser);
-        }
+
+
 
 
         try {
@@ -132,19 +132,19 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     }
 
     public User getCurrentUser() {
-        return currentUser;
+        return getRelatedViewModel().getCurrentUser();
     }
 
     public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+        this.relatedViewModel.setCurrentUser(currentUser);
     }
 
     public Clinic getCurrentClinic() {
-        return currentClinic;
+        return getRelatedViewModel().getCurrentClinic();
     }
 
     public void setCurrentClinic(Clinic currentClinic) {
-        this.currentClinic = currentClinic;
+        this.relatedViewModel.setCurrentClinic(currentClinic);
     }
 
     protected void changeApplicationStepToInit(){

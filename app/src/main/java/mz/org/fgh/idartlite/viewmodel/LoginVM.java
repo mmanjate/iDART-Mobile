@@ -51,23 +51,23 @@ public class LoginVM extends BaseViewModel {
     }
 
     public void setUserName(String userName) {
-        getRelatedActivity().getCurrentUser().setUserName(userName);
+        getCurrentUser().setUserName(userName);
         notifyPropertyChanged(BR.userName);
     }
 
     @Bindable
     public String getUserName() {
-            return getRelatedActivity().getCurrentUser().getUserName();
+            return getCurrentUser().getUserName();
     }
 
     @Bindable
     public String getUserPassword() {
-        return getRelatedActivity().getCurrentUser().getPassword();
+        return getCurrentUser().getPassword();
 
     }
 
     public void setUserPassword(String password) {
-        getRelatedActivity().getCurrentUser().setPassword(password);
+        getCurrentUser().setPassword(password);
         notifyPropertyChanged(BR.userPassword);
 
     }
