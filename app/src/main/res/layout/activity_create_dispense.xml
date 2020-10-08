@@ -143,12 +143,14 @@
                 android:text="Medicamentos *"
                 style="@style/input_labels"
                 />
-            <Spinner
-                android:id="@+id/spn_drugs"
-                android:layout_width="fill_parent"
+            <AutoCompleteTextView
+                android:id="@+id/aut_cmp_drugs"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:drawableRight="@drawable/ic_patient_search"
                 android:padding="@dimen/dimen_4dp"
-                />
+                android:text="" />
 
             <ImageView
                 android:id="@+id/imv_add_selected_drug"
