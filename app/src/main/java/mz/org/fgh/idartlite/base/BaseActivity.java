@@ -27,9 +27,6 @@ import mz.org.fgh.idartlite.view.LoginActivity;
 public abstract class BaseActivity extends AppCompatActivity implements GenericActivity {
 
     protected BaseViewModel relatedViewModel;
-
-    protected User currentUser;
-    protected Clinic currentClinic;
     private ApplicationStep applicationStep;
 
     private PackageInfo pinfo;
@@ -41,24 +38,28 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         applicationStep = ApplicationStep.fastCreate(ApplicationStep.STEP_INIT);
 
 
+        this.relatedViewModel = initViewModel();
+
         Intent intent = this.getIntent();
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
-                currentUser = (User) bundle.getSerializable("user");
-                if (currentUser == null) currentUser = new User();
 
-                currentClinic = (Clinic) bundle.getSerializable("clinic");
+                if (this.relatedViewModel != null) {
+                    this.relatedViewModel.setCurrentUser((User) bundle.getSerializable("user"));
+                    this.relatedViewModel.setCurrentClinic((Clinic) bundle.getSerializable("clinic"));
+
+
+                }
+
                 applicationStep = ApplicationStep.fastCreate((String) bundle.getSerializable("step"));
             }
         }
 
-        this.relatedViewModel = initViewModel();
         if (this.relatedViewModel != null) {
             this.relatedViewModel.setRelatedActivity(this);
-            this.relatedViewModel.setCurrUser(currentUser);
+            if (this.relatedViewModel.getCurrentUser() == null) this.relatedViewModel.setCurrentUser(new User());
         }
-
 
         try {
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -76,6 +77,8 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
                 finish();
             }
         }, intentFilter);
+
+
     }
 
     @Override
@@ -132,19 +135,19 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     }
 
     public User getCurrentUser() {
-        return currentUser;
+        return getRelatedViewModel().getCurrentUser();
     }
 
     public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+        this.getRelatedViewModel().setCurrentUser(currentUser);
     }
 
     public Clinic getCurrentClinic() {
-        return currentClinic;
+        return getRelatedViewModel().getCurrentClinic();
     }
 
     public void setCurrentClinic(Clinic currentClinic) {
-        this.currentClinic = currentClinic;
+        getRelatedViewModel().setCurrentClinic(currentClinic);
     }
 
     protected void changeApplicationStepToInit(){

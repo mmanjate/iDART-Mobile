@@ -34,6 +34,15 @@ public class UserService extends BaseService {
         }
     }
 
+    public UserService(Application application) {
+        super(application);
+        try {
+            userDao = getDataBaseHelper().getUserDao();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean login(User user) throws SQLException {
         return userDao.login(user);
     }
