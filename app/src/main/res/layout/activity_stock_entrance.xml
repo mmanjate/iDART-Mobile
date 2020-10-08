@@ -157,12 +157,15 @@
                                 android:layout_weight="1"
                                 android:drawableLeft="@drawable/ic_lista_medicamentos"></TextView>
 
-                            <Spinner
+
+                            <AutoCompleteTextView
                                 android:id="@+id/spn_drugs"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="40"
-                                android:padding="@dimen/dimen_4dp" />
+                                android:drawableRight="@drawable/ic_patient_search"
+                                android:padding="@dimen/dimen_4dp"
+                                android:text="" />
 
                         </LinearLayout>
 
