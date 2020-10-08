@@ -24,6 +24,14 @@ public abstract class BaseService {
     public static Application app;
 
     public BaseService(Application application, User currentUser) {
+        initServices(application,currentUser);
+    }
+
+    public BaseService(Application application) {
+        initServices(application,null);
+    }
+
+    private void initServices(Application application, User currentUser){
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
         restServiceExecutor = ExecutorThreadProvider.getInstance().getExecutorService();
 

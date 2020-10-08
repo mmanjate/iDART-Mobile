@@ -51,23 +51,22 @@ public class LoginVM extends BaseViewModel {
     }
 
     public void setUserName(String userName) {
-        getCurrentUser().setUserName(userName);
+        this.currentUser.setUserName(userName);
         notifyPropertyChanged(BR.userName);
     }
 
     @Bindable
     public String getUserName() {
-            return getCurrentUser().getUserName();
+            return this.currentUser.getUserName();
     }
 
     @Bindable
     public String getUserPassword() {
-        return getCurrentUser().getPassword();
-
+        return this.currentUser.getPassword();
     }
 
     public void setUserPassword(String password) {
-        getCurrentUser().setPassword(password);
+        this.currentUser.setPassword(password);
         notifyPropertyChanged(BR.userPassword);
 
     }
@@ -85,7 +84,7 @@ public class LoginVM extends BaseViewModel {
 
 
     public void saveLogingUser() throws SQLException {
-        getRelatedActivity().getCurrentUser().setClinic(clinicService.getCLinic().get(0));
+        this.currentUser.setClinic(clinicService.getCLinic().get(0));
         userService.saveUser(getRelatedActivity().getCurrentUser());
     }
 
@@ -95,6 +94,7 @@ public class LoginVM extends BaseViewModel {
 
     public void login() {
         getRelatedActivity().changeViewToAuthenticatingMode();
+        getRelatedActivity().getActivityLoginBinding().executePendingBindings();
 
         if ((getCurrentClinic() == null || getCurrentClinic().getId() < 0) && appHasUsersOnDB()){
             getRelatedActivity().changeViewToNormalMode();

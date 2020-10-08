@@ -23,9 +23,14 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private boolean viewListRemoveButton;
 
     private Listble selectedListble;
+    protected User currentUser;
+    protected Clinic currentClinic;
 
-    private User currentUser;
-    private Clinic currentClinic;
+    public BaseViewModel(@NonNull Application application) {
+        super(application);
+        callbacks = new PropertyChangeRegistry();
+
+    }
 
     public BaseActivity getRelatedActivity() {
         return relatedActivity;
@@ -33,12 +38,6 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public void setRelatedActivity(BaseActivity relatedActivity) {
         this.relatedActivity = relatedActivity;
-    }
-
-    public BaseViewModel(@NonNull Application application) {
-        super(application);
-        callbacks = new PropertyChangeRegistry();
-
     }
 
     @Override
@@ -67,15 +66,6 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
      */
     protected void notifyPropertyChanged(int fieldId) {
         callbacks.notifyCallbacks(this, fieldId, null);
-    }
-    @Bindable
-    public Clinic getCurrentClinic() {
-        return this.currentClinic;
-    }
-
-    public void setCurrentClinic(Clinic currentClinic) {
-        this.currentClinic = currentClinic;
-        notifyPropertyChanged(BR.currentClinic);
     }
 
     public ApplicationStep getCurrentStep(){
@@ -124,5 +114,15 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
         notifyPropertyChanged(BR.currentUser);
+    }
+
+    @Bindable
+    public Clinic getCurrentClinic() {
+        return currentClinic;
+    }
+
+    public void setCurrentClinic(Clinic currentClinic) {
+        this.currentClinic = currentClinic;
+        notifyPropertyChanged(BR.currentClinic);
     }
 }

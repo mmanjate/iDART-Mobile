@@ -26,7 +26,6 @@ import mz.org.fgh.idartlite.view.LoginActivity;
 public abstract class BaseActivity extends AppCompatActivity implements GenericActivity {
 
     protected BaseViewModel relatedViewModel;
-
     private ApplicationStep applicationStep;
 
     private PackageInfo pinfo;
@@ -45,20 +44,18 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
                 if (this.relatedViewModel != null) {
-                    this.relatedViewModel.setRelatedActivity(this);
                     this.relatedViewModel.setCurrentUser((User) bundle.getSerializable("user"));
-                    this.relatedViewModel.setCurrentClinic((Clinic) bundle.getSerializable("clinic"));
+                    this.relatedViewModel.setCurrentClinic((Clinic) bundle.getSerializable("clinic"))
+
                 }
-
-                if (this.relatedViewModel.getCurrentUser() == null) this.relatedViewModel.setCurrentUser(new User());
-
                 applicationStep = ApplicationStep.fastCreate((String) bundle.getSerializable("step"));
             }
         }
 
-
-
-
+        if (this.relatedViewModel != null) {
+            this.relatedViewModel.setRelatedActivity(this);
+            if (this.relatedViewModel.getCurrentUser() == null) this.relatedViewModel.setCurrentUser(new User());
+        }
 
         try {
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -76,6 +73,8 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
                 finish();
             }
         }, intentFilter);
+
+
     }
 
     @Override
@@ -136,7 +135,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     }
 
     public void setCurrentUser(User currentUser) {
-        this.relatedViewModel.setCurrentUser(currentUser);
+        this.getRelatedViewModel().setCurrentUser(currentUser);
     }
 
     public Clinic getCurrentClinic() {
@@ -144,7 +143,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     }
 
     public void setCurrentClinic(Clinic currentClinic) {
-        this.relatedViewModel.setCurrentClinic(currentClinic);
+        getRelatedViewModel().setCurrentClinic(currentClinic);
     }
 
     protected void changeApplicationStepToInit(){
