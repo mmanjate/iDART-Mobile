@@ -27,7 +27,7 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements Stoc
 
     @Override
     public List<Stock> getStockByClinic(Clinic clinic) throws SQLException {
-        return queryBuilder().distinct().selectColumns(Stock.COLUMN_ORDER_NUMBER).selectColumns(Stock.COLUMN_DATE_RECEIVED).where().eq(Stock.COLUMN_CLINIC, clinic.getId()).query();
+        return queryBuilder().distinct().selectColumns(Stock.COLUMN_ORDER_NUMBER).selectColumns(Stock.COLUMN_DATE_RECEIVED).orderBy(Stock.COLUMN_ORDER_NUMBER, true).where().eq(Stock.COLUMN_CLINIC, clinic.getId()).query();
     }
 
     @Override

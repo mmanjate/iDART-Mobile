@@ -342,24 +342,47 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                         stockService.saveOrUpdateStock((Stock) listble);
                     }
                     Utilities.displayAlertDialog(StockEntranceActivity.this, "Salvo com sucesso",StockEntranceActivity.this).show();
-                }else {
+                } else {
                     selectedStock.clear();
+                    selectedStock.addAll(stockListEdit);
                     Collections.sort(selectedStock);
                     displaySelectedDrugs();
                     Utilities.displayAlertDialog(StockEntranceActivity.this, "O numero dessa guia ja existe no sistema.").show();
                 }
             }else {
-                for (Stock stDelete : stockListEdit){
-                    stockService.deleteStock(stDelete);
+
+                    if (stockEntranceBinding.numeroGuia.getText().toString().equals(stockListEdit.get(0).getOrderNumber())){
+                        for (Stock stDelete : stockListEdit){
+                            stockService.deleteStock(stDelete);
+                        }
+                        for (Listble listble : this.selectedStock) {
+                            Stock stSave = (Stock) listble;
+                            stSave.setOrderNumber(stockEntranceBinding.numeroGuia.getText().toString());
+                            stSave.setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
+                            stockService.saveOrUpdateStock(stSave);
+                        }
+                        Utilities.displayAlertDialog(StockEntranceActivity.this, "Alterado com sucesso", StockEntranceActivity.this).show();
+                    } else {
+                        if (stockService.checkStockExist(stockEntranceBinding.numeroGuia.getText().toString(), getRelatedViewModel().getClinic())) {
+                            for (Stock stDelete : stockListEdit){
+                                stockService.deleteStock(stDelete);
+                            }
+                            for (Listble listble : this.selectedStock) {
+                                Stock stSave = (Stock) listble;
+                                stSave.setOrderNumber(stockEntranceBinding.numeroGuia.getText().toString());
+                                stSave.setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
+                                stockService.saveOrUpdateStock(stSave);
+                            }
+                            Utilities.displayAlertDialog(StockEntranceActivity.this, "Alterado com sucesso", StockEntranceActivity.this).show();
+                        } else {
+                            selectedStock.clear();
+                            selectedStock.addAll(stockListEdit);
+                            Collections.sort(selectedStock);
+                            displaySelectedDrugs();
+                            Utilities.displayAlertDialog(StockEntranceActivity.this, "O numero dessa guia ja existe no sistema.").show();
+                        }
+                    }
                 }
-                for (Listble listble : this.selectedStock) {
-                    Stock stSave = (Stock) listble;
-                    stSave.setOrderNumber(stockEntranceBinding.numeroGuia.getText().toString());
-                    stSave.setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
-                    stockService.saveOrUpdateStock(stSave);
-                }
-                Utilities.displayAlertDialog(StockEntranceActivity.this, "Alterado com sucesso", StockEntranceActivity.this).show();
-            }
         }else {
             Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_empty_filds)).show();
         }
