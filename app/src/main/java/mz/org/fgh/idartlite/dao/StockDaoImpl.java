@@ -44,20 +44,4 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements Stoc
     public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) throws SQLException {
         return queryBuilder().where().eq(Stock.COLUMN_CLINIC,clinic.getId()).and().eq(Stock.COLUMN_DRUG, drug.getId()).query();
     }
-
-    @Override
-    public void updateStock(DispensedDrug dispensedDrug) throws SQLException {
-        Stock stock = dispensedDrug.getStock();
-
-        int actualStockMoviment = stock.getStockMoviment();
-
-        int quantitySupplied = dispensedDrug.getQuantitySupplied();
-
-        int remainingStock = actualStockMoviment - quantitySupplied;
-
-        stock.setStockMoviment(remainingStock);
-        stock.setSyncStatus(Stock.SYNC_SATUS_READY);
-
-        createOrUpdate(stock);
-    }
 }
