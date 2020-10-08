@@ -82,7 +82,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Duração do aviamento:"/>
+                        android:text="Duração:"/>
 
                     <TextView
                         android:layout_width="match_parent"

@@ -3,6 +3,8 @@ package mz.org.fgh.idartlite.service;
 import android.app.Application;
 
 import com.j256.ormlite.stmt.QueryBuilder;
+
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.*;
 
@@ -26,11 +28,15 @@ public class DispenseService extends BaseService {
 
     private PrescriptionService prescriptionService;
 
+    private DispenseDrugService dispenseDrugService;
+
     public DispenseService(Application application, User currUser) {
         super(application, currUser);
 
         this.stockService = new StockService(application, currUser);
         this.prescriptionService = new PrescriptionService(application, currUser);
+        this.dispenseDrugService = new DispenseDrugService(application, currUser);
+
     }
 
     public List<Dispense> getAllDispenseByPrescription(Prescription prescription) throws SQLException{
@@ -51,7 +57,7 @@ public class DispenseService extends BaseService {
             dispensedDrug.setDispense(dispense);
             getDataBaseHelper().getDispensedDrugDao().create(dispensedDrug);
 
-            this.stockService.updateStock(dispensedDrug);
+            this.updateStock(dispensedDrug);
         }
     }
 
@@ -61,6 +67,7 @@ public class DispenseService extends BaseService {
 
     public void deleteDispense(Dispense dispense) throws SQLException {
         getDataBaseHelper().getDispenseDao().delete(dispense);
+        this.putBackStockMovimentForDispensedDrug(dispense);
     }
 
 
@@ -75,14 +82,18 @@ public class DispenseService extends BaseService {
 
     public void saveOrUpdateDispense(Dispense dispense) throws SQLException {
         getDataBaseHelper().getDispenseDao().createOrUpdate(dispense);
+        List<DispensedDrug> dispensedDrugs = this.dispenseDrugService.findDispensedDrugByDispenseId(dispense.getId());
 
-        if (dispense.getDispensedDrugs() != null) {
+        if (dispensedDrugs.size() == 0) {
             this.saveOrUpdateDispensedDrugs(dispense.getDispensedDrugs(), dispense);
+        }else{
+            this.saveOrUpdateDispensedDrugs(dispensedDrugs, dispense);
         }
 
         if(dispense.getPrescription().getExpiryDate() != null){
             Prescription prescription = dispense.getPrescription();
             prescription.setExpiryDate(dispense.getPickupDate());
+            prescription.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
             this.prescriptionService.updatePrescription(prescription);
         }
     }
@@ -92,7 +103,7 @@ public class DispenseService extends BaseService {
             dispensedDrug.setDispense(dispense);
             getDataBaseHelper().getDispensedDrugDao().createOrUpdate(dispensedDrug);
 
-            this.stockService.updateStock(dispensedDrug);
+            this.updateStock(dispensedDrug);
         }
     }
 
@@ -105,6 +116,37 @@ public class DispenseService extends BaseService {
                 return typeList;
 
         return null;
+    }
+
+    private void updateStock(DispensedDrug dispensedDrug) throws SQLException {
+
+        Stock stock = dispensedDrug.getStock();
+        int actualStockMoviment = stock.getStockMoviment();
+        int qtySupplied = dispensedDrug.getQuantitySupplied();
+        int finalStockMoviment = actualStockMoviment - qtySupplied;
+
+        stock.setStockMoviment(finalStockMoviment);
+        stock.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
+
+        this.stockService.updateStock(stock);
+    }
+
+    private void putBackStockMovimentForDispensedDrug(Dispense dispense) throws SQLException {
+
+        List<DispensedDrug> dispensedDrugs = this.dispenseDrugService.findDispensedDrugByDispenseId(dispense.getId());
+
+        for (DispensedDrug dispensedDrug: dispensedDrugs
+             ) {
+            Stock stock = dispensedDrug.getStock();
+            int currentStockMoviment = stock.getStockMoviment();
+            int qtySupplied = dispensedDrug.getQuantitySupplied();
+            int finalStockMoviment = currentStockMoviment + qtySupplied;
+
+            stock.setStockMoviment(finalStockMoviment);
+            stock.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
+
+            this.stockService.updateStock(stock);
+        }
     }
 
 }

@@ -99,6 +99,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{stock.orderNumber}"
+                            style="@style/bottom_border_edit_text_style"
                             android:drawableLeft="@drawable/ic_numero_guia" />
 
                         <TextView
@@ -112,6 +113,7 @@
                             android:id="@+id/data_entrada"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            style="@style/bottom_border_edit_text_style"
                             android:drawableLeft="@drawable/ic_calendar"
                             android:text="@{DateUtilitis.formatToDDMMYYYY(stock.dateReceived)}"
                             android:paddingStart="@dimen/dimen_4dp"
@@ -157,12 +159,16 @@
                                 android:layout_weight="1"
                                 android:drawableLeft="@drawable/ic_lista_medicamentos"></TextView>
 
-                            <Spinner
+
+                            <AutoCompleteTextView
                                 android:id="@+id/spn_drugs"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="40"
-                                android:padding="@dimen/dimen_4dp" />
+                                style="@style/bottom_border_edit_text_style"
+                                android:drawableRight="@drawable/ic_patient_search"
+                                android:padding="@dimen/dimen_4dp"
+                                android:text="" />
 
                         </LinearLayout>
 
@@ -179,6 +185,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{stock.batchNumber}"
+                            style="@style/bottom_border_edit_text_style"
                             android:drawableLeft="@drawable/ic_numero_guia" />
 
                         <TextView
@@ -194,6 +201,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_calendar"
+                            style="@style/bottom_border_edit_text_style"
                             android:text="@{DateUtilitis.formatToDDMMYYYY(stock.expiryDate)}"
                             android:paddingStart="@dimen/dimen_4dp"
                             android:paddingLeft="@dimen/dimen_4dp" />
@@ -210,6 +218,7 @@
                             android:id="@+id/numero_quantidade_recebida"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            style="@style/bottom_border_edit_text_style"
                             android:text="@{Utilities.parseIntToString(stock.unitsReceived)}"
                             android:drawableLeft="@drawable/ic_quantidade_recebida"
                             android:inputType="number" />
@@ -226,6 +235,7 @@
                             android:id="@+id/numero_preco"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            style="@style/bottom_border_edit_text_style"
                             android:drawableLeft="@drawable/ic_preco"
                             android:text="@{Utilities.parseDoubleToString(stock.price)}"
                             android:inputType="number|numberDecimal" />
