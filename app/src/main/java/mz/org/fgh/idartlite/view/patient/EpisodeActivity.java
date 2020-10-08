@@ -112,8 +112,8 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
 
     private void disableFieldsToView(){
-        createEpisodeBinding.spnStartReason.setEnabled(false);
-        createEpisodeBinding.spnStartReason.setClickable(false);
+        createEpisodeBinding.spnStopReason.setEnabled(false);
+        createEpisodeBinding.spnStopReason.setClickable(false);
         createEpisodeBinding.editTextEpisodeObservation.setEnabled(false);
         createEpisodeBinding.editTextEpisodeObservation.setClickable(false);
         createEpisodeBinding.editEpisodeDate.setEnabled(false);
