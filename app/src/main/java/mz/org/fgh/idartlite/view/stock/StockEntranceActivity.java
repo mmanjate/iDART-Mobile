@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
@@ -57,6 +58,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
     private Drug drug;
     private boolean isEditForm = false;
 
+    private Drug selectedDrug;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +70,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         rcvSelectedDrugs = stockEntranceBinding.rcvSelectedDrugs;
         selectedStock = new ArrayList<>();
         drug = new Drug();
-
+        stockEntranceBinding.spnDrugs.setThreshold(1);
         stockEntranceBinding.drugsDataLyt.setVisibility(View.GONE);
         getRelatedViewModel().setInitialDataVisible(true);
         getRelatedViewModel().setDrugDataVisible(false);
@@ -128,7 +131,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                                 selectedStock.addAll(stockListEdit);
                                 Collections.sort(selectedStock);
                                 displaySelectedDrugs();
-                                stockEntranceBinding.spnDrugs.setSelection(adapterSpinner.getPosition(getRelatedViewModel().getStock().getDrug()));
+                            //    stockEntranceBinding.spnDrugs.setText(getRelatedViewModel().getStock().getDrug().getDescription());
                                 isEditForm = true;
                             }
                         } else if (bundle.getSerializable("mode").equals("view")) {
@@ -148,6 +151,14 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         }catch (SQLException e) {
             e.printStackTrace();
         }
+
+        stockEntranceBinding.spnDrugs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                //this is the way to find selected object/item
+                selectedDrug = (Drug) adapterView.getItemAtPosition(pos);
+            }
+        });
         stockEntranceBinding.setStock(getRelatedViewModel().getStock());
     }
 
@@ -159,11 +170,12 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
 
     public void populateDrugList() throws SQLException {
         drugList = new ArrayList<Drug>();
-        drugList.add(0, new Drug());
+        //drugList.add(0, new Drug());
         drugList.addAll(drugService.getAll());
-        adapterSpinner = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugList);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterSpinner = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.select_dialog_item, drugList);
+     //   adapterSpinner.setDropDownViewResource(android.R.layout.select_dialog_item);
         stockEntranceBinding.spnDrugs.setAdapter(adapterSpinner);
+        stockEntranceBinding.spnDrugs.setThreshold(1);
     }
 
     public void enventInitialization(){
@@ -243,7 +255,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
             public void onClick(View view) {
                 if (selectedStock == null) selectedStock = new ArrayList<>();
 
-                if ( ((Drug) stockEntranceBinding.spnDrugs.getSelectedItem()).getId() != 0) {
+                if (stockEntranceBinding.spnDrugs.getText().toString().length() != 0) {
                     if(stockEntranceBinding.dataValidade.getText().length() != 0 &&
                             stockEntranceBinding.dataEntrada.getText().length() != 0 &&
                             stockEntranceBinding.numeroLote.getText().length() != 0 &&
@@ -291,8 +303,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
     }
 
     private void loadDataForm() {
-        drug = (Drug) stockEntranceBinding.spnDrugs.getSelectedItem();
-        getRelatedViewModel().getStock().setDrug(drug);
+        drug = selectedDrug;
+        getRelatedViewModel().getStock().setDrug(selectedDrug);
         getRelatedViewModel().getStock().setExpiryDate(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT));
         getRelatedViewModel().getStock().setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
         getRelatedViewModel().getStock().setBatchNumber(stockEntranceBinding.numeroLote.getText().toString());
@@ -309,7 +321,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         stockEntranceBinding.numeroLote.setText("");
         stockEntranceBinding.numeroPreco.setText("0");
         stockEntranceBinding.numeroQuantidadeRecebida.setText("");
-        stockEntranceBinding.spnDrugs.setSelection(0);
+        stockEntranceBinding.spnDrugs.setText("");
     }
 
     public void disableForm() {
