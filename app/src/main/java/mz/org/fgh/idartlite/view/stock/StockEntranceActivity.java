@@ -102,6 +102,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
 
                     if(bundle.getSerializable("mode") != null) {
                         if(bundle.getSerializable("mode").equals("edit")) {
+                            getRelatedViewModel().setViewListRemoveButton(true);
                             stockListEdit = ((List<Stock>) bundle.getSerializable("listStock"));
                             List<Stock> listStock = getRelatedViewModel().getStockByOrderNumber(stockListEdit.get(0).getOrderNumber(), (Clinic) bundle.getSerializable("clinic"));
                             boolean isSync  = false, isUsed = false;
@@ -136,6 +137,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                             Collections.sort(selectedStock);
                             displaySelectedDrugs();
                         }
+                    } else {
+                        getRelatedViewModel().setViewListRemoveButton(true);
                     }
                     if (getRelatedViewModel().getClinic() == null) {
                         throw new RuntimeException("Não foi seleccionado uma clinic para detalhar.");
