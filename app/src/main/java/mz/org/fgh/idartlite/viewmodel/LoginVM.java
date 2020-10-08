@@ -63,7 +63,6 @@ public class LoginVM extends BaseViewModel {
     @Bindable
     public String getUserPassword() {
         return this.currentUser.getPassword();
-
     }
 
     public void setUserPassword(String password) {

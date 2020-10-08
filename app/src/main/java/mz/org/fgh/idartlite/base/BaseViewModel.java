@@ -23,7 +23,6 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private boolean viewListRemoveButton;
 
     private Listble selectedListble;
-
     protected User currentUser;
     protected Clinic currentClinic;
 
@@ -75,13 +74,11 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public String getAppVersionNumber(){
         if (getRelatedActivity() == null) return null;
-
         return "iDART Mobile v"+getRelatedActivity().getAppVersionNumber();
     }
 
     public String getAppVersionName(){
         if (getRelatedActivity() == null) return null;
-
         return "iDART Mobile v"+getRelatedActivity().getAppVersionName();
     }
 

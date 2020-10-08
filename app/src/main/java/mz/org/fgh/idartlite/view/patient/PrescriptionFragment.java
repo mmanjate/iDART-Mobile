@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.view.patient;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -127,7 +126,7 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
                 }else {
                     Map<String, Object> params = new HashMap<>();
                     params.put("prescription", getRelatedViewModel().getPrescription());
-                    params.put("user", getCurrentUser());
+                    params.put("user", getRelatedViewModel().getCurrentUser());
                     params.put("clinic", getMyActivity().getCurrentClinic());
                     params.put("step", ApplicationStep.STEP_EDIT);
                     nextActivity(PrescriptionActivity.class, params);
@@ -143,7 +142,7 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
             case R.id.viewDetails:
                 Map<String, Object> params = new HashMap<>();
                 params.put("prescription", getRelatedViewModel().getPrescription());
-                params.put("user", getCurrentUser());
+                params.put("user", getRelatedViewModel().getCurrentUser());
                 params.put("clinic", getMyActivity().getCurrentClinic());
                 params.put("step", ApplicationStep.STEP_DISPLAY);
                 nextActivity(PrescriptionActivity.class, params);

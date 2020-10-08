@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.base;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -44,14 +43,11 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
-
                 if (this.relatedViewModel != null) {
                     this.relatedViewModel.setCurrentUser((User) bundle.getSerializable("user"));
-                    this.relatedViewModel.setCurrentClinic((Clinic) bundle.getSerializable("clinic"));
-
+                    this.relatedViewModel.setCurrentClinic((Clinic) bundle.getSerializable("clinic"))
 
                 }
-
                 applicationStep = ApplicationStep.fastCreate((String) bundle.getSerializable("step"));
             }
         }

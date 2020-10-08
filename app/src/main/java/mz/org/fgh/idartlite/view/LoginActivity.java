@@ -61,6 +61,8 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
             loadClinicAdapters();
         }
 
+
+
         getSharedPreferencesData();
     }
 
