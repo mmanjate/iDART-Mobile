@@ -27,13 +27,12 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.view.patient.EpisodeActivity;
 import mz.org.fgh.idartlite.view.patient.PatientActivity;
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
 public class SearchPatientActivity extends BaseActivity {
 
-    private static final int PATIENT_PAGE_SIZE = 4;
+    //private static final int PATIENT_PAGE_SIZE = 4;
     private RecyclerView recyclerPatient;
     private ActivitySearchPatientBinding searchPatientBinding;
     private ContentListPatientAdapter adapter;
@@ -81,43 +80,18 @@ public class SearchPatientActivity extends BaseActivity {
     }
 
     public void displaySearchResult() {
-
-        loadFirstPage();
-
         recyclerPatient = searchPatientBinding.reyclerPatient;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerPatient.setLayoutManager(layoutManager);
         recyclerPatient.setHasFixedSize(true);
         recyclerPatient.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
-         adapter = new ContentListPatientAdapter(recyclerPatient, getRelatedViewModel().getDisplayedPatients(),this);
+        adapter = new ContentListPatientAdapter(recyclerPatient, getRelatedViewModel().getAllDisplyedRecords(),this);
         recyclerPatient.setAdapter(adapter);
 
         adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                if (getRelatedViewModel().getDisplayedPatients().size() < getRelatedViewModel().getSearchResults().size()){
-                    getRelatedViewModel().getDisplayedPatients().add(null);
-                    recyclerPatient.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.notifyItemInserted(getRelatedViewModel().getDisplayedPatients().size() - 1);
-                        }
-                    });
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            getRelatedViewModel().getDisplayedPatients().remove(getRelatedViewModel().getDisplayedPatients().size() - 1);
-                            adapter.notifyItemRemoved(getRelatedViewModel().getDisplayedPatients().size());
-
-                            getRelatedViewModel().getDisplayedPatients().addAll(getRelatedViewModel().getNextToDisplay());
-
-                            adapter.notifyDataSetChanged();
-                            adapter.setLoaded();
-
-                        }
-                    }, 3000);
-                }
+                getRelatedViewModel().loadMoreRecords(recyclerPatient, adapter);
             }
         });
 
@@ -142,17 +116,7 @@ public class SearchPatientActivity extends BaseActivity {
         );
     }
 
-    private void loadFirstPage() {
-        getRelatedViewModel().setPatientListPageSize(PATIENT_PAGE_SIZE);
 
-        if (getRelatedViewModel().getSearchResults().size() < getRelatedViewModel().getPatientListPageSize()){
-            getRelatedViewModel().setPatientListPageSize(getRelatedViewModel().getSearchResults().size());
-        }
-
-        for (int i = 0; i <= getRelatedViewModel().getPatientListPageSize()-1; i++){
-            getRelatedViewModel().getDisplayedPatients().add(getRelatedViewModel().getSearchResults().get(i));
-        }
-    }
 
     private void nextActivity(int position) {
         Map<String, Object> params = new HashMap<>();
