@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import mz.org.fgh.idartlite.adapter.ClickListener;
 import mz.org.fgh.idartlite.adapter.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.view.patient.EpisodeActivity;
@@ -31,6 +33,7 @@ import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
 public class SearchPatientActivity extends BaseActivity {
 
+    private static final int PATIENT_PAGE_SIZE = 4;
     private RecyclerView recyclerPatient;
     private ActivitySearchPatientBinding searchPatientBinding;
     private ContentListPatientAdapter adapter;
@@ -52,8 +55,6 @@ public class SearchPatientActivity extends BaseActivity {
                 finish();
             }
         });
-
-
     }
 
     @Override
@@ -62,6 +63,7 @@ public class SearchPatientActivity extends BaseActivity {
 
         return true;
     }
+
     //Handling Action Bar button click
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -79,13 +81,46 @@ public class SearchPatientActivity extends BaseActivity {
     }
 
     public void displaySearchResult() {
+
+        loadFirstPage();
+
         recyclerPatient = searchPatientBinding.reyclerPatient;
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerPatient.setLayoutManager(layoutManager);
         recyclerPatient.setHasFixedSize(true);
         recyclerPatient.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
-         adapter = new ContentListPatientAdapter(recyclerPatient, getRelatedViewModel().getSearchResults(),this);
+         adapter = new ContentListPatientAdapter(recyclerPatient, getRelatedViewModel().getDisplayedPatients(),this);
         recyclerPatient.setAdapter(adapter);
+
+        adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (getRelatedViewModel().getDisplayedPatients().size() < getRelatedViewModel().getSearchResults().size()){
+                    getRelatedViewModel().getDisplayedPatients().add(null);
+                    recyclerPatient.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyItemInserted(getRelatedViewModel().getDisplayedPatients().size() - 1);
+                        }
+                    });
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getRelatedViewModel().getDisplayedPatients().remove(getRelatedViewModel().getDisplayedPatients().size() - 1);
+                            adapter.notifyItemRemoved(getRelatedViewModel().getDisplayedPatients().size());
+
+                            getRelatedViewModel().getDisplayedPatients().addAll(getRelatedViewModel().getNextToDisplay());
+
+                            adapter.notifyDataSetChanged();
+                            adapter.setLoaded();
+
+                        }
+                    }, 3000);
+                }
+            }
+        });
+
         recyclerPatient.addOnItemTouchListener(
                 new ClickListener(getApplicationContext(), recyclerPatient, new ClickListener.OnItemClickListener() {
                     @Override
@@ -105,6 +140,18 @@ public class SearchPatientActivity extends BaseActivity {
                 }
                 )
         );
+    }
+
+    private void loadFirstPage() {
+        getRelatedViewModel().setPatientListPageSize(PATIENT_PAGE_SIZE);
+
+        if (getRelatedViewModel().getSearchResults().size() < getRelatedViewModel().getPatientListPageSize()){
+            getRelatedViewModel().setPatientListPageSize(getRelatedViewModel().getSearchResults().size());
+        }
+
+        for (int i = 0; i <= getRelatedViewModel().getPatientListPageSize()-1; i++){
+            getRelatedViewModel().getDisplayedPatients().add(getRelatedViewModel().getSearchResults().get(i));
+        }
     }
 
     private void nextActivity(int position) {
@@ -128,6 +175,5 @@ public class SearchPatientActivity extends BaseActivity {
     public Clinic getClinic(){
         return getRelatedViewModel().getCurrentClinic();
     }
-
 
 }

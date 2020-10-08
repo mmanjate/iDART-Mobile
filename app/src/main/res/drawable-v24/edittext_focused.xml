@@ -10,7 +10,7 @@
                 android:width="@dimen/dimen_2dp"
                 android:color="@color/colorPrimaryDark" />
             <corners
-                android:radius="@dimen/dimen_2dp" />
+                android:radius="@dimen/dimen_22dp" />
 
             <solid android:color="#00ffffff" />
         </shape>

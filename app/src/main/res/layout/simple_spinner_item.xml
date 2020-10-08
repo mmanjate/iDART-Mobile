@@ -2,23 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/spinner_back_color"
+    android:background="@drawable/login_spinner_normal"
+
+    android:layout_marginLeft="@dimen/dimen_10dp"
     android:padding="@dimen/dimen_4dp">
 
     <TextView
         android:id="@+id/label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/dimen_25dp"
-        android:paddingBottom="@dimen/dimen_4dp"
-        android:paddingTop="@dimen/dimen_4dp"
-        android:layout_margin="@dimen/dimen_4dp"
+        android:padding="@dimen/dimen_2dp"
         style="@style/spinner_label"
         android:text="Farmácia"
         />
-
-
-
-
 </LinearLayout>

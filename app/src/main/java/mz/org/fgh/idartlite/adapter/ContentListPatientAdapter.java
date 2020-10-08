@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.ContentPatientBinding;
+import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
 import mz.org.fgh.idartlite.model.Patient;
 
 public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -24,7 +26,7 @@ public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
     private Activity activity;
-   // private OnLoadMoreListener onLoadMoreListener;
+    private OnLoadMoreListener onLoadMoreListener;
     private boolean isLoading;
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
@@ -33,21 +35,25 @@ public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView
         this.patientList = patientList;
         this.activity = activity;
 
-        /*final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-               *//* if (!isLoading && linearLayoutManager.findLastCompletelyVisibleItemPosition() == patientList.size() - 1) {
+               if (!isLoading && linearLayoutManager.findLastCompletelyVisibleItemPosition() == patientList.size() - 1) {
                     if (onLoadMoreListener != null) {
                         onLoadMoreListener.onLoadMore();
                     }
                     isLoading = true;
-                }*//*
+                }
             }
-        });*/
+        });
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
     }
 
     @Override
@@ -59,22 +65,27 @@ public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ContentPatientBinding contentPatientBinding;
-        //ItemLoadingBinding itemLoadingBinding;
-        contentPatientBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.content_patient, parent, false);
-        return new PatientViewHolder(contentPatientBinding);
-        /*if (viewType == VIEW_TYPE_ITEM) {
-            contentPatientBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.activity_search_patient, parent, false);
+        ItemLoadingBinding itemLoadingBinding;
+
+        if (viewType == VIEW_TYPE_ITEM) {
+            contentPatientBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.content_patient, parent, false);
             return new PatientViewHolder(contentPatientBinding);
         }else if (viewType == VIEW_TYPE_LOADING) {
             itemLoadingBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_loading, parent, false);
             return new LoadingViewHolder(itemLoadingBinding);
         }
-        return null;*/
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((PatientViewHolder) holder).contentPatientBinding.setPatient(patientList.get(position));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        if (viewHolder instanceof PatientViewHolder){
+            Patient patient = patientList.get(position);
+            ((PatientViewHolder) viewHolder).contentPatientBinding.setPatient(patient);
+        }else
+        if (viewHolder instanceof LoadingViewHolder){
+            showLoadingView((LoadingViewHolder) viewHolder, position);
+        }
     }
 
     @Override
@@ -102,7 +113,7 @@ public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-   /* private class LoadingViewHolder extends RecyclerView.ViewHolder {
+    private class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         ProgressBar progressBar;
 
@@ -112,15 +123,15 @@ public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView
             super(itemLoadingBinding.getRoot());
             this.itemLoadingBinding = itemLoadingBinding;
         }
-    }*/
+    }
 
     public boolean isLoading() {
         return isLoading;
     }
 
-    /*private void showLoadingView(LoadingViewHolder viewHolder, int position) {
+    private void showLoadingView(LoadingViewHolder viewHolder, int position) {
         //ProgressBar would be displayed
 
-    }*/
+    }
 
 }
