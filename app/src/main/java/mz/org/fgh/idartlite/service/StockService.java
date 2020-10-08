@@ -34,6 +34,14 @@ public class StockService extends BaseService {
         return getDataBaseHelper().getStockDao().getStockByOrderNumber(orderNumber, clinic);
     }
 
+
+    public boolean checkStockExist(String orderNumber, Clinic clinic) throws SQLException {
+        return getDataBaseHelper().getStockDao().checkStockExist(orderNumber, clinic);
+
+    public List<Stock> getStockByStatus(String status) throws SQLException {
+        return getDataBaseHelper().getStockDao().queryBuilder().where().eq(Stock.COLUMN_SYNC_STATUS,status).query();
+    }
+
     public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) throws SQLException {
         return getDataBaseHelper().getStockDao().getAllStocksByClinicAndDrug(clinic, drug);
     }

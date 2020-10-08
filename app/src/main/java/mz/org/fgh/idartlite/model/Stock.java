@@ -78,7 +78,7 @@ public class Stock extends BaseModel implements Listble {
 
     @Override
     public int getPosition() {
-        return this.listPosition;
+        return this.drug.getId();
     }
 
     @Override
@@ -246,6 +246,6 @@ public class Stock extends BaseModel implements Listble {
 
     @Override
     public String getLote() {
-        return null;
+        return this.batchNumber;
     }
 }

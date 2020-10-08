@@ -13,6 +13,8 @@ public interface StockDao extends GenericDao<Stock, Integer> {
 
     public List<Stock> getStockByOrderNumber(String orderNumber, Clinic clinic) throws SQLException;
 
+    public boolean checkStockExist (String orderNumber, Clinic clinic) throws SQLException;
+
     public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) throws SQLException;
 
     public void updateStock(DispensedDrug dispensedDrug) throws SQLException;

@@ -10,7 +10,11 @@ import androidx.collection.ArrayMap;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,10 +25,12 @@ import java.util.Objects;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
+import mz.org.fgh.idartlite.service.StockService;
 
 public class RestClinicService extends BaseService {
     private static final String TAG = "RestClinicService";
@@ -59,6 +65,7 @@ public class RestClinicService extends BaseService {
                                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) clinic;
 
                                     Clinic clinicRest = new Clinic();
+                                    clinicRest.setId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
                                     clinicRest.setCode(Objects.requireNonNull(itemresult.get("code")).toString());
                                     clinicRest.setClinicName(Objects.requireNonNull(itemresult.get("clinicname")).toString());
                                     clinicRest.setPharmacyType(pharmacyTypeService.getPharmacyType(Objects.requireNonNull(itemresult.get("facilitytype")).toString()));
@@ -90,9 +97,8 @@ public class RestClinicService extends BaseService {
             if (listener != null){
                 listener.doOnRestErrorResponse("Servidor offline, por favor tente mais tarde");
             }
-            //Toast.makeText(getApplication(),"Servidor offline, por favor tente mais tarde",Toast.LENGTH_LONG).show();
         }
-
         return clinicList;
     }
+
 }
