@@ -28,7 +28,7 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
         this.relatedViewModel = initViewModel();
         if (this.relatedViewModel != null) {
             this.relatedViewModel.setRelatedActivity(getMyActivity());
-            this.relatedViewModel.setCurrUser(getMyActivity().getCurrentUser());
+            this.relatedViewModel.setCurrentUser(getMyActivity().getCurrentUser());
         }
     }
 
