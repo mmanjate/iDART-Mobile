@@ -19,46 +19,11 @@ import mz.org.fgh.idartlite.databinding.ContentPatientBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
 import mz.org.fgh.idartlite.model.Patient;
 
-public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ContentListPatientAdapter extends AbstractRecycleViewAdapter<Patient> {
 
-    private List<Patient> patientList = new ArrayList<Patient>();
-
-    private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1;
-    private Activity activity;
-    private OnLoadMoreListener onLoadMoreListener;
-    private boolean isLoading;
-    private int visibleThreshold = 5;
-    private int lastVisibleItem, totalItemCount;
 
     public ContentListPatientAdapter(RecyclerView recyclerView, List<Patient> patientList, Activity activity) {
-        this.patientList = patientList;
-        this.activity = activity;
-
-        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                totalItemCount = linearLayoutManager.getItemCount();
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-               if (!isLoading && linearLayoutManager.findLastCompletelyVisibleItemPosition() == patientList.size() - 1) {
-                    if (onLoadMoreListener != null) {
-                        onLoadMoreListener.onLoadMore();
-                    }
-                    isLoading = true;
-                }
-            }
-        });
-    }
-
-    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
-        this.onLoadMoreListener = onLoadMoreListener;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return patientList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        super(recyclerView, patientList, activity);
     }
 
     @NonNull
@@ -80,7 +45,7 @@ public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof PatientViewHolder){
-            Patient patient = patientList.get(position);
+            Patient patient = (Patient) records.get(position);
             ((PatientViewHolder) viewHolder).contentPatientBinding.setPatient(patient);
         }else
         if (viewHolder instanceof LoadingViewHolder){
@@ -88,19 +53,6 @@ public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return patientList.size();
-    }
-
-    public void setLoaded() {
-        isLoading = false;
-    }
-
-    public void setFarmaciaList(List<Patient> patientList) {
-        this.patientList = patientList;
-        notifyDataSetChanged();
-    }
 
     public class PatientViewHolder extends RecyclerView.ViewHolder{
 
@@ -113,7 +65,7 @@ public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    private class LoadingViewHolder extends RecyclerView.ViewHolder {
+    public class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         ProgressBar progressBar;
 
@@ -125,13 +77,5 @@ public class ContentListPatientAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    public boolean isLoading() {
-        return isLoading;
-    }
-
-    private void showLoadingView(LoadingViewHolder viewHolder, int position) {
-        //ProgressBar would be displayed
-
-    }
-
+    protected void showLoadingView(ContentListPatientAdapter.LoadingViewHolder viewHolder, int position) {}
 }
