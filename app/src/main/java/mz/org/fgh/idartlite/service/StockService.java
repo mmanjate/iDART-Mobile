@@ -47,7 +47,7 @@ public class StockService extends BaseService {
         return getDataBaseHelper().getStockDao().getAllStocksByClinicAndDrug(clinic, drug);
     }
 
-    public void updateStock(DispensedDrug dispensedDrug) throws SQLException {
-        getDataBaseHelper().getStockDao().updateStock(dispensedDrug);
+    public void updateStock(Stock stock) throws SQLException {
+        getDataBaseHelper().getStockDao().update(stock);
     }
 }

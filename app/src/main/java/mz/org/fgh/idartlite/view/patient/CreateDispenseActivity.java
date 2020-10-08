@@ -106,7 +106,11 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
         loadSelectedPrescriptionToForm();
 
+        if (getApplicationStep().isApplicationstepCreate())
         this.loadPrescribedDrugsOfLastPatientPrescription();
+
+        if(getApplicationStep().isApplicationStepDisplay())
+            getRelatedViewModel().setViewListRemoveButton(false);
 
         activityCreateDispenseBinding.dispenseDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,6 +259,10 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             }
         });
 
+        if (getApplicationStep().isApplicationStepDisplay()){
+            disableAllSpinners();
+        }
+
     }
 
     private void setDispenseQuantityForEachSelectedDrug(){
@@ -262,7 +270,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
         tempSelectedDrugs.addAll(this.selectedDrugs);
 
-        this.selectedDrugs.removeAll(this.selectedDrugs);
+        this.selectedDrugs = new ArrayList<>();
 
         int i = 1;
         int qtdADispensar;
@@ -405,9 +413,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
     }
 
     private void displaySelectedDrugs() {
-        if (listbleRecycleViewAdapter != null) {
-            listbleRecycleViewAdapter.notifyDataSetChanged();
-        } else {
+
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
             rcvSelectedDrugs.setLayoutManager(mLayoutManager);
             rcvSelectedDrugs.setItemAnimator(new DefaultItemAnimator());
@@ -415,8 +421,6 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
             listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvSelectedDrugs, this.selectedDrugs, this);
             rcvSelectedDrugs.setAdapter(listbleRecycleViewAdapter);
-        }
-
     }
 
     public void loadFormData(){
@@ -503,8 +507,13 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
     private int getQuantidadeADispensar(Drug drug){
 
         int supply = ((ValorSimples) activityCreateDispenseBinding.spnDuration.getSelectedItem()).getId();
-
-        return (supply/4) * drug.getPackSize();
+        int qtdAdispensar;
+        if(supply == 2) {
+            qtdAdispensar = (int) (0.5 * drug.getPackSize());
+        }else {
+            qtdAdispensar = (supply / 4) * drug.getPackSize();
+        }
+        return qtdAdispensar;
     }
 
     public String validateDispenseDurationByPrescription(){
@@ -574,6 +583,15 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
         }catch (SQLException ex){
         }
         return prescribedDrugs;
+    }
+
+    private void changeAllSpinnersStatus(boolean status){
+        activityCreateDispenseBinding.spnDuration.setEnabled(status);
+        activityCreateDispenseBinding.spnDrugs.setEnabled(status);
+    }
+
+    public void disableAllSpinners(){
+        changeAllSpinnersStatus(false);
     }
 
 }

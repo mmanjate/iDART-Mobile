@@ -32,6 +32,7 @@ import mz.org.fgh.idartlite.adapter.StockEntranceAdapter;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
+import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.common.ListbleDialogListener;
 import mz.org.fgh.idartlite.common.RecyclerTouchListener;
 import mz.org.fgh.idartlite.databinding.FragmentDispenseBinding;
@@ -94,6 +95,7 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
                 bundle.putSerializable("user", getCurrentUser());
                 bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
                 bundle.putSerializable("patient", getMyActivity().getPatient());
+                bundle.putSerializable("step", ApplicationStep.STEP_CREATE);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -160,15 +162,36 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
     public boolean onMenuItemClick(MenuItem item){
         switch (item.getItemId()){
             case R.id.edit:
+                try {
+                    String editErrors = getRelatedViewModel().dispenseCanBeEdited();
+
+                    if (Utilities.stringHasValue(editErrors)){
+                        Utilities.displayAlertDialog(DispenseFragment.this.getContext(),editErrors).show();
+                    }else {
                 Map<String, Object> params = new HashMap<>();
                 params.put("patient", getMyActivity().getPatient());
                 params.put("user", getCurrentUser());
                 params.put("clinic", getMyActivity().getCurrentClinic());
                 params.put("dispense", getRelatedViewModel().getDispense());
+                params.put("step", ApplicationStep.STEP_EDIT);
                 nextActivity(CreateDispenseActivity.class,params);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 return true;
             case R.id.remove:
                 Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(),DispenseFragment.this.getString(R.string.list_item_delete_msg),dispensePosition,DispenseFragment.this).show();
+                return true;
+
+            case R.id.viewDetails:
+                Map<String, Object>  params = new HashMap<>();
+                params.put("patient", getMyActivity().getPatient());
+                params.put("user", getCurrentUser());
+                params.put("clinic", getMyActivity().getCurrentClinic());
+                params.put("dispense", getRelatedViewModel().getDispense());
+                params.put("step", ApplicationStep.STEP_DISPLAY);
+                nextActivity(CreateDispenseActivity.class, params);
                 return true;
             default:
                 return false;
@@ -179,26 +202,25 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
     @Override
     public void remove(int position) {
 
-        if(dispenseList.get(position).getSyncStatus().equals("R")){
-            dispenseList.remove(dispenseList.get(position));
+        String errorMsg = getRelatedViewModel().checkDispenseRemoveConditions();
 
-            for (int i = 0; i < dispenseList.size(); i++){
-                dispenseList.get(i).setListPosition(i+1);
-            }
-            rcvDispences.getAdapter().notifyItemRemoved(position);
-            rcvDispences.removeViewAt(position);
-            rcvDispences.getAdapter().notifyItemRangeChanged(position, rcvDispences.getAdapter().getItemCount());
+        if(!Utilities.stringHasValue(errorMsg)){
 
             try {
-                getRelatedViewModel().deleteDispense(dispenseList.get(position));
+                dispenseList.remove(getRelatedViewModel().getDispense());
+
+                rcvDispences.getAdapter().notifyItemRemoved(position);
+                rcvDispences.removeViewAt(position);
+                rcvDispences.getAdapter().notifyItemRangeChanged(position, rcvDispences.getAdapter().getItemCount());
+
+                getRelatedViewModel().deleteDispense(getRelatedViewModel().getDispense());
             } catch (SQLException e) {
-                e.printStackTrace();
+                Utilities.displayAlertDialog(DispenseFragment.this.getContext(), getString(R.string.record_sucessfuly_removed)).show();
             }
         }
         else {
-            Utilities.displayAlertDialog(DispenseFragment.this.getContext(),"A Dispensa nao pode ser removido uma vez que ja foi sicronizado com a central").show();
+            Utilities.displayAlertDialog(DispenseFragment.this.getContext(),errorMsg).show();
         }
-
     }
 
     @Override
