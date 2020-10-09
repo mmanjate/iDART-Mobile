@@ -192,7 +192,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             public void onClick(View view) {
                if (selectedDrugs == null) selectedDrugs = new ArrayList<>();
 
-               if ( prescriptionBinding.autCmpDrugs.getText() != null){
+               if ( prescriptionBinding.autCmpDrugs.getText().length() > 0){
                    Listble<Drug> listble = (Listble<Drug>) selectedDrug;
 
                    if (!selectedDrugs.contains(listble)) {
