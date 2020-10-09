@@ -62,6 +62,8 @@ public class PatientVM extends SearchVM<Patient> {
 
     @Override
     protected void displaySearchResults() {
+        Utilities.hideSoftKeyboard(getRelatedActivity());
+
         getRelatedActivity().displaySearchResult();
     }
 

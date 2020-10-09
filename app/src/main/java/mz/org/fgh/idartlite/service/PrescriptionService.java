@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.service;
 import android.app.Application;
 
 import com.google.gson.internal.LinkedTreeMap;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
 import org.json.JSONException;
 
@@ -62,7 +63,11 @@ public class PrescriptionService extends BaseService {
 
     public void updatePrescription(Prescription prescription) throws SQLException {
         getDataBaseHelper().getPrescriptionDao().update(prescription);
-        getDataBaseHelper().getPrescribedDrugDao().deleteBuilder().where().eq(PrescribedDrug.COLUMN_PRESCRIPTION, prescription.getId());
+
+        DeleteBuilder<PrescribedDrug, Integer> deleteBuilder = getDataBaseHelper().getPrescribedDrugDao().deleteBuilder();
+        deleteBuilder.where().eq(PrescribedDrug.COLUMN_PRESCRIPTION, prescription.getId());
+        deleteBuilder.delete();
+
         getDataBaseHelper().getPrescribedDrugDao().create(prescription.getPrescribedDrugs());
     }
 

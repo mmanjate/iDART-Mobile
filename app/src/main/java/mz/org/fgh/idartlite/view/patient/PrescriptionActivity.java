@@ -105,8 +105,13 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             }
         }
 
+        if (getApplicationStep().isApplicationstepCreate() || getApplicationStep().isApplicationStepEdit()){
+            getRelatedViewModel().setViewListRemoveButton(true);
+        }
+
         if (getApplicationStep().isApplicationstepCreate()){
             try {
+
                 getRelatedViewModel().loadLastPatientPrescription();
                 getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.getCurrentDate());
                 getRelatedViewModel().getPrescription().setExpiryDate(null);
@@ -410,10 +415,11 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
     public void loadFormData() {
         getRelatedViewModel().getPrescription().setSupply(((ValorSimples) prescriptionBinding.spnDuration.getSelectedItem()).getId());
-        getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.createDate(prescriptionBinding.prescriptionDate.getText().toString(), "dd-MM-YYYY"));
+        getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.createDate(prescriptionBinding.prescriptionDate.getText().toString(), DateUtilitis.DATE_FORMAT));
         getRelatedViewModel().getPrescription().setDispenseType((DispenseType) prescriptionBinding.spnDispenseType.getSelectedItem());
         getRelatedViewModel().getPrescription().setTherapeuticRegimen((TherapeuticRegimen) prescriptionBinding.spnRegime.getSelectedItem());
         getRelatedViewModel().getPrescription().setTherapeuticLine((TherapeuticLine) prescriptionBinding.spnLine.getSelectedItem());
+        getRelatedViewModel().getPrescription().generateNextSeq();
 
         if (getRelatedViewModel().getPrescription().isUrgent()) {
 

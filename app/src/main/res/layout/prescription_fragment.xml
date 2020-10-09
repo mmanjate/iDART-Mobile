@@ -8,6 +8,7 @@
         <variable
             name="viewModel"
             type="mz.org.fgh.idartlite.viewmodel.PrescriptionVM" />
+        <import type="android.view.View"/>
     </data>
 
     <FrameLayout
@@ -51,6 +52,7 @@
             app:srcCompat="@drawable/ic_plus"
             android:layout_gravity="bottom|end"
             app:elevation="6dp"
+            android:visibility="@{viewModel.prescription.patient.hasEndEpisode() ? View.GONE : View.VISIBLE}"
             android:onClick="@{() -> viewModel.requestForNewRecord()}"
             android:layout_margin="@dimen/fab_margin"
             app:pressedTranslationZ="12dp"/>

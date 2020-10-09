@@ -44,7 +44,7 @@ public class StockEntranceAdapter extends AbstractRecycleViewAdapter<Stock> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        if (viewHolder instanceof ContentListPatientAdapter.PatientViewHolder){
+        if (viewHolder instanceof StockEntranceViewHolder){
             ((StockEntranceViewHolder) viewHolder).contentEntranceStockBinding.setStock(records.get(position));
         }else
         if (viewHolder instanceof LoadingViewHolder){

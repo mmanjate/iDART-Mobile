@@ -197,8 +197,10 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="40"
                             android:drawableRight="@drawable/ic_patient_search"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                            style="@style/bottom_spinner_style"
                             android:padding="@dimen/dimen_4dp"
-                            android:text="" />
+                            />
 
                         <ImageView
                             android:id="@+id/imv_add_selected_drug"

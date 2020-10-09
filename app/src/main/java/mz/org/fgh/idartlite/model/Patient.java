@@ -171,6 +171,15 @@ public class Patient extends BaseModel {
 		return this.episodes.get(0);
 	}
 
+	public boolean hasEndEpisode(){
+		if (!Utilities.listHasElements(this.episodes)) return  false;
+
+		for (Episode episode : this.episodes){
+			if (Utilities.stringHasValue(episode.getStopReason())) return true;
+		}
+		return false;
+	}
+
 	public int getAge() {
 		int age = 0;
 		try {
