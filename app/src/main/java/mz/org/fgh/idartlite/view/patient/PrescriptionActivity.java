@@ -419,7 +419,8 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         getRelatedViewModel().getPrescription().setDispenseType((DispenseType) prescriptionBinding.spnDispenseType.getSelectedItem());
         getRelatedViewModel().getPrescription().setTherapeuticRegimen((TherapeuticRegimen) prescriptionBinding.spnRegime.getSelectedItem());
         getRelatedViewModel().getPrescription().setTherapeuticLine((TherapeuticLine) prescriptionBinding.spnLine.getSelectedItem());
-        getRelatedViewModel().getPrescription().generateNextSeq();
+
+        if (getApplicationStep().isApplicationstepCreate()) getRelatedViewModel().getPrescription().generateNextSeq();
 
         if (getRelatedViewModel().getPrescription().isUrgent()) {
 
