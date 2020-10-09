@@ -132,6 +132,8 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     }
 
     public User getCurrentUser() {
+        if (getRelatedViewModel() == null) return null;
+
         return getRelatedViewModel().getCurrentUser();
     }
 

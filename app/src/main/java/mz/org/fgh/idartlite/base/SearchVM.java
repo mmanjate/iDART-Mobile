@@ -15,6 +15,8 @@ import mz.org.fgh.idartlite.util.Utilities;
 
 public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implements SearchPaginator<T>{
 
+    public static final int PAGE_SIZE = 20;
+
     protected List<T> searchResults;
 
     protected List<T> allDisplyedRecords;
@@ -83,7 +85,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     @Override
     public int getPageSize() {
-        return pageSize;
+        return PAGE_SIZE;
     }
 
     public void loadMoreRecords(RecyclerView rv, AbstractRecycleViewAdapter adapter) {

@@ -27,12 +27,13 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.PatientActivity;
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
 public class SearchPatientActivity extends BaseActivity {
 
-    //private static final int PATIENT_PAGE_SIZE = 4;
+
     private RecyclerView recyclerPatient;
     private ActivitySearchPatientBinding searchPatientBinding;
     private ContentListPatientAdapter adapter;
@@ -54,6 +55,15 @@ public class SearchPatientActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(Utilities.stringHasValue(getRelatedViewModel().getSearchParam())) {
+            getRelatedViewModel().initSearch();
+            Utilities.hideSoftKeyboard(SearchPatientActivity.this);
+        }
     }
 
     @Override

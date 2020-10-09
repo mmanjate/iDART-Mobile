@@ -72,11 +72,6 @@ public class PatientVM extends SearchVM<Patient> {
         return searchPatient(this.searchParam.trim(), getCurrentClinic());
     }
 
-    @Override
-    public int getPageSize() {
-        return 5;
-    }
-
     public List<Patient> getAllPatient() throws SQLException {
         return patientService.getALLPatient();
     }
