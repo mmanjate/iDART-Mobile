@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.DeflaterInputStream;
 
@@ -104,7 +105,6 @@ public class RestDispenseService extends BaseService {
         SyncDispense syncDispense = new SyncDispense();
         try {
             Episode episode = episodeService.getAllEpisodesByPatient(dispense.getPrescription().getPatient()).get(0);
-            syncDispense.setId(dispense.getId());
             syncDispense.setDate(dispense.getPickupDate());
             syncDispense.setClinicalstage(0);
             syncDispense.setCurrent('T');

@@ -10,6 +10,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.base.BaseService;
@@ -36,16 +39,16 @@ public class RestUserService extends BaseService {
 
             RESTServiceHandler handler = new RESTServiceHandler();
             handler.setUser(getCurrentUser());
-
+            JSONObject object = new JSONObject();
             Map<String, Object> params = new ArrayMap<String, Object>();
             params.put("username", "eq."+currentUser.getUserName());
             params.put("password", "eq."+currentUser.getPassword());
             params.put("clinicuuid", "eq."+clinicuuid);
             handler.addHeader("Content-Type","Application/json");
 
-            handler.objectRequest(url, Request.Method.GET, null, User[].class, new Response.Listener<User[]>() {
+            handler.objectRequest(url, Request.Method.GET, null, JSONObject.class, new Response.Listener<JSONObject>() {
                 @Override
-                public void onResponse(User[] response) {
+                public void onResponse(JSONObject response) {
                     Log.d("Response", response.toString());
                 }
             }, new Response.ErrorListener() {

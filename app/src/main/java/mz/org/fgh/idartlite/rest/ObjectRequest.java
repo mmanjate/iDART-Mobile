@@ -110,6 +110,10 @@ public class ObjectRequest<T> extends JsonRequest<T> {
 
             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
 
+            if(json.isEmpty()) {
+                return Response.success(response.headers, HttpHeaderParser.parseCacheHeaders(response));
+            }
+
             if (clazz.getName().equals(JSONObject.class.getName())) {
                 try {
                     JSONObject object = new JSONObject(json);

@@ -16,12 +16,12 @@ import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.StockService;
 import mz.org.fgh.idartlite.service.restService.RestStockService;
 
-public class RestPostConfigDataWorkerScheduler extends Worker {
+public class RestPostStockWorkerScheduler extends Worker {
     private static final String TAG = "RestPostConfigDataWorke";
     private List<Stock> stockList;
     private StockService stockService;
 
-    public RestPostConfigDataWorkerScheduler(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public RestPostStockWorkerScheduler(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
