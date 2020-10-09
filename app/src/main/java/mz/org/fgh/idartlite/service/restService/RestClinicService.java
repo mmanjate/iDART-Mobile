@@ -47,12 +47,12 @@ public class RestClinicService extends BaseService {
         clinicService = new ClinicService(getApplication(), null);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
         ArrayList<Clinic> clinicList = new ArrayList<>();
-        RESTServiceHandler handler = new RESTServiceHandler();
+
 
         if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {
 
-                Map<String, Object> params = new ArrayMap<String, Object>();
+                RESTServiceHandler handler = new RESTServiceHandler();
                 handler.addHeader("Content-Type", "Application/json");
 
                 handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
@@ -65,7 +65,7 @@ public class RestClinicService extends BaseService {
                                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) clinic;
 
                                     Clinic clinicRest = new Clinic();
-                                    clinicRest.setId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
+                                    clinicRest.setRestId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
                                     clinicRest.setCode(Objects.requireNonNull(itemresult.get("code")).toString());
                                     clinicRest.setClinicName(Objects.requireNonNull(itemresult.get("clinicname")).toString());
                                     clinicRest.setPharmacyType(pharmacyTypeService.getPharmacyType(Objects.requireNonNull(itemresult.get("facilitytype")).toString()));

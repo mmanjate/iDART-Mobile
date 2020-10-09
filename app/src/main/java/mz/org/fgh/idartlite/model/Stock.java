@@ -29,6 +29,7 @@ public class Stock extends BaseModel implements Listble {
     public static final String COLUMN_CLINIC = "clinic_id";
     public static final String COLUMN_UUID = "uuid";
     public static final String COLUMN_SYNC_STATUS = "sync_status";
+    public static final String COLUMN_REST_ID = "restid";
 
     @DatabaseField(columnName = "id", generatedId = true)
     private int id;
@@ -71,6 +72,9 @@ public class Stock extends BaseModel implements Listble {
 
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
+
+    @DatabaseField(columnName = COLUMN_REST_ID)
+    private int restid;
 
     public int getId() {
         return id;
@@ -205,6 +209,10 @@ public class Stock extends BaseModel implements Listble {
     public void setClinic(Clinic clinic) {
         this.clinic = clinic;
     }
+
+    public int getRestId() { return restid; }
+
+    public void setRestId(int restid) { this.restid = restid; }
 
     @Override
     public boolean equals(Object o) {

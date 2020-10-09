@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecuteGetWorkerScheduler;
+import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecuteWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityHomeBinding;
@@ -21,9 +21,6 @@ public class HomeActivity extends BaseActivity {
         activityHomeBinding.setViewModel(getRelatedViewModel());
 
         activityHomeBinding.executePendingBindings();
-
-        ExecuteGetWorkerScheduler executeGetWorkerScheduler = new ExecuteGetWorkerScheduler(getApplicationContext());
-        executeGetWorkerScheduler.initDataTaskWork();
     }
 
     @Override

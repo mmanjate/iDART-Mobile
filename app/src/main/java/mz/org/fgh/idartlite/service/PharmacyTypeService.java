@@ -37,16 +37,11 @@ public class PharmacyTypeService extends BaseService {
     public boolean checkPharmacyType(Object pharmacyType) {
 
         boolean result = false;
-
         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) pharmacyType;
-
         try {
-
             PharmacyType localPharmacyType = getPharmacyType(Objects.requireNonNull(itemresult.get("value")).toString());
-
             if(localPharmacyType != null)
                 result = true;
-
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -19,6 +19,7 @@ import mz.org.fgh.idartlite.model.User;
 
 import static java.util.Objects.*;
 import static mz.org.fgh.idartlite.model.Drug.COLUMN_FNMCODE;
+import static mz.org.fgh.idartlite.model.Drug.COLUMN_REST_ID;
 
 public class DrugService extends BaseService {
 
@@ -57,6 +58,17 @@ public class DrugService extends BaseService {
         return null;
     }
 
+    public Drug getDrugByRestID(int restId) throws SQLException {
+
+        List<Drug> typeList = getDataBaseHelper().getDrugDao().queryForEq(COLUMN_REST_ID, restId);
+
+        if (typeList != null)
+            if (!typeList.isEmpty())
+                return typeList.get(0);
+
+        return null;
+    }
+
     public boolean checkDrug(Object drug) {
 
         boolean result = false;
@@ -85,7 +97,7 @@ public class DrugService extends BaseService {
             DiseaseType diseaseType = diseaseTypeService.getdDiseaseType((requireNonNull(itemresult.get("tipodoenca")).toString()));
             Form form = formService.getForm((requireNonNull(itemSubResult.get("form")).toString()));
 
-            localDrug.setId((int) Float.parseFloat(requireNonNull(itemresult.get("id")).toString()));
+            localDrug.setRestId((int) Float.parseFloat(requireNonNull(itemresult.get("id")).toString()));
             localDrug.setDescription((requireNonNull(itemresult.get("name")).toString()));
             localDrug.setDiseaseType(diseaseType);
             localDrug.setFnmcode((requireNonNull(itemresult.get("atccode_id")).toString()));

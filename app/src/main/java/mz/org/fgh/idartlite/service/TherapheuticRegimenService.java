@@ -79,7 +79,7 @@ public class TherapheuticRegimenService extends BaseService {
         try {
             LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) regimen;
 
-            localRegimen.setId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("regimeid")).toString()));
+            localRegimen.setRestId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("regimeid")).toString()));
             localRegimen.setRegimenCode(Objects.requireNonNull(itemresult.get("codigoregime")).toString());
             localRegimen.setDescription(Objects.requireNonNull(itemresult.get("regimeesquema")).toString());
             createTherapheuticRegimen(localRegimen);

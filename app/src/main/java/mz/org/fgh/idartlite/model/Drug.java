@@ -19,6 +19,7 @@ public class Drug extends BaseModel implements Listble {
     public static final String COLUMN_INSTRUCTION = "instruction";
     public static final String COLUMN_FORM = "form_id";
     public static final String COLUMN_DISEASE_TYPE = "diseaseType_id";
+    public static final String COLUMN_REST_ID = "restid";
 
     @DatabaseField(columnName = "id", generatedId = true)
     private int id;
@@ -40,6 +41,9 @@ public class Drug extends BaseModel implements Listble {
 
     @DatabaseField(columnName = COLUMN_DISEASE_TYPE, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private DiseaseType diseaseType;
+
+    @DatabaseField(columnName = COLUMN_REST_ID)
+    private int restid;
 
     private int quantity;
 
@@ -112,6 +116,10 @@ public class Drug extends BaseModel implements Listble {
     public void setInstruction(String instruction) {
         this.instruction = instruction;
     }
+
+    public int getRestId() { return restid; }
+
+    public void setRestId(int restid) { this.restid = restid; }
 
     @Override
     public boolean equals(Object o) {

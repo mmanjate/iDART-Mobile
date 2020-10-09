@@ -1,8 +1,6 @@
 package mz.org.fgh.idartlite.viewmodel;
 
 import android.app.Application;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,15 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
-import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecutePostWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.UserService;
 import mz.org.fgh.idartlite.service.restService.RestPatientService;
+import mz.org.fgh.idartlite.service.restService.RestRunDataForTestService;
 import mz.org.fgh.idartlite.service.restService.RestUserService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.HomeActivity;
@@ -113,7 +109,9 @@ public class LoginVM extends BaseViewModel {
 
                 } else {
                     // colocar no lugar certo
-                    RestPatientService.restGetAllPatient(null);
+                    RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(),getCurrentUser());
+                    runDataForTestService.notify();
+
                     if (!userService.login(getCurrentUser())) {
                         if (Utilities.listHasElements(clinicService.getCLinic())) {
                             setCurrentClinic(clinicService.getCLinic().get(0));

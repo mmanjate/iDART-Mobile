@@ -3,18 +3,13 @@ package mz.org.fgh.idartlite.view;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.lifecycle.Observer;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecuteGetWorkerScheduler;
-import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecutePostWorkerScheduler;
+import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecuteWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.RestResponseListener;
@@ -23,7 +18,6 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.restService.RestClinicService;
 import mz.org.fgh.idartlite.service.restService.RestDiseaseTypeService;
-import mz.org.fgh.idartlite.service.restService.RestDispenseService;
 import mz.org.fgh.idartlite.service.restService.RestDispenseTypeService;
 import mz.org.fgh.idartlite.service.restService.RestDrugService;
 import mz.org.fgh.idartlite.service.restService.RestFormService;
@@ -47,11 +41,6 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
         setContentView(R.layout.activity_splash);
         restClinicService = new RestClinicService(getApplication(), null);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
-
-        // retirar apos os testes.
-        ExecutePostWorkerScheduler executePostWorkerScheduler = new ExecutePostWorkerScheduler(getApplicationContext());
-        executePostWorkerScheduler.initPostPatientDataTaskWork();
-        executePostWorkerScheduler.initPostStockDataTaskWork();
 
         new Thread(new Runnable() {
             public void run() {
@@ -104,7 +93,6 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
                 Utilities.displayAlertDialog(SplashActivity.this, errormsg, SplashActivity.this).show();
             }
         });
-
     }
 
     @Override

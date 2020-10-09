@@ -60,7 +60,7 @@ public class FormService extends BaseService {
         try {
             LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) form;
 
-            localForm.setId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
+            localForm.setRestId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
             localForm.setUnit((Objects.requireNonNull(itemresult.get("formlanguage1")).toString()));
             localForm.setDescription((Objects.requireNonNull(itemresult.get("form")).toString()));
             saveForm(localForm);

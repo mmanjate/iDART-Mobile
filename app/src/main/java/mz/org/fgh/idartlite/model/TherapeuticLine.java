@@ -15,6 +15,7 @@ public class TherapeuticLine extends BaseModel {
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_CODE = "code";
 	public static final String COLUMN_DESCRIPTION = "description";
+	public static final String COLUMN_REST_ID = "restid";
 
 	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
@@ -24,6 +25,9 @@ public class TherapeuticLine extends BaseModel {
 
 	@DatabaseField(columnName = COLUMN_DESCRIPTION)
 	private String description;
+
+	@DatabaseField(columnName = COLUMN_REST_ID)
+	private int restid;
 
 	public int getId() {
 		return id;
@@ -48,6 +52,10 @@ public class TherapeuticLine extends BaseModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public int getRestId() { return restid; }
+
+	public void setRestId(int restid) { this.restid = restid; }
 
 	@Override
 	public boolean equals(Object o) {
