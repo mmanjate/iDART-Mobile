@@ -140,6 +140,8 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     }
 
     public Clinic getCurrentClinic() {
+        if (getRelatedViewModel() == null) return null;
+        
         return getRelatedViewModel().getCurrentClinic();
     }
 

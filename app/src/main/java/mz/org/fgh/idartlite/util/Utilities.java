@@ -269,4 +269,38 @@ public class Utilities {
        }
     }
 
+    public static String garantirXCaracterOnNumber(long number, int x){
+        String formatedNumber = "";
+        int numberOfCharacterToIncrise = 0;
+
+        formatedNumber = number + "";
+
+        numberOfCharacterToIncrise = x - formatedNumber.length();
+
+        for(int i = 0; i < numberOfCharacterToIncrise; i++) formatedNumber = "0" + formatedNumber;
+
+        return formatedNumber;
+    }
+
+    public static String concatStrings(String currentString, String toConcant, String scapeStr){
+        if (!stringHasValue(currentString)) return toConcant;
+
+        if (!stringHasValue(toConcant)) return currentString;
+
+        return currentString + scapeStr+ toConcant;
+    }
+
+    public static boolean isStringIn(String value, String... inValues){
+        if (inValues == null || value == null) return false;
+
+        for (String str : inValues){
+            if (value.equals(str)) return true;
+        }
+
+        return false;
+    }
+
+    public static boolean listHasElements(ArrayList<?> list){
+        return list != null && !list.isEmpty();
+    }
 }

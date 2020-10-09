@@ -61,6 +61,8 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
         dispenseDrugService = new DispenseDrugService(getMyActivity().getApplication(), getCurrentUser());
         this.rcvFragmentStock = fragmentStockEntranceBinding.rcvFragmentStock;
 
+        getRelatedViewModel().setEntranceFragment(this);
+
         fragmentStockEntranceBinding.newStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

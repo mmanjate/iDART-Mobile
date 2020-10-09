@@ -318,4 +318,19 @@ public class Prescription extends BaseModel {
 
 		return totalDispenseSupply;
 	}
+
+	public void generateNextSeq() {
+		long lastSeq = 0;
+		if (Utilities.stringHasValue(this.prescriptionSeq)){
+			lastSeq = Long.parseLong(this.prescriptionSeq);
+		}else {
+			lastSeq = 0;
+		}
+
+		setPrescriptionSeq(String.valueOf(Utilities.garantirXCaracterOnNumber(lastSeq+1, 4)));
+	}
+
+	public String getUiId(){
+		return Utilities.concatStrings(this.patient.getNid(), this.prescriptionSeq, "-");
+	}
 }

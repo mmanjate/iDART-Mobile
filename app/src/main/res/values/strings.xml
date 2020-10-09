@@ -139,5 +139,8 @@
     <string name="new_prescription_creation">A ultima prescrição ainda não teve todos os aviamentos efectuados, confirma anular a mesma e criar nova?</string>
     <string name="cant_edit_synced_dispense">Não pode efectuar alterações sobre este aviamento pois o mesmo já foi sincronizada com o iDART central.</string>
     <string name="dispense_cant_be_removed_msg">Esta Dispensa não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
+    <string name="error_removing_record">Ocorreu um erro ao remover o registo.</string>
+    <string name="error_msg_server_offline">Servidor offline, não será possível realizar sincronizações, por favor tente mais tarde.</string>
+    <string name="error_msg_server_offline_records_wont_be_sync">Servidor offline, não será possível realizar sincronizações dos registos criados.</string>
 
 </resources>
