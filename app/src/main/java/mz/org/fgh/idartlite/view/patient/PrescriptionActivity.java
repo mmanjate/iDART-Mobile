@@ -103,8 +103,13 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             }
         }
 
+        if (getApplicationStep().isApplicationstepCreate() || getApplicationStep().isApplicationStepEdit()){
+            getRelatedViewModel().setViewListRemoveButton(true);
+        }
+
         if (getApplicationStep().isApplicationstepCreate()){
             try {
+
                 getRelatedViewModel().loadLastPatientPrescription();
                 getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.getCurrentDate());
                 getRelatedViewModel().getPrescription().setExpiryDate(null);

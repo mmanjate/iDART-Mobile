@@ -170,6 +170,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:text="@string/see_olny_regimen_grugs"
                             style="@style/input_labels"
                             />
@@ -182,6 +183,7 @@
                             android:text="@string/see_olny_regimen_grugs"
                             android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:checked="@{viewModel.seeOnlyOfRegime}"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:onClick="@{() -> viewModel.changeDrugsListingMode()}"/>
 
 
@@ -189,12 +191,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/drugs"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             style="@style/input_labels"
                             />
                         <Spinner
                             android:id="@+id/spn_drugs"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             style="@style/bottom_spinner_style"
                             android:padding="@dimen/dimen_4dp"
                             />
@@ -204,6 +208,7 @@
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/ic_save"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:layout_margin="@dimen/dimen_10dp"
                             android:layout_gravity="center"/>

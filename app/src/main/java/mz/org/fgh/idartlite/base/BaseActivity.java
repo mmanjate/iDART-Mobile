@@ -113,6 +113,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
             intent.putExtras(bundle);
         }
         startActivity(intent);
+        finish();
     }
 
     @Override
