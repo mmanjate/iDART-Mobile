@@ -71,6 +71,10 @@ public class PrescriptionService extends BaseService {
         getDataBaseHelper().getPrescribedDrugDao().create(prescription.getPrescribedDrugs());
     }
 
+    public void updatePrescriptionEntity(Prescription prescription) throws SQLException {
+        getDataBaseHelper().getPrescriptionDao().update(prescription);
+    }
+
     public void closePrescription(Prescription prescription) throws SQLException {
         getDataBaseHelper().getPrescriptionDao().closePrescription(prescription);
     }

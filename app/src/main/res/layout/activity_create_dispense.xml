@@ -83,8 +83,7 @@
                 android:drawableLeft="@drawable/ic_calendar"
                 android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.dispense.pickupDate)}"
                 android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
-                android:paddingStart="@dimen/dimen_4dp"
-                android:paddingLeft="@dimen/dimen_4dp" />
+                style="@style/bottom_border_edit_text_style"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -96,7 +95,8 @@
                 android:id="@+id/spn_duration"
                 android:layout_width="fill_parent"
                 android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                style="@style/bottom_spinner_style"/>
             />
 
             <TextView
@@ -150,7 +150,8 @@
                 android:layout_weight="0"
                 android:drawableRight="@drawable/ic_patient_search"
                 android:padding="@dimen/dimen_4dp"
-                android:text="" />
+                android:text=""
+                />
 
             <ImageView
                 android:id="@+id/imv_add_selected_drug"

@@ -163,8 +163,13 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
         switch (item.getItemId()){
             case R.id.edit:
                 try {
-                    String editErrors = getRelatedViewModel().dispenseCanBeEdited();
+                    String editErrors = getRelatedViewModel().patientHasEndingEpisode();
 
+                    if (Utilities.stringHasValue(editErrors)){
+                        Utilities.displayAlertDialog(DispenseFragment.this.getContext(),editErrors).show();
+                    }else{
+
+                    editErrors = getRelatedViewModel().dispenseCanBeEdited();
                     if (Utilities.stringHasValue(editErrors)){
                         Utilities.displayAlertDialog(DispenseFragment.this.getContext(),editErrors).show();
                     }else {
@@ -175,7 +180,7 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
                 params.put("dispense", getRelatedViewModel().getDispense());
                 params.put("step", ApplicationStep.STEP_EDIT);
                 nextActivity(CreateDispenseActivity.class,params);
-                    }
+                    }}
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -202,20 +207,28 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
     @Override
     public void remove(int position) {
 
-        String errorMsg = getRelatedViewModel().checkDispenseRemoveConditions();
+        String errorMsg = getRelatedViewModel().patientHasEndingEpisode();
 
         if(!Utilities.stringHasValue(errorMsg)){
 
-            try {
-                dispenseList.remove(getRelatedViewModel().getDispense());
+            errorMsg = getRelatedViewModel().checkDispenseRemoveConditions();
 
-                rcvDispences.getAdapter().notifyItemRemoved(position);
-                rcvDispences.removeViewAt(position);
-                rcvDispences.getAdapter().notifyItemRangeChanged(position, rcvDispences.getAdapter().getItemCount());
+            if(!Utilities.stringHasValue(errorMsg)) {
 
-                getRelatedViewModel().deleteDispense(getRelatedViewModel().getDispense());
-            } catch (SQLException e) {
-                Utilities.displayAlertDialog(DispenseFragment.this.getContext(), getString(R.string.record_sucessfuly_removed)).show();
+                try {
+                    dispenseList.remove(getRelatedViewModel().getDispense());
+
+                    rcvDispences.getAdapter().notifyItemRemoved(position);
+                    rcvDispences.removeViewAt(position);
+                    rcvDispences.getAdapter().notifyItemRangeChanged(position, rcvDispences.getAdapter().getItemCount());
+
+                    getRelatedViewModel().deleteDispense(getRelatedViewModel().getDispense());
+                } catch (SQLException e) {
+                    Utilities.displayAlertDialog(DispenseFragment.this.getContext(), getString(R.string.record_sucessfuly_removed)).show();
+                }
+
+            }else{
+                Utilities.displayAlertDialog(DispenseFragment.this.getContext(),errorMsg).show();
             }
         }
         else {
