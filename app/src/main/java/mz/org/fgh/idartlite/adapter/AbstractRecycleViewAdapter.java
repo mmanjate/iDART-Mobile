@@ -34,7 +34,6 @@ public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends Re
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (linearLayoutManager != null) {
                     totalItemCount = linearLayoutManager.getItemCount();
                     lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                     if (!isLoading && linearLayoutManager.findLastCompletelyVisibleItemPosition() == records.size() - 1) {
@@ -44,7 +43,6 @@ public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends Re
                         isLoading = true;
                     }
                 }
-            }
         });
     }
 

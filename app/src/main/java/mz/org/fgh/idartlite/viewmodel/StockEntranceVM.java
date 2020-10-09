@@ -108,11 +108,6 @@ public class StockEntranceVM extends SearchVM<Stock> {
     }
 
     @Override
-    public int getPageSize() {
-        return 5;
-    }
-
-    @Override
     protected void displaySearchResults() {
         getEntranceFragment().displaySearchResults();
     }

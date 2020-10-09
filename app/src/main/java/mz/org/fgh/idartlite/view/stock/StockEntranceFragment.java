@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
@@ -59,7 +60,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
         super.onViewCreated(view, savedInstanceState);
 
         dispenseDrugService = new DispenseDrugService(getMyActivity().getApplication(), getCurrentUser());
-        this.rcvFragmentStock = fragmentStockEntranceBinding.rcvFragmentStock;
+
 
         getRelatedViewModel().setEntranceFragment(this);
 
@@ -149,8 +150,13 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
     }
 
     public void displaySearchResults(){
-        stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, getRelatedViewModel().getSearchResults(), getMyActivity());
-        displayDataOnRecyclerView(rcvFragmentStock, stockEntranceAdapter, getContext());
+
+        this.rcvFragmentStock = fragmentStockEntranceBinding.rcvFragmentStock;
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rcvFragmentStock.setLayoutManager(layoutManager);
+        rcvFragmentStock.setHasFixedSize(true);
+        stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
+        rcvFragmentStock.setAdapter(stockEntranceAdapter);
 
         stockEntranceAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
