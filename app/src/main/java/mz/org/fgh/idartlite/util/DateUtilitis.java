@@ -1,7 +1,15 @@
 package mz.org.fgh.idartlite.util;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -259,5 +267,21 @@ public class DateUtilitis {
         c.add(Calendar.DAY_OF_MONTH,daysToAdd);
 
         return sdf.format(c.getTime());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static int isWeekend(String stringDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateUtilitis.DATE_FORMAT);
+
+        LocalDate localDate = LocalDate.parse(stringDate, formatter);
+        DayOfWeek dayOfWeek = DayOfWeek.of(localDate.get(ChronoField.DAY_OF_WEEK));
+        switch (dayOfWeek) {
+            case SATURDAY:
+                return 6;
+            case SUNDAY:
+                return 7;
+            default:
+                return 0;
+        }
     }
 }
