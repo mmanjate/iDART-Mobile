@@ -165,6 +165,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="40"
+                                android:dropDownWidth="wrap_content"
                                 style="@style/bottom_border_edit_text_style"
                                 android:drawableRight="@drawable/ic_patient_search"
                                 android:padding="@dimen/dimen_4dp"
