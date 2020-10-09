@@ -18,7 +18,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="MyToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
+    <style name="MyToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Light">
         <item name="colorControlNormal">#1A3963</item>
         <item name="titleTextColor">#1C3B65</item>
         <item name="android:textColorPrimary">#1C3B65</item>
