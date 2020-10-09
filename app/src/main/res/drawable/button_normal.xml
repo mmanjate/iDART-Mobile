@@ -5,7 +5,7 @@
 
         android:color="@color/button_stroke"/>
     <corners
-        android:radius="1dp" />
+        android:radius="@dimen/dimen_22dp" />
 
     <padding
         android:left="@dimen/dimen_1dp"

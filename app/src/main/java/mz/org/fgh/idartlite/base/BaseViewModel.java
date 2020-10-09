@@ -23,8 +23,14 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private boolean viewListRemoveButton;
 
     private Listble selectedListble;
+    protected User currentUser;
+    protected Clinic currentClinic;
 
-    private User currUser;
+    public BaseViewModel(@NonNull Application application) {
+        super(application);
+        callbacks = new PropertyChangeRegistry();
+
+    }
 
     public BaseActivity getRelatedActivity() {
         return relatedActivity;
@@ -32,12 +38,6 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public void setRelatedActivity(BaseActivity relatedActivity) {
         this.relatedActivity = relatedActivity;
-    }
-
-    public BaseViewModel(@NonNull Application application) {
-        super(application);
-        callbacks = new PropertyChangeRegistry();
-
     }
 
     @Override
@@ -68,35 +68,17 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         callbacks.notifyCallbacks(this, fieldId, null);
     }
 
-    public User getCurrentUser() {
-        if (getRelatedActivity() == null) return this.currUser;
-
-        return getRelatedActivity().getCurrentUser();
-    }
-
-    public void setCurrentUser(User currentUser) {
-        getRelatedActivity().setCurrentUser(currentUser);
-    }
-
-    @Bindable
-    public Clinic getCurrentClinic() {
-        return getRelatedActivity().currentClinic;
-    }
-
-    public void setCurrentClinic(Clinic currentClinic) {
-        getRelatedActivity().setCurrentClinic(currentClinic);
-        notifyPropertyChanged(BR.currentClinic);
-    }
-
     public ApplicationStep getCurrentStep(){
         return getRelatedActivity().getApplicationStep();
     }
 
     public String getAppVersionNumber(){
+        if (getRelatedActivity() == null) return null;
         return "iDART Mobile v"+getRelatedActivity().getAppVersionNumber();
     }
 
     public String getAppVersionName(){
+        if (getRelatedActivity() == null) return null;
         return "iDART Mobile v"+getRelatedActivity().getAppVersionName();
     }
 
@@ -124,11 +106,23 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         this.viewListRemoveButton = viewListRemoveButton;
     }
 
-    public User getCurrUser() {
-        return currUser;
+    @Bindable
+    public User getCurrentUser() {
+        return currentUser;
     }
 
-    public void setCurrUser(User currUser) {
-        this.currUser = currUser;
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+        notifyPropertyChanged(BR.currentUser);
+    }
+
+    @Bindable
+    public Clinic getCurrentClinic() {
+        return currentClinic;
+    }
+
+    public void setCurrentClinic(Clinic currentClinic) {
+        this.currentClinic = currentClinic;
+        notifyPropertyChanged(BR.currentClinic);
     }
 }

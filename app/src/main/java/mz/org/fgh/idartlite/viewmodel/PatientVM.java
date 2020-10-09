@@ -10,7 +10,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.service.EpisodeService;
@@ -18,15 +18,15 @@ import mz.org.fgh.idartlite.service.PatientService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.SearchPatientActivity;
 
-public class PatientVM extends BaseViewModel {
+public class PatientVM extends SearchVM<Patient> {
 
     private Patient patient;
     private PatientService patientService;
     private EpisodeService episodeService;
 
     
-    public String searchParam;
-    public List<Patient> searchResults;
+    private String searchParam;
+
 
     public PatientVM(@NonNull Application application) {
         super(application);
@@ -47,26 +47,29 @@ public class PatientVM extends BaseViewModel {
         }
     }
 
+    @Override
     public void initSearch(){
-        if(Utilities.stringHasValue(searchParam)){
-            doSearch();
-            getRelatedActivity().displaySearchResult();
-            if(!Utilities.listHasElements(this.searchResults)){
-                Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.no_search_results)).show();
-            }else {
-                Utilities.hideSoftKeyboard(getRelatedActivity());
-            }
-        }else {
+        if(!Utilities.stringHasValue(searchParam)) {
             Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.nid_or_name_is_mandatory)).show();
+        }else {
+            try {
+                super.initSearch();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void doSearch(){
-        try {
-            this.searchResults = searchPatient(this.searchParam.trim(),getCurrentClinic());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    protected void displaySearchResults() {
+        Utilities.hideSoftKeyboard(getRelatedActivity());
+
+        getRelatedActivity().displaySearchResult();
+    }
+
+    @Override
+    public List<Patient> doSearch() throws SQLException {
+        return searchPatient(this.searchParam.trim(), getCurrentClinic());
     }
 
     public List<Patient> getAllPatient() throws SQLException {
@@ -87,7 +90,7 @@ public class PatientVM extends BaseViewModel {
 
     @Bindable
     public Clinic getClinic(){
-        return getRelatedActivity().getCurrentClinic();
+        return getCurrentClinic();
     }
 
     @Bindable
@@ -100,11 +103,4 @@ public class PatientVM extends BaseViewModel {
         notifyPropertyChanged(BR.searchParam);
     }
 
-    public List<Patient> getSearchResults() {
-        return searchResults;
-    }
-
-    public void setSearchResults(List<Patient> searchResults) {
-        this.searchResults = searchResults;
-    }
 }

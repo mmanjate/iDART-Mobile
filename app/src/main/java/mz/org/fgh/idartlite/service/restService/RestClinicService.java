@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
@@ -31,10 +32,12 @@ import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.StockService;
+import mz.org.fgh.idartlite.service.UserService;
 
 public class RestClinicService extends BaseService {
     private static final String TAG = "RestClinicService";
     private static ClinicService clinicService;
+    private static UserService userService;
     private static PharmacyTypeService pharmacyTypeService;
 
     public RestClinicService(Application application, User currentUser) {
@@ -45,6 +48,8 @@ public class RestClinicService extends BaseService {
 
         String url = BaseService.baseUrl + "/clinic?facilitytype=neq.Unidade%20Sanitária&mainclinic=eq.false";
         clinicService = new ClinicService(getApplication(), null);
+        userService = new UserService(getApplication());
+
         pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
         ArrayList<Clinic> clinicList = new ArrayList<>();
 
@@ -94,8 +99,19 @@ public class RestClinicService extends BaseService {
 
         } else {
             Log.e(TAG, "Response Servidor Offline");
+            try {
             if (listener != null){
-                listener.doOnRestErrorResponse("Servidor offline, por favor tente mais tarde");
+                String errorMsg = "";
+                
+                    if (userService.checkIfUsertableIsEmpty()){
+                        errorMsg = application.getString(R.string.error_msg_server_offline);
+                    }else {
+                        errorMsg = application.getString(R.string.error_msg_server_offline_records_wont_be_sync);
+                    }
+                listener.doOnRestErrorResponse(errorMsg);
+            }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
         return clinicList;

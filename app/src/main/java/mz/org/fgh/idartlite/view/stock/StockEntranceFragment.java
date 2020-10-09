@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,12 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.adapter.ClickListener;
 import mz.org.fgh.idartlite.adapter.StockEntranceAdapter;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
 import mz.org.fgh.idartlite.common.ListbleDialogListener;
+import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.FragmentStockEntranceBinding;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.service.DispenseDrugService;
@@ -37,7 +41,6 @@ import mz.org.fgh.idartlite.viewmodel.StockEntranceVM;
 public class StockEntranceFragment extends GenericFragment implements ListbleDialogListener {
 
     private RecyclerView rcvFragmentStock;
-    private List<Stock> stockList;
     private Stock stock;
     private DispenseDrugService dispenseDrugService;
     private StockEntranceAdapter stockEntranceAdapter;
@@ -57,7 +60,9 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
         super.onViewCreated(view, savedInstanceState);
 
         dispenseDrugService = new DispenseDrugService(getMyActivity().getApplication(), getCurrentUser());
-        this.rcvFragmentStock = fragmentStockEntranceBinding.rcvFragmentStock;
+
+
+        getRelatedViewModel().setEntranceFragment(this);
 
         fragmentStockEntranceBinding.newStock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,37 +77,8 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
             }
         });
 
-        rcvFragmentStock.addOnItemTouchListener(
-                new ClickListener(
-                        getContext(), rcvFragmentStock, new ClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        stock = stockList.get(position);
-                        stockPosition = position;
-                        PopupMenu popup = new PopupMenu(view.getContext(),view);
-                        MenuInflater inflater = popup.getMenuInflater();
-                        popup.setOnMenuItemClickListener(StockEntranceFragment.this::onMenuItemClick);
-                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
-                        popup.show();
-                    }
 
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        stock = stockList.get(position);
-                        stockPosition = position;
-                        PopupMenu popup = new PopupMenu(view.getContext(),view);
-                        MenuInflater inflater = popup.getMenuInflater();
-                        popup.setOnMenuItemClickListener(StockEntranceFragment.this::onMenuItemClick);
-                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
-                        popup.show();
-                    }
 
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    }
-                }
-                ));
     }
 
     public boolean onMenuItemClick(MenuItem item) {
@@ -173,32 +149,79 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
 
     }
 
+    public void displaySearchResults(){
+
+        this.rcvFragmentStock = fragmentStockEntranceBinding.rcvFragmentStock;
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rcvFragmentStock.setLayoutManager(layoutManager);
+        rcvFragmentStock.setHasFixedSize(true);
+        stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
+        rcvFragmentStock.setAdapter(stockEntranceAdapter);
+
+        stockEntranceAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                getRelatedViewModel().loadMoreRecords(rcvFragmentStock, stockEntranceAdapter);
+            }
+        });
+
+        rcvFragmentStock.addOnItemTouchListener(
+                new ClickListener(
+                        getContext(), rcvFragmentStock, new ClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        stock = getRelatedViewModel().getSearchResults().get(position);
+                        stockPosition = position;
+                        PopupMenu popup = new PopupMenu(view.getContext(),view);
+                        MenuInflater inflater = popup.getMenuInflater();
+                        popup.setOnMenuItemClickListener(StockEntranceFragment.this::onMenuItemClick);
+                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
+                        popup.show();
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        stock = getRelatedViewModel().getSearchResults().get(position);
+                        stockPosition = position;
+                        PopupMenu popup = new PopupMenu(view.getContext(),view);
+                        MenuInflater inflater = popup.getMenuInflater();
+                        popup.setOnMenuItemClickListener(StockEntranceFragment.this::onMenuItemClick);
+                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
+                        popup.show();
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+                ));
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+
         try {
-            this.stockList = getRelatedViewModel().getStockByClinic(getMyActivity().getCurrentClinic());
-            if (Utilities.listHasElements(stockList)) {
-                stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, this.stockList, getMyActivity());
-                displayDataOnRecyclerView(rcvFragmentStock, stockEntranceAdapter, getContext());
-            }
+            getRelatedViewModel().initSearch();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     public void remove(int position) throws SQLException {
         try {
-            List<Stock> removeStockList = getRelatedViewModel().getStockByOrderNumber(stockList.get(position).getOrderNumber(), getMyActivity().getCurrentClinic());
+            List<Stock> removeStockList = getRelatedViewModel().getStockByOrderNumber(getRelatedViewModel().getSearchResults().get(position).getOrderNumber(), getMyActivity().getCurrentClinic());
 
             for (Stock stRemove : removeStockList){
                 if(stRemove.getSyncStatus().equals("R")){
                     if(dispenseDrugService.checkStockIsDispensedDrug(stRemove)){
                         getRelatedViewModel().deleteStock(stRemove);
-                        stockList.remove(stockList.get(position));
-                        for (int i = 0; i < stockList.size(); i++){
-                            stockList.get(i).setListPosition(i+1);
+                        getRelatedViewModel().getSearchResults().remove(getRelatedViewModel().getSearchResults().get(position));
+                        for (int i = 0; i < getRelatedViewModel().getSearchResults().size(); i++){
+                            getRelatedViewModel().getSearchResults().get(i).setListPosition(i+1);
                         }
                         rcvFragmentStock.getAdapter().notifyItemRemoved(position);
                         rcvFragmentStock.getAdapter().notifyItemRangeChanged(position, rcvFragmentStock.getAdapter().getItemCount());
@@ -217,9 +240,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
     }
 
     @Override
-    public void remove(BaseModel baseModel) {
-
-    }
+    public void remove(BaseModel baseModel) {}
 
     @Override
     public BaseViewModel initViewModel() {

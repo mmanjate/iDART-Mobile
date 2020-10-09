@@ -2,7 +2,6 @@ package mz.org.fgh.idartlite.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +24,7 @@ import mz.org.fgh.idartlite.service.restService.RestPharmacyTypeService;
 import mz.org.fgh.idartlite.service.restService.RestTherapeuticLineService;
 import mz.org.fgh.idartlite.service.restService.RestTherapeuticRegimenService;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.viewmodel.SplashVM;
 
 public class SplashActivity extends BaseActivity implements RestResponseListener, DialogListener {
 
@@ -77,7 +77,12 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
 
     @Override
     public BaseViewModel initViewModel() {
-        return null;
+        return new ViewModelProvider(this).get(SplashVM.class);
+    }
+
+    @Override
+    public SplashVM getRelatedViewModel() {
+        return (SplashVM) super.getRelatedViewModel();
     }
 
     @Override
@@ -97,8 +102,14 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
 
     @Override
     public void doOnConfirmed() {
-        finishAffinity();
-        System.exit(0);
+        if (getRelatedViewModel().appHasUsersOnDB()){
+            finishAffinity();
+            System.exit(0);
+        }else {
+            nextActivity(LoginActivity.class);
+            finish();
+        }
+
     }
 
     @Override

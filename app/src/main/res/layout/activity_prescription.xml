@@ -63,6 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:padding="@dimen/dimen_4dp"
                     >
                     <TextView
                         android:id="@+id/initial_data"
@@ -96,8 +97,7 @@
                             android:drawableLeft="@drawable/ic_calendar"
                             android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.prescription.prescriptionDate)}"
                             android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
-                            android:paddingStart="@dimen/dimen_4dp"
-                            android:paddingLeft="@dimen/dimen_4dp"/>
+                            style="@style/bottom_border_edit_text_style"/>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                         <Spinner
                             android:id="@+id/spn_duration"
                             android:layout_width="fill_parent"
-                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
+                            style="@style/bottom_spinner_style"
                             android:layout_height="wrap_content"/>
                             />
                         <TextView
@@ -119,7 +119,7 @@
                         <Spinner
                             android:id="@+id/spn_regime"
                             android:layout_width="fill_parent"
-                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
+                            style="@style/bottom_spinner_style"
                             android:layout_height="wrap_content"/>
 
                         <TextView
@@ -131,7 +131,7 @@
                         <Spinner
                             android:id="@+id/spn_line"
                             android:layout_width="fill_parent"
-                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
+                            style="@style/bottom_spinner_style"
                             android:layout_height="wrap_content"
                             />
 
@@ -144,7 +144,7 @@
                         <Spinner
                             android:id="@+id/spn_dispense_type"
                             android:layout_width="fill_parent"
-                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
+                            style="@style/bottom_spinner_style"
                             android:layout_height="wrap_content"
                             />
                     </LinearLayout>
@@ -191,11 +191,15 @@
                             android:text="@string/drugs"
                             style="@style/input_labels"
                             />
-                        <Spinner
-                            android:id="@+id/spn_drugs"
-                            android:layout_width="fill_parent"
+                        <AutoCompleteTextView
+                            android:id="@+id/aut_cmp_drugs"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
+                            android:layout_weight="40"
+                            android:dropDownWidth="wrap_content"
+                            android:drawableRight="@drawable/ic_patient_search"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                            style="@style/bottom_spinner_style"
                             android:padding="@dimen/dimen_4dp"
                             />
 
@@ -270,7 +274,7 @@
                             android:id="@+id/spn_reson"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="@{viewModel.currentStep.applicationStepDisplay}"
+                            style="@style/bottom_spinner_style"
                             android:padding="@dimen/dimen_4dp"
                             />
 
@@ -294,8 +298,8 @@
 
                         <ImageView
                             android:id="@+id/back"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24"
                             android:layout_marginTop="@dimen/dimen_22dp"
                             android:visibility="@{!viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"

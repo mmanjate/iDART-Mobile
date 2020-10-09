@@ -54,7 +54,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="ID Prescriçãoo"
+                        android:text="ID Prescrição"
                         android:textSize="@dimen/dimen_12dp"
                         android:textStyle="bold"/>
 
@@ -62,7 +62,7 @@
                         android:id="@+id/prescriptionId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0101150101/2020/65843-26542"
+                        android:text="@{prescription.uiId}"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:textSize="@dimen/dimen_12dp"
                         android:textStyle="bold"/>

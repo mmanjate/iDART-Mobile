@@ -9,13 +9,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.service.StockService;
 import mz.org.fgh.idartlite.view.stock.StockEntranceActivity;
+import mz.org.fgh.idartlite.view.stock.StockEntranceFragment;
 
-public class StockEntranceVM extends BaseViewModel {
+public class StockEntranceVM extends SearchVM<Stock> {
 
     private Clinic clinic;
     private Stock stock;
@@ -23,13 +26,18 @@ public class StockEntranceVM extends BaseViewModel {
     private boolean initialDataVisible;
     private boolean drugDataVisible;
 
+    private StockEntranceFragment entranceFragment;
+
+
     public StockEntranceVM(@NonNull Application application) {
         super(application);
         stockService = new StockService(getApplication(), getCurrentUser());
         stock = new Stock();
     }
 
-    public List<Stock> getStockByClinic(Clinic clinic) throws SQLException {
+
+
+    private List<Stock> getStockByClinic(Clinic clinic) throws SQLException {
         return stockService.getStockByClinic(clinic);
     }
 
@@ -57,8 +65,8 @@ public class StockEntranceVM extends BaseViewModel {
         this.stock = stock;
     }
 
-    public StockEntranceActivity getRelatedActivity() {
-        return (StockEntranceActivity) super.getRelatedActivity();
+    public BaseActivity getRelatedActivity() {
+        return super.getRelatedActivity();
     }
 
     @Bindable
@@ -82,7 +90,25 @@ public class StockEntranceVM extends BaseViewModel {
         notifyPropertyChanged(BR.drugDataVisible);
     }
 
+    public StockEntranceFragment getEntranceFragment() {
+        return entranceFragment;
+    }
+
+    public void setEntranceFragment(StockEntranceFragment entranceFragment) {
+        this.entranceFragment = entranceFragment;
+    }
+
     public void initNewStock(){
         this.stock = new Stock();
+    }
+
+    @Override
+    public List<Stock> doSearch() throws SQLException {
+        return getStockByClinic(getCurrentClinic());
+    }
+
+    @Override
+    protected void displaySearchResults() {
+        getEntranceFragment().displaySearchResults();
     }
 }

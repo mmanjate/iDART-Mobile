@@ -8,7 +8,7 @@
         <shape android:shape="rectangle" >
             <stroke
                 android:width="@dimen/dimen_2dp"
-                android:color="@color/colorPrimaryDark" />
+                android:color="@color/colorPrimary" />
             <corners
                 android:radius="@dimen/dimen_2dp" />
 

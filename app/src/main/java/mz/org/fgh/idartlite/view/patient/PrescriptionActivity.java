@@ -67,6 +67,8 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
     private ArrayAdapter<ValorSimples> motiveArrayAdapter;
 
+    private Drug selectedDrug;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,8 +105,13 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             }
         }
 
+        if (getApplicationStep().isApplicationstepCreate() || getApplicationStep().isApplicationStepEdit()){
+            getRelatedViewModel().setViewListRemoveButton(true);
+        }
+
         if (getApplicationStep().isApplicationstepCreate()){
             try {
+
                 getRelatedViewModel().loadLastPatientPrescription();
                 getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.getCurrentDate());
                 getRelatedViewModel().getPrescription().setExpiryDate(null);
@@ -190,8 +197,8 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             public void onClick(View view) {
                if (selectedDrugs == null) selectedDrugs = new ArrayList<>();
 
-               if ( prescriptionBinding.spnDrugs.getSelectedItem() != null){
-                   Listble<Drug> listble = (Listble<Drug>) prescriptionBinding.spnDrugs.getSelectedItem();
+               if ( prescriptionBinding.autCmpDrugs.getText().length() > 0){
+                   Listble<Drug> listble = (Listble<Drug>) selectedDrug;
 
                    if (!selectedDrugs.contains(listble)) {
                        listble.setListPosition(selectedDrugs.size()+1);
@@ -205,6 +212,14 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
                    }
 
                }
+            }
+        });
+
+        prescriptionBinding.autCmpDrugs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                //this is the way to find selected object/item
+                selectedDrug = (Drug) adapterView.getItemAtPosition(pos);
             }
         });
 
@@ -288,7 +303,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             dispenseTypes.addAll(getRelatedViewModel().getAllDispenseTypes());
 
             List<Drug> drugs = new ArrayList<>();
-            drugs.add(new Drug());
+         //   drugs.add(new Drug());
             drugs.addAll(getRelatedViewModel().getAllDrugs());
 
             dispenseTypeArrayAdapter = new ArrayAdapter<DispenseType>(getApplicationContext(), android.R.layout.simple_spinner_item, dispenseTypes);
@@ -303,10 +318,10 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             regimenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             prescriptionBinding.spnRegime.setAdapter(regimenArrayAdapter);
 
-            drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugs);
-            drugArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            prescriptionBinding.spnDrugs.setAdapter(drugArrayAdapter);
-
+            drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.select_dialog_item, drugs);
+         //   drugArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_item);
+            prescriptionBinding.autCmpDrugs.setAdapter(drugArrayAdapter);
+            prescriptionBinding.autCmpDrugs.setThreshold(1);
 
             List<ValorSimples> durations = new ArrayList<>();
             durations.add(new ValorSimples());
@@ -400,10 +415,12 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
     public void loadFormData() {
         getRelatedViewModel().getPrescription().setSupply(((ValorSimples) prescriptionBinding.spnDuration.getSelectedItem()).getId());
-        getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.createDate(prescriptionBinding.prescriptionDate.getText().toString(), "dd-MM-YYYY"));
+        getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.createDate(prescriptionBinding.prescriptionDate.getText().toString(), DateUtilitis.DATE_FORMAT));
         getRelatedViewModel().getPrescription().setDispenseType((DispenseType) prescriptionBinding.spnDispenseType.getSelectedItem());
         getRelatedViewModel().getPrescription().setTherapeuticRegimen((TherapeuticRegimen) prescriptionBinding.spnRegime.getSelectedItem());
         getRelatedViewModel().getPrescription().setTherapeuticLine((TherapeuticLine) prescriptionBinding.spnLine.getSelectedItem());
+
+        if (getApplicationStep().isApplicationstepCreate()) getRelatedViewModel().getPrescription().generateNextSeq();
 
         if (getRelatedViewModel().getPrescription().isUrgent()) {
 
@@ -461,7 +478,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         prescriptionBinding.spnDispenseType.setEnabled(status);
         prescriptionBinding.spnLine.setEnabled(status);
         prescriptionBinding.spnRegime.setEnabled(status);
-        prescriptionBinding.spnDrugs.setEnabled(status);
+        prescriptionBinding.autCmpDrugs.setEnabled(status);
         prescriptionBinding.spnDuration.setEnabled(status);
         prescriptionBinding.spnReson.setEnabled(status);
 

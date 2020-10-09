@@ -20,6 +20,7 @@ import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.restService.RestUserService;
 import mz.org.fgh.idartlite.service.restService.RestUserService;
 import mz.org.fgh.idartlite.util.SecurePreferences;
@@ -42,6 +43,7 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
         super.onCreate(savedInstanceState);
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         activityLoginBinding.setViewModel(getRelatedViewModel());
+        activityLoginBinding.executePendingBindings();
 
         changeViewToNormalMode();
 
@@ -58,6 +60,8 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
         if (Utilities.listHasElements(clinicList)) {
             loadClinicAdapters();
         }
+
+
 
         getSharedPreferencesData();
     }
@@ -78,19 +82,15 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
     }
 
     private void getSharedPreferencesData() {
-
-
         SecurePreferences sp = new SecurePreferences(getApplicationContext(),LOG_SHARED_FILE_NAME, true);
 
         if (sp.containsKey(LOG_USR_NAME)) {
             String user = sp.getString(LOG_USR_NAME);
-            //activityLoginBinding.inUserName.setText(user.toString());
-            this.getRelatedViewModel().setUserName(user.toString());
+            this.getRelatedViewModel().setUserName(user);
         }
         if (sp.containsKey(LOG_USR_PASS)) {
             String pass = sp.getString(LOG_USR_PASS);
-            //activityLoginBinding.inPassword.setText(pass.toString());
-            this.getRelatedViewModel().setUserPassword(pass.toString());
+            this.getRelatedViewModel().setUserPassword(pass);
         }
     }
 
@@ -136,6 +136,10 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
             }
         }
 
+    }
+
+    public ActivityLoginBinding getActivityLoginBinding() {
+        return activityLoginBinding;
     }
 
     @Override

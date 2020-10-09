@@ -3,7 +3,9 @@ package mz.org.fgh.idartlite.base;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -20,17 +22,21 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
 
     protected BaseViewModel relatedViewModel;
 
-    
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         this.relatedViewModel = initViewModel();
         if (this.relatedViewModel != null) {
             this.relatedViewModel.setRelatedActivity(getMyActivity());
-            this.relatedViewModel.setCurrUser(getMyActivity().getCurrentUser());
+            this.relatedViewModel.setCurrentUser(getMyActivity().getCurrentUser());
+            this.relatedViewModel.setCurrentClinic(getMyActivity().getCurrentClinic());
+
         }
+
     }
+
 
     protected BaseActivity getMyActivity(){
         return (BaseActivity) getActivity();

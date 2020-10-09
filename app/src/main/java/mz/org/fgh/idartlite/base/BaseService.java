@@ -17,13 +17,21 @@ public abstract class BaseService {
 
 
     protected static ExecutorService restServiceExecutor;
-    public static final String baseUrl = "http://10.10.2.144:3001";
+    public static final String baseUrl = "http://10.10.2.136:3001";
 
     protected User currentUser;
     protected Application application;
     public static Application app;
 
     public BaseService(Application application, User currentUser) {
+        initServices(application,currentUser);
+    }
+
+    public BaseService(Application application) {
+        initServices(application,null);
+    }
+
+    private void initServices(Application application, User currentUser){
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
         restServiceExecutor = ExecutorThreadProvider.getInstance().getExecutorService();
 

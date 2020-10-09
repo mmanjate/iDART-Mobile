@@ -10,6 +10,7 @@
             name="viewModel"
             type="mz.org.fgh.idartlite.viewmodel.DispenseVM" />
         <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,8 +82,8 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_calendar"
                 android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.dispense.pickupDate)}"
-                android:paddingStart="@dimen/dimen_4dp"
-                android:paddingLeft="@dimen/dimen_4dp" />
+                android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
+                style="@style/bottom_border_edit_text_style"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -93,7 +94,9 @@
             <Spinner
                 android:id="@+id/spn_duration"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"/>
+                android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
+                android:layout_height="wrap_content"
+                style="@style/bottom_spinner_style"/>
             />
 
             <TextView
@@ -108,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_calendar"
                 android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.dispense.nextPickupDate)}"
+                android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                 android:paddingStart="@dimen/dimen_4dp"
                 android:paddingLeft="@dimen/dimen_4dp" />
 
@@ -139,11 +143,14 @@
                 android:text="Medicamentos *"
                 style="@style/input_labels"
                 />
-            <Spinner
-                android:id="@+id/spn_drugs"
-                android:layout_width="fill_parent"
+            <AutoCompleteTextView
+                android:id="@+id/aut_cmp_drugs"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:drawableRight="@drawable/ic_patient_search"
                 android:padding="@dimen/dimen_4dp"
+                android:text=""
                 />
 
             <ImageView
@@ -152,7 +159,8 @@
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_arrow_downward"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -176,7 +184,19 @@
                 app:srcCompat="@drawable/ic_ok"
                 android:layout_marginTop="@dimen/dimen_22dp"
                 android:layout_margin="@dimen/dimen_18dp"
+                android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                 android:onClick="@{() -> viewModel.save()}"
+                android:layout_gravity="right"/>
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24"
+                android:layout_marginTop="@dimen/dimen_22dp"
+                android:visibility="@{!viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                android:layout_margin="@dimen/dimen_18dp"
+                android:onClick="@{() -> viewModel.backToPreviusActivity()}"
                 android:layout_gravity="right"/>
 
 

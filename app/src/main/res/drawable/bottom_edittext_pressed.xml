@@ -7,7 +7,7 @@
         android:top="@dimen/dimen_m3dp">
         <shape android:shape="rectangle" >
             <stroke
-                android:width="@dimen/dimen_1dp"
+                android:width="@dimen/dimen_2dp"
                 android:color="@color/colorPrimaryDark" />
             <corners
                 android:radius="@dimen/dimen_2dp" />

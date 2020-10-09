@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.view.patient;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -97,12 +96,16 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
     }
 
     public void startPrescriptionActivity(){
-        Map<String, Object> params = new HashMap<>();
-        params.put("patient", getMyActivity().getPatient());
-        params.put("user", getCurrentUser());
-        params.put("clinic", getMyActivity().getCurrentClinic());
-        params.put("step", ApplicationStep.STEP_CREATE);
-        nextActivity(PrescriptionActivity.class,params);
+        if (getMyActivity().getPatient().hasEndEpisode()) {
+            Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(), "Não pode efectuar alterações sobre registos deste paciente, pois possui registado um episódio de fecho.").show();
+        } else {
+            Map<String, Object> params = new HashMap<>();
+            params.put("patient", getMyActivity().getPatient());
+            params.put("user", getCurrentUser());
+            params.put("clinic", getMyActivity().getCurrentClinic());
+            params.put("step", ApplicationStep.STEP_CREATE);
+            nextActivity(PrescriptionActivity.class, params);
+        }
     }
 
     private void displayPopupMenu(View view, int position) {
@@ -119,31 +122,39 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
     public boolean onMenuItemClick(MenuItem item){
         switch (item.getItemId()){
             case R.id.edit:
-                try {
-                    String editErrors = getRelatedViewModel().prescriptionCanBeEdited();
-
-                if (Utilities.stringHasValue(editErrors)){
-                    Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(),editErrors).show();
+                if (getRelatedViewModel().getPrescription().getPatient().hasEndEpisode()){
+                    Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(),"Não pode efectuar alterações sobre registos deste paciente, pois possui registado um episódio de fecho.").show();
                 }else {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("prescription", getRelatedViewModel().getPrescription());
-                    params.put("user", getCurrentUser());
-                    params.put("clinic", getMyActivity().getCurrentClinic());
-                    params.put("step", ApplicationStep.STEP_EDIT);
-                    nextActivity(PrescriptionActivity.class, params);
-                }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    try {
+                        String editErrors = getRelatedViewModel().prescriptionCanBeEdited();
+
+                        if (Utilities.stringHasValue(editErrors)) {
+                            Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(), editErrors).show();
+                        } else {
+                            Map<String, Object> params = new HashMap<>();
+                            params.put("prescription", getRelatedViewModel().getPrescription());
+                            params.put("user", getRelatedViewModel().getCurrentUser());
+                            params.put("clinic", getMyActivity().getCurrentClinic());
+                            params.put("step", ApplicationStep.STEP_EDIT);
+                            nextActivity(PrescriptionActivity.class, params);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
                 return true;
             case R.id.remove:
-                Utilities.displayDeleteConfirmationDialogFromList(PrescriptionFragment.this.getContext(),getString(R.string.list_item_delete_msg),getRelatedViewModel().getPrescription().getListPosition(),PrescriptionFragment.this).show();
+                if (getRelatedViewModel().getPrescription().getPatient().hasEndEpisode()){
+                    Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(),"Não pode efectuar alterações sobre registos deste paciente, pois possui registado um episódio de fecho.").show();
+                }else {
+                    Utilities.displayDeleteConfirmationDialogFromList(PrescriptionFragment.this.getContext(), getString(R.string.list_item_delete_msg), getRelatedViewModel().getPrescription().getListPosition(), PrescriptionFragment.this).show();
+                }
                 return true;
 
             case R.id.viewDetails:
                 Map<String, Object> params = new HashMap<>();
                 params.put("prescription", getRelatedViewModel().getPrescription());
-                params.put("user", getCurrentUser());
+                params.put("user", getRelatedViewModel().getCurrentUser());
                 params.put("clinic", getMyActivity().getCurrentClinic());
                 params.put("step", ApplicationStep.STEP_DISPLAY);
                 nextActivity(PrescriptionActivity.class, params);
@@ -161,15 +172,18 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
         if(!Utilities.stringHasValue(errorMsg)){
 
             try {
+                getRelatedViewModel().deletePrescription(prescriptionList.get(position));
+
                 prescriptionList.remove(getRelatedViewModel().getPrescription());
 
                 rcvPrescriptions.getAdapter().notifyItemRemoved(position);
                 rcvPrescriptions.removeViewAt(position);
                 rcvPrescriptions.getAdapter().notifyItemRangeChanged(position, rcvPrescriptions.getAdapter().getItemCount());
 
-                getRelatedViewModel().deletePrescription(prescriptionList.get(position));
-            } catch (SQLException e) {
                 Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(), getString(R.string.record_sucessfuly_removed)).show();
+
+            } catch (SQLException e) {
+                Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(), getString(R.string.error_removing_record)+ " "+e.getLocalizedMessage()).show();
             }
         }
         else {

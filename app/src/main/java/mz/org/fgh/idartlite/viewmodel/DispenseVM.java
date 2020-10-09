@@ -7,11 +7,14 @@ import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
@@ -25,10 +28,13 @@ import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.service.DispenseDrugService;
 import mz.org.fgh.idartlite.service.DispenseService;
 import mz.org.fgh.idartlite.service.DrugService;
+import mz.org.fgh.idartlite.service.EpisodeService;
 import mz.org.fgh.idartlite.service.PrescriptionService;
 import mz.org.fgh.idartlite.service.StockService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.CreateDispenseActivity;
+import mz.org.fgh.idartlite.view.patient.DispenseFragment;
+import mz.org.fgh.idartlite.view.patient.PatientActivity;
 
 public class DispenseVM extends BaseViewModel {
 
@@ -48,6 +54,8 @@ public class DispenseVM extends BaseViewModel {
 
     private StockService stockService;
 
+    private EpisodeService episodeService;
+
 
     public DispenseVM(@NonNull Application application) {
         super(application);
@@ -58,6 +66,7 @@ public class DispenseVM extends BaseViewModel {
         dispenseDrugService = new DispenseDrugService(application, getCurrentUser());
         this.drugService = new DrugService(application, getCurrentUser());
         this.stockService = new StockService(application, getCurrentUser());
+        this.episodeService = new EpisodeService(application, getCurrentUser());
         this.setViewListRemoveButton(true);
 
     }
@@ -99,21 +108,13 @@ public class DispenseVM extends BaseViewModel {
         notifyPropertyChanged(BR.drugDataVisible);
     }
 
-    public List<TherapeuticRegimen> getAllTherapeuticRegimen (){
-        return null;
-    }
-
     public void create(Dispense dispense) throws SQLException {
         this.dispenseService.createDispense(dispense);
     }
 
     public Prescription getLastPatientPrescription(Patient patient) throws SQLException {
 
-        return  this.prescriptionService.getLastPatientPrescription(patient);
-    }
-
-    public void createDispensedDrug(DispensedDrug dispensedDrug) throws SQLException {
-        this.dispenseDrugService.createDispensedDrug(dispensedDrug);
+        return this.prescriptionService.getLastPatientPrescription(patient);
     }
 
     public List<Drug> getAllDrugs() throws SQLException {
@@ -127,54 +128,62 @@ public class DispenseVM extends BaseViewModel {
             stocks = this.stockService.getAllStocksByClinicAndDrug(clinic, drug);
         } catch (SQLException e) {
             e.printStackTrace();
-            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.find_stock_list_error)+e.getLocalizedMessage()).show();
+            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.find_stock_list_error) + e.getLocalizedMessage()).show();
         }
 
         return stocks;
     }
 
     @Override
-    public BaseActivity getRelatedActivity(){
-        return  super.getRelatedActivity();
+    public BaseActivity getRelatedActivity() {
+        return super.getRelatedActivity();
     }
 
     public void save() {
 
-        ((CreateDispenseActivity) getRelatedActivity()).loadFormData();
+        String validationErrors = this.patientHasEndingEpisode();
 
-        String validationErrors ="";
+        if (!Utilities.stringHasValue(validationErrors)) {
 
-        validationErrors =  ((CreateDispenseActivity) getRelatedActivity()).validateDispenseDurationByPrescription();
+            ((CreateDispenseActivity) getRelatedActivity()).loadFormData();
 
-        if(!Utilities.stringHasValue(validationErrors)) {
-
-            validationErrors =  ((CreateDispenseActivity) getRelatedActivity()).validateStockForSelectedDrugs();
-
-            if(!Utilities.stringHasValue(validationErrors)){
-
-            validationErrors = this.dispense.validate();
+            validationErrors = ((CreateDispenseActivity) getRelatedActivity()).validateDispenseDurationByPrescription();
 
             if (!Utilities.stringHasValue(validationErrors)) {
-                try {
-                    boolean isNewDispense = true;
-                    if (dispense.getId() > 0)
-                        isNewDispense = false;
-                    this.dispenseService.saveOrUpdateDispense(dispense);
-                    if (isNewDispense)
-                        Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!",  ((CreateDispenseActivity) getRelatedActivity())).show();
-                    else
-                        Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi actualizado com sucesso!",  ((CreateDispenseActivity) getRelatedActivity())).show();
 
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg) + e.getLocalizedMessage()).show();
+                validationErrors = ((CreateDispenseActivity) getRelatedActivity()).validateStockForSelectedDrugs();
+
+                if (!Utilities.stringHasValue(validationErrors)) {
+
+                    validationErrors = this.dispense.validate();
+
+                    if (!Utilities.stringHasValue(validationErrors)) {
+                        try {
+                            boolean isNewDispense = true;
+                            if (dispense.getId() > 0) {
+                                isNewDispense = false;
+                                dispense.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
+                            }
+                            this.dispenseService.saveOrUpdateDispense(dispense);
+                            if (isNewDispense)
+                                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+                            else
+                                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi actualizado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg) + e.getLocalizedMessage()).show();
+                        }
+                    } else {
+                        Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
+                    }
+                } else {
+                    Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
                 }
             } else {
                 Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
             }
-        }else {
-            Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
-        }}else{
+        } else {
             Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
         }
     }
@@ -186,12 +195,41 @@ public class DispenseVM extends BaseViewModel {
 
     public List<Dispense> getAllDispensesByPrescription(Prescription prescription) throws SQLException {
 
-        return  this.dispenseService.getAllDispenseByPrescription(prescription);
+        return this.dispenseService.getAllDispenseByPrescription(prescription);
     }
 
     public List<PrescribedDrug> getAllPrescribedDrugsByPrescription(Prescription prescription) throws SQLException {
 
         return this.prescriptionService.getAllOfPrescription(prescription);
+    }
+
+    public void backToPreviusActivity() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("patient", getDispense().getPrescription().getPatient());
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        params.put("requestedFragment", DispenseFragment.FRAGMENT_CODE_DISPENSE);
+        getRelatedActivity().nextActivity(PatientActivity.class, params);
+    }
+
+    public String dispenseCanBeEdited() throws SQLException {
+        if (this.dispense.isSyncStatusSent(this.dispense.getSyncStatus()))
+            return getRelatedActivity().getString(R.string.cant_edit_synced_dispense);
+        return "";
+    }
+
+    public String checkDispenseRemoveConditions() {
+        if (this.dispense.isSyncStatusSent(this.dispense.getSyncStatus()))
+            return getRelatedActivity().getString(R.string.dispense_cant_be_removed_msg);
+        return "";
+    }
+
+    public String patientHasEndingEpisode() {
+        boolean hasEndingEpisode = this.episodeService.patientHasEndingEpisode(getDispense().getPrescription().getPatient());
+        if (hasEndingEpisode) {
+            return "Não pode se editar/remover a dispensa porque o paciente já tem o episódio final.";
+        }
+        return "";
     }
 
 }
