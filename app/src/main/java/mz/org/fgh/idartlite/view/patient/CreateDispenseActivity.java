@@ -60,6 +60,8 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
     private ArrayAdapter<ValorSimples> valorSimplesArrayAdapter;
 
+    private Drug selectedDrug;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,8 +222,8 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             public void onClick(View view) {
                 if (selectedDrugs == null) selectedDrugs = new ArrayList<>();
 
-                if (activityCreateDispenseBinding.spnDrugs.getSelectedItem() != null) {
-                    Listble listble = (Listble) activityCreateDispenseBinding.spnDrugs.getSelectedItem();
+                if (activityCreateDispenseBinding.autCmpDrugs.getText() != null) {
+                    Listble listble = (Listble) selectedDrug;
 
                     Drug drug = (Drug) listble;
                     final int qtdADispensar = getQuantidadeADispensar(drug);
@@ -247,6 +249,13 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
             }
         });
 
+        activityCreateDispenseBinding.autCmpDrugs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                //this is the way to find selected object/item
+                selectedDrug = (Drug) adapterView.getItemAtPosition(pos);
+            }
+        });
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -334,7 +343,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
         try {
 
             List<Drug> drugs = new ArrayList<>();
-            drugs.add(new Drug());
+            //drugs.add(new Drug());
             drugs.addAll(getRelatedViewModel().getAllDrugs());
 
             List<Drug> drugsToDisplay = new ArrayList<>();
@@ -345,9 +354,10 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
                     drugsToDisplay.add(drug);
             }
 
-            ArrayAdapter<Drug> drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugsToDisplay);
-            drugArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            activityCreateDispenseBinding.spnDrugs.setAdapter(drugArrayAdapter);
+            ArrayAdapter<Drug> drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.select_dialog_item, drugsToDisplay);
+          //  drugArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            activityCreateDispenseBinding.autCmpDrugs.setThreshold(1);
+            activityCreateDispenseBinding.autCmpDrugs.setAdapter(drugArrayAdapter);
 
             List<ValorSimples> durations = new ArrayList<>();
             durations.add(new ValorSimples());
@@ -587,7 +597,7 @@ public class CreateDispenseActivity extends BaseActivity  implements DialogListe
 
     private void changeAllSpinnersStatus(boolean status){
         activityCreateDispenseBinding.spnDuration.setEnabled(status);
-        activityCreateDispenseBinding.spnDrugs.setEnabled(status);
+        activityCreateDispenseBinding.autCmpDrugs.setEnabled(status);
     }
 
     public void disableAllSpinners(){
