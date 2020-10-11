@@ -92,18 +92,21 @@ public class LoginVM extends BaseViewModel {
         getRelatedActivity().changeViewToAuthenticatingMode();
         getRelatedActivity().getActivityLoginBinding().executePendingBindings();
 
-        if ((getCurrentClinic() == null || getCurrentClinic().getId() < 0) && appHasUsersOnDB()){
+        if ((appHasUsersOnDB() && getCurrentClinic() == null) || (appHasUsersOnDB() && getCurrentClinic().getUuid()== null) ){
             getRelatedActivity().changeViewToNormalMode();
             Utilities.displayAlertDialog(getRelatedActivity(), "O campo Farmácia deve ser preenchido.").show();
         return;
         }
 
         try {
-            getCurrentUser().setUserName(getUserName().trim());
+
 
             String loginErrors = getCurrentUser().validadeToLogin();
 
+
+
             if (!Utilities.stringHasValue(loginErrors)) {
+                getCurrentUser().setUserName(getUserName().trim());
                 if (userService.checkIfUsertableIsEmpty()) {
                     runRestUserAccess();
 
