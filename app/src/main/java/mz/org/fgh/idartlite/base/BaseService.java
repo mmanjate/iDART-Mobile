@@ -17,7 +17,7 @@ public abstract class BaseService {
 
 
     protected static ExecutorService restServiceExecutor;
-    public static final String baseUrl = "http://192.168.43.148:3001";
+    public static final String baseUrl = "http://dev.fgh.org.mz:3110";
 
     protected User currentUser;
     protected Application application;
