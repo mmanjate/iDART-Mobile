@@ -108,10 +108,8 @@ public class LoginVM extends BaseViewModel {
                     runRestUserAccess();
 
                 } else {
-                    // colocar no lugar certo
+                    // Somente para testes --- estas funcionalidades foram alocadas no WorkManager da app
                     RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(),getCurrentUser());
-                    runDataForTestService.notify();
-
                     if (!userService.login(getCurrentUser())) {
                         if (Utilities.listHasElements(clinicService.getCLinic())) {
                             setCurrentClinic(clinicService.getCLinic().get(0));

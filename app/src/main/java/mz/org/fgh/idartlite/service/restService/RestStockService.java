@@ -25,6 +25,7 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.DrugService;
 import mz.org.fgh.idartlite.service.StockService;
 
@@ -33,28 +34,34 @@ public class RestStockService extends BaseService {
     private static final String TAG = "RestStockService";
     private static StockService stockService;
     private static DrugService drugService;
+    private static ClinicService clinicService;
 
     public RestStockService(Application application, User currentUser) {
         super(application, currentUser);
     }
 
-    public static void restPostStockCenter(Clinic clinic) {
+    public static void restPostStockCenter(Clinic clinic) throws SQLException{
 
         String url = BaseService.baseUrl + "/stockcenter?on_conflict=id";
-
+        clinicService = new ClinicService(BaseService.getApp(), null);
         stockService = new StockService(getApp(), null);
 
+        if (clinic == null)
+            clinic = clinicService.getCLinic().get(0);
+
         try {
+            Clinic finalClinic = clinic;
             getRestServiceExecutor().execute(() -> {
 
                 RESTServiceHandler handler = new RESTServiceHandler();
 
                 try {
+
                     Map<String, Object> stockcenter = new ArrayMap<>();
-                    stockcenter.put("id", clinic.getRestId());
-                    stockcenter.put("stockcentername", clinic.getClinicName());
+                    stockcenter.put("id", finalClinic.getRestId());
+                    stockcenter.put("stockcentername", finalClinic.getClinicName());
                     stockcenter.put("preferred", false);
-                    stockcenter.put("clinicuuid", clinic.getUuid());
+                    stockcenter.put("clinicuuid", finalClinic.getUuid());
 
                     Gson g = new Gson();
                     String restObject = g.toJson(stockcenter);
@@ -82,12 +89,18 @@ public class RestStockService extends BaseService {
         }
     }
 
-    public static void restGetStock(Clinic clinic) {
+    public static void restGetStock(Clinic clinic) throws SQLException {
 
-        String url = BaseService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId()+"&expirydate=gt.TODAY()";
         stockService = new StockService(getApp(), null);
-        getRestServiceExecutor().execute(() -> {
+        clinicService = new ClinicService(BaseService.getApp(), null);
 
+        if (clinic == null)
+            clinic = clinicService.getCLinic().get(0);
+
+        Clinic finalClinic = clinic;
+        String url = BaseService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
+
+        getRestServiceExecutor().execute(() -> {
             RESTServiceHandler handler = new RESTServiceHandler();
             handler.addHeader("Content-Type", "Application/json");
             handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
@@ -100,8 +113,8 @@ public class RestStockService extends BaseService {
                             try {
                                 LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) stock;
                                 if (itemresult != null) {
-                                    Stock localStock = getNewLocalStock(itemresult,clinic);
-                                    if( localStock != null) {
+                                    Stock localStock = getNewLocalStock(itemresult, finalClinic);
+                                    if (localStock != null) {
                                         stockService.saveOrUpdateStock(localStock);
                                     }
                                 } else {
@@ -296,7 +309,7 @@ public class RestStockService extends BaseService {
 
         ArrayList stocklevel = (ArrayList) Objects.requireNonNull(itemresult.get("stocklevel"));
 
-        if(stocklevel.size() != 0) {
+        if (stocklevel.size() != 0) {
 
             LinkedTreeMap<String, Object> stockAmpunt = (LinkedTreeMap<String, Object>) stocklevel.get(0);
             drugService = new DrugService(BaseService.getApp(), null);

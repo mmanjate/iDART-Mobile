@@ -66,7 +66,9 @@ public class RestUserService extends BaseService {
 
         if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {
-                String url = BaseService.baseUrl + "/users?select=*,clinic(*)&cl_username=eq." + username + "&cl_password=eq." + Utilities.MD5Crypt(password) + "&clinic.uuid=eq." + clinicuuid;
+                String url = BaseService.baseUrl + "/users?select=*,clinic(*)&cl_username=eq." +
+                        username + "&cl_password=eq." + Utilities.MD5Crypt(password) +
+                        "&clinic.uuid=eq." + clinicuuid;
 
                 RESTServiceHandler handler = new RESTServiceHandler();
 
