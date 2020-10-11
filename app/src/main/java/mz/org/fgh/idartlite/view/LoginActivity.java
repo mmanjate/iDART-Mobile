@@ -61,8 +61,6 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
             loadClinicAdapters();
         }
 
-
-
         getSharedPreferencesData();
     }
 
@@ -124,7 +122,6 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
 
         if (Utilities.stringHasValue(flag)){
             if (flag.equals(RestUserService.auth)) {
-
                 try {
                     getRelatedViewModel().saveUserSettingsAndProcced();
                 } catch (SQLException e) {

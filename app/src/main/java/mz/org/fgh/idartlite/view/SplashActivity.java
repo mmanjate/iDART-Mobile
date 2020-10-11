@@ -2,6 +2,9 @@ package mz.org.fgh.idartlite.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.lifecycle.ViewModelProvider;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +64,7 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
                         e.printStackTrace();
                     }
                 }
+
                 Map<String, Object> params = new HashMap<>();
                 params.put("clinicList", clinicList);
                 nextActivity(LoginActivity.class, params);
