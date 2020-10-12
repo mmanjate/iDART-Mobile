@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.DeflaterInputStream;
 
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
@@ -71,13 +72,13 @@ public class RestDispenseService extends BaseService {
                         handler.addHeader("Content-Type", "application/json");
                         JSONObject jsonObject = new JSONObject(restObject);
 
-                        handler.objectRequest(url, Request.Method.POST, jsonObject, Object[].class, new Response.Listener<Object[]>() {
+                        handler.objectRequest(url, Request.Method.POST, jsonObject, Object.class, new Response.Listener<Object>() {
 
                             @Override
-                            public void onResponse(Object[] response) {
+                            public void onResponse(Object response) {
                                 Log.d(TAG, "onResponse: Dispensa enviada" + response);
                                 try {
-                                    dispense.setSyncStatus("S");
+                                    dispense.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
                                     dispenseService.udpateDispense(dispense);
                                 } catch (SQLException e) {
                                     e.printStackTrace();

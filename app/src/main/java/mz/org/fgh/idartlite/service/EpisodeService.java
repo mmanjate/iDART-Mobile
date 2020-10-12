@@ -37,9 +37,6 @@ public class EpisodeService extends BaseService {
 
 
     public void createEpisode(Episode episode) throws SQLException {
-
-        episode.setSyncStatus("R");
-        episode.setUuid(Utilities.getNewUUID().toString());
         getDataBaseHelper().getEpisodeDao().create(episode);
     }
     public void udpateEpisode(Episode episode) throws SQLException {

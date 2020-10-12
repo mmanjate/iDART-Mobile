@@ -93,7 +93,7 @@ public class DispenseService extends BaseService {
         if (dispense.getPrescription().getExpiryDate() != null) {
             Prescription prescription = dispense.getPrescription();
             prescription.setExpiryDate(dispense.getPickupDate());
-            prescription.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
+            prescription.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
             this.prescriptionService.updatePrescriptionEntity(prescription);
         }
     }

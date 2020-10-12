@@ -108,6 +108,8 @@ public class EpisodeVM extends BaseViewModel {
                         this.episode.setSanitaryUnit(episodes.get(0).getSanitaryUnit());
                         this.episode.setUsUuid(episodes.get(0).getUsUuid());
 
+                        episode.setSyncStatus("R");
+                        episode.setUuid(Utilities.getNewUUID().toString());
                         episodeService.createEpisode(this.episode);
                     } else {
                         episodeService.udpateEpisode(this.episode);
