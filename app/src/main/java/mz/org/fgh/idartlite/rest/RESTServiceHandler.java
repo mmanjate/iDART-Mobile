@@ -125,7 +125,6 @@ public class RESTServiceHandler {
 
             for (int c; (c = in.read()) >= 0; ) {
                 result = result.concat(String.valueOf((char) c));
-                System.out.print((char) c);
             }
 
             result = result.replace("[{", "{");
