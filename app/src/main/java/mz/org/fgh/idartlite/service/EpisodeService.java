@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
@@ -60,7 +61,7 @@ public class EpisodeService extends BaseService {
             episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
             episode.setStartReason("Referido De");
             episode.setNotes("Referido De");
-            episode.setSyncStatus("U");
+            episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
             episode.setUuid(UUID.randomUUID().toString());
             createEpisode(episode);
 

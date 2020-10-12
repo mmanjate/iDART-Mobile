@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
@@ -102,7 +103,7 @@ public class PrescriptionService extends BaseService {
             prescription.setPatient(localPatient);
             prescription.setPrescriptionSeq("0001");
             prescription.setSupply(Math.round(Float.parseFloat(requireNonNull(patient.get("duration")).toString())));
-            prescription.setSyncStatus("U");
+            prescription.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
             prescription.setTherapeuticLine(therapeuticLine);
             prescription.setTherapeuticRegimen(therapeuticRegimen);
             prescription.setUrgentNotes(requireNonNull(patient.get("motivocriacaoespecial")).toString());
