@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.tabs.TabLayout;
@@ -18,6 +19,7 @@ import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityStockBinding;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.view.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.StockVM;
 
 public class StockActivity extends BaseActivity {
@@ -68,6 +70,22 @@ public class StockActivity extends BaseActivity {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_stock_entrance);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_stock_inventory);
+    }
+
+    //Handling Action Bar button click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            //Back button
+            case R.id.about:
+                //If this activity started from other activity
+                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
