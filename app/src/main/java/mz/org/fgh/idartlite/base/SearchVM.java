@@ -17,6 +17,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     public static final int PAGE_SIZE = 20;
 
+    public static final int RECORDS_PER_SEARCH = 100;
+
     protected List<T> searchResults;
 
     protected List<T> allDisplyedRecords;
@@ -27,6 +29,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         super(application);
 
         this.allDisplyedRecords = new ArrayList<>();
+        this.searchResults = new ArrayList<>();
     }
 
     public void initSearch() throws SQLException {
@@ -34,7 +37,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
         this.allDisplyedRecords.clear();
 
-        this.searchResults = doSearch();
+        this.searchResults = doSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
 
         if (Utilities.listHasElements(this.searchResults)) {
             loadFirstPage();
@@ -46,7 +49,6 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     }
 
     private void loadFirstPage() {
-
         if (getSearchResults().size() < pageSize){
            pageSize = getSearchResults().size();
         }
@@ -56,23 +58,30 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         }
     }
 
-    protected abstract void displaySearchResults();
+    private void getNextRecordsToDisplay() throws SQLException {
 
-    public List<T> getNextRecordsToDisplay(){
-        List<T> morePatients = new ArrayList<>();
         int end;
 
         if ((allDisplyedRecords.size()+pageSize) > this.searchResults.size()){
-            end = this.searchResults.size() - 1;
+            List<T> recs = doSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
+
+            if (Utilities.listHasElements(recs)){
+                this.searchResults.addAll(recs);
+                if ((allDisplyedRecords.size()+pageSize) > this.searchResults.size()){
+                    end = this.searchResults.size() - 1;
+                }else {
+                    end = allDisplyedRecords.size()+pageSize-1;
+                }
+            } else {
+                end = this.searchResults.size() - 1;
+            }
         }else {
             end = allDisplyedRecords.size()+pageSize-1;
         }
 
         for (int i = allDisplyedRecords.size(); i <= end; i++){
-            morePatients.add(this.searchResults.get(i));
-
+            allDisplyedRecords.add(this.searchResults.get(i));
         }
-        return morePatients;
     }
 
     public List<T> getSearchResults() {
@@ -83,8 +92,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         return allDisplyedRecords;
     }
 
-    @Override
-    public int getPageSize() {
+    private int getPageSize() {
         return PAGE_SIZE;
     }
 
@@ -104,7 +112,11 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
                     getAllDisplyedRecords().remove(getAllDisplyedRecords().size() - 1);
                     adapter.notifyItemRemoved(getAllDisplyedRecords().size());
 
-                    getAllDisplyedRecords().addAll(getNextRecordsToDisplay());
+                    try {
+                        getNextRecordsToDisplay();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 
                     adapter.notifyDataSetChanged();
                     adapter.setLoaded();

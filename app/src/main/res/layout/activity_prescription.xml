@@ -171,6 +171,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/see_olny_regimen_grugs"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             style="@style/input_labels"
                             />
 
@@ -180,6 +181,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/see_olny_regimen_grugs"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:checked="@{viewModel.seeOnlyOfRegime}"
                             android:onClick="@{() -> viewModel.changeDrugsListingMode()}"/>
@@ -199,17 +201,19 @@
                             android:dropDownWidth="wrap_content"
                             android:drawableRight="@drawable/ic_patient_search"
                             android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
-                            style="@style/bottom_spinner_style"
+                            style="@style/bottom_border_edit_text_style"
                             android:padding="@dimen/dimen_4dp"
                             />
 
                         <ImageView
                             android:id="@+id/imv_add_selected_drug"
-                            android:layout_width="60dp"
+                            android:layout_width="70dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/ic_save"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                             android:layout_margin="@dimen/dimen_10dp"
+                            android:background="@drawable/button_shape"
                             android:layout_gravity="center"/>
 
                         <TextView
@@ -289,10 +293,11 @@
                             android:id="@+id/save_and_continue"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            app:srcCompat="@drawable/ic_ok"
+                            app:srcCompat="@drawable/ic_done"
                             android:layout_marginTop="@dimen/dimen_22dp"
                             android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:layout_margin="@dimen/dimen_18dp"
+                            android:background="@drawable/button_shape"
                             android:onClick="@{() -> viewModel.save()}"
                             android:layout_gravity="right"/>
 
@@ -300,12 +305,14 @@
                             android:id="@+id/back"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24"
+                            app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+                            android:background="@drawable/button_shape"
                             android:layout_marginTop="@dimen/dimen_22dp"
                             android:visibility="@{!viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:layout_margin="@dimen/dimen_18dp"
                             android:onClick="@{() -> viewModel.backToPreviusActivity()}"
                             android:layout_gravity="right"/>
+
                     </RelativeLayout>
 
                 </LinearLayout>

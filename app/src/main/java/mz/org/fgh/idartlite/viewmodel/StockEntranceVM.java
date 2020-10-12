@@ -35,8 +35,8 @@ public class StockEntranceVM extends SearchVM<Stock> {
         stock = new Stock();
     }
 
-    private List<Stock> getStockByClinic(Clinic clinic) throws SQLException {
-        return stockService.getStockByClinic(clinic);
+    private List<Stock> getStockByClinic(Clinic clinic, long offset, long limit) throws SQLException {
+        return stockService.getStockByClinic(clinic, offset, limit);
     }
 
     public List<Stock> getStockByOrderNumber(String orderNumber, Clinic clinic) throws SQLException {
@@ -101,12 +101,12 @@ public class StockEntranceVM extends SearchVM<Stock> {
     }
 
     @Override
-    public List<Stock> doSearch() throws SQLException {
-        return getStockByClinic(getCurrentClinic());
+    public List<Stock> doSearch(long offset, long limit) throws SQLException {
+        return getStockByClinic(getCurrentClinic(), offset, limit);
     }
 
     @Override
-    protected void displaySearchResults() {
+    public void displaySearchResults() {
         getEntranceFragment().displaySearchResults();
     }
 }

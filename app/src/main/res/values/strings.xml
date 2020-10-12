@@ -142,5 +142,6 @@
     <string name="error_removing_record">Ocorreu um erro ao remover o registo.</string>
     <string name="error_msg_server_offline">Servidor offline, não será possível realizar sincronizações, por favor tente mais tarde.</string>
     <string name="error_msg_server_offline_records_wont_be_sync">Servidor offline, não será possível realizar sincronizações dos registos criados.</string>
+    <string name="confirm_prescription_save">Confirma gravar esta prescrição na base de dados?</string>
 
 </resources>

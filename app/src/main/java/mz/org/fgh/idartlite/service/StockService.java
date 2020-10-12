@@ -26,8 +26,8 @@ public class StockService extends BaseService {
         getDataBaseHelper().getStockDao().delete(stock);
     }
 
-    public List<Stock> getStockByClinic(Clinic clinic) throws SQLException {
-        return getDataBaseHelper().getStockDao().getStockByClinic(clinic);
+    public List<Stock> getStockByClinic(Clinic clinic, long offset, long limit) throws SQLException {
+        return getDataBaseHelper().getStockDao().getStockByClinic(clinic, offset, limit);
     }
 
     public List<Stock> getStockByOrderNumber(String orderNumber, Clinic clinic) throws SQLException {

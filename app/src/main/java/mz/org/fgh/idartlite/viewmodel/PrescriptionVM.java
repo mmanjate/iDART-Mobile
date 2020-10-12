@@ -74,6 +74,8 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     public void requestForNewRecord(){
         try {
 
+            getCurrentStep().changeToInit();
+
             this.prescription = prescriptionService.getLastPatientPrescription(((PatientActivity) getRelatedActivity()).getPatient());
 
             this.prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
@@ -83,6 +85,7 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
             } else {
                 doOnConfirmed();
             }
+
 
         } catch(SQLException e){
             e.printStackTrace();
@@ -177,13 +180,12 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         ((PrescriptionActivity)getRelatedActivity()).changeMotiveSpinnerStatus(urgentPrescription);
     }
 
-    public void save(){
-
+    private void doSave(){
         ((PrescriptionActivity)getRelatedActivity()).loadFormData();
         String validationErrors = this.prescription.validate(getRelatedActivity());
         if (!Utilities.stringHasValue(validationErrors)) {
             try {
-                if (getRelatedActivity().getApplicationStep().isApplicationstepCreate()) {
+                if (getRelatedActivity().getApplicationStep().isApplicationStepSave()) {
                     prescriptionService.createPrescription(this.prescription);
                     Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_dispense), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), ((PrescriptionActivity)getRelatedActivity())).show();
                 } else if (getRelatedActivity().getApplicationStep().isApplicationStepEdit()) {
@@ -198,6 +200,13 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         }else {
             Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
         }
+    }
+
+    public void save(){
+        getCurrentStep().changeToSave();
+
+        Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.confirm_prescription_save), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
+
     }
 
     public Prescription getLastPatientPrescription(Patient patient) throws SQLException {
@@ -262,20 +271,33 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
 
     @Override
     public void doOnConfirmed() {
+        if (getCurrentStep().isApplicationStepInit()) {
+            initNewRecord();
+        }else if (getCurrentStep().isApplicationStepSave()){
+            doSave();
+        }
+    }
+
+    private void initNewRecord() {
         try {
             prescriptionService.closePrescription(this.prescription);
             initNewPrescription();
-            this.prescription.setPatient(((PatientActivity)getRelatedActivity()).getPatient());
+            this.prescription.setPatient(((PatientActivity) getRelatedActivity()).getPatient());
 
             getRelatedListingFragment().startPrescriptionActivity();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
-    public void doOnDeny() {}
+    public void doOnDeny() {
+        if (getCurrentStep().isApplicationStepInit()) {
+            getCurrentStep().changeToList();
+        }else if (getCurrentStep().isApplicationStepSave()){
+            getCurrentStep().changetocreate();
+        }
+    }
 
     public void backToPreviusActivity(){
         Map<String, Object> params = new HashMap<>();

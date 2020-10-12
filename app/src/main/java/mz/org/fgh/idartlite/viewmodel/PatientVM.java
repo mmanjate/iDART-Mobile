@@ -35,8 +35,8 @@ public class PatientVM extends SearchVM<Patient> {
 
     }
 
-    public List<Patient> searchPatient(String param, Clinic clinic) throws SQLException {
-        return patientService.searchPatientByParamAndClinic(param,clinic);
+    public List<Patient> searchPatient(String param, Clinic clinic, long offset, long limit) throws SQLException {
+        return patientService.searchPatientByParamAndClinic(param,clinic, offset, limit);
     }
 
     public void loadPatientEpisodes() throws SQLException {
@@ -61,15 +61,15 @@ public class PatientVM extends SearchVM<Patient> {
     }
 
     @Override
-    protected void displaySearchResults() {
+    public void displaySearchResults() {
         Utilities.hideSoftKeyboard(getRelatedActivity());
 
         getRelatedActivity().displaySearchResult();
     }
 
     @Override
-    public List<Patient> doSearch() throws SQLException {
-        return searchPatient(this.searchParam.trim(), getCurrentClinic());
+    public List<Patient> doSearch(long offset, long limit) throws SQLException {
+        return searchPatient(this.searchParam.trim(), getCurrentClinic(), offset, limit);
     }
 
     public List<Patient> getAllPatient() throws SQLException {

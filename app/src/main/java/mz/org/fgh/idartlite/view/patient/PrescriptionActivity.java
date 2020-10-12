@@ -420,7 +420,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         getRelatedViewModel().getPrescription().setTherapeuticRegimen((TherapeuticRegimen) prescriptionBinding.spnRegime.getSelectedItem());
         getRelatedViewModel().getPrescription().setTherapeuticLine((TherapeuticLine) prescriptionBinding.spnLine.getSelectedItem());
 
-        if (getApplicationStep().isApplicationstepCreate()) getRelatedViewModel().getPrescription().generateNextSeq();
+        if (getApplicationStep().isApplicationStepSave()) getRelatedViewModel().getPrescription().generateNextSeq();
 
         if (getRelatedViewModel().getPrescription().isUrgent()) {
 
@@ -434,7 +434,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
         getRelatedViewModel().getPrescription().setPrescribedDrugs(prescribedDrugs);
 
-        if (getApplicationStep().isApplicationstepCreate()) getRelatedViewModel().getPrescription().setUuid(Utilities.getNewUUID().toString());
+        if (getApplicationStep().isApplicationStepSave()) getRelatedViewModel().getPrescription().setUuid(Utilities.getNewUUID().toString());
 
         getRelatedViewModel().getPrescription().setSyncStatus(BaseModel.SYNC_SATUS_READY);
     }
@@ -448,12 +448,13 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         params.put("prescription", getRelatedViewModel().getPrescription());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
+        params.put("step", ApplicationStep.STEP_CREATE);
         nextActivity(CreateDispenseActivity.class,params);
     }
 
     @Override
     public void doOnConfirmed() {
-        if (getApplicationStep().isApplicationstepCreate()) {
+        if (getApplicationStep().isApplicationStepSave()) {
             doAfterPrescriptionSave();
         }else {
             doOnDeny();

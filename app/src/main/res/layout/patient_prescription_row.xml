@@ -154,7 +154,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="top"
-                        bind:srcCompat="@drawable/ic_baseline_autorenew_24"/>
+                        android:src="@{prescription.isSyncStatusReady() ? @drawable/ic_baseline_cloud_queue_24 : @drawable/ic_baseline_cloud_done_24}"/>
                 </LinearLayout>
             </LinearLayout>
 

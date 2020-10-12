@@ -128,7 +128,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="@dimen/dimen_22dp"
-                        bind:srcCompat="@drawable/ic_baseline_autorenew_24"/>
+                        android:src="@{dispense.isSyncStatusReady() ? @drawable/ic_baseline_cloud_queue_24 : @drawable/ic_baseline_cloud_done_24}"/>
+                    />
                 </LinearLayout>
             </LinearLayout>
 
