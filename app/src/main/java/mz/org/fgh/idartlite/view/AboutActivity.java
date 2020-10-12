@@ -21,6 +21,7 @@ public class AboutActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,4 +35,6 @@ public class AboutActivity extends BaseActivity {
     public BaseViewModel initViewModel() {
         return null;
     }
+
+
 }
