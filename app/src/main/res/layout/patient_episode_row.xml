@@ -170,7 +170,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="top"
-                        android:src="@{episode.isSyncStatusReady() ? @drawable/ic_baseline_cloud_queue_24 : @drawable/ic_baseline_cloud_done_24}"/>
+                        android:src="@{episode.isSyncStatusSent(episode.syncStatus) ? @drawable/ic_baseline_cloud_queue_24 : @drawable/ic_baseline_cloud_done_24}"/>
                     />
                 </LinearLayout>
             </LinearLayout>

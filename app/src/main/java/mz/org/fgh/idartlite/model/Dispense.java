@@ -188,7 +188,4 @@ public class Dispense extends BaseModel {
         return "";
     }
 
-    public boolean isSyncStatusReady(){
-        return isSyncStatusReady(this.syncStatus);
-    }
 }

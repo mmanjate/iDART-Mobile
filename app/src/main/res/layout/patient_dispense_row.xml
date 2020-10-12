@@ -128,7 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="@dimen/dimen_10dp"
-                        android:src="@{dispense.isSyncStatusReady() ? @drawable/ic_baseline_cloud_queue_24 : @drawable/ic_baseline_cloud_done_24}"/>
+                        android:src="@{dispense.isSyncStatusSent(dispense.syncStatus) ? @drawable/ic_baseline_cloud_queue_24 : @drawable/ic_baseline_cloud_done_24}"/>
                     />
                 </LinearLayout>
             </LinearLayout>
