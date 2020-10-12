@@ -36,9 +36,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         this.pageSize = getPageSize();
 
         this.allDisplyedRecords.clear();
-
-        this.searchResults = doSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
-
+            this.searchResults = doSearch(0, RECORDS_PER_SEARCH);
         if (Utilities.listHasElements(this.searchResults)) {
             loadFirstPage();
 

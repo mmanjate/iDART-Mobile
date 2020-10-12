@@ -230,6 +230,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
         rcvEpisodes.removeViewAt(position);
         rcvEpisodes.getAdapter().notifyItemRangeChanged(position, rcvEpisodes.getAdapter().getItemCount());
 
+        getSelectedPatient().setEpisodes(episodeList);
 
             try {
                 getRelatedViewModel().deleteEpisode(episode);

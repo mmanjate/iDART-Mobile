@@ -82,7 +82,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                         getContext(), rcvFragmentStock, new ClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        stock = getRelatedViewModel().getSearchResults().get(position);
+                        stock = getRelatedViewModel().getAllDisplyedRecords().get(position);
                         stockPosition = position;
                         PopupMenu popup = new PopupMenu(view.getContext(),view);
                         MenuInflater inflater = popup.getMenuInflater();
@@ -93,7 +93,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        stock = getRelatedViewModel().getSearchResults().get(position);
+                        stock = getRelatedViewModel().getAllDisplyedRecords().get(position);
                         stockPosition = position;
                         PopupMenu popup = new PopupMenu(view.getContext(),view);
                         MenuInflater inflater = popup.getMenuInflater();

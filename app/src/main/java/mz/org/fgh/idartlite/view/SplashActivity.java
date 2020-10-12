@@ -48,13 +48,16 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
         new Thread(new Runnable() {
             public void run() {
 
+
                 RestPharmacyTypeService.restGetAllPharmacyType();
+
                 RestFormService.restGetAllForms();
                 RestDrugService.restGetAllDrugs();
                 RestDiseaseTypeService.restGetAllDiseaseType();
                 RestDispenseTypeService.restGetAllDispenseType();
                 RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
                 RestTherapeuticLineService.restGetAllTherapeuticLine();
+
 
                 clinicList = restClinicService.restGetAllClinic(SplashActivity.this);
                 while (!Utilities.listHasElements(clinicList)) {
@@ -91,7 +94,26 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
 
     @Override
     public void doOnRestSucessResponse(String flag) {
-
+        if (Utilities.stringHasValue(flag)){
+            long timeOut = 60000;
+            long requestTime = 0;
+            while (!Utilities.listHasElements(getRelatedViewModel().getAllPharmacyTypes())){
+                try {
+                    Thread.sleep(2000);
+                    requestTime += 2000;
+                    if (requestTime >= timeOut){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Utilities.displayAlertDialog(SplashActivity.this, "Time out - Não foi possivel terminar a configuração inicial da aplicação.").show();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override

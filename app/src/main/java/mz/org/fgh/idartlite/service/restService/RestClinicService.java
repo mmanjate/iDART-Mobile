@@ -86,6 +86,7 @@ public class RestClinicService extends BaseService {
                                     continue;
                                 }
                             }
+                            if(listener!=null) listener.doOnRestSucessResponse("Success");
                         } else
                             Log.w(TAG, "Response Sem Info." + clinics.length);
                     }
