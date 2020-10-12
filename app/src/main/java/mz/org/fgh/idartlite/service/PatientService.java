@@ -38,8 +38,8 @@ public class PatientService extends BaseService {
         }
     }
 
-    public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic) throws SQLException {
-            return getDataBaseHelper().getPatientDao().searchPatientByParamAndClinic(param, clinic);
+    public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic, long offset, long limit) throws SQLException {
+            return getDataBaseHelper().getPatientDao().searchPatientByParamAndClinic(param, clinic, offset , limit);
 
     }
 

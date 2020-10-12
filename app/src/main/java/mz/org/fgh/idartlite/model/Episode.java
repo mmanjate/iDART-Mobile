@@ -198,4 +198,8 @@ public class Episode extends BaseModel {
 		return "Inicio";
 	}
 
+	public boolean isSyncStatusReady(){
+		return isSyncStatusReady(this.syncStatus);
+	}
+
 }

@@ -5,7 +5,8 @@ import java.util.List;
 
 public interface SearchPaginator<T extends BaseModel>{
 
-    List<T> doSearch() throws SQLException;
+    List<T> doSearch(long offset, long limit) throws SQLException;
 
-    int getPageSize();
+    void displaySearchResults();
+
 }

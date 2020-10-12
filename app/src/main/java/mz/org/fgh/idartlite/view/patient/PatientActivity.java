@@ -83,7 +83,7 @@ public class PatientActivity extends BaseActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_patient);
+        tabLayout.getTabAt(0).setIcon(R.mipmap.ic_patient_info);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_prescription);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_dispense);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_episode);

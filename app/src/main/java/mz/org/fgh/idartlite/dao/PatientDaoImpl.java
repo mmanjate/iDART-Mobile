@@ -24,13 +24,16 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
         super(connectionSource, tableConfig);
     }
 
-    public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic) throws SQLException {
-        if (!checkIsEmpty(param,clinic)){
-         return   queryBuilder().where().like(Patient.COLUMN_NID, "%" + param + "%").or().like(Patient.COLUMN_FIRST_NAME, "%" + param + "%").or().like(Patient.COLUMN_LAST_NAME, "%" + param + "%").and().eq(Patient.COLUMN_CLINIC_ID, clinic.getId()).query();
-        }
-        else {
-         return   Collections.emptyList();
-        }
+    public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic, long offset, long limit) throws SQLException {
+        List<Patient> recs = queryBuilder().limit(limit)
+                                            .offset(offset)
+                                            .where()
+                                            .like(Patient.COLUMN_NID, "%" + param + "%")
+                                            .or().like(Patient.COLUMN_FIRST_NAME, "%" + param + "%")
+                                            .or().like(Patient.COLUMN_LAST_NAME, "%" + param + "%")
+                                            .and()
+                                            .eq(Patient.COLUMN_CLINIC_ID, clinic.getId()).query();
+        return recs;
     }
 
     public boolean checkIsEmpty(String param, Clinic clinic) throws SQLException {
