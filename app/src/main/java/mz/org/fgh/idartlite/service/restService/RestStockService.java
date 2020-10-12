@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import java.util.UUID;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
@@ -307,14 +309,25 @@ public class RestStockService extends BaseService {
 
     private static Stock getNewLocalStock(LinkedTreeMap<String, Object> itemresult, Clinic clinic) throws SQLException {
 
+        stockService = new StockService(getApp(),null);
+        drugService = new DrugService(getApp(),null);
+
         ArrayList stocklevel = (ArrayList) Objects.requireNonNull(itemresult.get("stocklevel"));
+        Drug localDrug = drugService.getDrugByRestID((int) Float.parseFloat(itemresult.get("drug").toString()));
+        List<Stock> stockList = stockService.getAllStocksByClinicAndDrug(clinic,localDrug);
+
+        Stock localStock = null;
+
+        for(Stock stock: stockList){
+            if(stock.getBatchNumber().equalsIgnoreCase(itemresult.get("batchnumber").toString()))
+                return localStock;
+        }
 
         if (stocklevel.size() != 0) {
 
             LinkedTreeMap<String, Object> stockAmpunt = (LinkedTreeMap<String, Object>) stocklevel.get(0);
             drugService = new DrugService(BaseService.getApp(), null);
-            Stock localStock = new Stock();
-
+            localStock = new Stock();
             localStock.setRestId((int) Float.parseFloat(itemresult.get("id").toString()));
             localStock.setBatchNumber(itemresult.get("batchnumber").toString());
             localStock.setClinic(clinic);
