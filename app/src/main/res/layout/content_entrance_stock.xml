@@ -108,8 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|right"
-                android:visibility="@{stock.syncStatus.equals(stock.SYNC_SATUS_READY) ? View.VISIBLE : View.GONE}"
-                bind:srcCompat="@drawable/ic_baseline_autorenew_24" />
+                android:src="@{stock.syncStatus.equals(stock.SYNC_SATUS_READY) ? @drawable/ic_baseline_cloud_queue_24 : @drawable/ic_baseline_cloud_done_24}" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
