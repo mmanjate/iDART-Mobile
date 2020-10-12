@@ -36,11 +36,11 @@ public class RegimenDrugsService extends BaseService {
                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) drug;
 
                     Drug localDrug = drugService.getDrug(Objects.requireNonNull(itemresult.get("atccode_id")).toString());
-
-                    if (localDrug == null) {
-                        drugService.saveOnDrug(drug);
-                        localDrug = drugService.getDrug(Objects.requireNonNull(itemresult.get("atccode_id")).toString());
-                    }
+//
+//                    if (localDrug == null) {
+//                        drugService.saveOnDrug(drug);
+//                        localDrug = drugService.getDrug(Objects.requireNonNull(itemresult.get("atccode_id")).toString());
+//                    }
 
                     RegimenDrug regimenDrug = new RegimenDrug();
                     regimenDrug.setTherapeuticRegimen(regimen);

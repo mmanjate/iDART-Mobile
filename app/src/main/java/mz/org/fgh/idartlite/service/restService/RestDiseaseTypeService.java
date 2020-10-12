@@ -9,6 +9,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.base.BaseService;
@@ -35,8 +38,6 @@ public class RestDiseaseTypeService extends BaseService {
             getRestServiceExecutor().execute(() -> {
 
                 RESTServiceHandler handler = new RESTServiceHandler();
-
-                Map<String, Object> params = new ArrayMap<String, Object>();
                 handler.addHeader("Content-Type", "Application/json");
 
                 handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {

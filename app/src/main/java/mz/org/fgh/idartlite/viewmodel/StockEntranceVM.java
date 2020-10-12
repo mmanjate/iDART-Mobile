@@ -35,8 +35,6 @@ public class StockEntranceVM extends SearchVM<Stock> {
         stock = new Stock();
     }
 
-
-
     private List<Stock> getStockByClinic(Clinic clinic) throws SQLException {
         return stockService.getStockByClinic(clinic);
     }

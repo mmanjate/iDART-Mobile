@@ -17,7 +17,7 @@ public abstract class BaseService {
 
 
     protected static ExecutorService restServiceExecutor;
-    public static final String baseUrl = "http://10.10.2.136:3001";
+    public static final String baseUrl = "http://dev.fgh.org.mz:3110";
 
     protected User currentUser;
     protected Application application;
@@ -72,6 +72,17 @@ public abstract class BaseService {
         return null;
     }
 
+    public static Date getUtilDateFromString(String stringDate, String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        try {
+            Date date = (Date) format.parse(stringDate);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public static String getStringDateFromDate(Date date, String pattern) {
         SimpleDateFormat datetemp = new SimpleDateFormat(pattern);

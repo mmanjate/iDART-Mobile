@@ -21,6 +21,7 @@ public class Clinic extends BaseModel implements Listble {
 	public static final String COLUMN_ADDRESS = "address";
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PHARMACY_TYPE_ID = "pharmacy_type_id";
+	public static final String COLUMN_REST_ID = "restid";
 
 	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
@@ -42,6 +43,9 @@ public class Clinic extends BaseModel implements Listble {
 
 	@DatabaseField(columnName = COLUMN_PHARMACY_TYPE_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
 	private PharmacyType pharmacyType;
+
+	@DatabaseField(columnName = COLUMN_REST_ID)
+	private int restid;
 
 	public Clinic() {
 	}
@@ -132,6 +136,10 @@ public class Clinic extends BaseModel implements Listble {
 	public void setPharmacyType(PharmacyType pharmacyType) {
 		this.pharmacyType = pharmacyType;
 	}
+
+	public int getRestId() { return restid; }
+
+	public void setRestId(int restid) { this.restid = restid; }
 
 	@Override
 	public boolean equals(Object o) {

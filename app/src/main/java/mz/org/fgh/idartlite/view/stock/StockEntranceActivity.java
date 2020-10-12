@@ -110,7 +110,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                             List<Stock> listStock = getRelatedViewModel().getStockByOrderNumber(stockListEdit.get(0).getOrderNumber(), (Clinic) bundle.getSerializable("clinic"));
                             boolean isSync  = false, isUsed = false;
                             for(Stock stEdit : listStock){
-                                if (!stEdit.getSyncStatus().equals("R")){
+                                if (!stEdit.getSyncStatus().equals(Stock.SYNC_SATUS_READY)){
                                     isSync = true;
                                 }
                                 if (!dispenseDrugService.checkStockIsDispensedDrug(stEdit)){
@@ -362,7 +362,6 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                     Utilities.displayAlertDialog(StockEntranceActivity.this, "O numero dessa guia ja existe no sistema.").show();
                 }
             }else {
-
                     if (stockEntranceBinding.numeroGuia.getText().toString().equals(stockListEdit.get(0).getOrderNumber())){
                         for (Stock stDelete : stockListEdit){
                             stockService.deleteStock(stDelete);

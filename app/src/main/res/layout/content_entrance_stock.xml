@@ -10,6 +10,7 @@
             type="mz.org.fgh.idartlite.model.Stock" />
         <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -107,6 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|right"
+                android:visibility="@{stock.syncStatus.equals(stock.SYNC_SATUS_READY) ? View.VISIBLE : View.GONE}"
                 bind:srcCompat="@drawable/ic_baseline_autorenew_24" />
         </LinearLayout>
     </LinearLayout>
