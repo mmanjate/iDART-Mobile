@@ -2,22 +2,17 @@ package mz.org.fgh.idartlite.view.patient;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
@@ -28,13 +23,11 @@ import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.ClickListener;
-import mz.org.fgh.idartlite.adapter.StockEntranceAdapter;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.common.ListbleDialogListener;
-import mz.org.fgh.idartlite.common.RecyclerTouchListener;
 import mz.org.fgh.idartlite.databinding.FragmentDispenseBinding;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Patient;
@@ -46,25 +39,22 @@ import mz.org.fgh.idartlite.viewmodel.DispenseVM;
 public class DispenseFragment extends GenericFragment implements ListbleDialogListener {
 
     public static final String FRAGMENT_CODE_DISPENSE = "DispenseFragment";
-
-    public DispenseFragment() {
-        // Required empty public constructor
-    }
-
-
-
+    int dispensePosition;
     private RecyclerView rcvDispences;
     private List<Dispense> dispenseList;
 
     private FragmentDispenseBinding fragmentDispenseBinding;
     private DispenseAdapter dispenseAdapter;
-    int dispensePosition;
     private List<Prescription> prescriptionList;
+
+    public DispenseFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentDispenseBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_dispense, container,false);
+        fragmentDispenseBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_dispense, container, false);
         return fragmentDispenseBinding.getRoot();
     }
 
@@ -90,14 +80,19 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(getContext(), CreateDispenseActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("user", getCurrentUser());
-                bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
-                bundle.putSerializable("patient", getMyActivity().getPatient());
-                bundle.putSerializable("step", ApplicationStep.STEP_CREATE);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                Patient patient = getMyActivity().getPatient();
+
+                if (!getRelatedViewModel().patientHasEpisodioFim(patient)) {
+                    Intent intent = new Intent(getContext(), CreateDispenseActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("user", getCurrentUser());
+                    bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                    bundle.putSerializable("patient", patient);
+                    bundle.putSerializable("step", ApplicationStep.STEP_CREATE);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else
+                    Utilities.displayAlertDialog(DispenseFragment.this.getContext(), "Não pode criar nova dispensa porque o paciente já tem o episódio final.").show();
             }
         });
 
@@ -159,38 +154,39 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
         }));
     }*/
 
-    public boolean onMenuItemClick(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.edit:
                 try {
                     String editErrors = getRelatedViewModel().patientHasEndingEpisode();
 
-                    if (Utilities.stringHasValue(editErrors)){
-                        Utilities.displayAlertDialog(DispenseFragment.this.getContext(),editErrors).show();
-                    }else{
+                    if (Utilities.stringHasValue(editErrors)) {
+                        Utilities.displayAlertDialog(DispenseFragment.this.getContext(), editErrors).show();
+                    } else {
 
-                    editErrors = getRelatedViewModel().dispenseCanBeEdited();
-                    if (Utilities.stringHasValue(editErrors)){
-                        Utilities.displayAlertDialog(DispenseFragment.this.getContext(),editErrors).show();
-                    }else {
-                Map<String, Object> params = new HashMap<>();
-                params.put("patient", getMyActivity().getPatient());
-                params.put("user", getCurrentUser());
-                params.put("clinic", getMyActivity().getCurrentClinic());
-                params.put("dispense", getRelatedViewModel().getDispense());
-                params.put("step", ApplicationStep.STEP_EDIT);
-                nextActivity(CreateDispenseActivity.class,params);
-                    }}
+                        editErrors = getRelatedViewModel().dispenseCanBeEdited();
+                        if (Utilities.stringHasValue(editErrors)) {
+                            Utilities.displayAlertDialog(DispenseFragment.this.getContext(), editErrors).show();
+                        } else {
+                            Map<String, Object> params = new HashMap<>();
+                            params.put("patient", getMyActivity().getPatient());
+                            params.put("user", getCurrentUser());
+                            params.put("clinic", getMyActivity().getCurrentClinic());
+                            params.put("dispense", getRelatedViewModel().getDispense());
+                            params.put("step", ApplicationStep.STEP_EDIT);
+                            nextActivity(CreateDispenseActivity.class, params);
+                        }
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 return true;
             case R.id.remove:
-                Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(),DispenseFragment.this.getString(R.string.list_item_delete_msg),dispensePosition,DispenseFragment.this).show();
+                Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(), DispenseFragment.this.getString(R.string.list_item_delete_msg), dispensePosition, DispenseFragment.this).show();
                 return true;
 
             case R.id.viewDetails:
-                Map<String, Object>  params = new HashMap<>();
+                Map<String, Object> params = new HashMap<>();
                 params.put("patient", getMyActivity().getPatient());
                 params.put("user", getCurrentUser());
                 params.put("clinic", getMyActivity().getCurrentClinic());
@@ -209,11 +205,11 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
 
         String errorMsg = getRelatedViewModel().patientHasEndingEpisode();
 
-        if(!Utilities.stringHasValue(errorMsg)){
+        if (!Utilities.stringHasValue(errorMsg)) {
 
             errorMsg = getRelatedViewModel().checkDispenseRemoveConditions();
 
-            if(!Utilities.stringHasValue(errorMsg)) {
+            if (!Utilities.stringHasValue(errorMsg)) {
 
                 try {
                     dispenseList.remove(getRelatedViewModel().getDispense());
@@ -227,12 +223,11 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
                     Utilities.displayAlertDialog(DispenseFragment.this.getContext(), getString(R.string.record_sucessfuly_removed)).show();
                 }
 
-            }else{
-                Utilities.displayAlertDialog(DispenseFragment.this.getContext(),errorMsg).show();
+            } else {
+                Utilities.displayAlertDialog(DispenseFragment.this.getContext(), errorMsg).show();
             }
-        }
-        else {
-            Utilities.displayAlertDialog(DispenseFragment.this.getContext(),errorMsg).show();
+        } else {
+            Utilities.displayAlertDialog(DispenseFragment.this.getContext(), errorMsg).show();
         }
     }
 
@@ -242,7 +237,7 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
     }
 
 
-    public PatientActivity getMyActivity(){
+    public PatientActivity getMyActivity() {
         return (PatientActivity) getActivity();
     }
 
@@ -256,7 +251,7 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
         return (DispenseVM) super.getRelatedViewModel();
     }
 
-    private Patient getSelectedPatient(){
+    private Patient getSelectedPatient() {
         return getMyActivity().getPatient();
     }
 

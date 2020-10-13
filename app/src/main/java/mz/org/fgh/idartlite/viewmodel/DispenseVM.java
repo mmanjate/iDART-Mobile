@@ -233,4 +233,8 @@ public class DispenseVM extends BaseViewModel {
         return "";
     }
 
+    public boolean patientHasEpisodioFim(Patient patient) {
+        return this.episodeService.patientHasEndingEpisode(patient);
+    }
+
 }
