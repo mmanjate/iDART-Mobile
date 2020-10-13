@@ -97,7 +97,7 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
 
     public void startPrescriptionActivity(){
         if (getMyActivity().getPatient().hasEndEpisode()) {
-            Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(), "Não pode efectuar alterações sobre registos deste paciente, pois possui registado um episódio de fecho.").show();
+            Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(), getString(R.string.cant_edit_patient_data)).show();
         } else {
             Map<String, Object> params = new HashMap<>();
             params.put("patient", getMyActivity().getPatient());

@@ -37,6 +37,9 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     private PrescriptionService prescriptionService;
 
     private Prescription prescription;
+
+    private Prescription oldPrescription;
+    
     private TherapheuticRegimenService regimenService;
     private TherapeuthicLineService lineService;
     private DispenseTypeService dispenseTypeService;
@@ -74,18 +77,21 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     public void requestForNewRecord(){
         try {
 
-            getCurrentStep().changeToInit();
-
-            this.prescription = prescriptionService.getLastPatientPrescription(((PatientActivity) getRelatedActivity()).getPatient());
-
-            this.prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
-
-            if (!this.prescription.isClosed()) {
-                Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.new_prescription_creation), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
+            if (getRelatedListingFragment().getMyActivity().getPatient().hasEndEpisode()) {
+                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.cant_edit_patient_data)).show();
             } else {
-                doOnConfirmed();
-            }
+                getCurrentStep().changeToInit();
 
+                this.prescription = prescriptionService.getLastPatientPrescription(((PatientActivity) getRelatedActivity()).getPatient());
+
+                this.prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
+
+                if (!this.prescription.isClosed()) {
+                    Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.new_prescription_creation), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
+                } else {
+                    doOnConfirmed();
+                }
+            }
 
         } catch(SQLException e){
             e.printStackTrace();
@@ -280,6 +286,8 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
 
     private void initNewRecord() {
         try {
+            oldPrescription = this.prescription;
+            
             prescriptionService.closePrescription(this.prescription);
             initNewPrescription();
             this.prescription.setPatient(((PatientActivity) getRelatedActivity()).getPatient());
