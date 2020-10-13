@@ -55,6 +55,31 @@ public class SearchPatientActivity extends BaseActivity {
                 finish();
             }
         });
+
+        recyclerPatient = searchPatientBinding.reyclerPatient;
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerPatient.setLayoutManager(layoutManager);
+        recyclerPatient.setHasFixedSize(true);
+        recyclerPatient.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
+
+        recyclerPatient.addOnItemTouchListener(
+                new ClickListener(getApplicationContext(), recyclerPatient, new ClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        nextActivity(position);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) { }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+                )
+        );
     }
 
     @Override
@@ -90,40 +115,19 @@ public class SearchPatientActivity extends BaseActivity {
     }
 
     public void displaySearchResult() {
-        recyclerPatient = searchPatientBinding.reyclerPatient;
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerPatient.setLayoutManager(layoutManager);
-        recyclerPatient.setHasFixedSize(true);
-        recyclerPatient.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
-        adapter = new ContentListPatientAdapter(recyclerPatient, getRelatedViewModel().getAllDisplyedRecords(),this);
-        recyclerPatient.setAdapter(adapter);
+        if (adapter == null) {
+            adapter = new ContentListPatientAdapter(recyclerPatient, getRelatedViewModel().getAllDisplyedRecords(), this);
+            recyclerPatient.setAdapter(adapter);
+        }
 
-        adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                getRelatedViewModel().loadMoreRecords(recyclerPatient, adapter);
-            }
-        });
-
-        recyclerPatient.addOnItemTouchListener(
-                new ClickListener(getApplicationContext(), recyclerPatient, new ClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        nextActivity(position);
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        nextActivity(position);
-                    }
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    }
+        if (adapter.getOnLoadMoreListener() == null) {
+            adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+                    getRelatedViewModel().loadMoreRecords(recyclerPatient, adapter);
                 }
-                )
-        );
+            });
+        }
     }
 
 
