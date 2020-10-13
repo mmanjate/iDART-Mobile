@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.view.patient;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -27,6 +28,7 @@ import mz.org.fgh.idartlite.databinding.EpisodeActivityBinding;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.view.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
 
 import static android.R.layout;
@@ -108,6 +110,22 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
             }
         });
 
+    }
+
+    //Handling Action Bar button click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            //Back button
+            case R.id.about:
+                //If this activity started from other activity
+                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

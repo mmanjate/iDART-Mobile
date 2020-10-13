@@ -85,10 +85,10 @@ public class SearchPatientActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(Utilities.stringHasValue(getRelatedViewModel().getSearchParam())) {
+       /* if(Utilities.stringHasValue(getRelatedViewModel().getSearchParam())) {
             getRelatedViewModel().initSearch();
             Utilities.hideSoftKeyboard(SearchPatientActivity.this);
-        }
+        }*/
     }
 
     @Override
