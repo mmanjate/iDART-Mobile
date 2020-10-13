@@ -5,13 +5,13 @@ import android.os.Bundle;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.TaskSchedule.restTaskSchedule.ExecuteWorkerScheduler;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.RestResponseListener;
@@ -47,22 +47,57 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
 
         new Thread(new Runnable() {
             public void run() {
-
-
                 RestPharmacyTypeService.restGetAllPharmacyType();
 
-                RestFormService.restGetAllForms();
-                RestDrugService.restGetAllDrugs();
                 RestDiseaseTypeService.restGetAllDiseaseType();
+
+                RestFormService.restGetAllForms();
+
+                try {
+                    long timeOut = 60000;
+                    long requestTime = 0;
+                    while (!Utilities.listHasElements(getRelatedViewModel().getAllDiseaseTypes())){
+                        Thread.sleep(2000);
+                        requestTime += 2000;
+                        if (requestTime >= timeOut){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
+                                }
+                            });
+                            break;
+                        }
+                    }
+
+                    RestDrugService.restGetAllDrugs();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 RestDispenseTypeService.restGetAllDispenseType();
                 RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
                 RestTherapeuticLineService.restGetAllTherapeuticLine();
 
-
                 clinicList = restClinicService.restGetAllClinic(SplashActivity.this);
+                long timeOut = 60000;
+                long requestTime = 0;
                 while (!Utilities.listHasElements(clinicList)) {
                     try {
                         Thread.sleep(2000);
+                        requestTime += 2000;
+                        if (requestTime >= timeOut){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
+                                }
+                            });
+                            break;
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -105,9 +140,10 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Utilities.displayAlertDialog(SplashActivity.this, "Time out - Não foi possivel terminar a configuração inicial da aplicação.").show();
+                                Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
                             }
                         });
+                        break;
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -128,18 +164,15 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
 
     @Override
     public void doOnConfirmed() {
-        if (getRelatedViewModel().appHasUsersOnDB()){
+        if (getRelatedViewModel().appHasNoUsersOnDB()){
             finishAffinity();
             System.exit(0);
         }else {
             nextActivity(LoginActivity.class);
             finish();
         }
-
     }
 
     @Override
-    public void doOnDeny() {
-
-    }
+    public void doOnDeny() {}
 }

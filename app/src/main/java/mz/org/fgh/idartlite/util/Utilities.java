@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationCompat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -303,4 +304,12 @@ public class Utilities {
     public static boolean listHasElements(ArrayList<?> list){
         return list != null && !list.isEmpty();
     }
+
+    /*public static NotificationCompat.Builder showNotification(String title, String contntText, Context context, String channelId){
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        mBuilder.setContentTitle(title);
+        mBuilder.setContentText(contntText);
+        return mBuilder;
+    }*/
 }

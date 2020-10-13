@@ -23,6 +23,10 @@ public class DiseaseTypeService extends BaseService {
         getDataBaseHelper().getDiseaseTypeDao().create(diseaseType);
     }
 
+    public List<DiseaseType> getAllDiseaseTypes() throws SQLException {
+        return getDataBaseHelper().getDiseaseTypeDao().queryForAll();
+    }
+
     public DiseaseType getdDiseaseType(String code) throws SQLException {
 
         List<DiseaseType> typeList = getDataBaseHelper().getDiseaseTypeDao().queryForEq(COLUMN_CODE,code);
