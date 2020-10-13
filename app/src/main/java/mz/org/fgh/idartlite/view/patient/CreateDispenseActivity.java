@@ -110,8 +110,11 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
 
         loadSelectedPrescriptionToForm();
 
-        if (getApplicationStep().isApplicationstepCreate())
+        if (getApplicationStep().isApplicationstepCreate()) {
             this.loadPrescribedDrugsOfLastPatientPrescription();
+            getRelatedViewModel().getDispense().setPickupDate(DateUtilitis.getCurrentDate());
+            getRelatedViewModel().getDispense().setNextPickupDate(null);
+        }
 
         if (getApplicationStep().isApplicationStepDisplay())
             getRelatedViewModel().setViewListRemoveButton(false);
@@ -129,10 +132,17 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(CreateDispenseActivity.this, new DatePickerDialog.OnDateSetListener() {
 
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
                         activityCreateDispenseBinding.dispenseDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                        int duracaoDoAviamento = ((ValorSimples) activityCreateDispenseBinding.spnDuration.getSelectedItem()).getId();
+
+                        String nextPickUpDate = calculateNextPickUpDate(duracaoDoAviamento);
+                        if (duracaoDoAviamento != 0)
+                            activityCreateDispenseBinding.nextPickupDate.setText(nextPickUpDate);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -184,41 +194,12 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 int duracaoDoAviamento = ((ValorSimples) adapterView.getItemAtPosition(i)).getId();
-                String pickUpdate = activityCreateDispenseBinding.dispenseDate.getText().toString();
 
-                int daysToAdd = 0;
+                String nextPickUpDate = calculateNextPickUpDate(duracaoDoAviamento);
 
-                if (duracaoDoAviamento == 2) {
-                    daysToAdd = Dispense.DURATION_TWO_WEEKS;
-                } else if (duracaoDoAviamento == 4) {
-                    daysToAdd = Dispense.DURATION_ONE_MONTH;
-                } else if (duracaoDoAviamento == 8) {
-                    daysToAdd = Dispense.DURATION_TWO_MONTHS;
-                } else if (duracaoDoAviamento == 12) {
-                    daysToAdd = Dispense.DURATION_THREE_MONTHS;
-                } else if (duracaoDoAviamento == 16) {
-                    daysToAdd = Dispense.DURATION_FOUR_MONTHS;
-                } else if (duracaoDoAviamento == 20) {
-                    daysToAdd = Dispense.DURATION_FIVE_MONTHS;
-                } else if (duracaoDoAviamento == 24) {
-                    daysToAdd = Dispense.DURATION_SIX_MONTHS;
-                }
-                String nextPickUpDate = "";
+                if (duracaoDoAviamento != 0)
+                    activityCreateDispenseBinding.nextPickupDate.setText(nextPickUpDate);
 
-                if (pickUpdate.length() == 0)
-                    nextPickUpDate = DateUtilitis.formatToDDMMYYYY(DateUtilitis.getCurrentDate());
-                else
-                    nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(pickUpdate, daysToAdd);
-
-                int isWeekend = DateUtilitis.isWeekend(nextPickUpDate);
-
-                if (isWeekend == 6) {
-                    nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(nextPickUpDate, 2);
-                } else if (isWeekend == 7) {
-                    nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(nextPickUpDate, 1);
-                }
-
-                activityCreateDispenseBinding.nextPickupDate.setText(nextPickUpDate);
                 if (duracaoDoAviamento != 0)
                     setDispenseQuantityForEachSelectedDrug();
             }
@@ -283,6 +264,44 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
         if (getApplicationStep().isApplicationStepDisplay()) {
             disableAllSpinners();
         }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String calculateNextPickUpDate(int duracaoDoAviamento) {
+        String pickUpdate = activityCreateDispenseBinding.dispenseDate.getText().toString();
+
+        int daysToAdd = 0;
+
+        if (duracaoDoAviamento == 2) {
+            daysToAdd = Dispense.DURATION_TWO_WEEKS;
+        } else if (duracaoDoAviamento == 4) {
+            daysToAdd = Dispense.DURATION_ONE_MONTH;
+        } else if (duracaoDoAviamento == 8) {
+            daysToAdd = Dispense.DURATION_TWO_MONTHS;
+        } else if (duracaoDoAviamento == 12) {
+            daysToAdd = Dispense.DURATION_THREE_MONTHS;
+        } else if (duracaoDoAviamento == 16) {
+            daysToAdd = Dispense.DURATION_FOUR_MONTHS;
+        } else if (duracaoDoAviamento == 20) {
+            daysToAdd = Dispense.DURATION_FIVE_MONTHS;
+        } else if (duracaoDoAviamento == 24) {
+            daysToAdd = Dispense.DURATION_SIX_MONTHS;
+        }
+        String nextPickUpDate = "";
+
+        if (pickUpdate.length() != 0)
+            nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(pickUpdate, daysToAdd);
+
+        int isWeekend = DateUtilitis.isWeekend(nextPickUpDate);
+
+        if (isWeekend == 6) {
+            nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(nextPickUpDate, 2);
+        } else if (isWeekend == 7) {
+            nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(nextPickUpDate, 1);
+        }
+
+        return nextPickUpDate;
 
     }
 

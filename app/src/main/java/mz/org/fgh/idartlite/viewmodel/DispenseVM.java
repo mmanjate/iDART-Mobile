@@ -14,7 +14,6 @@ import java.util.Map;
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
@@ -24,7 +23,6 @@ import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
-import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.service.DispenseDrugService;
 import mz.org.fgh.idartlite.service.DispenseService;
 import mz.org.fgh.idartlite.service.DrugService;
@@ -160,15 +158,18 @@ public class DispenseVM extends BaseViewModel {
                     if (!Utilities.stringHasValue(validationErrors)) {
                         try {
                             boolean isNewDispense = true;
+
                             if (dispense.getId() > 0) {
                                 isNewDispense = false;
-                                dispense.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
-                            }
-                            this.dispenseService.saveOrUpdateDispense(dispense);
+                                this.dispenseService.deleteDispense(dispense);
+                                dispense.setId(0);
+                                this.dispenseService.saveOrUpdateDispense(dispense);
+                            } else
+                                this.dispenseService.saveOrUpdateDispense(dispense);
                             if (isNewDispense)
-                                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi gravado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+                                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi criado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
                             else
-                                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi actualizado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+                                Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento em edição foi removido e criado novo!", ((CreateDispenseActivity) getRelatedActivity())).show();
 
                         } catch (SQLException e) {
                             e.printStackTrace();
