@@ -510,7 +510,7 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
     @Override
     public void doOnConfirmed() {
         Map<String, Object> params = new HashMap<>();
-        params.put("patient", this.getPatient());
+        params.put("patient",getRelatedViewModel().getDispense().getPrescription().getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("requestedFragment", DispenseFragment.FRAGMENT_CODE_DISPENSE);
