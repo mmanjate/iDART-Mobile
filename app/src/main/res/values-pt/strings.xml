@@ -148,5 +148,6 @@
     <string name="error_msg_server_offline_records_wont_be_sync">Servidor offline, não será possível realizar sincronizações dos registos criados.</string>
     <string name="confirm_prescription_save">Confirma gravar esta prescrição na base de dados?</string>
     <string name="time_out_msg">Time out - Não foi possivel terminar a configuração inicial da aplicação.</string>
+    <string name="cant_edit_patient_data">Não pode efectuar alterações sobre registos deste paciente, pois possui registado um episódio de fecho.</string>
 
 </resources>
