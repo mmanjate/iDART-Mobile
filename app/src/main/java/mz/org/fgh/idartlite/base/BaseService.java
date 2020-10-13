@@ -5,6 +5,7 @@ import android.app.Application;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 
 import mz.org.fgh.idartlite.dao.IdartLiteDataBaseHelper;
@@ -61,7 +62,7 @@ public abstract class BaseService {
 
 
     public Date getSqlDateFromString(String stringDate, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ROOT);
         try {
             Date date = (Date) format.parse(stringDate);
             return date;

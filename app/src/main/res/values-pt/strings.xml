@@ -121,7 +121,7 @@
     <string name="motivo">Motivo *</string>
     <string name="prescription_got_dispenses_msg">Esta prescrição já tem aviamentos registados, não pode ser removida.</string>
 
-    <string name="no_search_results">Não foi encontrado um paciente com o nome ou nid informado.</string>
+    <string name="no_search_results">Não foram encontrados resultados para a sua pesquisa.</string>
     <string name="nid_or_name_is_mandatory">Deve informar o nome ou nid para pesquisar.</string>
     <string name="save_error_msg_episode">\"Ocorreu um erro ao gravar o Episodio. \"</string>
 
@@ -147,5 +147,6 @@
     <string name="error_msg_server_offline">Servidor offline, não será possível realizar sincronizações, por favor tente mais tarde.</string>
     <string name="error_msg_server_offline_records_wont_be_sync">Servidor offline, não será possível realizar sincronizações dos registos criados.</string>
     <string name="confirm_prescription_save">Confirma gravar esta prescrição na base de dados?</string>
+    <string name="time_out_msg">Time out - Não foi possivel terminar a configuração inicial da aplicação.</string>
 
 </resources>

@@ -113,7 +113,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
             intent.putExtras(bundle);
         }
         startActivity(intent);
-        finish();
     }
 
     @Override
@@ -124,6 +123,10 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
 
     @Override
     public void onBackPressed() {
+        if (this instanceof  LoginActivity){
+            finishAffinity();
+            System.exit(0);
+        }else
         super.onBackPressed();
     }
 
