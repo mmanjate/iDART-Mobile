@@ -42,23 +42,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="2"
+                android:layout_weight="2.2"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ID Prescrição"
-                    android:textSize="@dimen/dimen_18dp"
+                    android:textSize="@dimen/dimen_12dp"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/prescriptionId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{dispense.prescription.prescriptionSeq}"
+                    android:text="@{dispense.prescription.uiId}"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:textSize="@dimen/dimen_18dp"
+                    android:textSize="@dimen/dimen_12dp"
                     android:textStyle="bold"/>
 
             </LinearLayout>
@@ -78,19 +78,23 @@
                     <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            style="@style/patient_activity_lists"
                             android:text="@string/data_levantamento"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
                         android:text="Duração:"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
                         android:text="@string/dt_proximo_levantamento" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
                         android:text=""/>
                 </LinearLayout>
 
@@ -104,18 +108,21 @@
                         android:id="@+id/dataLevantamento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
                         android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.pickupDate)}" />
 
                     <TextView
                         android:id="@+id/supply"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
                         android:text="@{Utilities.parseSupplyToLabel(dispense.supply)}" />
 
                     <TextView
                         android:id="@+id/dataProximoLevantamento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
                         android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.nextPickupDate)}" />
 
                 </LinearLayout>
