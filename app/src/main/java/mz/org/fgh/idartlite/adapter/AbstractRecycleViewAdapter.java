@@ -50,6 +50,10 @@ public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends Re
         this.onLoadMoreListener = onLoadMoreListener;
     }
 
+    public OnLoadMoreListener getOnLoadMoreListener() {
+        return onLoadMoreListener;
+    }
+
     @Override
     public int getItemViewType(int position) {
         return records.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
