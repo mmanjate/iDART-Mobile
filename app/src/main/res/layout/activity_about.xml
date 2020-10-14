@@ -1,50 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.AboutActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+    <data>
+        <variable
+            name="view"
+            type="mz.org.fgh.idartlite.viewmodel.HomeVM" />
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        app:elevation="6dp"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    </data>
 
-        <include layout="@layout/app_bar" />
-
-
-    </com.google.android.material.appbar.AppBarLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+         >
+
+        <include layout="@layout/app_bar" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:orientation="horizontal"
             android:padding="24dp">
 
             <ImageView
-                android:layout_width="@dimen/dimen_1dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_weight="1"
                 app:srcCompat="@mipmap/ic_mz_misau" />
 
             <ImageView
-                android:layout_width="@dimen/dimen_0dp"
-                android:layout_height="193dp"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
                 android:layout_gravity="right"
                 android:layout_weight="1"
                 app:srcCompat="@mipmap/ic_mz_pepfar" />
@@ -53,20 +43,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="100dp"
                 android:layout_height="@dimen/dimen_0dp"
-                android:layout_weight="1"
-                android:src="@mipmap/logo_fgh"
                 android:layout_gravity="bottom|center"
-                />
+                android:layout_weight="1"
+                android:src="@mipmap/logo_fgh" />
 
 
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -97,10 +85,14 @@
                 android:layout_height="@dimen/dimen_0dp"
                 android:layout_weight="0.5"
                 android:gravity="center|top"
-                android:text="iDART Mobile V1.0 2020"
+                android:text="@{view.appVersionName}"
                 android:textColor="@color/logo"
                 android:textSize="30sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</layout>
