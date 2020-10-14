@@ -141,6 +141,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                             selectedStock = (List<Listble>) bundle.getSerializable("listStock");
                             Collections.sort(selectedStock);
                             displaySelectedDrugs();
+                        } else {
+                            isEditForm = false;
                         }
                     } else {
                         getRelatedViewModel().setViewListRemoveButton(true);
@@ -378,10 +380,10 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                     Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.stock_saved_sucessfully),StockEntranceActivity.this).show();
                 } else {
                     selectedStock.clear();
-                    selectedStock.addAll(stockListEdit);
-                    Collections.sort(selectedStock);
+                    //selectedStock.addAll(stockListEdit);
+                    //Collections.sort(selectedStock);
                     displaySelectedDrugs();
-                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists)).show();
+                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists)+ " ("+stockEntranceBinding.numeroGuia.getText().toString()+")").show();
                 }
             }else {
                     if (stockEntranceBinding.numeroGuia.getText().toString().equals(stockListEdit.get(0).getOrderNumber())){
