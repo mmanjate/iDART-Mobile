@@ -168,6 +168,7 @@
                                 android:dropDownWidth="wrap_content"
                                 style="@style/bottom_border_edit_text_style"
                                 android:drawableRight="@drawable/ic_patient_search"
+                                android:ems="50"
                                 android:padding="@dimen/dimen_4dp"
                                 android:text="" />
 

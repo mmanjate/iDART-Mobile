@@ -50,13 +50,13 @@
     <string name="visualizar_detalhes">Visualizar Detalhes</string>
 
     <string name="data_episodio">Data Episódio:</string>
-    <string name="data_de_referencia">Data de Referencia:</string>
+    <string name="data_de_referencia">Data de Referência:</string>
     <string name="data_prox_levantamento">Data do Prox. Levan:</string>
     <string name="notas">Notas:</string>
     <string name="data">data</string>
-    <string name="regime_terapeutico">regime_terapeutico</string>
-    <string name="linha">regime_terapeutico</string>
-    <string name="dura_o">dura_o</string>
+    <string name="regime_terapeutico">Regime Terapêutico</string>
+    <string name="linha">Linha Terapêutica</string>
+    <string name="dura_o">Duração</string>
     <string name="dados_pessoais">Dados Pessoais</string>
     <string name="contacto_pessoais">Contacto</string>
     <string name="other_details_person">Outros</string>
@@ -166,4 +166,5 @@
     <string name="pharmacy_required">O campo Farmácia deve ser preenchido.</string>
     <string name="pharmacy_config_not_found">Não foi encontrada a configuração da farmácia.</string>
     <string name="user_or_pass_invalid">Não foi encontrada a configuração da farmácia.</string>
+    <string name="error_verifying">Ocorreu um erro ao verificar a configuração de utilizadores</string>
 </resources>

@@ -137,7 +137,7 @@ public class LoginVM extends BaseViewModel {
             }
         } catch (SQLException e) {
             getRelatedActivity().changeViewToNormalMode();
-            Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao autenticar os dados, "+e.getLocalizedMessage()).show();
+            Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao verificar a configuração de utilizadores, "+e.getLocalizedMessage()).show();
             Log.i("INFO DB", "Erro ao fazer Login: " + e.getMessage());
             e.printStackTrace();
         }
@@ -153,7 +153,7 @@ public class LoginVM extends BaseViewModel {
             usersOnDB = userService.checkIfUsertableIsEmpty();
         } catch (SQLException e) {
             e.printStackTrace();
-            Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao verificar as configuração de utilizadores.").show();
+            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.error_verifying)).show();
         }
         return usersOnDB;
     }
