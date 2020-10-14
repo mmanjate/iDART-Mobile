@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +64,8 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
 
     private Drug selectedDrug;
 
+    public Dispense dispenseInEditMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,13 +104,14 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
 
                 if (bundle.getSerializable("dispense") != null) {
                     getRelatedViewModel().setDispense((Dispense) bundle.getSerializable("dispense"));
+                    this.dispenseInEditMode = getRelatedViewModel().getDispense();
                 }
             }
         }
 
         populateForm();
 
-        loadSelectedPrescriptionToForm();
+        loadSelectedDispenseToForm();
 
         if (getApplicationStep().isApplicationstepCreate()) {
             this.loadPrescribedDrugsOfLastPatientPrescription();
@@ -396,7 +398,7 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
         displaySelectedDrugs();
     }
 
-    private void loadSelectedPrescriptionToForm() {
+    private void loadSelectedDispenseToForm() {
 
         activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(ValorSimples.fastCreate(getRelatedViewModel().getDispense().getSupply())));
 

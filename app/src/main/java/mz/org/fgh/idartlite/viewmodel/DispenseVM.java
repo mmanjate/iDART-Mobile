@@ -15,6 +15,7 @@ import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
@@ -35,7 +36,7 @@ import mz.org.fgh.idartlite.view.patient.CreateDispenseActivity;
 import mz.org.fgh.idartlite.view.patient.DispenseFragment;
 import mz.org.fgh.idartlite.view.patient.PatientActivity;
 
-public class DispenseVM extends BaseViewModel {
+public class DispenseVM extends BaseViewModel implements DialogListener {
 
     private DispenseService dispenseService;
 
@@ -172,19 +173,13 @@ public class DispenseVM extends BaseViewModel {
 
                         if (!Utilities.stringHasValue(validationErrors)) {
                             try {
-                                boolean isNewDispense = true;
-
                                 if (dispense.getId() > 0) {
-                                    isNewDispense = false;
-                                    this.dispenseService.deleteDispense(dispense);
-                                    dispense.setId(0);
+                                    this.editDispenseAndRemovePrior();
+                                } else {
+                                    String patientNid = this.dispense.getPrescription().getPatient().getNid();
                                     this.dispenseService.saveOrUpdateDispense(dispense);
-                                } else
-                                    this.dispenseService.saveOrUpdateDispense(dispense);
-                                if (isNewDispense)
-                                    Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento foi criado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
-                                else
-                                    Utilities.displayAlertDialog(getRelatedActivity(), "O aviamento em edição foi removido e criado novo!", ((CreateDispenseActivity) getRelatedActivity())).show();
+                                    Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " +patientNid +" efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+                                }
 
                             } catch (SQLException e) {
                                 e.printStackTrace();
@@ -272,4 +267,51 @@ public class DispenseVM extends BaseViewModel {
         return this.episodeService.patientHasEndingEpisode(patient);
     }
 
+    @Override
+    public void doOnConfirmed() {
+        if (getCurrentStep().isApplicationStepEdit()) {
+        Dispense dispense = this.dispense;
+        try {
+            this.dispenseService.deleteDispense(dispense);
+            dispense.setId(0);
+            this.dispenseService.saveOrUpdateDispense(dispense);
+            this.backToPreviusActivity();
+        }catch (SQLException ex){
+
+        }
+        }
+    }
+
+    @Override
+    public void doOnDeny() {
+        this.backToPreviusActivity();
+    }
+
+    public void editDispenseAndRemovePrior(){
+        getCurrentStep().changeToEdit();
+
+        StringBuilder dispensedDrugsList = new StringBuilder();
+
+        Dispense dispenseInEditMode = ((CreateDispenseActivity)getRelatedActivity()).dispenseInEditMode;
+
+        String dataLevantamento = "Data Levantamento: "+DateUtilitis.formatToDDMMYYYY(dispenseInEditMode.getPickupDate(),"/");
+        String duracao = "Duração: "+Utilities.parseSupplyToLabel(dispenseInEditMode.getSupply());
+        String dataProximoLevantamento = "Data Próximo Levantamento: "+DateUtilitis.formatToDDMMYYYY(dispenseInEditMode.getNextPickupDate(), "/");
+
+        for (DispensedDrug dd: dispenseInEditMode.getDispensedDrugs()
+             ) {
+            Drug drug = dd.getStock().getDrug();
+            dispensedDrugsList.append(drug.getDescription() + "\n");
+        }
+
+        String detalhesAviamento = getRelatedActivity().getString(R.string.dispense_drug_detail_list);
+        String listaDeMedicamentosDispensados = getRelatedActivity().getString(R.string.dispensed_drug_list);
+        String gostariaDeRemoverAdispensaAnterior = getRelatedActivity().getString(R.string.would_you_like_remove_prior_dispense);
+
+        String editWillRemoveSelectedDispense = detalhesAviamento+"\n"+dataLevantamento+
+                "\n"+duracao+"\n"+dataProximoLevantamento+"\n\n"+listaDeMedicamentosDispensados+"\n"
+                +dispensedDrugsList+"\n"+gostariaDeRemoverAdispensaAnterior;
+
+        Utilities.displayConfirmationDialog(getRelatedActivity(), editWillRemoveSelectedDispense, getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), DispenseVM.this).show();
+    }
 }

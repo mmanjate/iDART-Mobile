@@ -23,11 +23,15 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="baff84a6-a0fa-420b-9410-1ffa63f40974">
+        <schema name="main" object-types="table, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="baff84a6-a0fa-420b-9410-1ffa63f40974">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from "Dispense_type"]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from drug]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

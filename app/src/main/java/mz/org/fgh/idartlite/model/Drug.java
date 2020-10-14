@@ -131,8 +131,8 @@ public class Drug extends BaseModel implements Listble {
                 fnmcode.equals(drug.fnmcode) &&
                 description.equals(drug.description) &&
                 instruction.equals(drug.instruction) &&
-                form.equals(drug.form) &&
-                diseaseType.equals(drug.diseaseType);
+                form.getId() == drug.form.getId() &&
+                diseaseType.getId() == drug.diseaseType.getId();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
