@@ -126,10 +126,10 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
                     getRelatedViewModel().saveUserSettingsAndProcced();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    Utilities.displayAlertDialog(LoginActivity.this, "Ocorreu um erro ao guardar as configuracoes do utilizados.").show();
+                    Utilities.displayAlertDialog(LoginActivity.this, "Ocorreu um erro ao guardar as configurações do utilizador.").show();
                 }
             }else {
-                Utilities.displayAlertDialog(LoginActivity.this, "Os dados do utilizador sao invalidos").show();
+                Utilities.displayAlertDialog(LoginActivity.this, "Os dados do utilizador são inválidos").show();
             }
         }
 

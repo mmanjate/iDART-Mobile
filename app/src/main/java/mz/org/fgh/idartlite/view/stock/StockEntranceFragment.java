@@ -142,11 +142,11 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                                 startActivity(intent);
                                 return true;
                             } else {
-                                Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(), "O Stock nao pode ser actualizado uma vez que ja foi utilizado para dispensar medicamentos").show();
+                                Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(), getString(R.string.stock_cannot_be_edited_already_used)).show();
                                 return false;
                             }
                     } else {
-                        Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(), "O Stock nao pode ser actualizado uma vez que ja foi sicronizado com a central").show();
+                        Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(), getString(R.string.stock_cannot_be_edited_already_synchronized)).show();
                         return false;
                     }
                 }catch (SQLException e) {
@@ -222,11 +222,11 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                         rcvFragmentStock.getAdapter().notifyItemRangeChanged(position, rcvFragmentStock.getAdapter().getItemCount());
                     }
                     else {
-                        Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),"O Stock nao pode ser removido uma vez que ja foi utilizado para dispensar medicamentos").show();
+                        Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),getString(R.string.stock_cannot_be_removed_already_used)).show();
                     }
                 }
                 else {
-                    Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),"O Stock nao pode ser removido uma vez que ja foi sicronizado com a central").show();
+                    Utilities.displayAlertDialog(StockEntranceFragment.this.getContext(),getString(R.string.stock_cannot_be_removed_already_synchronized)).show();
                 }
             }
         } catch (SQLException e) {
