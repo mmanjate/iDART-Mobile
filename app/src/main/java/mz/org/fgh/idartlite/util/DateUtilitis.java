@@ -284,4 +284,22 @@ public class DateUtilitis {
                 return 0;
         }
     }
+
+    public static int isSaturdayOrSunday(String stringDate) {
+
+        Date date = DateUtilitis.createDate(stringDate, DateUtilitis.DATE_FORMAT);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+        switch (dayOfWeek) {
+            case 7:
+                return 6;
+            case 1:
+                return 7;
+            default:
+                return 0;
+        }
+    }
 }
