@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,6 +42,7 @@ import mz.org.fgh.idartlite.service.DrugService;
 import mz.org.fgh.idartlite.service.StockService;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.StockEntranceVM;
 
 public class StockEntranceActivity extends BaseActivity implements DialogListener {
@@ -162,6 +164,22 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         stockEntranceBinding.setStock(getRelatedViewModel().getStock());
     }
 
+    //Handling Action Bar button click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            //Back button
+            case R.id.about:
+                //If this activity started from other activity
+                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_items, menu);
@@ -204,49 +222,53 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
             }
         });
 
-        stockEntranceBinding.dataEntrada.setOnClickListener(new View.OnClickListener() {
+        stockEntranceBinding.dataEntrada.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View view) {
-                int mYear, mMonth, mDay;
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    int mYear, mMonth, mDay;
 
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(StockEntranceActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(StockEntranceActivity.this, new DatePickerDialog.OnDateSetListener() {
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                        stockEntranceBinding.dataEntrada.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            stockEntranceBinding.dataEntrada.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
+                        }
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+                }
             }
         });
 
-        stockEntranceBinding.dataValidade.setOnClickListener(new View.OnClickListener() {
+        stockEntranceBinding.dataValidade.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View view) {
-                int mYear, mMonth, mDay;
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    int mYear, mMonth, mDay;
 
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(StockEntranceActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(StockEntranceActivity.this, new DatePickerDialog.OnDateSetListener() {
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                        stockEntranceBinding.dataValidade.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            stockEntranceBinding.dataValidade.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
+                        }
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+                }
             }
         });
 
@@ -284,7 +306,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                                         Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_duplication_msg)).show();
                                     }
                                 }else {
-                                    Utilities.displayAlertDialog(StockEntranceActivity.this, "A quantidade nao pode ser igual a zero.").show();
+                                    Utilities.displayAlertDialog(StockEntranceActivity.this,  getString(R.string.quantity_cannot_be_zero)).show();
                                 }
                             }else {
                                 Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_validate_date)).show();
@@ -296,7 +318,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                         Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.drug_data_empty_filds)).show();
                     }
                 }else {
-                    Utilities.displayAlertDialog(StockEntranceActivity.this, "Deve Selecionar um Medicamento para dar entrada").show();
+                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.must_select_at_least_one_drug)).show();
                 }
             }
         });
@@ -353,13 +375,13 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                     for (Listble listble : this.selectedStock) {
                         stockService.saveOrUpdateStock((Stock) listble);
                     }
-                    Utilities.displayAlertDialog(StockEntranceActivity.this, "Salvo com sucesso",StockEntranceActivity.this).show();
+                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.stock_saved_sucessfully),StockEntranceActivity.this).show();
                 } else {
                     selectedStock.clear();
                     selectedStock.addAll(stockListEdit);
                     Collections.sort(selectedStock);
                     displaySelectedDrugs();
-                    Utilities.displayAlertDialog(StockEntranceActivity.this, "O numero dessa guia ja existe no sistema.").show();
+                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists)).show();
                 }
             }else {
                     if (stockEntranceBinding.numeroGuia.getText().toString().equals(stockListEdit.get(0).getOrderNumber())){
@@ -372,7 +394,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                             stSave.setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
                             stockService.saveOrUpdateStock(stSave);
                         }
-                        Utilities.displayAlertDialog(StockEntranceActivity.this, "Alterado com sucesso", StockEntranceActivity.this).show();
+                        Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.stock_edited_sucessfully), StockEntranceActivity.this).show();
                     } else {
                         if (stockService.checkStockExist(stockEntranceBinding.numeroGuia.getText().toString(), getRelatedViewModel().getClinic())) {
                             for (Stock stDelete : stockListEdit){
@@ -384,13 +406,13 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                                 stSave.setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
                                 stockService.saveOrUpdateStock(stSave);
                             }
-                            Utilities.displayAlertDialog(StockEntranceActivity.this, "Alterado com sucesso", StockEntranceActivity.this).show();
+                            Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.stock_edited_sucessfully), StockEntranceActivity.this).show();
                         } else {
                             selectedStock.clear();
                             selectedStock.addAll(stockListEdit);
                             Collections.sort(selectedStock);
                             displaySelectedDrugs();
-                            Utilities.displayAlertDialog(StockEntranceActivity.this, "O numero dessa guia ja existe no sistema.").show();
+                            Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists)).show();
                         }
                     }
                 }

@@ -25,14 +25,16 @@
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
-                    app:tabMode="fixed"
-                    android:layout_below="@+id/stock_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabBackground="@color/tab_back"
+                    android:layout_below="@+id/stock_info"
+                    android:minHeight="?attr/actionBarSize"
                     app:elevation="0dp"
-                    app:tabTextColor="@color/colorPrimary"
-                    android:minHeight="?attr/actionBarSize"/>
+                    app:tabBackground="@color/tab_back"
+                    app:tabGravity="fill"
+                    app:tabMaxWidth="0dp"
+                    app:tabMode="fixed"
+                    app:tabTextColor="@color/colorPrimary" />
 
             </com.google.android.material.appbar.AppBarLayout>
 

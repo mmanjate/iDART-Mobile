@@ -123,7 +123,7 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
         switch (item.getItemId()){
             case R.id.edit:
                 if (getRelatedViewModel().getPrescription().getPatient().hasEndEpisode()){
-                    Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(),"Não pode efectuar alterações sobre registos deste paciente, pois possui registado um episódio de fecho.").show();
+                    Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(),getString(R.string.cant_edit_patient_data)).show();
                 }else {
                     try {
                         String editErrors = getRelatedViewModel().prescriptionCanBeEdited();
@@ -145,7 +145,7 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
                 return true;
             case R.id.remove:
                 if (getRelatedViewModel().getPrescription().getPatient().hasEndEpisode()){
-                    Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(),"Não pode efectuar alterações sobre registos deste paciente, pois possui registado um episódio de fecho.").show();
+                    Utilities.displayAlertDialog(PrescriptionFragment.this.getContext(),getString(R.string.cant_edit_patient_data)).show();
                 }else {
                     Utilities.displayDeleteConfirmationDialogFromList(PrescriptionFragment.this.getContext(), getString(R.string.list_item_delete_msg), getRelatedViewModel().getPrescription().getListPosition(), PrescriptionFragment.this).show();
                 }

@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.view.patient;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,6 +44,7 @@ import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.PrescriptionVM;
 
 public class PrescriptionActivity extends BaseActivity implements DialogListener {
@@ -237,6 +239,22 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
         if (getApplicationStep().isApplicationStepDisplay()){
             disableAllSpinners();
+        }
+    }
+
+    //Handling Action Bar button click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            //Back button
+            case R.id.about:
+                //If this activity started from other activity
+                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

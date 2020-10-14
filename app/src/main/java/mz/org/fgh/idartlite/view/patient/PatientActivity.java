@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.view.patient;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
@@ -20,6 +21,7 @@ import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.AboutActivity;
 import mz.org.fgh.idartlite.view.patient.adapter.PatientTabAdapter;
 import mz.org.fgh.idartlite.viewmodel.PatientVM;
 
@@ -92,6 +94,23 @@ public class PatientActivity extends BaseActivity {
             tabLayout.getTabAt(1).select();
         }else if(Utilities.stringHasValue(selectedTab) && selectedTab.equals(DispenseFragment.FRAGMENT_CODE_DISPENSE)){
             tabLayout.getTabAt(2).select();
+        }
+    }
+
+
+    //Handling Action Bar button click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            //Back button
+            case R.id.about:
+                //If this activity started from other activity
+                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

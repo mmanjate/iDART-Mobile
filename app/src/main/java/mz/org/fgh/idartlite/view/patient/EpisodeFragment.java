@@ -170,7 +170,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
                      return true;
                  }
                  else {
-                     Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"O Episódio não pode ser editado uma vez que já foi sicronizado com a central").show();
+                     Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),getString(R.string.episode_cannot_be_edited_already_synchronized)).show();
                      return true;
                  }
 
@@ -239,7 +239,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
             }
         }
         else {
-            Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"O Episódio não pode ser editado uma vez que já foi sicronizado com a central").show();
+            Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),getString(R.string.episode_cannot_be_removed_already_synchronized)).show();
         }
 
     }

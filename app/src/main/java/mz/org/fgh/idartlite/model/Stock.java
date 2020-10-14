@@ -92,7 +92,7 @@ public class Stock extends BaseModel implements Listble {
 
     @Override
     public int getQuantity() {
-        return this.unitsReceived;
+        return this.stockMoviment;
     }
 
     @Override

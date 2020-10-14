@@ -91,7 +91,7 @@ public class EpisodeVM extends BaseViewModel {
 
         getRelatedActivity().populateEpisode();
 
-        String validationErros=episode.validateEpisodeData();
+        String validationErros=episode.validateEpisodeData(getRelatedActivity());
 
         if(validationErros.isEmpty()){
             try {
@@ -115,11 +115,11 @@ public class EpisodeVM extends BaseViewModel {
                         episodeService.udpateEpisode(this.episode);
                     }
 
-                    Utilities.displayAlertDialog( getRelatedActivity(),"Episódio Criado Com Sucesso",getRelatedActivity()).show();
+                    Utilities.displayAlertDialog( getRelatedActivity(), getRelatedActivity().getString(R.string.episode_created_sucessfuly),getRelatedActivity()).show();
                 }
 
                 else {
-                    Utilities.displayAlertDialog( getRelatedActivity(),"Data de Visita não pode ser menor que a do primeiro episodio").show();
+                    Utilities.displayAlertDialog( getRelatedActivity(),getRelatedActivity().getString(R.string.visit_date_cannot_be_before_first_episode)).show();
                 }
 
             } catch (SQLException e) {
