@@ -54,7 +54,6 @@
     <string name="notas">notas</string>
     <string name="regime_terapeutico">regime_terapeutico</string>
     <string name="linha">regime_terapeutico</string>
-    <string name="dura_o">dura_o</string>
     <string name="data">data</string>
     <string name="dados_pessoais">Dados Pessoais</string>
     <string name="contacto_pessoais">Contacto</string>
@@ -63,7 +62,7 @@
     <string name="adress_person">Endreço</string>
     <string name="date_tarv">Data Inicio TARV</string>
     <string name="farmacia">Farmácia</string>
-    <string name="reason_to_stop">reasontostop</string>
+    <string name="reason_to_stop">Motivo de Fim</string>
     <string name="stock_entrance">Entrada</string>
     <string name="stock_inventory">Inventário</string>
     <string name="data_da_visita">Data da visita</string>
@@ -96,14 +95,14 @@
 
 
     <string name="label_lista_medicamentos">Lista de Medicamentos *</string>
-    <string name="drug_data_empty_filds">Todos os campos desse formulario são Obrigatorios.</string>
+    <string name="drug_data_empty_filds">Todos os campos do formulário são Obrigatorios.</string>
     <string name="drug_validate_date">A data de validade deve ser no minimo de dois meses (60 dias).</string>
     <string name="drug_entrada_date">A Data de Entrada não pode ser futura.</string>
     <string name="record_sucessfuly_removed">Registo removido com sucesso</string>
     <string name="would_like_to_dispense">A Prescrição foi gravada com sucesso. Pretende aviar a mesma?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
-    <string name="prescription_cant_be_removed_msg">Esta Prescrção não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
+    <string name="prescription_cant_be_removed_msg">Esta Prescrição não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
     <string name="no_patient_or_prescription">Não foi seleccionado um paciente ou prescrição.</string>
     <string name="error_on_loading_data">Ocorreu um erro ao carregar os dados da base de dados </string>
     <string name="see_olny_regimen_grugs">Visualizar apenas medicamentos do regime terapêutico?</string>
@@ -141,7 +140,7 @@
     <string name="no_episode_found">Não foi encontrado nenhum episódio do paciente seleccionado</string>
     <string name="new_prescription_creation">A ultima prescrição ainda não teve todos os aviamentos efectuados, confirma anular a mesma e criar nova?</string>
     <string name="cant_edit_synced_dispense">Não pode efectuar alterações sobre este aviamento pois o mesmo já foi sincronizada com o iDART central.</string>
-    <string name="dispense_cant_be_removed_msg">Esta Dispensa não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
+    <string name="dispense_cant_be_removed_msg">Esta Dispensa não pode ser removida, pois já esta sincronizada com o IDART central.</string>
     <string name="visualizar_detalhes">Visualizar Detalhes</string>
     <string name="error_removing_record">Ocorreu um erro ao remover o registo.</string>
     <string name="error_msg_server_offline">Servidor offline, não será possível realizar sincronizações, por favor tente mais tarde.</string>
@@ -155,18 +154,19 @@
     <string name="guide_number_already_exists">O numero da guia já existe no sistema</string>
     <string name="stock_edited_sucessfully">Stock editado com sucesso</string>
     <string name="stock_cannot_be_edited_already_used">O Stock não pode ser actualizado, uma vez que já foi utilizado para dispensar medicamentos</string>
-    <string name="stock_cannot_be_edited_already_synchronized">O Stock não pode ser actualizado, uma vez que já foi sicronizado com a central</string>
+    <string name="stock_cannot_be_edited_already_synchronized">O Stock não pode ser actualizado, uma vez que já foi sicronizado com o IDART central</string>
     <string name="stock_cannot_be_removed_already_used">O Stock não pode ser removido, uma vez que já foi utilizado para dispensar medicamentos</string>
-    <string name="stock_cannot_be_removed_already_synchronized">O Stock não pode ser removido, uma vez que já foi sicronizado com a central</string>
-    <string name="episode_cannot_be_edited_already_synchronized">O Episódio não pode ser editado uma vez que já foi sicronizado com a central</string>
-    <string name="episode_cannot_be_removed_already_synchronized">O Episódio não pode ser removido uma vez que já foi sicronizado com a central</string>
+    <string name="stock_cannot_be_removed_already_synchronized">O Stock não pode ser removido, uma vez que já foi sicronizado com o IDART central</string>
+    <string name="episode_cannot_be_edited_already_synchronized">O Episódio não pode ser editado uma vez que já foi sicronizado com o IDART central</string>
+    <string name="episode_cannot_be_removed_already_synchronized">O Episódio não pode ser removido uma vez que já foi sicronizado com o IDART central</string>
     <string name="episode_created_sucessfuly">Episódio Criado Com Sucesso</string>
     <string name="visit_date_cannot_be_before_first_episode">Data da Visita não pode ser menor que a do primeiro episódio</string>
     <string name="episode_date_required">A data do Episódio é um dado obrigatório.</string>
     <string name="episode_end_motive_required">O Motivo de Fim é um dado obrigatório.</string>
-    <string name="visit_date_cannot_be_future">A data do Episódio não pode ser uma data futura.</string>
+    <string name="visit_date_cannot_be_future">A data do Episódio não pode ser maior que a data corrente.</string>
 
     <string name="pharmacy_required">O campo Farmácia deve ser preenchido.</string>
     <string name="pharmacy_config_not_found">Não foi encontrada a configuração da farmácia.</string>
     <string name="user_or_pass_invalid">Não foi encontrada a configuração da farmácia.</string>
+    <string name="error_verifying">Ocorreu um erro ao verificar a configuração de utilizadores</string>
 </resources>
