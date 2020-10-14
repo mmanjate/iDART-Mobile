@@ -429,7 +429,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                     //selectedStock.addAll(stockListEdit);
                     //Collections.sort(selectedStock);
                     displaySelectedDrugs();
-                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists)+ " ("+stockEntranceBinding.numeroGuia.getText().toString()+")").show();
+                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists) + " (Número da Guia: "+stockEntranceBinding.numeroGuia.getText().toString() + ")").show();
                 }
             }else {
                     if (stockEntranceBinding.numeroGuia.getText().toString().equals(stockListEdit.get(0).getOrderNumber())){
@@ -460,7 +460,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                             selectedStock.addAll(stockListEdit);
                             Collections.sort(selectedStock);
                             displaySelectedDrugs();
-                            Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists)).show();
+                            Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists)  + " (Número da Guia: "+stockEntranceBinding.numeroGuia.getText().toString() + ")").show();
                         }
                     }
                 }

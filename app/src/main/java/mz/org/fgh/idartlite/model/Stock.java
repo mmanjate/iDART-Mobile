@@ -15,7 +15,7 @@ import java.util.Objects;
 @DatabaseTable(tableName = "Stock", daoClass = StockDaoImpl.class)
 public class Stock extends BaseModel implements Listble {
 
-
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_ORDER_NUMBER = "order_number";
     public static final String COLUMN_BATCH_NUMBER = "batch_number";
     public static final String COLUMN_DATE_RECEIVED = "date_received";
@@ -31,7 +31,7 @@ public class Stock extends BaseModel implements Listble {
     public static final String COLUMN_SYNC_STATUS = "sync_status";
     public static final String COLUMN_REST_ID = "restid";
 
-    @DatabaseField(columnName = "id", generatedId = true)
+    @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
 
     @DatabaseField(columnName = COLUMN_ORDER_NUMBER)
