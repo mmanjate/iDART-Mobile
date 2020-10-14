@@ -42,7 +42,7 @@ public class DrugService extends BaseService {
     public List<Drug> getAllOfTherapeuticRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException {
 
         QueryBuilder<RegimenDrug, Integer> regimeDrugQb = getDataBaseHelper().getRegimenDrugDao().queryBuilder();
-        regimeDrugQb.where().eq(RegimenDrug.COLUMN_DRUG_ID, therapeuticRegimen.getId());
+        regimeDrugQb.where().eq(RegimenDrug.COLUMN_THERAPEUTIC_REGIMEN_ID, therapeuticRegimen.getId());
 
         QueryBuilder<Drug, Integer> drugQb = getDataBaseHelper().getDrugDao().queryBuilder();
         return drugQb.join(regimeDrugQb).query();

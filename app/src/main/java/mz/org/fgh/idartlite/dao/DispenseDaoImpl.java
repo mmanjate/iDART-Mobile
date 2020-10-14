@@ -57,4 +57,21 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
         return dispenses;
     }
 
+    @Override
+    public Dispense getLastDispensePrescription(Prescription prescription) throws SQLException {
+
+        List<Dispense> dispenseList = null;
+        QueryBuilder<Dispense, Integer> dispenseQb = queryBuilder();
+
+        dispenseQb.where().eq(Dispense.COLUMN_PRESCRIPTION, prescription.getId());
+
+        dispenseList = dispenseQb.orderBy(Dispense.COLUMN_PICKUP_DATE, false).limit(1L).query();
+
+        if(dispenseList.size()!= 0)
+            return dispenseList.get(0);
+
+        return null;
+
+    }
+
 }
