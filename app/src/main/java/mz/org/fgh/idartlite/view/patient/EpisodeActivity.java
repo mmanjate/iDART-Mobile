@@ -35,12 +35,9 @@ import static android.R.layout;
 
 public class EpisodeActivity extends BaseActivity implements DialogListener {
 
-
-
     private EpisodeActivityBinding createEpisodeBinding;
 
-    ArrayAdapter<String> stopReasonSpinnerAdapter ;
-
+    ArrayAdapter<String> stopReasonSpinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,36 +77,36 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
                 if(bundle.getSerializable("viewDetails")!= null && (boolean) bundle.getSerializable("viewDetails") == true) {
                     disableFieldsToView();
-
                 }
             }
         }
+
         createEpisodeBinding.setEpisode(getRelatedViewModel().getEpisode());
 
-        createEpisodeBinding.editEpisodeDate.setOnClickListener(new View.OnClickListener() {
+        createEpisodeBinding.editEpisodeDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View view) {
-                int mYear, mMonth, mDay;
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    int mYear, mMonth, mDay;
 
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
 
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(EpisodeActivity.this, new DatePickerDialog.OnDateSetListener() {
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(EpisodeActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            createEpisodeBinding.editEpisodeDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
-                        createEpisodeBinding.editEpisodeDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
+                        }
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+                }
             }
         });
-
     }
 
     //Handling Action Bar button click
@@ -172,10 +169,9 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
     public void populateEpisode(){
 
-
-if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
-    getRelatedViewModel().getEpisode().setEpisodeDate(DateUtilitis.createDate(createEpisodeBinding.editEpisodeDate.getText().toString(), DateUtilitis.DATE_FORMAT));
-}
+        if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
+         getRelatedViewModel().getEpisode().setEpisodeDate(DateUtilitis.createDate(createEpisodeBinding.editEpisodeDate.getText().toString(), DateUtilitis.DATE_FORMAT));
+        }
        getRelatedViewModel().getEpisode().setNotes(createEpisodeBinding.editTextEpisodeObservation.getText().toString());
        getRelatedViewModel().getEpisode().setPatient(getRelatedViewModel().getPatient());
        getRelatedViewModel().getEpisode().setStartReason(createEpisodeBinding.spnStartReason.getSelectedItem().toString());
@@ -183,8 +179,6 @@ if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
            getRelatedViewModel().getEpisode().setStopReason(createEpisodeBinding.spnStopReason.getSelectedItem().toString());
        }
     }
-
-
 
     @Override
     public BaseViewModel initViewModel() {
@@ -196,14 +190,12 @@ if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
         return (EpisodeVM) super.getRelatedViewModel();
     }
 
-
     public Patient getPatient(){
         return getRelatedViewModel().getPatient();
     }
 
     @Override
     public void doOnConfirmed() {
-
         Map<String, Object> params = new HashMap<>();
         params.put("patient", this.getPatient());
         params.put("user", getCurrentUser());
@@ -214,6 +206,5 @@ if(createEpisodeBinding.editEpisodeDate.getText().length() != 0) {
 
     @Override
     public void doOnDeny() {
-
     }
 }
