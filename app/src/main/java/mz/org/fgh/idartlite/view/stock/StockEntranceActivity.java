@@ -141,6 +141,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                             selectedStock = (List<Listble>) bundle.getSerializable("listStock");
                             Collections.sort(selectedStock);
                             displaySelectedDrugs();
+                        } else {
+                            isEditForm = false;
                         }
                     } else {
                         getRelatedViewModel().setViewListRemoveButton(true);
@@ -244,6 +246,52 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                     }, mYear, mMonth, mDay);
                     datePickerDialog.show();
                 }
+            }
+        });
+
+        stockEntranceBinding.dataEntrada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int mYear, mMonth, mDay;
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(StockEntranceActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        stockEntranceBinding.dataEntrada.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
+        stockEntranceBinding.dataValidade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int mYear, mMonth, mDay;
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(StockEntranceActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        stockEntranceBinding.dataValidade.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.show();
             }
         });
 
@@ -378,10 +426,10 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                     Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.stock_saved_sucessfully),StockEntranceActivity.this).show();
                 } else {
                     selectedStock.clear();
-                    selectedStock.addAll(stockListEdit);
-                    Collections.sort(selectedStock);
+                    //selectedStock.addAll(stockListEdit);
+                    //Collections.sort(selectedStock);
                     displaySelectedDrugs();
-                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists)).show();
+                    Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.guide_number_already_exists)+ " ("+stockEntranceBinding.numeroGuia.getText().toString()+")").show();
                 }
             }else {
                     if (stockEntranceBinding.numeroGuia.getText().toString().equals(stockListEdit.get(0).getOrderNumber())){

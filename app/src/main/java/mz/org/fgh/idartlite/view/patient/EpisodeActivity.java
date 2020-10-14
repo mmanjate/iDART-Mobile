@@ -83,6 +83,29 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
         createEpisodeBinding.setEpisode(getRelatedViewModel().getEpisode());
 
+        createEpisodeBinding.editEpisodeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int mYear, mMonth, mDay;
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(EpisodeActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        createEpisodeBinding.editEpisodeDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
         createEpisodeBinding.editEpisodeDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {

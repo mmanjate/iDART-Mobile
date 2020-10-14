@@ -219,7 +219,7 @@ public class Stock extends BaseModel implements Listble {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Stock stock = (Stock) o;
-        return uuid.equals(stock.uuid);
+        return this.drug.equals(stock.getDrug()) && this.batchNumber.equalsIgnoreCase(stock.getBatchNumber());
     }
 
     @Override
