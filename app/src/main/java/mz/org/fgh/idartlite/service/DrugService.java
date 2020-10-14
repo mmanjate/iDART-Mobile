@@ -6,6 +6,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -113,6 +114,18 @@ public class DrugService extends BaseService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Drug> getAllWithoutRect() throws SQLException {
+    List<Drug> drugs= this.getAll();
+        List<Drug> newDrugs=new ArrayList<>();
+        for (Drug drug:drugs)
+        {
+            drug.setDescription(drug.getDescription().replace("[","").replace("]",""));
+            newDrugs.add(drug);
+        }
+        return newDrugs;
+
     }
 
 }
