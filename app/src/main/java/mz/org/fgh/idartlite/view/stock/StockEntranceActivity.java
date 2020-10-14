@@ -379,7 +379,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         getRelatedViewModel().getStock().setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
         getRelatedViewModel().getStock().setBatchNumber(stockEntranceBinding.numeroLote.getText().toString());
         getRelatedViewModel().getStock().setOrderNumber(stockEntranceBinding.numeroGuia.getText().toString());
-        getRelatedViewModel().getStock().setPrice(Double.valueOf(stockEntranceBinding.numeroPreco.getText().toString()));
+        String cleanString = stockEntranceBinding.numeroPreco.getText().toString().replace("(MZN) ", "").replaceAll("[,]", "");
+        getRelatedViewModel().getStock().setPrice(Double.valueOf(cleanString));
         getRelatedViewModel().getStock().setUnitsReceived(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()));
         getRelatedViewModel().getStock().setClinic(getCurrentClinic());
         getRelatedViewModel().getStock().setStockMoviment(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()));

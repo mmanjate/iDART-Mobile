@@ -232,14 +232,15 @@
                             android:text="@string/label_preco"
                             android:textStyle="bold" />
 
-                        <EditText
+                        <br.com.sapereaude.maskedEditText.MaskedEditText
                             android:id="@+id/numero_preco"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/bottom_border_edit_text_style"
-                            android:drawableLeft="@drawable/ic_preco"
-                            android:text="@{Utilities.parseDoubleToString(stock.price)}"
-                            android:inputType="number|numberDecimal" />
+                            android:inputType="number|numberDecimal"
+                            app:keep_hint="true"
+                            app:mask="(MZN) ############"
+                            android:text="@{Utilities.parseDoubleToString(stock.price)}" />
 
                         <ImageView
                             android:id="@+id/imv_add_selected_drug"
