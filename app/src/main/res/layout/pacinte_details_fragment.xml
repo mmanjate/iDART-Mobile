@@ -48,11 +48,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/dimen_4dp"
-                            android:background="@color/background_layout"
+                            android:background="@drawable/shape_normal"
                             android:paddingLeft="@dimen/dimen_4dp"
                             android:text="@string/dados_pessoais"
                             android:textColor="@color/white"
                             android:textSize="15sp"
+                            android:drawableStart="@drawable/ic_baseline_person_outline_24"
                             app:drawableEndCompat="@drawable/ic_row_dados_pessoais" />
 
                     <LinearLayout
@@ -60,7 +61,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="@dimen/dimen_4dp">
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_4dp"
+                        android:paddingBottom="@dimen/dimen_4dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -147,12 +150,13 @@
                             android:id="@+id/contacto"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/background_layout"
+                            android:background="@drawable/shape_normal"
                             android:text="@string/contacto_pessoais"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:paddingLeft="@dimen/dimen_4dp"
                             android:layout_margin="@dimen/dimen_4dp"
+                            android:drawableStart="@drawable/ic_call"
                             app:drawableEndCompat="@drawable/ic_row_dados_pessoais" />
 
                     <LinearLayout
@@ -160,13 +164,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="@dimen/dimen_4dp">
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_4dp"
+                        android:paddingBottom="@dimen/dimen_4dp">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            >
 
                             <TextView
                                 android:id="@+id/label_phone"
@@ -185,9 +192,9 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="10"
+                            android:layout_weight="4"
                             android:orientation="vertical">
 
                             <TextView
@@ -210,12 +217,13 @@
                             android:id="@+id/others"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/background_layout"
+                            android:background="@drawable/shape_normal"
                             android:text="@string/other_details_person"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:paddingLeft="@dimen/dimen_4dp"
                             android:layout_margin="@dimen/dimen_4dp"
+                            android:drawableStart="@drawable/ic_baseline_info_24"
                             app:drawableEndCompat="@drawable/ic_row_dados_pessoais" />
 
 
@@ -224,7 +232,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="@dimen/dimen_4dp">
+                        android:paddingLeft="@dimen/dimen_10dp"
+                        android:paddingTop="@dimen/dimen_4dp"
+                        android:paddingBottom="@dimen/dimen_4dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -238,11 +248,7 @@
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
                                 android:text="@string/date_tarv"/>
-                            
-                            <TextView
-                                android:id="@+id/id"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+
 
                         </LinearLayout>
 

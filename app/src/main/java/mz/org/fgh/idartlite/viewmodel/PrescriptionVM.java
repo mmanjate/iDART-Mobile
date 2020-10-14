@@ -37,8 +37,6 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     private PrescriptionService prescriptionService;
 
     private Prescription prescription;
-
-    private Prescription oldPrescription;
     
     private TherapheuticRegimenService regimenService;
     private TherapeuthicLineService lineService;
@@ -286,7 +284,6 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
 
     private void initNewRecord() {
         try {
-            oldPrescription = this.prescription;
             
             prescriptionService.closePrescription(this.prescription);
             initNewPrescription();
