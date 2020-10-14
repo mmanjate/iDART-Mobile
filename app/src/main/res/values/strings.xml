@@ -95,14 +95,14 @@
     <string name="record_saved">Registo gravado com sucesso.</string>
 
     <string name="label_lista_medicamentos">Lista de Medicamentos *</string>
-    <string name="drug_data_empty_filds">Todos os campos desse formulario são Obrigatorios.</string>
+    <string name="drug_data_empty_filds">Todos os campos do formulário são obrigatórios.</string>
     <string name="drug_validate_date">A data de validade deve ser no minimo de dois meses (60 dias).</string>
-    <string name="drug_entrada_date">A Data de Entrada nao pode ser futura.</string>
+    <string name="drug_entrada_date">A Data de Entrada não pode ser futura.</string>
     <string name="record_sucessfuly_removed">Registo removido com sucesso</string>
     <string name="would_like_to_dispense">A Prescrição foi gravada com sucesso. Pretende aviar a mesma?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
-    <string name="prescription_cant_be_removed_msg">Esta Prescrção não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
+    <string name="prescription_cant_be_removed_msg">Esta Prescrição não pode ser removida, pois já esta sincronizada com o IDART central.</string>
     <string name="no_patient_or_prescription">Não foi seleccionado um paciente ou prescrição.</string>
     <string name="error_on_loading_data">Ocorreu um erro ao carregar os dados da base de dados </string>
     <string name="see_olny_regimen_grugs">Visualizar apenas medicamentos do regime terapêutico?</string>
@@ -145,5 +145,25 @@
     <string name="confirm_prescription_save">Confirma gravar esta prescrição na base de dados?</string>
     <string name="time_out_msg">Time out - Não foi possivel terminar a configuração inicial da aplicação.</string>
     <string name="cant_edit_patient_data">Não pode efectuar alterações sobre registos deste paciente, pois possui registado um episódio de fecho.</string>
+    <string name="quantity_cannot_be_zero">A quantidade não pode ser igual a zero.</string>
+    <string name="must_select_at_least_one_drug">Deve Selecionar um Medicamento para dar entrada.</string>
+    <string name="stock_saved_sucessfully">Stock salvo com sucesso</string>
+    <string name="guide_number_already_exists">O número da guia já existe no sistema</string>
+    <string name="stock_edited_sucessfully">Stock editado com sucesso</string>
+    <string name="stock_cannot_be_edited_already_used">O Stock não pode ser actualizado, uma vez que já foi utilizado para dispensar medicamentos</string>
+    <string name="stock_cannot_be_edited_already_synchronized">O Stock não pode ser actualizado, uma vez que já foi sicronizado com a central</string>
+    <string name="stock_cannot_be_removed_already_used">O Stock não pode ser removido, uma vez que já foi utilizado para dispensar medicamentos</string>
+    <string name="stock_cannot_be_removed_already_synchronized">O Stock não pode ser removido, uma vez que já foi sicronizado com a central</string>
 
+    <string name="episode_cannot_be_edited_already_synchronized">O Episódio não pode ser editado uma vez que já foi sicronizado com a central</string>
+    <string name="episode_cannot_be_removed_already_synchronized">O Episódio não pode ser removido uma vez que já foi sicronizado com a central</string>
+    <string name="episode_created_sucessfuly">Episódio Criado Com Sucesso</string>
+    <string name="visit_date_cannot_be_before_first_episode">Data da Visita não pode ser menor que a do primeiro episódio</string>
+    <string name="episode_date_required">A data do Episódio é um dado obrigatório.</string>
+    <string name="episode_end_motive_required">O Motivo de Fim é um dado obrigatório.</string>
+    <string name="visit_date_cannot_be_future">A data do Episódio não pode ser uma data futura.</string>
+
+    <string name="pharmacy_required">O campo Farmácia deve ser preenchido.</string>
+    <string name="pharmacy_config_not_found">Não foi encontrada a configuração da farmácia.</string>
+    <string name="user_or_pass_invalid">Não foi encontrada a configuração da farmácia.</string>
 </resources>

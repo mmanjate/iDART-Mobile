@@ -1,9 +1,12 @@
 package mz.org.fgh.idartlite.model;
 
+import android.content.Context;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.EpisodeDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilitis;
@@ -170,15 +173,15 @@ public class Episode extends BaseModel {
 		return DateUtilitis.parseDateToDDMMYYYYString(this.episodeDate);
 	}
 
-	public String validateEpisodeData(){
+	public String validateEpisodeData(Context context){
 		if(episodeDate==null){
-			return "A data do Episódio e um dado obrigatorio.";
+			return context.getString(R.string.episode_date_required);
 		}
 		if(DateUtilitis.dateDiff(episodeDate, Calendar.getInstance().getTime(),DateUtilitis.DAY_FORMAT) >=0){
-			return "A data do Episódio não pode ser uma data futura.";
+			return context.getString(R.string.visit_date_cannot_be_future);
 		}
 		if(stopReason.isEmpty()){
-			return "O Motivo de Fim é um dado obrigatorio.";
+			return context.getString(R.string.episode_end_motive_required);
 		}
 		return "";
 	}
@@ -195,7 +198,7 @@ public class Episode extends BaseModel {
 		if(stopReason!=null){
 			return "Fim";
 		}
-		return "Inicio";
+		return "Início";
 	}
 
 	public boolean isSyncStatusReady(){

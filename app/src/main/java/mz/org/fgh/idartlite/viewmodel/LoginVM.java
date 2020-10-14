@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.model.Clinic;
@@ -94,7 +95,7 @@ public class LoginVM extends BaseViewModel {
 
         if ((appHasUsersOnDB() && getCurrentClinic() == null) || (appHasUsersOnDB() && getCurrentClinic().getUuid()== null) ){
             getRelatedActivity().changeViewToNormalMode();
-            Utilities.displayAlertDialog(getRelatedActivity(), "O campo Farmácia deve ser preenchido.").show();
+            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.pharmacy_required)).show();
         return;
         }
 
@@ -121,11 +122,11 @@ public class LoginVM extends BaseViewModel {
                             this.getRelatedActivity().savingSharedPreferences();
                         } else {
                             getRelatedActivity().changeViewToNormalMode();
-                            Utilities.displayAlertDialog(getRelatedActivity(), "Não foi encontrada a configuração da farmácia.").show();
+                            Utilities.displayAlertDialog(getRelatedActivity(),  getRelatedActivity().getString(R.string.pharmacy_config_not_found)).show();
                         }
                     } else {
                         getRelatedActivity().changeViewToNormalMode();
-                        Utilities.displayAlertDialog(getRelatedActivity(), "Utilizador e/ou senha inválida").show();
+                        Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.user_or_pass_invalid)).show();
                     }
                 }
             } else {

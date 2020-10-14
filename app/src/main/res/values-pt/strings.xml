@@ -149,5 +149,24 @@
     <string name="confirm_prescription_save">Confirma gravar esta prescrição na base de dados?</string>
     <string name="time_out_msg">Time out - Não foi possivel terminar a configuração inicial da aplicação.</string>
     <string name="cant_edit_patient_data">Não pode efectuar alterações sobre registos deste paciente, pois possui registado um episódio de fecho.</string>
+    <string name="quantity_cannot_be_zero">A quantidade não pode ser igual a zero.</string>
+    <string name="must_select_at_least_one_drug">Deve Selecionar um Medicamento para dar entrada.</string>
+    <string name="stock_saved_sucessfully">Stock salvo com sucesso</string>
+    <string name="guide_number_already_exists">O numero da guia já existe no sistema</string>
+    <string name="stock_edited_sucessfully">Stock editado com sucesso</string>
+    <string name="stock_cannot_be_edited_already_used">O Stock não pode ser actualizado, uma vez que já foi utilizado para dispensar medicamentos</string>
+    <string name="stock_cannot_be_edited_already_synchronized">O Stock não pode ser actualizado, uma vez que já foi sicronizado com a central</string>
+    <string name="stock_cannot_be_removed_already_used">O Stock não pode ser removido, uma vez que já foi utilizado para dispensar medicamentos</string>
+    <string name="stock_cannot_be_removed_already_synchronized">O Stock não pode ser removido, uma vez que já foi sicronizado com a central</string>
+    <string name="episode_cannot_be_edited_already_synchronized">O Episódio não pode ser editado uma vez que já foi sicronizado com a central</string>
+    <string name="episode_cannot_be_removed_already_synchronized">O Episódio não pode ser removido uma vez que já foi sicronizado com a central</string>
+    <string name="episode_created_sucessfuly">Episódio Criado Com Sucesso</string>
+    <string name="visit_date_cannot_be_before_first_episode">Data da Visita não pode ser menor que a do primeiro episódio</string>
+    <string name="episode_date_required">A data do Episódio é um dado obrigatório.</string>
+    <string name="episode_end_motive_required">O Motivo de Fim é um dado obrigatório.</string>
+    <string name="visit_date_cannot_be_future">A data do Episódio não pode ser uma data futura.</string>
 
+    <string name="pharmacy_required">O campo Farmácia deve ser preenchido.</string>
+    <string name="pharmacy_config_not_found">Não foi encontrada a configuração da farmácia.</string>
+    <string name="user_or_pass_invalid">Não foi encontrada a configuração da farmácia.</string>
 </resources>

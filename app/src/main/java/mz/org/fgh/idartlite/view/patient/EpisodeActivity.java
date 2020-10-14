@@ -151,7 +151,7 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
         spinnerReasonToStopArray.add("Parametros Laboratoriais");
         spinnerReasonToStopArray.add("Gravidez");
         spinnerReasonToStopArray.add("Tuberculose");
-        spinnerReasonToStopArray.add("Falha de adesao");
+        spinnerReasonToStopArray.add("Falha de adesão");
         spinnerReasonToStopArray.add("A pedido do paciente");
         spinnerReasonToStopArray.add("Óbito");
 
