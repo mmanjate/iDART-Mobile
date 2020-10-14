@@ -92,10 +92,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Resultado da Pesquisa"
-        android:background="@color/background_layout"
+        android:background="@drawable/shape_normal"
         android:textColor="@color/white"
         android:textSize="15sp"
-        android:paddingLeft="@dimen/dimen_4dp"
+        android:paddingLeft="@dimen/dimen_10dp"
         app:drawableEndCompat="@drawable/ic_expand_less"
         android:layout_margin="@dimen/dimen_10dp"/>
 
