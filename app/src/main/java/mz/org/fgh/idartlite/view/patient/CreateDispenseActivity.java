@@ -144,7 +144,6 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
                             String nextPickUpDate = calculateNextPickUpDate(duracaoDoAviamento);
                             if (duracaoDoAviamento != 0)
                                 activityCreateDispenseBinding.nextPickupDate.setText(nextPickUpDate);
-
                         }
                     }, mYear, mMonth, mDay);
                     datePickerDialog.show();
@@ -162,7 +161,6 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
                     mYear = c.get(Calendar.YEAR);
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
-
 
                     DatePickerDialog datePickerDialog = new DatePickerDialog(CreateDispenseActivity.this, new DatePickerDialog.OnDateSetListener() {
 
