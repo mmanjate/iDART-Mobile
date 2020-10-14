@@ -76,6 +76,11 @@ public class DispenseService extends BaseService {
         return getDataBaseHelper().getDispenseDao().getAllOfPatient(getApplication(), patient);
     }
 
+    public Dispense getLastDispenseFromPrescription(Prescription prescription) throws SQLException {
+
+        return getDataBaseHelper().getDispenseDao().getLastDispensePrescription(prescription);
+    }
+
     public long countAllOfPrescription(Prescription prescription) throws SQLException {
         return getDataBaseHelper().getDispenseDao().countAllOfPrescription(prescription);
     }

@@ -376,7 +376,7 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
         try {
 
             List<Drug> drugs = new ArrayList<>();
-            drugs.addAll(getRelatedViewModel().getAllDrugs());
+            drugs.addAll(getRelatedViewModel().getAllDrugsFromPrescritionRegimen());
 
             List<Drug> drugsToDisplay = new ArrayList<>();
 

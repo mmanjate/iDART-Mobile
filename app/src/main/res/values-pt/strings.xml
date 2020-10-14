@@ -169,4 +169,5 @@
     <string name="pharmacy_config_not_found">Não foi encontrada a configuração da farmácia.</string>
     <string name="user_or_pass_invalid">Não foi encontrada a configuração da farmácia.</string>
     <string name="error_verifying">Ocorreu um erro ao verificar a configuração de utilizadores</string>
+    <string name="cant_dispense_patient_has_drugs">Este paciente ainda tem medicamentos. A data de leventamento actual não pode ser menor que a data do próximo levantamento no último aviamento.</string>
 </resources>

@@ -19,4 +19,6 @@ public interface DispenseDao extends GenericDao<Dispense, Integer> {
     long countAllOfPrescription(Prescription prescription) throws SQLException;
 
     public List<Dispense> getAllOfPatient(Application application, Patient patient) throws SQLException;
+
+    public Dispense getLastDispensePrescription(Prescription prescription)  throws SQLException;
 }
