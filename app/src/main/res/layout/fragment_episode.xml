@@ -19,11 +19,11 @@ xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Lista de Episódios"
-                android:background="@color/background_layout"
+                android:background="@drawable/shape_normal"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:padding="5dp"
+                android:paddingLeft="@dimen/dimen_10dp"
                 app:drawableEndCompat="@drawable/ic_row_dados_pessoais"
                 android:layout_margin="@dimen/dimen_5dp"/>
 
@@ -46,7 +46,8 @@ xmlns:tools="http://schemas.android.com/tools"
             android:layout_margin="@dimen/fab_margin"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"
-            app:srcCompat="@drawable/ic_plus" />
+            android:src="@drawable/ic_add_circle_outline_24"
+            app:backgroundTint="@color/colorPrimary" />
 
     </FrameLayout>
 </layout>

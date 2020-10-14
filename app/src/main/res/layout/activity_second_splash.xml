@@ -16,17 +16,18 @@
             android:padding="@dimen/dimen_18dp"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="@dimen/dimen_1dp"
+                android:layout_width="@dimen/dimen_0dp"
                 android:layout_height="match_parent"
                 app:srcCompat="@mipmap/ic_mz_misau"
+                android:padding="@dimen/dimen_10dp"
                 android:layout_gravity="left"
                 android:layout_weight="1"/>
             <ImageView
                 android:layout_width="@dimen/dimen_0dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@mipmap/ic_mz_pepfar_logo_foreground"
+                app:srcCompat="@mipmap/ic_mz_pepfar"
                 android:layout_gravity="right"
-                android:layout_weight="1"/>
+                android:layout_weight="1.1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_0dp"
                 android:layout_weight="1"
+                android:padding="@dimen/dimen_22dp"
                 android:src="@mipmap/logo_graphic"
                 android:layout_gravity="bottom|center"
                 />
