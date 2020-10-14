@@ -54,6 +54,7 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     private boolean drugDataVisible;
 
     private boolean urgentPrescription;
+    private boolean newPrescriptionMustBeEspetial;
 
     public PrescriptionVM(@NonNull Application application) {
         super(application);
@@ -85,6 +86,9 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
                 this.prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
 
                 if (!this.prescription.isClosed()) {
+
+                    newPrescriptionMustBeEspetial = true;
+
                     Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.new_prescription_creation), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
                 } else {
                     doOnConfirmed();
@@ -186,6 +190,12 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
 
     private void doSave(){
         ((PrescriptionActivity)getRelatedActivity()).loadFormData();
+
+        if (newPrescriptionMustBeEspetial && !this.prescription.isUrgent()){
+            Utilities.displayAlertDialog(getRelatedActivity(),"Esta prescrição deve ser indicada como especial, pois a anterior foi anulada.").show();
+            return;
+        }
+
         String validationErrors = this.prescription.validate(getRelatedActivity());
         if (!Utilities.stringHasValue(validationErrors)) {
             try {

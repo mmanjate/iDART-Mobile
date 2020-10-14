@@ -67,10 +67,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Adicionar Aviamento - Dados Iniciais"
-                android:background="@color/background_layout"
+                android:background="@drawable/shape_normal"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:paddingLeft="@dimen/dimen_4dp"
+                android:paddingLeft="@dimen/dimen_10dp"
                 app:drawableEndCompat="@drawable/ic_row_dados_pessoais"
                 android:layout_margin="@dimen/dimen_4dp"/>
 
@@ -133,10 +133,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Adicionar Aviamento - Medicamentos"
-                android:background="@color/background_layout"
+                android:background="@drawable/shape_normal"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:paddingLeft="@dimen/dimen_4dp"
+                android:paddingLeft="@dimen/dimen_10dp"
                 app:drawableEndCompat="@drawable/ic_expand_less"
                 android:layout_margin="@dimen/dimen_4dp"/>
 
@@ -166,12 +166,15 @@
 
             <ImageView
                 android:id="@+id/imv_add_selected_drug"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_arrow_downward"
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                app:srcCompat="@drawable/ic_save"
+                android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:layout_gravity="center"
-                android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"/>
+                android:background="@drawable/button_shape"
+                android:layout_gravity="center"/>
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -187,28 +190,38 @@
                 android:layout_marginTop="@dimen/dimen_4dp"
                 android:scrollbars="vertical"/>
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
 
-            <ImageView
-                android:id="@+id/save_and_continue"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/ic_ok"
-                android:layout_marginTop="@dimen/dimen_22dp"
-                android:layout_margin="@dimen/dimen_18dp"
-                android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
-                android:onClick="@{() -> viewModel.save()}"
-                android:layout_gravity="right"/>
+                <ImageView
+                    android:id="@+id/save_and_continue"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/ic_done"
+                    android:layout_marginTop="@dimen/dimen_22dp"
+                    android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                    android:layout_margin="@dimen/dimen_18dp"
+                    android:background="@drawable/button_shape"
+                    android:onClick="@{() -> viewModel.save()}"
+                    android:layout_gravity="right"/>
 
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24"
-                android:layout_marginTop="@dimen/dimen_22dp"
-                android:visibility="@{!viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
-                android:layout_margin="@dimen/dimen_18dp"
-                android:onClick="@{() -> viewModel.backToPreviusActivity()}"
-                android:layout_gravity="right"/>
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+                    android:background="@drawable/button_shape"
+                    android:layout_marginTop="@dimen/dimen_22dp"
+                    android:visibility="@{!viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                    android:layout_margin="@dimen/dimen_18dp"
+                    android:onClick="@{() -> viewModel.backToPreviusActivity()}"
+                    android:layout_gravity="right"/>
+
+            </RelativeLayout>
+
+
 
 
         </LinearLayout>

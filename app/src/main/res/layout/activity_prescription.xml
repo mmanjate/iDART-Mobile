@@ -69,11 +69,11 @@
                         android:id="@+id/initial_data"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/adicionar_prescri_o_dados_iniciais"
-                        android:background="@color/background_layout"
+                        android:text='@{!viewModel.currentStep.applicationStepDisplay ? "Dados Iniciais" : @string/adicionar_prescri_o_dados_iniciais}'
+                        android:background="@drawable/shape_normal"
                         android:textColor="@color/white"
                         android:textSize="15sp"
-                        android:paddingLeft="@dimen/dimen_4dp"
+                        android:paddingLeft="@dimen/dimen_10dp"
                         app:drawableEndCompat="@drawable/ic_expand_less"
                         android:layout_margin="@dimen/dimen_4dp"/>
 
@@ -152,11 +152,12 @@
                         android:id="@+id/txv_drugs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/adicionar_prescri_o_medicamentos"
-                        android:background="@color/background_layout"
+                        android:text='@{!viewModel.currentStep.applicationStepDisplay ? "Medicamentos" : @string/adicionar_prescri_o_medicamentos}'
+
+                        android:background="@drawable/shape_normal"
                         android:textColor="@color/white"
                         android:textSize="15sp"
-                        android:paddingLeft="@dimen/dimen_4dp"
+                        android:paddingLeft="@dimen/dimen_10dp"
                         app:drawableEndCompat="@drawable/ic_expand_less"
                         android:layout_margin="@dimen/dimen_4dp"/>
 
@@ -236,11 +237,11 @@
                         android:id="@+id/txv_urgent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/adicionar_prescri_o_prescri_o_especial"
-                        android:background="@color/background_layout"
+                        android:text='@{!viewModel.currentStep.applicationStepDisplay ? "Prescrição especial" : @string/adicionar_prescri_o_prescri_o_especial}'
+                        android:background="@drawable/shape_normal"
                         android:textColor="@color/white"
                         android:textSize="15sp"
-                        android:paddingLeft="@dimen/dimen_4dp"
+                        android:paddingLeft="@dimen/dimen_10dp"
                         app:drawableEndCompat="@drawable/ic_expand_less"
                         android:layout_margin="@dimen/dimen_4dp"/>
 
