@@ -35,7 +35,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:text="@string/codigo" />
+                android:text="@string/codigo"
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="0dp"
@@ -47,6 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2.6"
+                android:textStyle="bold"
                 android:text="@string/descricao" />
 
             <View
@@ -60,6 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
+                android:textStyle="bold"
                 android:text="@string/lote"
                 android:visibility="@{Utilities.stringHasValue(listble.lote) ? View.VISIBLE : View.GONE}" />
 
@@ -74,6 +77,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textStyle="bold"
                 android:text="@string/quantidade"
                 android:visibility="@{listble.quantity > 0 ? View.VISIBLE : View.GONE}" />
 
@@ -88,6 +92,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
+                android:textStyle="bold"
                 android:text="@string/editar"
                 android:visibility="@{!viewListEditButton ? View.GONE : View.VISIBLE}" />
 
@@ -102,6 +107,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
+                android:textStyle="bold"
                 android:text="@string/remover"
                 android:visibility="@{!viewListRemoveButton ? View.GONE : View.VISIBLE}" />
 
