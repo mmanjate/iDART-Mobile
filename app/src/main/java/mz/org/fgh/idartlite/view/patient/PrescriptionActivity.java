@@ -31,6 +31,7 @@ import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.common.DialogListener;
+import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
 import mz.org.fgh.idartlite.common.ValorSimples;
@@ -63,7 +64,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
     private ArrayAdapter<TherapeuticRegimen> regimenArrayAdapter;
 
-    private ArrayAdapter<Drug> drugArrayAdapter;
+    private ListableSpinnerAdapter drugArrayAdapter;
 
     private ArrayAdapter<ValorSimples> valorSimplesArrayAdapter;
 
@@ -113,6 +114,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
         if (getApplicationStep().isApplicationstepCreate()){
             try {
+                getRelatedViewModel().checkIfMustBeUrgentPrescription();
 
                 getRelatedViewModel().loadLastPatientPrescription();
                 getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.getCurrentDate());
@@ -241,14 +243,10 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         }
     }
 
-    //Handling Action Bar button click
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
-            //Back button
             case R.id.about:
-                //If this activity started from other activity
                 Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
                 startActivity(intent);
                 return true;
@@ -259,7 +257,6 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
     public void reloadDrugsSpinnerByRegime(TherapeuticRegimen regimen) {
         List<Drug> drugs = new ArrayList<>();
-        drugs.add(new Drug());
         try {
             if (regimen != null && getRelatedViewModel().isSeeOnlyOfRegime()) {
                 drugs.addAll(getRelatedViewModel().getAllDrugsOfTheraputicRegimen(regimen));
@@ -267,15 +264,10 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             else {
                 drugs.addAll(getRelatedViewModel().getAllDrugs());
             }
+            populateDrugs(drugs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        drugArrayAdapter.notifyDataSetChanged();
-        /*drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.simple_spinner_item, drugs);
-        drugArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        prescriptionBinding.spnDrugs.setAdapter(drugArrayAdapter);*/
-
     }
 
 
@@ -305,6 +297,12 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         displaySelectedDrugs();
     }
 
+    public void populateDrugs(List<Drug> drugs){
+        drugArrayAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, drugs);
+        prescriptionBinding.autCmpDrugs.setAdapter(drugArrayAdapter);
+        prescriptionBinding.autCmpDrugs.setThreshold(1);
+    }
+
     private void populateForm() {
         try {
             List<TherapeuticRegimen> therapeuticRegimenList = new ArrayList<>();
@@ -319,9 +317,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             dispenseTypes.add(new DispenseType());
             dispenseTypes.addAll(getRelatedViewModel().getAllDispenseTypes());
 
-            List<Drug> drugs = new ArrayList<>();
-         //   drugs.add(new Drug());
-            drugs.addAll(getRelatedViewModel().getAllDrugs());
+
 
             dispenseTypeArrayAdapter = new ArrayAdapter<DispenseType>(getApplicationContext(), android.R.layout.simple_spinner_item, dispenseTypes);
             dispenseTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -335,10 +331,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             regimenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             prescriptionBinding.spnRegime.setAdapter(regimenArrayAdapter);
 
-            drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.select_dialog_item, drugs);
-         //   drugArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_item);
-            prescriptionBinding.autCmpDrugs.setAdapter(drugArrayAdapter);
-            prescriptionBinding.autCmpDrugs.setThreshold(1);
+
 
             List<ValorSimples> durations = new ArrayList<>();
             durations.add(new ValorSimples());
