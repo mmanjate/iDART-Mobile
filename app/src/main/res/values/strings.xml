@@ -112,6 +112,7 @@
     <string name="adicionar_prescri_o_medicamentos">Adicionar Prescrição - Medicamentos</string>
     <string name="drug_list">Lista de Medicamentos *</string>
     <string name="adicionar_prescri_o_prescri_o_especial">Adicionar Prescrição - Prescrição Especial</string>
+    <string name="prescri_o_especial_info">Prescrição Especial</string>
     <string name="prescri_o_especial">Prescrição Especial?</string>
     <string name="motivo">Motivo *</string>
     <string name="prescription_got_dispenses_msg">Esta prescrição já tem aviamentos registados, não pode ser removida.</string>
@@ -167,4 +168,6 @@
     <string name="error_verifying">Ocorreu um erro ao verificar a configuração de utilizadores</string>
     <string name="cant_dispense_patient_has_drugs">Este paciente ainda tem medicamentos. A data de leventamento actual não pode ser menor que a data do próximo levantamento no último aviamento.</string>
     <string name="dispensed_drug_list">Medicamentos aviados</string>
+    <string name="dados_iniciais">Dados Iniciais</string>
+    <string name="medicamentos">Medicamentos</string>
 </resources>

@@ -65,7 +65,7 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
     }
 
     public void loadClinicAdapters() {
-        ListableSpinnerAdapter adapter = new ListableSpinnerAdapter(this, R.layout.simple_spinner_item, clinicList);
+        ListableSpinnerAdapter adapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, clinicList);
         activityLoginBinding.setClinicAdapter(adapter);
     }
 

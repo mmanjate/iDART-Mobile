@@ -326,4 +326,14 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         params.put("requestedFragment", PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION);
         getRelatedActivity().nextActivity(PatientActivity.class,params);
     }
+
+    public void checkIfMustBeUrgentPrescription() throws SQLException {
+        Prescription prescription = prescriptionService.getLastPatientPrescription(((PatientActivity) getRelatedActivity()).getPatient());
+
+        prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
+
+        if (!prescription.isClosed()) {
+            newPrescriptionMustBeEspetial = true;
+        }
+    }
 }

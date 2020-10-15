@@ -69,8 +69,8 @@
                         android:id="@+id/initial_data"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='@{!viewModel.currentStep.applicationStepDisplay ? @string/adicionar_prescri_o_dados_iniciais : "Dados Iniciais"}'
-                        android:background="@drawable/shape_normal"
+                        android:text='@{viewModel.currentStep.applicationStepDisplay ? @string/dados_iniciais : @string/adicionar_prescri_o_dados_iniciais}'
+                         android:background="@drawable/shape_normal"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:paddingLeft="@dimen/dimen_10dp"
@@ -152,8 +152,7 @@
                         android:id="@+id/txv_drugs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='@{!viewModel.currentStep.applicationStepDisplay ? @string/adicionar_prescri_o_medicamentos : "Medicamentos"}'
-
+                        android:text='@{viewModel.currentStep.applicationStepDisplay ? @string/medicamentos : @string/adicionar_prescri_o_medicamentos}'
                         android:background="@drawable/shape_normal"
                         android:textColor="@color/white"
                         android:textSize="15sp"
@@ -237,7 +236,7 @@
                         android:id="@+id/txv_urgent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='@{!viewModel.currentStep.applicationStepDisplay ? @string/adicionar_prescri_o_prescri_o_especial : "Prescrição especial"}'
+                        android:text='@{viewModel.currentStep.applicationStepDisplay ? @string/prescri_o_especial_info : @string/adicionar_prescri_o_prescri_o_especial}'
                         android:background="@drawable/shape_normal"
                         android:textColor="@color/white"
                         android:textSize="15sp"
