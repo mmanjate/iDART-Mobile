@@ -21,5 +21,6 @@
         android:layout_gravity="center_vertical"
         style="@style/spinner_label"
         android:text="Medicamento"
+        android:textStyle="bold"
         />
 </LinearLayout>
