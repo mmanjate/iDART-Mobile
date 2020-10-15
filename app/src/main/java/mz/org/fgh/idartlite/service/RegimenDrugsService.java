@@ -13,6 +13,7 @@ import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.RegimenDrug;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class RegimenDrugsService extends BaseService {
 
@@ -35,18 +36,15 @@ public class RegimenDrugsService extends BaseService {
                 try {
                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) drug;
 
-                    Drug localDrug = drugService.getDrug(Objects.requireNonNull(itemresult.get("atccode_id")).toString());
-//
-//                    if (localDrug == null) {
-//                        drugService.saveOnDrug(drug);
-//                        localDrug = drugService.getDrug(Objects.requireNonNull(itemresult.get("atccode_id")).toString());
-//                    }
+                    if (Utilities.stringHasValue((String) itemresult.get("atccode_id")) && ((String) itemresult.get("atccode_id")).length() > 2) {
 
-                    RegimenDrug regimenDrug = new RegimenDrug();
-                    regimenDrug.setTherapeuticRegimen(regimen);
-                    regimenDrug.setDrug(localDrug);
-                    createRegimenDrug(regimenDrug);
+                        Drug localDrug = drugService.getDrug(Objects.requireNonNull(itemresult.get("atccode_id")).toString());
 
+                        RegimenDrug regimenDrug = new RegimenDrug();
+                        regimenDrug.setTherapeuticRegimen(regimen);
+                        regimenDrug.setDrug(localDrug);
+                        createRegimenDrug(regimenDrug);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
