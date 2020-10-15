@@ -72,10 +72,10 @@ public class RestStockService extends BaseService {
 
                     handler.addHeader("Content-Type", "application/json");
                     JSONObject jsonObject = new JSONObject(restObject);
-                    handler.objectRequest(url, Request.Method.POST, jsonObject, Object[].class, new Response.Listener<JSONObject>() {
+                    handler.objectRequest(url, Request.Method.POST, jsonObject, Object[].class, new Response.Listener<LinkedTreeMap<String, Object>>() {
 
                         @Override
-                        public void onResponse(JSONObject response) {
+                        public void onResponse(LinkedTreeMap<String, Object> response) {
                             Log.d(TAG, "onResponse: StockCenter enviado : " + response);
                         }
                     }, new Response.ErrorListener() {
