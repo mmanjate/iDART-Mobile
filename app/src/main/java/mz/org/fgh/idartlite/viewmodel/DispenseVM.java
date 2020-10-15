@@ -182,7 +182,7 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
                                 } else {
                                     String patientNid = this.dispense.getPrescription().getPatient().getNid();
                                     this.dispenseService.saveOrUpdateDispense(dispense);
-                                    Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " +patientNid +" efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+                                    Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
                                 }
 
                             } catch (SQLException e) {
@@ -236,7 +236,7 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
             Dispense dispense = this.getLastPatientDispense(prescription);
 
             if (dispense != null) {
-                if (DateUtilitis.dateDiff(this.dispense.getPickupDate(),dispense.getNextPickupDate(),DateUtilitis.DAY_FORMAT) < -2) {
+                if (DateUtilitis.dateDiff(this.dispense.getPickupDate(), dispense.getNextPickupDate(), DateUtilitis.DAY_FORMAT) < -2) {
                     return getRelatedActivity().getString(R.string.cant_dispense_patient_has_drugs);
                 }
             }
@@ -262,7 +262,7 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
     public String patientHasEndingEpisode() {
         boolean hasEndingEpisode = this.episodeService.patientHasEndingEpisode(getDispense().getPrescription().getPatient());
         if (hasEndingEpisode) {
-            return "Não pode se editar/remover a dispensa porque o paciente já tem o episódio final.";
+            return getRelatedActivity().getString(R.string.dispense_has_final_episode_cant_be_edit);
         }
         return "";
     }
@@ -274,36 +274,44 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
     @Override
     public void doOnConfirmed() {
         if (getCurrentStep().isApplicationStepEdit()) {
-        Dispense dispense = this.dispense;
-        try {
-            this.dispenseService.deleteDispense(dispense);
-            dispense.setId(0);
-            this.dispenseService.saveOrUpdateDispense(dispense);
-            this.backToPreviusActivity();
-        }catch (SQLException ex){
+            Dispense dispense = this.dispense;
+            try {
+                this.dispenseService.deleteDispense(dispense);
+                dispense.setId(0);
+                this.dispenseService.saveOrUpdateDispense(dispense);
+                this.backToPreviusActivity();
+            } catch (SQLException ex) {
 
-        }
+            }
         }
     }
 
     @Override
     public void doOnDeny() {
-        this.backToPreviusActivity();
+        if (getCurrentStep().isApplicationStepEdit()) {
+            getCurrentStep().changeToList();
+            this.backToPreviusActivity();
+        }
     }
 
-    public void editDispenseAndRemovePrior(){
+    public void editDispenseAndRemovePrior() {
         getCurrentStep().changeToEdit();
 
         StringBuilder dispensedDrugsList = new StringBuilder();
 
-        Dispense dispenseInEditMode = ((CreateDispenseActivity)getRelatedActivity()).dispenseInEditMode;
+        Dispense dispenseInEditMode = ((CreateDispenseActivity) getRelatedActivity()).getDispenseSelectedForEdit();
+        List<DispensedDrug> dispensedDrugs = new ArrayList<>();
+        try {
+            dispensedDrugs = this.findDispensedDrugsByDispenseId(dispenseInEditMode.getId());
+        } catch (SQLException ex) {
+        }
 
-        String dataLevantamento = "Data Levantamento: "+DateUtilitis.formatToDDMMYYYY(dispenseInEditMode.getPickupDate(),"/");
-        String duracao = "Duração: "+Utilities.parseSupplyToLabel(dispenseInEditMode.getSupply());
-        String dataProximoLevantamento = "Data Próximo Levantamento: "+DateUtilitis.formatToDDMMYYYY(dispenseInEditMode.getNextPickupDate(), "/");
+        String dataLevantamento = "Data Levantamento: " + DateUtilitis.formatToDDMMYYYY(dispenseInEditMode.getPickupDate(), "/");
+        String duracao = "Duração: " + Utilities.parseSupplyToLabel(dispenseInEditMode.getSupply());
+        String dataProximoLevantamento = "Data Próximo Levantamento: " + DateUtilitis.formatToDDMMYYYY(dispenseInEditMode.getNextPickupDate(), "/");
 
-        for (DispensedDrug dd: dispenseInEditMode.getDispensedDrugs()
-             ) {
+        for (DispensedDrug dd : dispensedDrugs
+        ) {
             Drug drug = dd.getStock().getDrug();
             dispensedDrugsList.append(drug.getDescription() + "\n");
         }
@@ -312,9 +320,9 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
         String listaDeMedicamentosDispensados = getRelatedActivity().getString(R.string.dispensed_drug_list);
         String gostariaDeRemoverAdispensaAnterior = getRelatedActivity().getString(R.string.would_you_like_remove_prior_dispense);
 
-        String editWillRemoveSelectedDispense = detalhesAviamento+"\n"+dataLevantamento+
-                "\n"+duracao+"\n"+dataProximoLevantamento+"\n\n"+listaDeMedicamentosDispensados+"\n"
-                +dispensedDrugsList+"\n"+gostariaDeRemoverAdispensaAnterior;
+        String editWillRemoveSelectedDispense = detalhesAviamento + "\n\n" + dataLevantamento +
+                "\n" + duracao + "\n" + dataProximoLevantamento + "\n\n" + listaDeMedicamentosDispensados + "\n"
+                + dispensedDrugsList + "\n" + gostariaDeRemoverAdispensaAnterior;
 
         Utilities.displayConfirmationDialog(getRelatedActivity(), editWillRemoveSelectedDispense, getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), DispenseVM.this).show();
     }

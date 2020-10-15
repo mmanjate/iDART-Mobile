@@ -181,5 +181,9 @@
     <string name="quantidade">Quantidade</string>
     <string name="dados_do_episodio">Dados do Episódio</string>
     <string name="prescription_must_be_urgent">Esta prescrição deve ser indicada como especial, pois a anterior foi anulada.</string>
+    <string name="remove_dispense_drug_detail_list">O Aviamento que pretende remover contém os detalhes abaixo</string>
+    <string name="would_you_like_remove_dispense">Confirma a remoção do aviamento?</string>
+    <string name="dispense_has_final_episode_cant_be_edit">Não pode se editar/remover a dispensa porque o paciente já tem o episódio final.</string>
+    <string name="patient_has_final_episode_cant_create_dispense">Não pode criar nova dispensa porque o paciente já tem o episódio final.</string>
 
 </resources>
