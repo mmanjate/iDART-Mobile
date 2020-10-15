@@ -193,13 +193,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
 
     public void populateDrugList() throws SQLException {
         drugList = new ArrayList<Drug>();
-        //drugList.add(0, new Drug());
-
         drugList.addAll(drugService.getDrugsWithoutRectParanthesis(drugService.getAll()));
-        adapterSpinner = new ArrayAdapter<Drug>(getApplicationContext(), R.layout.layout_autocomplete_text_view, R.id.tvCustom,drugList);
-     //   adapterSpinner.setDropDownViewResource(android.R.layout.select_dialog_item);
-     //   ListableSpinnerAdapter adapter = new ListableSpinnerAdapter(this, R.layout.simple_spinner_item, drugList);
-       // stockEntranceBinding.setDrugAdapter(adapter);
+        adapterSpinner = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, drugList);
        stockEntranceBinding.spnDrugs.setAdapter(adapterSpinner);
         stockEntranceBinding.spnDrugs.setThreshold(1);
     }

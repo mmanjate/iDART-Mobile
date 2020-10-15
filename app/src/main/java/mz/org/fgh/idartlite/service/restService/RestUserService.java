@@ -8,6 +8,7 @@ import androidx.collection.ArrayMap;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
 import org.json.JSONObject;
@@ -91,7 +92,7 @@ public class RestUserService extends BaseService {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Response", error.getMessage());
+                        Log.e("Response", Utilities.stringHasValue(error.getMessage()) ? error.getMessage() : error instanceof TimeoutError ? "Time out" : "Unkown error");
                     }
                 });
             });
