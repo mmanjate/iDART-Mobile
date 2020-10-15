@@ -430,7 +430,7 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
         try {
 
             List<Drug> drugs = new ArrayList<>();
-            drugs.addAll(getRelatedViewModel().getAllDrugsFromPrescritionRegimen());
+            drugs.addAll(getRelatedViewModel().getDrugsWithoutRectParanthesis(getRelatedViewModel().getAllDrugsFromPrescritionRegimen()));
 
             List<Drug> drugsToDisplay = new ArrayList<>();
 
@@ -440,7 +440,11 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
                     drugsToDisplay.add(drug);
             }
 
-            ArrayAdapter<Drug> drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.select_dialog_item, drugsToDisplay);
+
+
+
+
+            ArrayAdapter<Drug> drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), R.layout.layout_autocomplete_text_view, R.id.tvCustom,drugsToDisplay);
             activityCreateDispenseBinding.autCmpDrugs.setThreshold(1);
             activityCreateDispenseBinding.autCmpDrugs.setAdapter(drugArrayAdapter);
 
