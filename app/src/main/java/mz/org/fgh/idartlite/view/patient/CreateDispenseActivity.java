@@ -65,7 +65,7 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
 
     private Drug selectedDrug;
 
-    public Dispense dispenseInEditMode;
+    private Dispense dispenseSelectedForEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,7 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
 
                 if (bundle.getSerializable("dispense") != null) {
                     getRelatedViewModel().setDispense((Dispense) bundle.getSerializable("dispense"));
-                    this.dispenseInEditMode = getRelatedViewModel().getDispense();
+                    this.setDispenseSelectedForEdit(getRelatedViewModel().getDispense());
                 }
             }
         }
@@ -571,7 +571,7 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
     @Override
     public void doOnConfirmed() {
         Map<String, Object> params = new HashMap<>();
-        params.put("patient",getRelatedViewModel().getDispense().getPrescription().getPatient());
+        params.put("patient", getRelatedViewModel().getDispense().getPrescription().getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("requestedFragment", DispenseFragment.FRAGMENT_CODE_DISPENSE);
@@ -695,4 +695,19 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
         changeAllSpinnersStatus(false);
     }
 
+    public Dispense getDispenseSelectedForEdit() {
+        return dispenseSelectedForEdit;
+    }
+
+    public void setDispenseSelectedForEdit(Dispense dispenseSelectedForEdit) {
+        this.dispenseSelectedForEdit = new Dispense();
+        this.dispenseSelectedForEdit.setNextPickupDate(dispenseSelectedForEdit.getNextPickupDate());
+        this.dispenseSelectedForEdit.setSupply(dispenseSelectedForEdit.getSupply());
+        this.dispenseSelectedForEdit.setPickupDate(dispenseSelectedForEdit.getPickupDate());
+        this.dispenseSelectedForEdit.setId(dispenseSelectedForEdit.getId());
+        this.dispenseSelectedForEdit.setSyncStatus(dispenseSelectedForEdit.getSyncStatus());
+        this.dispenseSelectedForEdit.setDispensedDrugs(dispenseSelectedForEdit.getDispensedDrugs());
+        this.dispenseSelectedForEdit.setUuid(dispenseSelectedForEdit.getUuid());
+        this.dispenseSelectedForEdit.setPrescription(dispenseSelectedForEdit.getPrescription());
+    }
 }

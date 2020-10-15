@@ -30,8 +30,11 @@ import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.common.ListbleDialogListener;
 import mz.org.fgh.idartlite.databinding.FragmentDispenseBinding;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.DispensedDrug;
+import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patient.adapter.DispenseAdapter;
 import mz.org.fgh.idartlite.viewmodel.DispenseVM;
@@ -92,7 +95,7 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
                     intent.putExtras(bundle);
                     startActivity(intent);
                 } else
-                    Utilities.displayAlertDialog(DispenseFragment.this.getContext(), "Não pode criar nova dispensa porque o paciente já tem o episódio final.").show();
+                    Utilities.displayAlertDialog(DispenseFragment.this.getContext(), getActivity().getString(R.string.patient_has_final_episode_cant_create_dispense)).show();
             }
         });
 
@@ -129,31 +132,6 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
         popup.show();
     }
 
-    /*private void displayPrescriptions() {
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        rcvDispences.setLayoutManager(mLayoutManager);
-        rcvDispences.setItemAnimator(new DefaultItemAnimator());
-        rcvDispences.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-
-        dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
-        rcvDispences.setAdapter(dispenseAdapter);
-
-        rcvDispences.addOnItemTouchListener(new RecyclerTouchListener(getContext(), rcvDispences, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, final int position) {
-                //Values are passing to activity & to fragment as well
-                Toast.makeText(getContext(), "Single Click on position        :"+position,
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(getContext(), "Long press on position :"+position,
-                        Toast.LENGTH_LONG).show();
-            }
-        }));
-    }*/
-
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
@@ -182,7 +160,8 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
                 }
                 return true;
             case R.id.remove:
-                Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(), DispenseFragment.this.getString(R.string.list_item_delete_msg), dispensePosition, DispenseFragment.this).show();
+                //Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(), DispenseFragment.this.getString(R.string.list_item_delete_msg), dispensePosition, DispenseFragment.this).show();
+                this.removeDispenseConfirmation();
                 return true;
 
             case R.id.viewDetails:
@@ -270,6 +249,37 @@ public class DispenseFragment extends GenericFragment implements ListbleDialogLi
             dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
             displayDataOnRecyclerView(rcvDispences, dispenseAdapter, getContext());
         }
+    }
+
+    public void removeDispenseConfirmation() {
+
+        StringBuilder dispensedDrugsList = new StringBuilder();
+
+        String dataLevantamento = "Data Levantamento: " + DateUtilitis.formatToDDMMYYYY(getRelatedViewModel().getDispense().getPickupDate(), "/");
+        String duracao = "Duração: " + Utilities.parseSupplyToLabel(getRelatedViewModel().getDispense().getSupply());
+        String dataProximoLevantamento = "Data Próximo Levantamento: " + DateUtilitis.formatToDDMMYYYY(getRelatedViewModel().getDispense().getNextPickupDate(), "/");
+
+        List<DispensedDrug> dispensedDrugs = new ArrayList<>();
+        try {
+            dispensedDrugs = getRelatedViewModel().findDispensedDrugsByDispenseId(getRelatedViewModel().getDispense().getId());
+        } catch (SQLException ex) {
+        }
+
+        for (DispensedDrug dd : dispensedDrugs
+        ) {
+            Drug drug = dd.getStock().getDrug();
+            dispensedDrugsList.append(drug.getDescription() + "\n");
+        }
+
+        String detalhesAviamento = DispenseFragment.this.getString(R.string.remove_dispense_drug_detail_list);
+        String listaDeMedicamentosDispensados = DispenseFragment.this.getString(R.string.dispensed_drug_list);
+        String gostariaDeRemoverAdispensaAnterior = DispenseFragment.this.getString(R.string.would_you_like_remove_dispense);
+
+        String removeDispenseConfirmationMessage = detalhesAviamento + "\n\n" + dataLevantamento +
+                "\n" + duracao + "\n" + dataProximoLevantamento + "\n\n" + listaDeMedicamentosDispensados + "\n"
+                + dispensedDrugsList + "\n" + gostariaDeRemoverAdispensaAnterior;
+
+        Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(), removeDispenseConfirmationMessage, dispensePosition, DispenseFragment.this).show();
     }
 
 }

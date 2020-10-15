@@ -526,10 +526,10 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
 
     @Override
     public void doOnConfirmed() {
-        Map<String, Object> params = new HashMap<>();
+        /*Map<String, Object> params = new HashMap<>();
         params.put("clinic", getRelatedViewModel().getClinic());
         params.put("user", getCurrentUser());
-        nextActivity(StockActivity.class, params);
+        nextActivity(StockActivity.class, params);*/
         finish();
     }
 
