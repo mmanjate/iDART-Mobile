@@ -288,6 +288,7 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     }
 
     public String prescriptionCanBeEdited() throws SQLException {
+        if (this.prescription.getExpiryDate() != null) return "Não é possivel alterar a prescrição "+this.prescription.getUiId()+ ", pois encontra-se expirada.";
         if (prescriptionHasDispenses()) return getRelatedActivity().getString(R.string.cant_edit_prescription_msg);
         if (!this.prescription.isSyncStatusReady(this.prescription.getSyncStatus())) return getRelatedActivity().getString(R.string.cant_edit_synced_prescription);
         return "";
