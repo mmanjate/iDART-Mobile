@@ -60,12 +60,12 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
                         Thread.sleep(2000);
                         requestTime += 2000;
                         if (requestTime >= timeOut){
-                            runOnUiThread(new Runnable() {
+                            /*runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
                                 }
-                            });
+                            });*/
                             break;
                         }
                     }
@@ -90,12 +90,12 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
                         Thread.sleep(2000);
                         requestTime += 2000;
                         if (requestTime >= timeOut){
-                            runOnUiThread(new Runnable() {
+                            /*runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
                                 }
-                            });
+                            });*/
                             break;
                         }
                     } catch (InterruptedException e) {
