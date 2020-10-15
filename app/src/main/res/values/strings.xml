@@ -32,17 +32,14 @@
     <string name="dispense">Aviamento</string>
     <string name="prescription">Prescrição</string>
     <string name="alert_ok">OK</string>
-    <string name="phone">Phone: </string>
-    <string name="name">Name: </string>
-    <string name="age">Age: </string>
+    <string name="name">Nome: </string>
     <string name="nid">NID: </string>
     <string name="last_name">Last Name: </string>
-    <string name="gender">Gender: </string>
     <string name="button_ok">Ok</string>
     <string name="unidade_sanit_ria">Unidade Sanitária: </string>
-    <string name="genero">Genero</string>
-    <string name="idade">Idade</string>
-    <string name="telefone">Telefone</string>
+    <string name="genero">Gênero:</string>
+    <string name="idade">Idade:</string>
+    <string name="telefone">Telefone:</string>
     <string name="data_levantamento">Data Levantamento</string>
 
     <string name="remover">Remover</string>
@@ -56,7 +53,6 @@
     <string name="data">data</string>
     <string name="regime_terapeutico">Regime Terapêutico</string>
     <string name="linha">Linha Terapêutica</string>
-    <string name="dura_o">Duração</string>
     <string name="dados_pessoais">Dados Pessoais</string>
     <string name="contacto_pessoais">Contacto</string>
     <string name="other_details_person">Outros</string>
@@ -116,7 +112,7 @@
     <string name="adicionar_prescri_o_medicamentos">Adicionar Prescrição - Medicamentos</string>
     <string name="drug_list">Lista de Medicamentos *</string>
     <string name="adicionar_prescri_o_prescri_o_especial">Adicionar Prescrição - Prescrição Especial</string>
-    <string name="prescri_o_especial_info">Prescrição Especial?</string>
+    <string name="prescri_o_especial_info">Prescrição Especial</string>
     <string name="prescri_o_especial">Prescrição Especial?</string>
     <string name="motivo">Motivo *</string>
     <string name="prescription_got_dispenses_msg">Esta prescrição já tem aviamentos registados, não pode ser removida.</string>
@@ -138,8 +134,8 @@
     <string name="error_loading_patient_data">Ocorreu um erro ao carregar os dados do paciente.</string>
     <string name="no_episode_found">Não foi encontrado nenhum episódio do paciente seleccionado</string>
     <string name="new_prescription_creation">A ultima prescrição ainda não teve todos os aviamentos efectuados, confirma anular a mesma e criar nova?</string>
-    <string name="cant_edit_synced_dispense">Não pode efectuar alterações sobre este aviamento pois o mesmo já foi sincronizada com o iDART central.</string>
-    <string name="dispense_cant_be_removed_msg">Esta Dispensa não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
+    <string name="cant_edit_synced_dispense">Não pode efectuar alterações sobre este aviamento pois o mesmo já foi sincronizado com o iDART central.</string>
+    <string name="dispense_cant_be_removed_msg">Esta Dispensa não pode ser removida, pois já foi sincronizada com o IDART central.</string>
     <string name="error_removing_record">Ocorreu um erro ao remover o registo.</string>
     <string name="error_msg_server_offline">Servidor offline, não será possível realizar sincronizações, por favor tente mais tarde.</string>
     <string name="error_msg_server_offline_records_wont_be_sync">Servidor offline, não será possível realizar sincronizações dos registos criados.</string>
@@ -167,7 +163,11 @@
     <string name="pharmacy_required">O campo Farmácia deve ser preenchido.</string>
     <string name="pharmacy_config_not_found">Não foi encontrada a configuração da farmácia.</string>
     <string name="user_or_pass_invalid">Não foi encontrada a configuração da farmácia.</string>
+    <string name="would_you_like_remove_prior_dispense">Gostaria de apagar o Aviamento anterior, e substituí-lo com este que você acabou de criar?</string>
+    <string name="dispense_drug_detail_list">O Aviamento que pretende editar contém os detalhes abaixo</string>
     <string name="error_verifying">Ocorreu um erro ao verificar a configuração de utilizadores</string>
+    <string name="cant_dispense_patient_has_drugs">Este paciente ainda tem medicamentos. A data de leventamento actual não pode ser menor que a data do próximo levantamento no último aviamento.</string>
+    <string name="dispensed_drug_list">Medicamentos aviados</string>
     <string name="dados_iniciais">Dados Iniciais</string>
     <string name="medicamentos">Medicamentos</string>
 </resources>

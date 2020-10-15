@@ -76,6 +76,11 @@ public class DispenseService extends BaseService {
         return getDataBaseHelper().getDispenseDao().getAllOfPatient(getApplication(), patient);
     }
 
+    public Dispense getLastDispenseFromPrescription(Prescription prescription) throws SQLException {
+
+        return getDataBaseHelper().getDispenseDao().getLastDispensePrescription(prescription);
+    }
+
     public long countAllOfPrescription(Prescription prescription) throws SQLException {
         return getDataBaseHelper().getDispenseDao().countAllOfPrescription(prescription);
     }
@@ -126,7 +131,11 @@ public class DispenseService extends BaseService {
         int finalStockMoviment = actualStockMoviment - qtySupplied;
 
         stock.setStockMoviment(finalStockMoviment);
-        stock.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
+
+        if (stock.isSyncStatusReady(BaseModel.SYNC_SATUS_READY))
+            stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
+        else if (stock.isSyncStatusReady(BaseModel.SYNC_SATUS_SENT))
+            stock.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
 
         this.stockService.updateStock(stock);
     }
@@ -143,7 +152,10 @@ public class DispenseService extends BaseService {
             int finalStockMoviment = currentStockMoviment + qtySupplied;
 
             stock.setStockMoviment(finalStockMoviment);
-            stock.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
+            if (stock.isSyncStatusReady(BaseModel.SYNC_SATUS_READY))
+                stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
+            else if (stock.isSyncStatusReady(BaseModel.SYNC_SATUS_SENT))
+                stock.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
 
             this.stockService.updateStock(stock);
         }

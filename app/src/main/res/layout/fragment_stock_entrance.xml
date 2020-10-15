@@ -16,13 +16,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/background_layout"
+                android:background="@drawable/shape_normal"
                 android:text="@string/stock_entrance_fragment"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:drawableEndCompat="@drawable/ic_row_dados_pessoais"
-                app:drawableStartCompat="@drawable/ic_fragment_stock" />
+                android:layout_margin="@dimen/dimen_5dp"
+                android:paddingLeft="@dimen/dimen_10dp"
+                app:drawableEndCompat="@drawable/ic_row_dados_pessoais" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvFragmentStock"

@@ -214,7 +214,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
                 if(stRemove.getSyncStatus().equals(Stock.SYNC_SATUS_READY)){
                     if(dispenseDrugService.checkStockIsDispensedDrug(stRemove)){
                         getRelatedViewModel().deleteStock(stRemove);
-                        getRelatedViewModel().getSearchResults().remove(getRelatedViewModel().getSearchResults().get(position));
+                        getRelatedViewModel().getAllDisplyedRecords().remove(getRelatedViewModel().getAllDisplyedRecords().get(position));
                         for (int i = 0; i < getRelatedViewModel().getSearchResults().size(); i++){
                             getRelatedViewModel().getSearchResults().get(i).setListPosition(i+1);
                         }

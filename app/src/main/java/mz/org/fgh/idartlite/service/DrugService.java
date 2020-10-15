@@ -6,6 +6,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +42,7 @@ public class DrugService extends BaseService {
     public List<Drug> getAllOfTherapeuticRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException {
 
         QueryBuilder<RegimenDrug, Integer> regimeDrugQb = getDataBaseHelper().getRegimenDrugDao().queryBuilder();
-        regimeDrugQb.where().eq(RegimenDrug.COLUMN_DRUG_ID, therapeuticRegimen.getId());
+        regimeDrugQb.where().eq(RegimenDrug.COLUMN_THERAPEUTIC_REGIMEN_ID, therapeuticRegimen.getId());
 
         QueryBuilder<Drug, Integer> drugQb = getDataBaseHelper().getDrugDao().queryBuilder();
         return drugQb.join(regimeDrugQb).query();
@@ -113,6 +114,18 @@ public class DrugService extends BaseService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Drug> getAllWithoutRect() throws SQLException {
+    List<Drug> drugs= this.getAll();
+        List<Drug> newDrugs=new ArrayList<>();
+        for (Drug drug:drugs)
+        {
+            drug.setDescription(drug.getDescription().replace("[","").replace("]",""));
+            newDrugs.add(drug);
+        }
+        return newDrugs;
+
     }
 
 }

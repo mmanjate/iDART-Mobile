@@ -85,7 +85,7 @@
                     android:layout_below="@+id/pacient_name"
                     android:layout_toLeftOf="@id/emptyspace"
                     android:gravity="right"
-                    android:text="@string/gender"
+                    android:text="@string/genero"
                     android:textStyle="bold" />
 
                 <TextView
@@ -121,7 +121,7 @@
                     android:layout_below="@id/pacient_name"
                     android:layout_toLeftOf="@+id/emptyspace3"
                     android:gravity="right"
-                    android:text="@string/age"
+                    android:text="@string/idade"
                     android:textStyle="bold" />
 
                 <TextView

@@ -66,7 +66,7 @@
                 android:id="@+id/initial_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Adicionar Aviamento - Dados Iniciais"
+                android:text='@{!viewModel.currentStep.applicationStepDisplay ? "Adicionar Aviamento - Dados Iniciais" : "Dados Iniciais"}'
                 android:background="@drawable/shape_normal"
                 android:textColor="@color/white"
                 android:textSize="15sp"
@@ -132,7 +132,7 @@
                 android:id="@+id/txv_drugs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Adicionar Aviamento - Medicamentos"
+                android:text= '@{!viewModel.currentStep.applicationStepDisplay ? "Adicionar Aviamento - Medicamentos" : "Medicamentos"}'
                 android:background="@drawable/shape_normal"
                 android:textColor="@color/white"
                 android:textSize="15sp"
