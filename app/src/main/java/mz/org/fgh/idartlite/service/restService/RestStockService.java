@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import mz.org.fgh.idartlite.base.BaseModel;
@@ -72,10 +73,10 @@ public class RestStockService extends BaseService {
 
                     handler.addHeader("Content-Type", "application/json");
                     JSONObject jsonObject = new JSONObject(restObject);
-                    handler.objectRequest(url, Request.Method.POST, jsonObject, Object[].class, new Response.Listener<LinkedTreeMap<String, Object>>() {
+                    handler.objectRequest(url, Request.Method.POST, jsonObject, Object[].class, new Response.Listener<TreeMap<String, Object>>() {
 
                         @Override
-                        public void onResponse(LinkedTreeMap<String, Object> response) {
+                        public void onResponse(TreeMap<String, Object> response) {
                             Log.d(TAG, "onResponse: StockCenter enviado : " + response);
                         }
                     }, new Response.ErrorListener() {
