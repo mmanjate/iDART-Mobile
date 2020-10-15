@@ -9,8 +9,10 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.model.DiseaseType;
+import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.service.DiseaseTypeService;
+import mz.org.fgh.idartlite.service.DrugService;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.UserService;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -19,12 +21,14 @@ public class SplashVM extends BaseViewModel {
     private UserService userService;
     private PharmacyTypeService pharmacyTypeService;
     private DiseaseTypeService diseaseTypeService;
+    private DrugService drugService;
 
     public SplashVM(@NonNull Application application) {
         super(application);
         this.userService = new UserService(application);
         this.pharmacyTypeService = new PharmacyTypeService(application, null);
         diseaseTypeService = new DiseaseTypeService(application, null);
+        drugService = new DrugService(application, null);
     }
     public boolean appHasNoUsersOnDB(){
         boolean usersOnDB = false;
@@ -48,5 +52,9 @@ public class SplashVM extends BaseViewModel {
 
     public List<DiseaseType> getAllDiseaseTypes() throws SQLException {
         return diseaseTypeService.getAllDiseaseTypes();
+    }
+
+    public List<Drug> getAllDrugs() throws SQLException {
+        return drugService.getAll();
     }
 }

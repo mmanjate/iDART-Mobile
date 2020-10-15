@@ -72,6 +72,22 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
 
                     RestDrugService.restGetAllDrugs();
 
+
+                    requestTime = 0;
+                    while (!Utilities.listHasElements(getRelatedViewModel().getAllDrugs())){
+                        Thread.sleep(4000);
+                        requestTime += 4000;
+                        if (requestTime >= timeOut){
+                            /*runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
+                                }
+                            });*/
+                            break;
+                        }
+                    }
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
