@@ -36,7 +36,7 @@ public class RestTherapeuticRegimenService extends BaseService {
 
     public static void restGetAllTherapeuticRegimen() {
 
-        String url = BaseService.baseUrl + "/regimeterapeutico?select=*,drug(*)&active=true";
+        String url = BaseService.baseUrl + "/regimeterapeutico?select=*,drug(*)&active=eq.true";
         therapeuticRegimenService = new TherapheuticRegimenService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {
