@@ -18,6 +18,10 @@ public interface Listble<T extends BaseModel> extends Comparable<T>{
         return null;
     }
 
+    default String getFnmcode() {
+        return null;
+    }
+
     @Override
     int compareTo(T t);
 }

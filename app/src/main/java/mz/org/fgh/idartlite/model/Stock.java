@@ -256,4 +256,9 @@ public class Stock extends BaseModel implements Listble {
     public String getLote() {
         return this.batchNumber;
     }
+
+    @Override
+    public String getFnmcode() {
+        return this.drug.getFnmcode();
+    }
 }
