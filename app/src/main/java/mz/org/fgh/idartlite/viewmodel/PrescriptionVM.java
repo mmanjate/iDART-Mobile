@@ -1,9 +1,14 @@
 package mz.org.fgh.idartlite.viewmodel;
 
 import android.app.Application;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.Bindable;
+import androidx.databinding.DataBindingUtil;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -15,6 +20,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.DialogListener;
+import mz.org.fgh.idartlite.databinding.PrescriptionCancelDialogBinding;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
@@ -55,6 +61,7 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
 
     private boolean urgentPrescription;
     private boolean newPrescriptionMustBeEspetial;
+    private Prescription oldPrescription;
 
     public PrescriptionVM(@NonNull Application application) {
         super(application);
@@ -74,6 +81,9 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     }
 
     public void requestForNewRecord(){
+
+
+
         try {
 
             if (getRelatedListingFragment().getMyActivity().getPatient().hasEndEpisode()) {
@@ -83,13 +93,17 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
 
                 this.prescription = prescriptionService.getLastPatientPrescription(((PatientActivity) getRelatedActivity()).getPatient());
 
+
                 this.prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
 
                 if (!this.prescription.isClosed()) {
 
+                    this.prescription.setPrescribedDrugs(prescriptionService.getAllOfPrescription(this.prescription));
+
                     newPrescriptionMustBeEspetial = true;
 
-                    Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.new_prescription_creation), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
+                    //Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.new_prescription_creation), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
+                    Utilities.displayConfirmationDialog(getRelatedActivity(), this.prescription.getPrescriptionAsString(), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
                 } else {
                     doOnConfirmed();
                 }
@@ -192,14 +206,18 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         ((PrescriptionActivity)getRelatedActivity()).loadFormData();
 
         if (newPrescriptionMustBeEspetial && !this.prescription.isUrgent()){
-            Utilities.displayAlertDialog(getRelatedActivity(),"Esta prescrição deve ser indicada como especial, pois a anterior foi anulada.").show();
+            Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.prescription_must_be_urgent)).show();
             return;
         }
+        
+        
 
         String validationErrors = this.prescription.validate(getRelatedActivity());
         if (!Utilities.stringHasValue(validationErrors)) {
             try {
                 if (getRelatedActivity().getApplicationStep().isApplicationStepSave()) {
+                    if (oldPrescription != null) prescriptionService.closePrescription(oldPrescription);
+                    
                     prescriptionService.createPrescription(this.prescription);
                     Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_dispense), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), ((PrescriptionActivity)getRelatedActivity())).show();
                 } else if (getRelatedActivity().getApplicationStep().isApplicationStepEdit()) {
@@ -297,16 +315,10 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     }
 
     private void initNewRecord() {
-        try {
-            
-            prescriptionService.closePrescription(this.prescription);
-            initNewPrescription();
-            this.prescription.setPatient(((PatientActivity) getRelatedActivity()).getPatient());
+        initNewPrescription();
+        this.prescription.setPatient(((PatientActivity) getRelatedActivity()).getPatient());
 
-            getRelatedListingFragment().startPrescriptionActivity();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        getRelatedListingFragment().startPrescriptionActivity();
     }
 
     @Override
@@ -328,11 +340,11 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     }
 
     public void checkIfMustBeUrgentPrescription() throws SQLException {
-        Prescription prescription = prescriptionService.getLastPatientPrescription(((PatientActivity) getRelatedActivity()).getPatient());
+        oldPrescription = prescriptionService.getLastPatientPrescription(this.prescription.getPatient());
 
-        prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
+        oldPrescription.setDispenses(dispenseService.getAllDispenseByPrescription(oldPrescription));
 
-        if (!prescription.isClosed()) {
+        if (!oldPrescription.isClosed()) {
             newPrescriptionMustBeEspetial = true;
         }
     }
