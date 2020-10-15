@@ -79,7 +79,7 @@
                         android:layout_margin="@dimen/dimen_4dp"
                         android:background="@drawable/shape_normal"
                         android:paddingLeft="@dimen/dimen_10dp"
-                        android:text="@string/adicionar_episodio"
+                        android:text='@{viewModel.currentStep.applicationStepDisplay ? @string/dados_do_episodio : @string/adicionar_episodio}'
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         app:drawableEndCompat="@drawable/ic_row_dados_pessoais" />

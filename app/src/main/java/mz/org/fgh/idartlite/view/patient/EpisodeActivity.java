@@ -65,7 +65,7 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
                 getRelatedViewModel().setPatient((Patient) bundle.getSerializable("patient"));
                createEpisodeBinding.setPatient(getRelatedViewModel().getPatient());
-
+             this.changeApplicationStepToCreate();
                 if (getRelatedViewModel().getPatient() == null){
                     throw new RuntimeException("Não foi seleccionado um paciente para detalhar.");
                 }
@@ -76,6 +76,7 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
                 }
 
                 if(bundle.getSerializable("viewDetails")!= null && (boolean) bundle.getSerializable("viewDetails") == true) {
+                    this.changeApplicationStepToDisplay();
                     disableFieldsToView();
                 }
             }
