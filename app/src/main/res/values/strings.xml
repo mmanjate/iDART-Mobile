@@ -34,7 +34,7 @@
     <string name="alert_ok">OK</string>
     <string name="name">Nome: </string>
     <string name="nid">NID: </string>
-    <string name="last_name">Last Name: </string>
+    <string name="last_name">Apelido: </string>
     <string name="button_ok">Ok</string>
     <string name="unidade_sanit_ria">Unidade Sanitária: </string>
     <string name="genero">Gênero:</string>
@@ -57,11 +57,11 @@
     <string name="contacto_pessoais">Contacto</string>
     <string name="other_details_person">Outros</string>
     <string name="phone_person">Telefone:</string>
-    <string name="adress_person">Endreço:</string>
+    <string name="adress_person">Endereço:</string>
     <string name="date_tarv">Data Inicio TARV:</string>
     <string name="farmacia">Farmácia</string>
     <string name="reason_to_stop">reasontostop</string>
-    <string name="stock_entrance">Entrada</string>
+    <string name="stock_entrance">Entrada de Stock</string>
     <string name="stock_inventory">Inventário</string>
     <string name="data_da_visita">Data da visita</string>
     <string name="adicionar_episodio">Adicionar/Editar Episodio</string>

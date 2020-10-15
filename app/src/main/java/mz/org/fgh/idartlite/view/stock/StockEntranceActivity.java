@@ -31,6 +31,7 @@ import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.DialogListener;
+import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityStockEntranceBinding;
@@ -72,7 +73,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         rcvSelectedDrugs = stockEntranceBinding.rcvSelectedDrugs;
         selectedStock = new ArrayList<>();
         drug = new Drug();
-        stockEntranceBinding.spnDrugs.setThreshold(1);
+        stockEntranceBinding.spnDrugs.setThreshold(0);
         stockEntranceBinding.drugsDataLyt.setVisibility(View.GONE);
         getRelatedViewModel().setInitialDataVisible(true);
         getRelatedViewModel().setDrugDataVisible(false);
@@ -163,6 +164,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                 selectedDrug = (Drug) adapterView.getItemAtPosition(pos);
             }
         });
+
+        //stockEntranceBinding.spnDrugs.setOnGenericMotionListener();
         stockEntranceBinding.setStock(getRelatedViewModel().getStock());
     }
 
@@ -190,11 +193,9 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
 
     public void populateDrugList() throws SQLException {
         drugList = new ArrayList<Drug>();
-        //drugList.add(0, new Drug());
-        drugList.addAll(drugService.getAll());
-        adapterSpinner = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.select_dialog_item, drugList);
-     //   adapterSpinner.setDropDownViewResource(android.R.layout.select_dialog_item);
-        stockEntranceBinding.spnDrugs.setAdapter(adapterSpinner);
+        drugList.addAll(drugService.getDrugsWithoutRectParanthesis(drugService.getAll()));
+        adapterSpinner = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, drugList);
+       stockEntranceBinding.spnDrugs.setAdapter(adapterSpinner);
         stockEntranceBinding.spnDrugs.setThreshold(1);
     }
 

@@ -28,11 +28,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/stock_info"
-                    android:minHeight="?attr/actionBarSize"
-                    app:elevation="0dp"
-                    app:tabBackground="@color/tab_back"
+                    app:tabBackground="@color/white"
                     app:tabGravity="fill"
-                    app:tabMaxWidth="0dp"
                     app:tabMode="fixed"
                     app:tabTextColor="@color/colorPrimary" />
 

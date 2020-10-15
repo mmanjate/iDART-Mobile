@@ -259,10 +259,10 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         List<Drug> drugs = new ArrayList<>();
         try {
             if (regimen != null && getRelatedViewModel().isSeeOnlyOfRegime()) {
-                drugs.addAll(getRelatedViewModel().getAllDrugsOfTheraputicRegimen(regimen));
+                drugs.addAll(getRelatedViewModel().getDrugsWithoutRectParanthesis(getRelatedViewModel().getAllDrugsOfTheraputicRegimen(regimen)));
             }
             else {
-                drugs.addAll(getRelatedViewModel().getAllDrugs());
+                drugs.addAll(getRelatedViewModel().getDrugsWithoutRectParanthesis(getRelatedViewModel().getAllDrugs()));
             }
             populateDrugs(drugs);
         } catch (SQLException e) {
@@ -318,7 +318,6 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             dispenseTypes.addAll(getRelatedViewModel().getAllDispenseTypes());
 
 
-
             dispenseTypeArrayAdapter = new ArrayAdapter<DispenseType>(getApplicationContext(), android.R.layout.simple_spinner_item, dispenseTypes);
             dispenseTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             prescriptionBinding.spnDispenseType.setAdapter(dispenseTypeArrayAdapter);
@@ -330,7 +329,6 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             regimenArrayAdapter = new ArrayAdapter<TherapeuticRegimen>(getApplicationContext(), android.R.layout.simple_spinner_item, therapeuticRegimenList);
             regimenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             prescriptionBinding.spnRegime.setAdapter(regimenArrayAdapter);
-
 
 
             List<ValorSimples> durations = new ArrayList<>();

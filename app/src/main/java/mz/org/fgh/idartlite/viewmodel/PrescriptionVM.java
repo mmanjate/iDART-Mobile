@@ -310,6 +310,10 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         }
     }
 
+    public List<Drug> getDrugsWithoutRectParanthesis(List<Drug> drugs) throws SQLException {
+        return drugService.getDrugsWithoutRectParanthesis(drugs);
+    }
+
     private void initNewRecord() {
         initNewPrescription();
         this.prescription.setPatient(((PatientActivity) getRelatedActivity()).getPatient());
