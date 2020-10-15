@@ -337,4 +337,31 @@ public class Prescription extends BaseModel {
 	public boolean isSyncStatusReady(){
 		return isSyncStatusReady(this.syncStatus);
 	}
+
+	public String getPrescriptionAsString(){
+		String prescriptionData = "";
+
+		prescriptionData = Utilities.concatStrings(prescriptionData, "Este paciente contém uma Prescrição anterior válida com o id "+this.getUiId() +" (detalhes abaixo).", "\n\n");
+
+		prescriptionData = Utilities.concatStrings(prescriptionData, "Regime: "+this.therapeuticRegimen.getDescription(), "\n");
+		prescriptionData = Utilities.concatStrings(prescriptionData, "Duração: "+getDurationToUserUI(), "\n");
+		prescriptionData = Utilities.concatStrings(prescriptionData, "Registado em: "+DateUtilitis.formatToDDMMYYYY(this.prescriptionDate), "\n");
+		prescriptionData = Utilities.concatStrings(prescriptionData, "Medicamentos na Prescrição: \n"+getPrescribedDrugsAsString(), "\n");
+		prescriptionData = Utilities.concatStrings(prescriptionData, "\n Gostaria de apagar esta Prescrição anterior, e substituí-la com a que esta para criar? ", "");
+
+		return prescriptionData;
+	}
+
+	public String getPrescribedDrugsAsString(){
+		String drugs = "";
+
+		if (Utilities.listHasElements(this.prescribedDrugs)) {
+			for (PrescribedDrug prescribedDrug: this.prescribedDrugs) {
+				drugs = Utilities.concatStrings(drugs, prescribedDrug.getDrug().getDescription(), "; ");
+			}
+		}
+
+
+		return drugs;
+	}
 }

@@ -31,6 +31,7 @@ import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.DialogListener;
+import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
 import mz.org.fgh.idartlite.common.ValorSimples;
@@ -444,7 +445,7 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
 
 
 
-            ArrayAdapter<Drug> drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), R.layout.layout_autocomplete_text_view, R.id.tvCustom,drugsToDisplay);
+            ArrayAdapter<Drug> drugArrayAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, drugsToDisplay);
             activityCreateDispenseBinding.autCmpDrugs.setThreshold(1);
             activityCreateDispenseBinding.autCmpDrugs.setAdapter(drugArrayAdapter);
 

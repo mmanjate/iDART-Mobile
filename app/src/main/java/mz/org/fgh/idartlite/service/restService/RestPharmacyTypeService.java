@@ -18,6 +18,7 @@ import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class RestPharmacyTypeService extends BaseService {
 
@@ -68,7 +69,7 @@ public class RestPharmacyTypeService extends BaseService {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("Response", error.getMessage());
+                    Log.e("Response", Utilities.stringHasValue(error.getMessage()) ? error.getMessage() : "");
                 }
             });
         });
