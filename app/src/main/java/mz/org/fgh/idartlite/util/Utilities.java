@@ -302,7 +302,7 @@ public class Utilities {
     }
 
     public static boolean listHasElements(ArrayList<?> list){
-        return list != null && !list.isEmpty();
+        return list != null && !list.isEmpty() && list.size() > 0;
     }
 
     /*public static NotificationCompat.Builder showNotification(String title, String contntText, Context context, String channelId){

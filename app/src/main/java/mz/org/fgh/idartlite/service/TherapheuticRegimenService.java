@@ -7,6 +7,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.util.Utilities;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -84,6 +85,7 @@ public class TherapheuticRegimenService extends BaseService {
             localRegimen.setDescription(Objects.requireNonNull(itemresult.get("regimeesquema")).toString());
             createTherapheuticRegimen(localRegimen);
 
+            if (Utilities.listHasElements((ArrayList<?>) itemresult.get("drug")))
             regimenDrugsService.saveRegimenDrug(localRegimen, (ArrayList) Objects.requireNonNull(itemresult.get("drug")));
 
         } catch (SQLException e) {
