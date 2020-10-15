@@ -174,5 +174,12 @@
 
     <string name="dados_iniciais">Dados Iniciais</string>
     <string name="medicamentos">Medicamentos</string>
+
+    <string name="codigo">Codigo</string>
+    <string name="descricao">Descrição</string>
+    <string name="lote">Lote</string>
+    <string name="quantidade">Quantidade</string>
+
     <string name="prescription_must_be_urgent">Esta prescrição deve ser indicada como especial, pois a anterior foi anulada.</string>
+
 </resources>
