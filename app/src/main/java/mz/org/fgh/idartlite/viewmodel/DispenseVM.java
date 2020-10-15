@@ -130,6 +130,10 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
         return drugService.getAllOfTherapeuticRegimen(this.dispense.getPrescription().getTherapeuticRegimen());
     }
 
+    public List<Drug> getDrugsWithoutRectParanthesis(List<Drug> drugs) throws SQLException {
+        return drugService.getDrugsWithoutRectParanthesis(drugs);
+    }
+
 
     public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) {
 

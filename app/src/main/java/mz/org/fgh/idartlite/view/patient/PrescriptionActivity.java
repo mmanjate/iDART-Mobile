@@ -262,10 +262,10 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         drugs.add(new Drug());
         try {
             if (regimen != null && getRelatedViewModel().isSeeOnlyOfRegime()) {
-                drugs.addAll(getRelatedViewModel().getAllDrugsOfTheraputicRegimen(regimen));
+                drugs.addAll(getRelatedViewModel().getDrugsWithoutRectParanthesis(getRelatedViewModel().getAllDrugsOfTheraputicRegimen(regimen)));
             }
             else {
-                drugs.addAll(getRelatedViewModel().getAllDrugs());
+                drugs.addAll(getRelatedViewModel().getDrugsWithoutRectParanthesis(getRelatedViewModel().getAllDrugs()));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -321,7 +321,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
             List<Drug> drugs = new ArrayList<>();
          //   drugs.add(new Drug());
-            drugs.addAll(getRelatedViewModel().getAllDrugs());
+            drugs.addAll(getRelatedViewModel().getDrugsWithoutRectParanthesis(getRelatedViewModel().getAllDrugs()));
 
             dispenseTypeArrayAdapter = new ArrayAdapter<DispenseType>(getApplicationContext(), android.R.layout.simple_spinner_item, dispenseTypes);
             dispenseTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -335,7 +335,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             regimenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             prescriptionBinding.spnRegime.setAdapter(regimenArrayAdapter);
 
-            drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), android.R.layout.select_dialog_item, drugs);
+            drugArrayAdapter = new ArrayAdapter<Drug>(getApplicationContext(), R.layout.layout_autocomplete_text_view, R.id.tvCustom,drugs);
          //   drugArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_item);
             prescriptionBinding.autCmpDrugs.setAdapter(drugArrayAdapter);
             prescriptionBinding.autCmpDrugs.setThreshold(1);

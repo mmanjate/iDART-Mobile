@@ -116,8 +116,8 @@ public class DrugService extends BaseService {
         }
     }
 
-    public List<Drug> getAllWithoutRect() throws SQLException {
-    List<Drug> drugs= this.getAll();
+    public List<Drug> getDrugsWithoutRectParanthesis(List<Drug> drugs) throws SQLException {
+
         List<Drug> newDrugs=new ArrayList<>();
         for (Drug drug:drugs)
         {
