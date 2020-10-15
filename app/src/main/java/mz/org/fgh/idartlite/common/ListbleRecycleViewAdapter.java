@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.common;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,14 @@ import java.util.List;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.databinding.HeaderitemBinding;
 import mz.org.fgh.idartlite.databinding.ListableItemBinding;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListbleDialogListener {
 
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
     private BaseActivity activity;
     private List<Listble> listbles;
     private RecyclerView recyclerView;
@@ -28,31 +30,50 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
         this.listbles = listbles;
         this.recyclerView = recyclerView;
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ListableItemBinding listableItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.listable_item, parent, false);
-        return new ListbleViewHolder(listableItemBinding);
+        if (viewType == TYPE_ITEM) {
+            // Here Inflating your recyclerview item layout
+            ListableItemBinding listableItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.listable_item, parent, false);
+            return new ListbleViewHolder(listableItemBinding);
+        } else if (viewType == TYPE_HEADER) {
+            // Here Inflating your header view
+            HeaderitemBinding headerItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.headeritem, parent, false);
+            return new HeaderViewHolder(headerItemBinding);
+        }
+        else return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        ((ListbleViewHolder) viewHolder).listableItemBinding.setListble(listbles.get(position));
-        ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListEditButton(activity.isViewListEditButton());
-        ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
-        ((ListbleViewHolder) viewHolder).listableItemBinding.imvRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utilities.displayDeleteConfirmationDialogFromList(activity, activity.getString(R.string.list_item_delete_msg), position, ListbleRecycleViewAdapter.this).show();
-            }
-        });
 
-        ((ListbleViewHolder) viewHolder).listableItemBinding.imvEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activity.getRelatedViewModel().setSelectedListble(listbles.get(position));
+        if (viewHolder instanceof HeaderViewHolder) {
+            HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
+            if (listbles.size() != 0) {
+                headerViewHolder.headeritemBinding.setListble(listbles.get(position));
             }
-        });
+            headerViewHolder.headeritemBinding.setViewListEditButton(activity.isViewListEditButton());
+            headerViewHolder.headeritemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
+        } else if (viewHolder instanceof ListbleViewHolder) {
+            ((ListbleViewHolder) viewHolder).listableItemBinding.setListble(listbles.get(position - 1));
+            ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListEditButton(activity.isViewListEditButton());
+            ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
+            ((ListbleViewHolder) viewHolder).listableItemBinding.imvRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Utilities.displayDeleteConfirmationDialogFromList(activity, activity.getString(R.string.list_item_delete_msg), position - 1, ListbleRecycleViewAdapter.this).show();
+                }
+            });
+
+            ((ListbleViewHolder) viewHolder).listableItemBinding.imvEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    activity.getRelatedViewModel().setSelectedListble(listbles.get(position - 1));
+                }
+            });
+        }
     }
 
     public void remove(int position) {
@@ -69,17 +90,23 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return listbles.size();
+        return listbles.size() + 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return TYPE_HEADER;
+        }
+        return TYPE_ITEM;
     }
 
     @Override
     public void remove(BaseModel baseModel) { }
 
-
-    public class ListbleViewHolder extends RecyclerView.ViewHolder{
+    public class ListbleViewHolder extends RecyclerView.ViewHolder {
 
         private ListableItemBinding listableItemBinding;
-
 
         public ListbleViewHolder(@NonNull ListableItemBinding listableItemBinding) {
             super(listableItemBinding.getRoot());
@@ -87,4 +114,13 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
+    public class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        private HeaderitemBinding headeritemBinding;
+
+        public HeaderViewHolder(@NonNull HeaderitemBinding headeritemBinding) {
+            super(headeritemBinding.getRoot());
+            this.headeritemBinding = headeritemBinding;
+        }
+    }
 }

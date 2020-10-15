@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -30,6 +31,7 @@ import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.DrugService;
 import mz.org.fgh.idartlite.service.StockService;
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class RestStockService extends BaseService {
 
@@ -134,7 +136,7 @@ public class RestStockService extends BaseService {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("Response", error.getMessage());
+                    Log.e("Response", Utilities.stringHasValue(error.getMessage()) ? error.getMessage() : error instanceof TimeoutError ? "Time out" : "Unkown error");
                 }
             });
         });

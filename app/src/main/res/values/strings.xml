@@ -170,4 +170,8 @@
     <string name="dispensed_drug_list">Medicamentos aviados</string>
     <string name="dados_iniciais">Dados Iniciais</string>
     <string name="medicamentos">Medicamentos</string>
+    <string name="codigo">Codigo</string>
+    <string name="descricao">Descrição</string>
+    <string name="lote">Lote</string>
+    <string name="quantidade">Quantidade</string>
 </resources>
