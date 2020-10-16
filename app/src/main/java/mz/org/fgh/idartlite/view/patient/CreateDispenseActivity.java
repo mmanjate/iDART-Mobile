@@ -290,6 +290,7 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
                         Collections.sort(selectedDrugs);
 
                         displaySelectedDrugs();
+                        activityCreateDispenseBinding.autCmpDrugs.setText("");
                     } else {
 
                         Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.drug_data_duplication_msg)).show();
@@ -570,12 +571,13 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
 
     @Override
     public void doOnConfirmed() {
-        Map<String, Object> params = new HashMap<>();
+/*        Map<String, Object> params = new HashMap<>();
         params.put("patient", getRelatedViewModel().getDispense().getPrescription().getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("requestedFragment", DispenseFragment.FRAGMENT_CODE_DISPENSE);
-        nextActivity(PatientActivity.class, params);
+        nextActivity(PatientActivity.class, params);*/
+        finish();
     }
 
     @Override
