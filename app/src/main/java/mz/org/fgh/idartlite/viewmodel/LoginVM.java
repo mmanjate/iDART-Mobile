@@ -13,9 +13,11 @@ import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.UserService;
 import mz.org.fgh.idartlite.service.restService.RestPatientService;
@@ -104,8 +106,6 @@ public class LoginVM extends BaseViewModel {
 
             String loginErrors = getCurrentUser().validadeToLogin();
 
-
-
             if (!Utilities.stringHasValue(loginErrors)) {
                 getCurrentUser().setUserName(getUserName().trim());
                 if (userService.checkIfUsertableIsEmpty()) {
@@ -113,7 +113,10 @@ public class LoginVM extends BaseViewModel {
 
                 } else {
                     // Somente para testes --- estas funcionalidades foram alocadas no WorkManager da app
-                    RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(),getCurrentUser());
+                    if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+                        RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
+                    }
+
                     if (!userService.login(getCurrentUser())) {
                         if (Utilities.listHasElements(clinicService.getCLinic())) {
                             setCurrentClinic(clinicService.getCLinic().get(0));

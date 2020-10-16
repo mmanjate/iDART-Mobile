@@ -13,10 +13,12 @@ import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
+import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.restService.RestClinicService;
 import mz.org.fgh.idartlite.service.restService.RestDiseaseTypeService;
@@ -45,86 +47,97 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
         restClinicService = new RestClinicService(getApplication(), null);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
 
-        new Thread(new Runnable() {
-            public void run() {
-                RestPharmacyTypeService.restGetAllPharmacyType();
+        if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+            new Thread(new Runnable() {
+                public void run() {
+                    RestPharmacyTypeService.restGetAllPharmacyType();
 
-                RestDiseaseTypeService.restGetAllDiseaseType();
+                    RestDiseaseTypeService.restGetAllDiseaseType();
 
-                RestFormService.restGetAllForms();
+                    RestFormService.restGetAllForms();
 
-                try {
-                    long timeOut = 60000;
-                    long requestTime = 0;
-                    while (!Utilities.listHasElements(getRelatedViewModel().getAllDiseaseTypes())){
-                        Thread.sleep(2000);
-                        requestTime += 2000;
-                        if (requestTime >= timeOut){
-                            /*runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
-                                }
-                            });*/
-                            break;
-                        }
-                    }
-
-                    RestDrugService.restGetAllDrugs();
-
-
-                    requestTime = 0;
-                    while (!Utilities.listHasElements(getRelatedViewModel().getAllDrugs())){
-                        Thread.sleep(4000);
-                        requestTime += 4000;
-                        if (requestTime >= timeOut){
-                            /*runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
-                                }
-                            });*/
-                            break;
-                        }
-                    }
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                RestDispenseTypeService.restGetAllDispenseType();
-                RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
-                RestTherapeuticLineService.restGetAllTherapeuticLine();
-
-                clinicList = restClinicService.restGetAllClinic(SplashActivity.this);
-                long timeOut = 60000;
-                long requestTime = 0;
-                while (!Utilities.listHasElements(clinicList)) {
                     try {
-                        Thread.sleep(2000);
-                        requestTime += 2000;
-                        if (requestTime >= timeOut){
+                        long timeOut = 60000;
+                        long requestTime = 0;
+                        while (!Utilities.listHasElements(getRelatedViewModel().getAllDiseaseTypes())) {
+                            Thread.sleep(2000);
+                            requestTime += 2000;
+                            if (requestTime >= timeOut) {
                             /*runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
                                 }
                             });*/
-                            break;
+                                break;
+                            }
                         }
+
+                        RestDrugService.restGetAllDrugs();
+
+
+                        requestTime = 0;
+                        while (!Utilities.listHasElements(getRelatedViewModel().getAllDrugs())) {
+                            Thread.sleep(4000);
+                            requestTime += 4000;
+                            if (requestTime >= timeOut) {
+                            /*runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
+                                }
+                            });*/
+                                break;
+                            }
+                        }
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
 
-                Map<String, Object> params = new HashMap<>();
-                params.put("clinicList", clinicList);
-                nextActivity(LoginActivity.class, params);
-                finish();
+                    RestDispenseTypeService.restGetAllDispenseType();
+                    RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
+                    RestTherapeuticLineService.restGetAllTherapeuticLine();
+
+                    clinicList = restClinicService.restGetAllClinic(SplashActivity.this);
+                    long timeOut = 60000;
+                    long requestTime = 0;
+                    while (!Utilities.listHasElements(clinicList)) {
+                        try {
+                            Thread.sleep(2000);
+                            requestTime += 2000;
+                            if (requestTime >= timeOut) {
+                            /*runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.time_out_msg)).show();
+                                }
+                            });*/
+                                break;
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("clinicList", clinicList);
+                    nextActivity(LoginActivity.class, params);
+                    finish();
+                }
+            }).start();
+        }else {
+            String errorMsg = "";
+
+            if (getRelatedViewModel().appHasNoUsersOnDB()){
+                errorMsg = getString(R.string.error_msg_server_offline);
+            }else {
+                errorMsg = getString(R.string.error_msg_server_offline_records_wont_be_sync);
             }
-        }).start();
+            Utilities.displayAlertDialog(SplashActivity.this, errorMsg, SplashActivity.this).show();
+        }
     }
 
     @Override
