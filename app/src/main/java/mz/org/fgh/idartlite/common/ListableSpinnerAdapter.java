@@ -25,6 +25,10 @@ public class ListableSpinnerAdapter extends ArrayAdapter {
 
     private Context context;
     private List<Listble> dataList;
+
+    private List<Listble> originalDataList;
+
+
     LayoutInflater inflater;
     Activity activity;
 
@@ -37,6 +41,8 @@ public class ListableSpinnerAdapter extends ArrayAdapter {
         inflater = activity.getLayoutInflater();
         this.activity = activity;
         this.suggestions = new ArrayList<>();
+        this.originalDataList = new ArrayList<>();
+        this.originalDataList.addAll(dataList);
     }
 
     @NonNull
@@ -92,6 +98,9 @@ public class ListableSpinnerAdapter extends ArrayAdapter {
         protected FilterResults performFiltering(CharSequence constraint) {
             if(constraint != null) {
                 suggestions.clear();
+                dataList.clear();
+                dataList.addAll(originalDataList);
+
                 for (Listble listble : dataList) {
                     if(listble.getDescription().toLowerCase().contains(constraint.toString().toLowerCase())){
                         suggestions.add(listble);
