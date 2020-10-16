@@ -210,6 +210,8 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
                        Collections.sort(selectedDrugs);
 
                        displaySelectedDrugs();
+
+                       prescriptionBinding.autCmpDrugs.setText("");
                    }else {
                        Utilities.displayAlertDialog(PrescriptionActivity.this, getString(R.string.drug_data_duplication_msg)).show();
                    }
