@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
@@ -23,9 +24,11 @@ import mz.org.fgh.idartlite.util.Utilities;
 public class ListableSpinnerAdapter extends ArrayAdapter {
 
     private Context context;
-    private List dataList;
+    private List<Listble> dataList;
     LayoutInflater inflater;
     Activity activity;
+
+    private ArrayList<Listble> suggestions;
 
     public ListableSpinnerAdapter(@NonNull Activity activity, int textViewResourceId, List dataList) {
         super(activity, textViewResourceId, dataList);
@@ -33,6 +36,7 @@ public class ListableSpinnerAdapter extends ArrayAdapter {
         this.dataList = dataList;
         inflater = activity.getLayoutInflater();
         this.activity = activity;
+        this.suggestions = new ArrayList<>();
     }
 
     @NonNull
@@ -80,14 +84,38 @@ public class ListableSpinnerAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public Filter getFilter() {
-        return super.getFilter();
+        return nameFilter;
     }
 
-    public List getDataList() {
-        return dataList;
-    }
+    Filter nameFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            if(constraint != null) {
+                suggestions.clear();
+                for (Listble listble : dataList) {
+                    if(listble.getDescription().toLowerCase().contains(constraint.toString().toLowerCase())){
+                        suggestions.add(listble);
+                    }
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = suggestions;
+                filterResults.count = suggestions.size();
+                return filterResults;
+            } else {
+                return new FilterResults();
+            }
+        }
 
-    public void setDataList(List dataList) {
-        this.dataList = dataList;
-    }
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults results) {
+            ArrayList<Listble> filteredList = (ArrayList<Listble>) results.values;
+            if(results != null && results.count > 0) {
+                clear();
+                for (Listble c : filteredList) {
+                    add(c);
+                }
+                notifyDataSetChanged();
+            }
+        }
+    };
 }
