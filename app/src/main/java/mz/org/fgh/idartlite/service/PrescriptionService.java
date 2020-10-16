@@ -110,9 +110,9 @@ public class PrescriptionService extends BaseService {
             prescription.setUrgentPrescription(requireNonNull(patient.get("prescricaoespecial")).toString());
             prescription.setUuid(UUID.randomUUID().toString());
 
-            if (Float.parseFloat(requireNonNull(patient.get("dispensasemestral")).toString()) > 0)
-                prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa MensSemestral (DS)"));
-            else if (Float.parseFloat(requireNonNull(patient.get("dispensatrimestral")).toString()) > 0)
+            if ((int) Float.parseFloat(requireNonNull(patient.get("dispensasemestral")).toString()) > 0)
+                prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa Semestral (DS)"));
+            else if ((int) Float.parseFloat(requireNonNull(patient.get("dispensatrimestral")).toString()) > 0)
                 prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa Trimestral (DT)"));
             else
                 prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa Mensal (DM)"));
