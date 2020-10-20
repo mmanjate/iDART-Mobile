@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="patient"
-            type="mz.org.fgh.idartlite.model.Patient" />
         <variable
             name="viewModel"
             type="mz.org.fgh.idartlite.viewmodel.PatientDetailsVM" />
@@ -29,6 +24,7 @@
                 android:layout_marginEnd="1dp"
                 android:layout_marginRight="1dp"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/dimen_4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,18 +39,38 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/initial_data"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/dimen_4dp"
+                            android:layout_height="match_parent"
                             android:background="@drawable/shape_normal"
-                            android:paddingLeft="@dimen/dimen_4dp"
-                            android:text="@string/dados_pessoais"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:drawableStart="@drawable/ic_baseline_person_outline_24"
-                            app:drawableEndCompat="@drawable/ic_row_dados_pessoais" />
+                            android:layout_margin="@dimen/dimen_4dp"
+                            android:padding="3dp"
+                            android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="8"
+                                android:text="@string/dados_pessoais"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:gravity="center_vertical|left"
+                                android:drawableStart="@drawable/ic_baseline_person_outline_24"
+                                android:paddingLeft="@dimen/dimen_10dp"/>
+
+                            <ImageButton
+                                android:id="@+id/ibtn_initial_data"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/background_layout"
+                                android:src="@drawable/ic_row_dados_pessoais"
+                                android:layout_marginRight="@dimen/dimen_2dp"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
+
+
 
                     <LinearLayout
                         android:id="@+id/person_data_lyt"
@@ -118,46 +134,65 @@
                                 android:id="@+id/nid"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{patient.nid}" />
+                                android:text="@{viewModel.patient.nid}" />
 
                             <TextView
                                 android:id="@+id/name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{patient.firstName}"/>
+                                android:text="@{viewModel.patient.firstName}"/>
 
                             <TextView
                                 android:id="@+id/last_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{patient.lastName}"/>
+                                android:text="@{viewModel.patient.lastName}"/>
 
                             <TextView
                                 android:id="@+id/gender"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{patient.gender}" />
+                                android:text="@{viewModel.patient.gender}" />
 
                             <TextView
                                 android:id="@+id/age"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{Utilities.parseIntToString(patient.age)}" />
+                                android:text="@{Utilities.parseIntToString(viewModel.patient.age)}" />
 
                         </LinearLayout>
                     </LinearLayout>
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/contacto"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:background="@drawable/shape_normal"
-                            android:text="@string/contacto_pessoais"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:paddingLeft="@dimen/dimen_4dp"
                             android:layout_margin="@dimen/dimen_4dp"
-                            android:drawableStart="@drawable/ic_call"
-                            app:drawableEndCompat="@drawable/ic_row_dados_pessoais" />
+                            android:padding="3dp"
+                            android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="8"
+                                android:text="@string/contacto_pessoais"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:gravity="center_vertical|left"
+                                android:drawableStart="@drawable/ic_call"
+                                android:paddingLeft="@dimen/dimen_10dp"/>
+
+                            <ImageButton
+                                android:id="@+id/ibtn_contacto"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/background_layout"
+                                android:src="@drawable/ic_row_dados_pessoais"
+                                android:layout_marginRight="@dimen/dimen_2dp"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
+
 
                     <LinearLayout
                         android:id="@+id/contact_data_lyt"
@@ -201,30 +236,48 @@
                                 android:id="@+id/phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{patient.phone}" />
+                                android:text="@{viewModel.patient.phone}" />
 
                             <TextView
                                 android:id="@+id/adress"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{patient.address}"/>
+                                android:text="@{viewModel.patient.address}"/>
 
                         </LinearLayout>
 
                     </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/others"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:background="@drawable/shape_normal"
-                            android:text="@string/other_details_person"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:paddingLeft="@dimen/dimen_4dp"
                             android:layout_margin="@dimen/dimen_4dp"
-                            android:drawableStart="@drawable/ic_baseline_info_24"
-                            app:drawableEndCompat="@drawable/ic_row_dados_pessoais" />
+                            android:padding="3dp"
+                            android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="8"
+                                android:text="@string/other_details_person"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:gravity="center_vertical|left"
+                                android:drawableStart="@drawable/ic_baseline_info_24"
+                                android:paddingLeft="@dimen/dimen_10dp"/>
+
+                            <ImageButton
+                                android:id="@+id/ibtn_others"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/background_layout"
+                                android:src="@drawable/ic_row_dados_pessoais"
+                                android:layout_marginRight="@dimen/dimen_2dp"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
 
 
                     <LinearLayout
@@ -262,7 +315,7 @@
                                 android:id="@+id/tarv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{patient.dateStartTarv}"/>
+                                android:text="@{viewModel.patient.dateStartTarv}"/>
                         </LinearLayout>
 
                     </LinearLayout>

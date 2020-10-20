@@ -1,14 +1,18 @@
 package mz.org.fgh.idartlite.model;
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Objects;
+
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.dao.DrugDaoImpl;
-
-import java.util.Objects;
 
 @DatabaseTable(tableName = "drug", daoClass = DrugDaoImpl.class)
 public class Drug extends BaseModel implements Listble {
@@ -56,6 +60,16 @@ public class Drug extends BaseModel implements Listble {
     }
 
     public String getFnmcode() {
+        return fnmcode;
+    }
+
+    @Override
+    public int getDrawable() {
+        return R.mipmap.ic_drug;
+    }
+
+    @Override
+    public String getCode() {
         return fnmcode;
     }
 

@@ -1,16 +1,21 @@
 package mz.org.fgh.idartlite.model;
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.DispenseTypeDaoImpl;
 
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.common.Listble;
+import mz.org.fgh.idartlite.dao.DispenseTypeDaoImpl;
+import mz.org.fgh.idartlite.util.Utilities;
+
 @DatabaseTable(tableName = "Dispense_type", daoClass = DispenseTypeDaoImpl.class)
-public class DispenseType extends BaseModel {
+public class DispenseType extends BaseModel implements Listble {
 
     public static final String COLUMN_CODE = "code";
     public static final String COLUMN_DESCRIPTION = "description";
@@ -44,6 +49,11 @@ public class DispenseType extends BaseModel {
         return description;
     }
 
+    @Override
+    public int getDrawable() {
+        return 0;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -53,6 +63,7 @@ public class DispenseType extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DispenseType that = (DispenseType) o;
+        if (!Utilities.stringHasValue(code) && id <= 0) return false;
         return code.equals(that.code);
     }
 
@@ -65,5 +76,10 @@ public class DispenseType extends BaseModel {
     @Override
     public String toString() {
         return description;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }

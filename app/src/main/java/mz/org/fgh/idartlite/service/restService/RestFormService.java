@@ -3,16 +3,9 @@ package mz.org.fgh.idartlite.service.restService;
 import android.app.Application;
 import android.util.Log;
 
-import androidx.collection.ArrayMap;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.User;
@@ -66,7 +59,7 @@ public class RestFormService extends BaseService {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Response", error.getMessage());
+                        Log.e("Response", generateErrorMsg(error));
                     }
                 });
             });

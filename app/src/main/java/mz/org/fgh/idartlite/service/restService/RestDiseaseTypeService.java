@@ -3,23 +3,14 @@ package mz.org.fgh.idartlite.service.restService;
 import android.app.Application;
 import android.util.Log;
 
-import androidx.collection.ArrayMap;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.DiseaseTypeService;
-import mz.org.fgh.idartlite.util.Utilities;
 
 public class RestDiseaseTypeService extends BaseService {
 
@@ -67,7 +58,7 @@ public class RestDiseaseTypeService extends BaseService {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Response", Utilities.stringHasValue(error.getMessage()) ? error.getMessage() : error instanceof TimeoutError ? "Time out" : "Unkown error");
+                        Log.e("Response", generateErrorMsg(error));
                     }
                 });
             });

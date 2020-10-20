@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
 import androidx.appcompat.widget.Toolbar;
@@ -20,21 +19,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
-import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.databinding.ActivityPrescriptionBinding;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
@@ -52,25 +48,15 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
     private ActivityPrescriptionBinding prescriptionBinding;
 
-    private List<Listble> selectedDrugs;
-
     private RecyclerView rcvSelectedDrugs;
 
     private ListbleRecycleViewAdapter listbleRecycleViewAdapter;
-
-    private ArrayAdapter<DispenseType> dispenseTypeArrayAdapter;
-
-    private ArrayAdapter<TherapeuticLine> lineArrayAdapter;
-
-    private ArrayAdapter<TherapeuticRegimen> regimenArrayAdapter;
-
     private ListableSpinnerAdapter drugArrayAdapter;
-
-    private ArrayAdapter<ValorSimples> valorSimplesArrayAdapter;
-
-    private ArrayAdapter<ValorSimples> motiveArrayAdapter;
-
-    private Drug selectedDrug;
+    private ListableSpinnerAdapter dispenseTypeArrayAdapter;
+    private ListableSpinnerAdapter lineArrayAdapter;
+    private ListableSpinnerAdapter regimenArrayAdapter;
+    private ListableSpinnerAdapter motiveAdapter;
+    private ListableSpinnerAdapter durationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +67,9 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
         prescriptionBinding.drugsDataLyt.setVisibility(View.GONE);
         prescriptionBinding.urgentLyt.setVisibility(View.GONE);
+        prescriptionBinding.ibtnUrgent.animate().setDuration(200).rotation(180);
+        prescriptionBinding.ibtnDrugs.animate().setDuration(200).rotation(180);
+
         getRelatedViewModel().setInitialDataVisible(true);
         getRelatedViewModel().setDrugDataVisible(false);
 
@@ -127,10 +116,13 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
         prescriptionBinding.setViewModel(getRelatedViewModel());
 
+        getRelatedViewModel().loadDrugs();
 
         populateForm();
 
         loadSelectedPrescriptionToForm();
+
+        changeMotiveSpinnerStatus(getRelatedViewModel().getPrescription().isUrgent());
 
         prescriptionBinding.prescriptionDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,75 +148,11 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             }
         });
 
-        prescriptionBinding.initialData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-
-            }
-        });
-        prescriptionBinding.txvDrugs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-
-            }
-        });
-        prescriptionBinding.txvUrgent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-
-            }
-        });
-
-        prescriptionBinding.spnRegime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                TherapeuticRegimen regimen = (TherapeuticRegimen) adapterView.getItemAtPosition(i);
-
-                getRelatedViewModel().getPrescription().setTherapeuticRegimen(regimen);
-
-                if (regimen.getId() > 0 && getRelatedViewModel().isSeeOnlyOfRegime()) {
-                    reloadDrugsSpinnerByRegime(regimen);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        prescriptionBinding.imvAddSelectedDrug.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               if (selectedDrugs == null) selectedDrugs = new ArrayList<>();
-
-               if ( prescriptionBinding.autCmpDrugs.getText().length() > 0){
-                   Listble<Drug> listble = (Listble<Drug>) selectedDrug;
-
-                   if (!selectedDrugs.contains(listble)) {
-                       listble.setListPosition(selectedDrugs.size()+1);
-                       selectedDrugs.add(listble);
-                       Collections.sort(selectedDrugs);
-
-                       displaySelectedDrugs();
-
-                       prescriptionBinding.autCmpDrugs.setText("");
-                   }else {
-                       Utilities.displayAlertDialog(PrescriptionActivity.this, getString(R.string.drug_data_duplication_msg)).show();
-                   }
-
-               }
-            }
-        });
-
         prescriptionBinding.autCmpDrugs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 //this is the way to find selected object/item
-                selectedDrug = (Drug) adapterView.getItemAtPosition(pos);
+                getRelatedViewModel().setSelectedDrug((Listble) adapterView.getItemAtPosition(pos));
             }
         });
 
@@ -257,45 +185,16 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         }
     }
 
-    public void reloadDrugsSpinnerByRegime(TherapeuticRegimen regimen) {
-        List<Drug> drugs = new ArrayList<>();
-        try {
-            if (regimen != null && getRelatedViewModel().isSeeOnlyOfRegime()) {
-                drugs.addAll(getRelatedViewModel().getDrugsWithoutRectParanthesis(getRelatedViewModel().getAllDrugsOfTheraputicRegimen(regimen)));
-            }
-            else {
-                drugs.addAll(getRelatedViewModel().getDrugsWithoutRectParanthesis(getRelatedViewModel().getAllDrugs()));
-            }
-            populateDrugs(drugs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     private void loadSelectedPrescriptionToForm() {
-
-        prescriptionBinding.spnDispenseType.setSelection(dispenseTypeArrayAdapter.getPosition(getRelatedViewModel().getPrescription().getDispenseType()));
-
-        prescriptionBinding.spnLine.setSelection(lineArrayAdapter.getPosition(getRelatedViewModel().getPrescription().getTherapeuticLine()));
-
-        prescriptionBinding.spnRegime.setSelection(regimenArrayAdapter.getPosition(getRelatedViewModel().getPrescription().getTherapeuticRegimen()));
-
-        prescriptionBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(ValorSimples.fastCreate(getRelatedViewModel().getPrescription().getSupply())));
-
-        prescriptionBinding.spnReson.setSelection(motiveArrayAdapter.getPosition(ValorSimples.fastCreate(getRelatedViewModel().getPrescription().getUrgentNotes())));
-
-
-        if (this.selectedDrugs == null) selectedDrugs = new ArrayList<>();
+        if (getRelatedViewModel().getSelectedDrugs() == null) getRelatedViewModel().setSelectedDrugs(new ArrayList<>());
 
         int i = 1;
         for (PrescribedDrug prescribedDrug : getRelatedViewModel().getPrescription().getPrescribedDrugs()){
             Drug d = prescribedDrug.getDrug();
             d.setListPosition(i);
             i++;
-            selectedDrugs.add(d);
+            getRelatedViewModel().getSelectedDrugs().add(d);
         }
-
         displaySelectedDrugs();
     }
 
@@ -319,76 +218,61 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             dispenseTypes.add(new DispenseType());
             dispenseTypes.addAll(getRelatedViewModel().getAllDispenseTypes());
 
-
-            dispenseTypeArrayAdapter = new ArrayAdapter<DispenseType>(getApplicationContext(), android.R.layout.simple_spinner_item, dispenseTypes);
-            dispenseTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            dispenseTypeArrayAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, dispenseTypes);
             prescriptionBinding.spnDispenseType.setAdapter(dispenseTypeArrayAdapter);
+            prescriptionBinding.setDispenseTypeAdapter(dispenseTypeArrayAdapter);
 
-            lineArrayAdapter = new ArrayAdapter<TherapeuticLine>(getApplicationContext(), android.R.layout.simple_spinner_item, therapeuticLines);
-            lineArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            lineArrayAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, therapeuticLines);
             prescriptionBinding.spnLine.setAdapter(lineArrayAdapter);
+            prescriptionBinding.setLineAdapter(lineArrayAdapter);
 
-            regimenArrayAdapter = new ArrayAdapter<TherapeuticRegimen>(getApplicationContext(), android.R.layout.simple_spinner_item, therapeuticRegimenList);
-            regimenArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            regimenArrayAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, therapeuticRegimenList);
             prescriptionBinding.spnRegime.setAdapter(regimenArrayAdapter);
+            prescriptionBinding.setRegimenAdapter(regimenArrayAdapter);
 
+            durationAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, getRelatedViewModel().getDurations());
+            prescriptionBinding.spnDuration.setAdapter(durationAdapter);
+            prescriptionBinding.setDurationAdapter(durationAdapter);
 
-            List<ValorSimples> durations = new ArrayList<>();
-            durations.add(new ValorSimples());
-            durations.add(ValorSimples.fastCreate(2, Prescription.DURATION_TWO_WEEKS));
-            durations.add(ValorSimples.fastCreate(4, Prescription.DURATION_ONE_MONTH));
-            durations.add(ValorSimples.fastCreate(8, Prescription.DURATION_TWO_MONTHS));
-            durations.add(ValorSimples.fastCreate(12, Prescription.DURATION_THREE_MONTHS));
-            durations.add(ValorSimples.fastCreate(16, Prescription.DURATION_FOUR_MONTHS));
-            durations.add(ValorSimples.fastCreate(20, Prescription.DURATION_FIVE_MONTHS));
-            durations.add(ValorSimples.fastCreate(24, Prescription.DURATION_SIX_MONTHS));
-
-            valorSimplesArrayAdapter = new ArrayAdapter<ValorSimples>(getApplicationContext(), android.R.layout.simple_spinner_item, durations);
-            valorSimplesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            prescriptionBinding.spnDuration.setAdapter(valorSimplesArrayAdapter);
-
-            List<ValorSimples> motives = new ArrayList<>();
-            motives.add(new ValorSimples());
-            motives.add(ValorSimples.fastCreate("Perda de Medicamento"));
-            motives.add(ValorSimples.fastCreate("Ausencia do Clinico"));
-            motives.add(ValorSimples.fastCreate("Laboratorio"));
-            motives.add(ValorSimples.fastCreate("Rotura de Stock"));
-            motives.add(ValorSimples.fastCreate("Outro"));
-
-            motiveArrayAdapter = new ArrayAdapter<ValorSimples>(getApplicationContext(), android.R.layout.simple_spinner_item, motives);
-            motiveArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            prescriptionBinding.spnReson.setAdapter(motiveArrayAdapter);
+            motiveAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, getRelatedViewModel().getMotives());
+            prescriptionBinding.spnReson.setAdapter(motiveAdapter);
+            prescriptionBinding.setMotiveAdapter(motiveAdapter);
 
         } catch (SQLException e) {
             Utilities.displayAlertDialog(PrescriptionActivity.this, getString(R.string.error_loading_form_data)+e.getMessage());
             e.printStackTrace();
         }
-
     }
 
-    private void changeVisibilityToInitialData(View view) {
+    public void changeFormSectionVisibility(View view) {
         if (view.equals(prescriptionBinding.initialData)){
             if (prescriptionBinding.initialDataLyt.getVisibility() == View.VISIBLE){
-                prescriptionBinding.initialDataLyt.setVisibility(View.GONE);
                 switchLayout();
+                prescriptionBinding.ibtnInitialData.animate().setDuration(200).rotation(180);
+                Utilities.collapse(prescriptionBinding.initialDataLyt);
             }else {
-                prescriptionBinding.initialDataLyt.setVisibility(View.VISIBLE);
                 switchLayout();
+                prescriptionBinding.ibtnInitialData.animate().setDuration(200).rotation(0);
+                Utilities.expand(prescriptionBinding.initialDataLyt);
             }
         }else if (view.equals(prescriptionBinding.txvDrugs)){
             if (prescriptionBinding.drugsDataLyt.getVisibility() == View.VISIBLE){
-                prescriptionBinding.drugsDataLyt.setVisibility(View.GONE);
                 switchLayout();
+                prescriptionBinding.ibtnDrugs.animate().setDuration(200).rotation(180);
+                Utilities.collapse(prescriptionBinding.drugsDataLyt);
             }else {
-                prescriptionBinding.drugsDataLyt.setVisibility(View.VISIBLE);
+                prescriptionBinding.ibtnDrugs.animate().setDuration(200).rotation(0);
+                Utilities.expand(prescriptionBinding.drugsDataLyt);
                 switchLayout();
             }
         }else if (view.equals(prescriptionBinding.txvUrgent)){
             if (prescriptionBinding.urgentLyt.getVisibility() == View.VISIBLE){
-                prescriptionBinding.urgentLyt.setVisibility(View.GONE);
+                prescriptionBinding.ibtnUrgent.animate().setDuration(200).rotation(180);
+                Utilities.collapse(prescriptionBinding.urgentLyt);
                 switchLayout();
             }else {
-                prescriptionBinding.urgentLyt.setVisibility(View.VISIBLE);
+                prescriptionBinding.ibtnUrgent.animate().setDuration(200).rotation(0);
+                Utilities.expand(prescriptionBinding.urgentLyt);
                 switchLayout();
             }
         }
@@ -409,7 +293,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         return (PrescriptionVM) super.getRelatedViewModel();
     }
 
-    private void displaySelectedDrugs(){
+    public void displaySelectedDrugs(){
         if (listbleRecycleViewAdapter != null) {
             listbleRecycleViewAdapter.notifyDataSetChanged();
         }else {
@@ -418,39 +302,9 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
             rcvSelectedDrugs.setItemAnimator(new DefaultItemAnimator());
             rcvSelectedDrugs.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 0));
 
-            listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvSelectedDrugs, this.selectedDrugs, this);
+            listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvSelectedDrugs, getRelatedViewModel().getSelectedDrugs(), this);
             rcvSelectedDrugs.setAdapter(listbleRecycleViewAdapter);
         }
-    }
-
-    public void loadFormData() {
-        getRelatedViewModel().getPrescription().setSupply(((ValorSimples) prescriptionBinding.spnDuration.getSelectedItem()).getId());
-        getRelatedViewModel().getPrescription().setPrescriptionDate(DateUtilitis.createDate(prescriptionBinding.prescriptionDate.getText().toString(), DateUtilitis.DATE_FORMAT));
-        getRelatedViewModel().getPrescription().setDispenseType((DispenseType) prescriptionBinding.spnDispenseType.getSelectedItem());
-        getRelatedViewModel().getPrescription().setTherapeuticRegimen((TherapeuticRegimen) prescriptionBinding.spnRegime.getSelectedItem());
-        getRelatedViewModel().getPrescription().setTherapeuticLine((TherapeuticLine) prescriptionBinding.spnLine.getSelectedItem());
-
-        if (getApplicationStep().isApplicationStepSave()) getRelatedViewModel().getPrescription().generateNextSeq();
-
-        if (getRelatedViewModel().getPrescription().isUrgent()) {
-
-            getRelatedViewModel().getPrescription().setUrgentNotes(((ValorSimples) prescriptionBinding.spnReson.getSelectedItem()).getDescription());
-        }
-        List<PrescribedDrug> prescribedDrugs = new ArrayList<>();
-
-        for (Listble drug : selectedDrugs){
-            prescribedDrugs.add(initNewPrescribedDrug((Drug) drug));
-        }
-
-        getRelatedViewModel().getPrescription().setPrescribedDrugs(prescribedDrugs);
-
-        if (getApplicationStep().isApplicationStepSave()) getRelatedViewModel().getPrescription().setUuid(Utilities.getNewUUID().toString());
-
-        getRelatedViewModel().getPrescription().setSyncStatus(BaseModel.SYNC_SATUS_READY);
-    }
-
-    private PrescribedDrug initNewPrescribedDrug(Drug drug) {
-        return  new PrescribedDrug(drug, getRelatedViewModel().getPrescription());
     }
 
     public void doAfterPrescriptionSave(){
@@ -492,7 +346,10 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         prescriptionBinding.autCmpDrugs.setEnabled(status);
         prescriptionBinding.spnDuration.setEnabled(status);
         prescriptionBinding.spnReson.setEnabled(status);
+    }
 
+    public ActivityPrescriptionBinding getPrescriptionBinding() {
+        return prescriptionBinding;
     }
 
     public void disableAllSpinners(){

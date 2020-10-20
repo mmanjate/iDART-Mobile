@@ -22,9 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
@@ -75,6 +73,10 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         drug = new Drug();
         stockEntranceBinding.spnDrugs.setThreshold(0);
         stockEntranceBinding.drugsDataLyt.setVisibility(View.GONE);
+        stockEntranceBinding.ibtnDrugs.animate().setDuration(200).rotation(180);
+
+        stockEntranceBinding.setViewModel(getRelatedViewModel());
+        
         getRelatedViewModel().setInitialDataVisible(true);
         getRelatedViewModel().setDrugDataVisible(false);
 
@@ -200,19 +202,6 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
     }
 
     public void enventInitialization(){
-        stockEntranceBinding.initialData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-            }
-        });
-
-        stockEntranceBinding.txvDrugs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-            }
-        });
 
         stockEntranceBinding.saveAndContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -485,25 +474,30 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         }
     }
 
-    private void changeVisibilityToInitialData(View view) {
-        if (view.equals(stockEntranceBinding.initialData)) {
-            if (stockEntranceBinding.initialDataLyt.getVisibility() == View.VISIBLE) {
-                stockEntranceBinding.initialDataLyt.setVisibility(View.GONE);
+    public void changeFormSectionVisibility(View view) {
+        if (view.equals(stockEntranceBinding.initialData)){
+            if (stockEntranceBinding.initialDataLyt.getVisibility() == View.VISIBLE){
                 switchLayout();
+                stockEntranceBinding.ibtnInitialData.animate().setDuration(200).rotation(180);
+                Utilities.collapse(stockEntranceBinding.initialDataLyt);
             }else {
-                stockEntranceBinding.initialDataLyt.setVisibility(View.VISIBLE);
                 switchLayout();
+                stockEntranceBinding.ibtnInitialData.animate().setDuration(200).rotation(0);
+                Utilities.expand(stockEntranceBinding.initialDataLyt);
             }
         }else if (view.equals(stockEntranceBinding.txvDrugs)){
-            if (stockEntranceBinding.drugsDataLyt.getVisibility() == View.VISIBLE) {
-                stockEntranceBinding.drugsDataLyt.setVisibility(View.GONE);
+            if (stockEntranceBinding.drugsDataLyt.getVisibility() == View.VISIBLE){
                 switchLayout();
+                stockEntranceBinding.ibtnDrugs.animate().setDuration(200).rotation(180);
+                Utilities.collapse(stockEntranceBinding.drugsDataLyt);
             }else {
-                stockEntranceBinding.drugsDataLyt.setVisibility(View.VISIBLE);
+                stockEntranceBinding.ibtnDrugs.animate().setDuration(200).rotation(0);
+                Utilities.expand(stockEntranceBinding.drugsDataLyt);
                 switchLayout();
             }
         }
     }
+
 
     private void switchLayout() {
         getRelatedViewModel().setInitialDataVisible(!getRelatedViewModel().isInitialDataVisible());

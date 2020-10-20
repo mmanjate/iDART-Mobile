@@ -1,16 +1,21 @@
 package mz.org.fgh.idartlite.model;
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.TherapeuticRegimenDaoImpl;
 
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.common.Listble;
+import mz.org.fgh.idartlite.dao.TherapeuticRegimenDaoImpl;
+import mz.org.fgh.idartlite.util.Utilities;
+
 @DatabaseTable(tableName = "therapeutic_regimen", daoClass = TherapeuticRegimenDaoImpl.class)
-public class TherapeuticRegimen extends BaseModel {
+public class TherapeuticRegimen extends BaseModel implements Listble {
 
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_REGIMEN_CODE = "regimen_code";
@@ -33,6 +38,11 @@ public class TherapeuticRegimen extends BaseModel {
 		return id;
 	}
 
+	@Override
+	public int getPosition() {
+		return 0;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -49,6 +59,26 @@ public class TherapeuticRegimen extends BaseModel {
 		return description;
 	}
 
+	@Override
+	public int getQuantity() {
+		return 0;
+	}
+
+	@Override
+	public int getDrawable() {
+		return 0;
+	}
+
+	@Override
+	public String getCode() {
+		return regimenCode;
+	}
+
+	@Override
+	public int compareTo(BaseModel baseModel) {
+		return 0;
+	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -62,6 +92,7 @@ public class TherapeuticRegimen extends BaseModel {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		TherapeuticRegimen that = (TherapeuticRegimen) o;
+		if (!Utilities.stringHasValue(regimenCode) && id <= 0) return false;
 		return regimenCode.equals(that.regimenCode) &&
 				description.equals(that.description);
 	}
@@ -75,5 +106,10 @@ public class TherapeuticRegimen extends BaseModel {
 	@Override
 	public String toString() {
 		return description;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		return 0;
 	}
 }

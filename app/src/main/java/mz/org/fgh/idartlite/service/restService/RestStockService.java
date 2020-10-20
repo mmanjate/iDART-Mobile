@@ -82,7 +82,7 @@ public class RestStockService extends BaseService {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.d(TAG, "onErrorResponse: Erro no POST :" + error.getMessage());
+                            Log.d(TAG, "onErrorResponse: Erro no POST :" + generateErrorMsg(error));
                         }
                     });
                 } catch (JSONException e) {

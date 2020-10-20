@@ -1,15 +1,19 @@
 package mz.org.fgh.idartlite.model;
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Objects;
+
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.dao.ClinicDaoImpl;
 import mz.org.fgh.idartlite.util.Utilities;
-
-import java.util.Objects;
 
 @DatabaseTable(tableName = "clinic", daoClass = ClinicDaoImpl.class)
 public class Clinic extends BaseModel implements Listble {
@@ -78,6 +82,11 @@ public class Clinic extends BaseModel implements Listble {
 	@Override
 	public int getQuantity() {
 		return 0;
+	}
+
+	@Override
+	public int getDrawable() {
+		return R.drawable.ic_add_clinic;
 	}
 
 	@Override

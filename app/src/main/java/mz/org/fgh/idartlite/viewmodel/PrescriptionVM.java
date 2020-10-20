@@ -1,16 +1,14 @@
 package mz.org.fgh.idartlite.viewmodel;
 
 import android.app.Application;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.Bindable;
-import androidx.databinding.DataBindingUtil;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +16,15 @@ import java.util.Map;
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.common.DialogListener;
-import mz.org.fgh.idartlite.databinding.PrescriptionCancelDialogBinding;
+import mz.org.fgh.idartlite.common.Listble;
+import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
@@ -62,6 +63,14 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     private boolean urgentPrescription;
     private boolean newPrescriptionMustBeEspetial;
     private Prescription oldPrescription;
+    private List<ValorSimples> durations;
+
+    private Drug selectedDrug;
+    private List<ValorSimples> motives;
+
+    private List<Listble> selectedDrugs;
+
+
 
     public PrescriptionVM(@NonNull Application application) {
         super(application);
@@ -73,6 +82,14 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         urgentPrescription = false;
 
         this.seeOnlyOfRegime = true;
+
+        durations = new ArrayList<>();
+        motives = new ArrayList<>();
+
+        loadPrescriptionDuration();
+        loadUrgenceMotives();
+
+        initialDataVisible = true;
     }
 
     private void initNewPrescription() {
@@ -80,10 +97,27 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
 
     }
 
+    private void loadPrescriptionDuration(){
+        durations.add(new ValorSimples());
+        durations.add(ValorSimples.fastCreate(2, Prescription.DURATION_TWO_WEEKS));
+        durations.add(ValorSimples.fastCreate(4, Prescription.DURATION_ONE_MONTH));
+        durations.add(ValorSimples.fastCreate(8, Prescription.DURATION_TWO_MONTHS));
+        durations.add(ValorSimples.fastCreate(12, Prescription.DURATION_THREE_MONTHS));
+        durations.add(ValorSimples.fastCreate(16, Prescription.DURATION_FOUR_MONTHS));
+        durations.add(ValorSimples.fastCreate(20, Prescription.DURATION_FIVE_MONTHS));
+        durations.add(ValorSimples.fastCreate(24, Prescription.DURATION_SIX_MONTHS));
+    }
+
+    private void loadUrgenceMotives(){
+        motives.add(new ValorSimples());
+        motives.add(ValorSimples.fastCreate("Perda de Medicamento"));
+        motives.add(ValorSimples.fastCreate("Ausencia do Clinico"));
+        motives.add(ValorSimples.fastCreate("Laboratorio"));
+        motives.add(ValorSimples.fastCreate("Rotura de Stock"));
+        motives.add(ValorSimples.fastCreate("Outro"));
+    }
+
     public void requestForNewRecord(){
-
-
-
         try {
 
             if (getRelatedListingFragment().getMyActivity().getPatient().hasEndEpisode()) {
@@ -112,7 +146,6 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         } catch(SQLException e){
             e.printStackTrace();
         }
-
     }
 
     private void initServices(@NonNull Application application) {
@@ -202,15 +235,29 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         ((PrescriptionActivity)getRelatedActivity()).changeMotiveSpinnerStatus(urgentPrescription);
     }
 
+    private PrescribedDrug initNewPrescribedDrug(Drug drug) {
+        return  new PrescribedDrug(drug, getPrescription());
+    }
+
     private void doSave(){
-        ((PrescriptionActivity)getRelatedActivity()).loadFormData();
+        if (getCurrentStep().isApplicationStepSave()) getPrescription().generateNextSeq();
+
+        List<PrescribedDrug> prescribedDrugs = new ArrayList<>();
+
+        for (Listble drug : selectedDrugs){
+            prescribedDrugs.add(initNewPrescribedDrug((Drug) drug));
+        }
+
+        getPrescription().setPrescribedDrugs(prescribedDrugs);
+
+        if (getCurrentStep().isApplicationStepSave()) getPrescription().setUuid(Utilities.getNewUUID().toString());
+
+        getPrescription().setSyncStatus(BaseModel.SYNC_SATUS_READY);
 
         if (newPrescriptionMustBeEspetial && !this.prescription.isUrgent()){
             Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.prescription_must_be_urgent)).show();
             return;
         }
-        
-        
 
         String validationErrors = this.prescription.validate(getRelatedActivity());
         if (!Utilities.stringHasValue(validationErrors)) {
@@ -284,7 +331,26 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
     public void changeDrugsListingMode(){
         this.seeOnlyOfRegime = !this.seeOnlyOfRegime;
 
-        ((PrescriptionActivity)getRelatedActivity()).reloadDrugsSpinnerByRegime(this.prescription.getTherapeuticRegimen());
+        loadDrugs();
+    }
+
+    public void loadDrugs() {
+        reloadDrugsSpinnerByRegime(this.prescription.getTherapeuticRegimen());
+    }
+
+    private void reloadDrugsSpinnerByRegime(TherapeuticRegimen regimen) {
+        List<Drug> drugs = new ArrayList<>();
+        try {
+            if (regimen != null && isSeeOnlyOfRegime()) {
+                drugs.addAll(getDrugsWithoutRectParanthesis(getAllDrugsOfTheraputicRegimen(regimen)));
+            }
+            else {
+                drugs.addAll(getDrugsWithoutRectParanthesis(getAllDrugs()));
+            }
+            ((PrescriptionActivity)getRelatedActivity()).populateDrugs(drugs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public String prescriptionCanBeEdited() throws SQLException {
@@ -338,6 +404,7 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         params.put("clinic", getCurrentClinic());
         params.put("requestedFragment", PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION);
         getRelatedActivity().nextActivity(PatientActivity.class,params);
+        getRelatedActivity().finish();
     }
 
     public void checkIfMustBeUrgentPrescription() throws SQLException {
@@ -348,5 +415,107 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         if (!oldPrescription.isClosed()) {
             newPrescriptionMustBeEspetial = true;
         }
+    }
+
+    public void setPrescriptionSupply(Listble supply){
+        getPrescription().setSupply(supply.getId());
+        notifyPropertyChanged(BR.prescriptionSupply);
+    }
+
+    @Bindable
+    public Listble getPrescriptionSupply(){
+        return Utilities.findOnArray(this.durations, ValorSimples.fastCreate(getPrescription().getSupply()));
+    }
+
+    @Bindable
+    public Listble getSelectedDrug() {
+        return selectedDrug;
+    }
+
+    public void setUrgentNotes(Listble supply){
+        getPrescription().setUrgentNotes(supply.getDescription());
+        notifyPropertyChanged(BR.urgentNotes);
+    }
+
+    @Bindable
+    public Listble getUrgentNotes(){
+        return Utilities.findOnArray(this.motives, ValorSimples.fastCreate(getPrescription().getUrgentNotes()));
+    }
+
+    public void setSelectedDrug(Listble selectedDrug) {
+        this.selectedDrug = (Drug) selectedDrug;
+        notifyPropertyChanged(BR.selectedDrug);
+    }
+
+    @Bindable
+    public Listble getPrescriptionDispenseType(){
+        return this.prescription.getDispenseType();
+    }
+
+    public void setPrescriptionDispenseType(Listble precriptionType){
+        this.prescription.setDispenseType((DispenseType) precriptionType);
+        notifyPropertyChanged(BR.prescriptionDispenseType);
+    }
+
+    @Bindable
+    public Listble getPrescriptionRegimen(){
+        return this.prescription.getTherapeuticRegimen();
+    }
+
+    public void setPrescriptionRegimen(Listble regimen){
+        this.prescription.setTherapeuticRegimen((TherapeuticRegimen) regimen);
+        notifyPropertyChanged(BR.prescriptionRegimen);
+    }
+
+    @Bindable
+    public Listble getPrescriptionLine(){
+        return this.prescription.getTherapeuticLine();
+    }
+
+    public void setPrescriptionLine(Listble line){
+        this.prescription.setTherapeuticLine((TherapeuticLine) line);
+        notifyPropertyChanged(BR.prescriptionLine);
+    }
+
+    public void addSelectedDrug(){
+        if (selectedDrugs == null) selectedDrugs = new ArrayList<>();
+
+            if (!selectedDrugs.contains(selectedDrug)) {
+                selectedDrug.setListPosition(selectedDrugs.size()+1);
+                selectedDrugs.add(selectedDrug);
+                Collections.sort(selectedDrugs);
+
+                ((PrescriptionActivity) getRelatedActivity()).displaySelectedDrugs();
+
+                setSelectedDrug(null);
+
+                notifyPropertyChanged(BR.selectedDrug);
+            }else {
+                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.drug_data_duplication_msg)).show();
+            }
+    }
+
+    public List<Listble> getSelectedDrugs() {
+        return selectedDrugs;
+    }
+
+    public PrescriptionService getPrescriptionService() {
+        return prescriptionService;
+    }
+
+    public List<ValorSimples> getDurations() {
+        return durations;
+    }
+
+    public List<ValorSimples> getMotives() {
+        return motives;
+    }
+
+    public void setSelectedDrugs(List<Listble> drugs) {
+        this.selectedDrugs = drugs;
+    }
+
+    public void changeInitialDataViewStatus(View view){
+        ((PrescriptionActivity) getRelatedActivity()).changeFormSectionVisibility(view);
     }
 }

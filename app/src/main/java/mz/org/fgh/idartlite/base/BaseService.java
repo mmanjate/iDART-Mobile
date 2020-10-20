@@ -2,6 +2,14 @@ package mz.org.fgh.idartlite.base;
 
 import android.app.Application;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import mz.org.fgh.idartlite.dao.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.ExecutorThreadProvider;
+import mz.org.fgh.idartlite.util.Utilities;
 
 public abstract class BaseService {
 
@@ -91,5 +100,23 @@ public abstract class BaseService {
         return data;
 
     }
+
+    protected static String generateErrorMsg(VolleyError error){
+        if (error instanceof NetworkError) {
+            return "A network error as occured ";
+        } else if (error instanceof ServerError) {
+            return "A server error as occured ";
+        } else if (error instanceof AuthFailureError) {
+            return "An authentication error as occured ";
+        } else if (error instanceof ParseError) {
+            return "A parse error as occured ";
+        } else if (error instanceof NoConnectionError) {
+            return "No connection ";
+        } else if (error instanceof TimeoutError) {
+            return "Connection timeout";
+        }
+        return Utilities.stringHasValue(error.getMessage()) ? error.getMessage() : "Erro desconhecido";
+    }
+
 
 }

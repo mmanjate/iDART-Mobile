@@ -1,16 +1,21 @@
 package mz.org.fgh.idartlite.model;
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.TherapeuticLineDaoImpl;
 
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.common.Listble;
+import mz.org.fgh.idartlite.dao.TherapeuticLineDaoImpl;
+import mz.org.fgh.idartlite.util.Utilities;
+
 @DatabaseTable(tableName = "therapeutic_line", daoClass = TherapeuticLineDaoImpl.class)
-public class TherapeuticLine extends BaseModel {
+public class TherapeuticLine extends BaseModel implements Listble {
 
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_CODE = "code";
@@ -49,6 +54,11 @@ public class TherapeuticLine extends BaseModel {
 		return description;
 	}
 
+	@Override
+	public int getDrawable() {
+		return 0;
+	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -62,6 +72,7 @@ public class TherapeuticLine extends BaseModel {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		TherapeuticLine that = (TherapeuticLine) o;
+		if (!Utilities.stringHasValue(code) && id <= 0) return false;
 		return code.equals(that.code) &&
 				description.equals(that.description);
 	}
@@ -75,5 +86,10 @@ public class TherapeuticLine extends BaseModel {
 	@Override
 	public String toString() {
 		return description;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		return 0;
 	}
 }

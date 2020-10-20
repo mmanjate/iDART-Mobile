@@ -69,17 +69,35 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/initial_data"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/dimen_4dp"
+                            android:layout_height="match_parent"
                             android:background="@drawable/shape_normal"
-                            android:paddingLeft="@dimen/dimen_4dp"
-                            android:text="@string/label_entrada_stock"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            app:drawableEndCompat="@drawable/ic_expand_less" />
+                            android:layout_margin="@dimen/dimen_4dp"
+                            android:padding="3dp"
+                            android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="8"
+                                android:text="@string/label_entrada_stock"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:gravity="center_vertical|left"
+                                android:paddingLeft="@dimen/dimen_10dp"/>
+
+                            <ImageButton
+                                android:id="@+id/ibtn_initial_data"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/background_layout"
+                                android:src="@drawable/ic_row_dados_pessoais"
+                                android:layout_marginRight="@dimen/dimen_2dp"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/initial_data_lyt"
@@ -121,17 +139,37 @@
                             android:paddingLeft="@dimen/dimen_4dp" />
 
                     </LinearLayout>
-                        <TextView
+
+                        <LinearLayout
                             android:id="@+id/txv_drugs"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_entrada_stock_medicamentos"
+                            android:layout_height="match_parent"
                             android:background="@drawable/shape_normal"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:paddingLeft="@dimen/dimen_4dp"
-                            app:drawableEndCompat="@drawable/ic_expand_less"
-                            android:layout_margin="@dimen/dimen_4dp"/>
+                            android:layout_margin="@dimen/dimen_4dp"
+                            android:padding="3dp"
+                            android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="8"
+                                android:text="@string/label_entrada_stock_medicamentos"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:gravity="center_vertical|left"
+                                android:paddingLeft="@dimen/dimen_10dp"/>
+
+                            <ImageButton
+                                android:id="@+id/ibtn_drugs"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/background_layout"
+                                android:src="@drawable/ic_row_dados_pessoais"
+                                android:layout_marginRight="@dimen/dimen_2dp"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/drugs_data_lyt"
                         android:layout_width="match_parent"
@@ -269,6 +307,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_4dp"
+                            android:background="@drawable/listble_shape"
                             android:scrollbars="vertical"/>
 
                         <View

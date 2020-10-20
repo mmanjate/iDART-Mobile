@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.NotificationCompat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -305,6 +308,63 @@ public class Utilities {
         return list != null && !list.isEmpty() && list.size() > 0;
     }
 
+    public static <T extends BaseModel> T findOnArray(List<T> list, T toFind){
+        for (T o : list) {
+            if (o.equals(toFind)) return o;
+        }
+        return null;
+    }
+
+    public static void expand(View view) {
+        Animation animation = expandAction(view);
+        view.startAnimation(animation);
+    }
+
+    private static Animation expandAction(final View view) {
+
+        view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final int actualheight = view.getMeasuredHeight();
+
+        view.getLayoutParams().height = 0;
+        view.setVisibility(View.VISIBLE);
+
+        Animation animation = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                view.getLayoutParams().height = interpolatedTime == 1 ? ViewGroup.LayoutParams.WRAP_CONTENT : (int) (actualheight * interpolatedTime);
+                view.requestLayout();
+            }
+        };
+
+        animation.setDuration((long) (actualheight / view.getContext().getResources().getDisplayMetrics().density));
+        view.startAnimation(animation);
+
+        return animation;
+
+
+    }
+
+    public static void collapse(final View view) {
+
+        final int actualHeight = view.getMeasuredHeight();
+
+        Animation animation = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+
+                if (interpolatedTime == 1) {
+                    view.setVisibility(View.GONE);
+                } else {
+                    view.getLayoutParams().height = actualHeight - (int) (actualHeight * interpolatedTime);
+                    view.requestLayout();
+
+                }
+            }
+        };
+
+        animation.setDuration((long) (actualHeight/ view.getContext().getResources().getDisplayMetrics().density));
+        view.startAnimation(animation);
+    }
     /*public static NotificationCompat.Builder showNotification(String title, String contntText, Context context, String channelId){
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
