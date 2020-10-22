@@ -144,6 +144,7 @@ public class Prescription extends BaseModel {
 		return therapeuticRegimen;
 	}
 
+
 	public void setTherapeuticRegimen(TherapeuticRegimen therapeuticRegimen) {
 		this.therapeuticRegimen = therapeuticRegimen;
 	}

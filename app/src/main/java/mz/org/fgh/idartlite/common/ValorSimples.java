@@ -6,9 +6,10 @@ import androidx.annotation.RequiresApi;
 
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class ValorSimples {
+public class ValorSimples extends BaseModel implements Listble{
 
     private int id;
 
@@ -36,13 +37,7 @@ public class ValorSimples {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getDescription() {
-        return description;
-    }
 
     public void setDescription(String description) {
         this.description = description;
@@ -92,5 +87,45 @@ public class ValorSimples {
     @Override
     public String toString() {
         return description;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return compareTo((BaseModel) o);
+    }
+
+    @Override
+    public int getPosition() {
+        return listPosition;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setListPosition(int listPosition) {
+        super.setListPosition(listPosition);
+    }
+
+    @Override
+    public int getQuantity() {
+        return 0;
+    }
+
+    @Override
+    public int getDrawable() {
+        return 0;
+    }
+
+    @Override
+    public int compareTo(BaseModel baseModel) {
+        if (this.getPosition() == 0 || ((ValorSimples) baseModel).getPosition() == 0) return 0;
+
+        return this.getPosition() - ((ValorSimples) baseModel).getPosition();
     }
 }

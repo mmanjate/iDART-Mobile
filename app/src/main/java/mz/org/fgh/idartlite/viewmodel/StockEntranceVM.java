@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.viewmodel;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
@@ -10,7 +11,6 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
@@ -108,5 +108,9 @@ public class StockEntranceVM extends SearchVM<Stock> {
     @Override
     public void displaySearchResults() {
         getEntranceFragment().displaySearchResults();
+    }
+
+    public void changeInitialDataViewStatus(View view){
+        ((StockEntranceActivity) getRelatedActivity()).changeFormSectionVisibility(view);
     }
 }

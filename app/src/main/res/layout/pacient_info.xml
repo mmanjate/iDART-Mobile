@@ -149,7 +149,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.03"
                     android:layout_marginBottom="@dimen/dimen_8dp"
-                    android:background="@color/white"/>
+                    android:background="@drawable/shape_normal_white"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -177,7 +177,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.03"
                     android:layout_marginBottom="@dimen/dimen_8dp"
-                    android:background="@color/white"/>
+                    android:background="@drawable/shape_normal_white"/>
 
                 <LinearLayout
                     android:layout_width="0dp"

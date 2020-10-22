@@ -2,15 +2,18 @@ package mz.org.fgh.idartlite.model;
 
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.dao.StockDaoImpl;
 
 import java.util.Date;
 import java.util.Objects;
+
+import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.common.Listble;
+import mz.org.fgh.idartlite.dao.StockDaoImpl;
 
 @DatabaseTable(tableName = "Stock", daoClass = StockDaoImpl.class)
 public class Stock extends BaseModel implements Listble {
@@ -260,5 +263,15 @@ public class Stock extends BaseModel implements Listble {
     @Override
     public String getFnmcode() {
         return this.drug.getFnmcode();
+    }
+
+    @Override
+    public int getDrawable() {
+        return 0;
+    }
+
+    @Override
+    public String getCode() {
+        return uuid;
     }
 }

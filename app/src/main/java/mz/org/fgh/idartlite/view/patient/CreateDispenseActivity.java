@@ -22,9 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
@@ -228,21 +226,6 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
                     }, mYear, mMonth, mDay);
                     datePickerDialog.show();
                 }
-            }
-        });
-
-        activityCreateDispenseBinding.initialData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-
-            }
-        });
-        activityCreateDispenseBinding.txvDrugs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-
             }
         });
 
@@ -478,21 +461,25 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
         this.patient = patient;
     }
 
-    private void changeVisibilityToInitialData(View view) {
+    public void changeFormSectionVisibility(View view) {
         if (view.equals(activityCreateDispenseBinding.initialData)) {
-            if (activityCreateDispenseBinding.initialDataLyt.getVisibility() == View.VISIBLE) {
-                activityCreateDispenseBinding.initialDataLyt.setVisibility(View.GONE);
+            if (activityCreateDispenseBinding.initialDataLyt.getVisibility() == View.VISIBLE){
                 switchLayout();
-            } else {
-                activityCreateDispenseBinding.initialDataLyt.setVisibility(View.VISIBLE);
+                activityCreateDispenseBinding.ibtnInitialData.animate().setDuration(200).rotation(180);
+                Utilities.collapse(activityCreateDispenseBinding.initialDataLyt);
+            }else {
                 switchLayout();
+                activityCreateDispenseBinding.ibtnInitialData.animate().setDuration(200).rotation(0);
+                Utilities.expand(activityCreateDispenseBinding.initialDataLyt);
             }
-        } else if (view.equals(activityCreateDispenseBinding.txvDrugs)) {
-            if (activityCreateDispenseBinding.drugsDataLyt.getVisibility() == View.VISIBLE) {
-                activityCreateDispenseBinding.drugsDataLyt.setVisibility(View.GONE);
+        }else if (view.equals(activityCreateDispenseBinding.txvDrugs)){
+            if (activityCreateDispenseBinding.drugsDataLyt.getVisibility() == View.VISIBLE){
                 switchLayout();
-            } else {
-                activityCreateDispenseBinding.drugsDataLyt.setVisibility(View.VISIBLE);
+                activityCreateDispenseBinding.ibtnDrugs.animate().setDuration(200).rotation(180);
+                Utilities.collapse(activityCreateDispenseBinding.drugsDataLyt);
+            }else {
+                activityCreateDispenseBinding.ibtnDrugs.animate().setDuration(200).rotation(0);
+                Utilities.expand(activityCreateDispenseBinding.drugsDataLyt);
                 switchLayout();
             }
         }

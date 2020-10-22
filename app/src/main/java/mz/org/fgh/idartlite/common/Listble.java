@@ -6,13 +6,17 @@ public interface Listble<T extends BaseModel> extends Comparable<T>{
 
     int getId();
 
-    int getPosition();
+    default int getPosition() {
+        return 0;
+    }
 
     String getDescription();
 
     void setListPosition(int listPosition);
 
-    int getQuantity();
+    default int getQuantity() {
+        return 0;
+    }
 
     default String getLote() {
         return null;
@@ -22,6 +26,12 @@ public interface Listble<T extends BaseModel> extends Comparable<T>{
         return null;
     }
 
+    int getDrawable();
+
+    String getCode();
+
     @Override
-    int compareTo(T t);
+    default int compareTo(T t) {
+        return 0;
+    }
 }

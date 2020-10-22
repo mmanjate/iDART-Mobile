@@ -7,20 +7,17 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.base.GenericFragment;
 import mz.org.fgh.idartlite.databinding.PacinteDetailsFragmentBinding;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.PatientDetailsVM;
 
 public class PatientDetailsFragment extends GenericFragment {
-    Patient patient;
-
     PacinteDetailsFragmentBinding pacinteDetailsFragmentBinding;
 
     public PatientDetailsFragment() {
@@ -30,63 +27,51 @@ public class PatientDetailsFragment extends GenericFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         pacinteDetailsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.pacinte_details_fragment, container,false);
-        patient = getSelectedPatient();
-        pacinteDetailsFragmentBinding.setPatient(patient);
-        enventInitialization();
+
         return pacinteDetailsFragmentBinding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getRelatedViewModel().setPatient(getSelectedPatient());
+        pacinteDetailsFragmentBinding.setViewModel(getRelatedViewModel());
+        getRelatedViewModel().setPatientDetailsFragment(this);
     }
 
-    public void enventInitialization() {
-        pacinteDetailsFragmentBinding.initialData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-            }
-        });
 
-        pacinteDetailsFragmentBinding.contacto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-            }
-        });
-
-        pacinteDetailsFragmentBinding.others.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeVisibilityToInitialData(view);
-            }
-        });
-    }
-
-    private void changeVisibilityToInitialData(View view) {
+    public void changeVisibilityToInitialData(View view) {
         if (view.equals(pacinteDetailsFragmentBinding.initialData)){
             if (pacinteDetailsFragmentBinding.personDataLyt.getVisibility() == View.VISIBLE){
-                pacinteDetailsFragmentBinding.personDataLyt.setVisibility(View.GONE);
                 switchLayout();
+                pacinteDetailsFragmentBinding.ibtnInitialData.animate().setDuration(200).rotation(180);
+                Utilities.collapse(pacinteDetailsFragmentBinding.personDataLyt);
             }else {
-                pacinteDetailsFragmentBinding.personDataLyt.setVisibility(View.VISIBLE);
                 switchLayout();
+                pacinteDetailsFragmentBinding.ibtnInitialData.animate().setDuration(200).rotation(0);
+                Utilities.expand(pacinteDetailsFragmentBinding.personDataLyt);
             }
+
         }else if (view.equals(pacinteDetailsFragmentBinding.contacto)){
             if (pacinteDetailsFragmentBinding.contactDataLyt.getVisibility() == View.VISIBLE){
-                pacinteDetailsFragmentBinding.contactDataLyt.setVisibility(View.GONE);
                 switchLayout();
+                pacinteDetailsFragmentBinding.ibtnContacto.animate().setDuration(200).rotation(180);
+                Utilities.collapse(pacinteDetailsFragmentBinding.contactDataLyt);
             }else {
-                pacinteDetailsFragmentBinding.contactDataLyt.setVisibility(View.VISIBLE);
                 switchLayout();
+                pacinteDetailsFragmentBinding.ibtnContacto.animate().setDuration(200).rotation(0);
+                Utilities.expand(pacinteDetailsFragmentBinding.contactDataLyt);
             }
+
         }else if (view.equals(pacinteDetailsFragmentBinding.others)){
             if (pacinteDetailsFragmentBinding.othersDataLyt.getVisibility() == View.VISIBLE){
-                pacinteDetailsFragmentBinding.othersDataLyt.setVisibility(View.GONE);
                 switchLayout();
+                pacinteDetailsFragmentBinding.ibtnOthers.animate().setDuration(200).rotation(180);
+                Utilities.collapse(pacinteDetailsFragmentBinding.othersDataLyt);
             }else {
-                pacinteDetailsFragmentBinding.othersDataLyt.setVisibility(View.VISIBLE);
                 switchLayout();
+                pacinteDetailsFragmentBinding.ibtnOthers.animate().setDuration(200).rotation(0);
+                Utilities.expand(pacinteDetailsFragmentBinding.othersDataLyt);
             }
         }
     }

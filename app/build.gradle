@@ -99,4 +99,6 @@ dependencies {
     def work_version = "2.4.0"
     implementation "androidx.work:work-runtime:$work_version"
 
+    implementation 'com.highsoft.highcharts:highcharts:6.1r'
+
 }

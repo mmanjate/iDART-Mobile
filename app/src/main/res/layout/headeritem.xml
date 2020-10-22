@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable name="listble" type="mz.org.fgh.idartlite.common.Listble" />
@@ -47,7 +44,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.030"
-                    android:background="@color/white" />
+                    android:background="@color/separator" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -60,7 +57,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.030"
-                    android:background="@color/white"
+                    android:background="@color/separator"
                     android:visibility="@{Utilities.stringHasValue(listble.lote) ? View.VISIBLE : View.GONE}" />
 
                 <TextView
@@ -75,7 +72,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.030"
-                    android:background="@color/white"
+                    android:background="@color/separator"
                     android:visibility="@{listble.quantity > 0 ? View.VISIBLE : View.GONE}" />
 
                 <TextView
@@ -90,7 +87,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.030"
-                    android:background="@color/white"
+                    android:background="@color/separator"
                     android:visibility="@{!viewListEditButton ? View.GONE : View.VISIBLE}" />
 
                 <TextView
@@ -105,7 +102,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.030"
-                    android:background="@color/white"
+                    android:background="@color/separator"
                     android:visibility="@{ !viewListRemoveButton ? View.GONE : View.VISIBLE}" />
 
                 <TextView

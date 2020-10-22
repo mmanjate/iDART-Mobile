@@ -19,7 +19,6 @@ import java.util.List;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
-import mz.org.fgh.idartlite.util.Utilities;
 
 public class ListableSpinnerAdapter extends ArrayAdapter {
 
@@ -55,14 +54,8 @@ public class ListableSpinnerAdapter extends ArrayAdapter {
         TextView label = convertView.findViewById(R.id.label);
         ImageView icon = convertView.findViewById(R.id.item_icon);
 
-        if (dataList.get(position) instanceof Clinic){
-            if (Utilities.stringHasValue(((Listble)dataList.get(position)).getDescription())) {
-                icon.setImageResource(R.drawable.ic_add_clinic);
-            }
-        }else if (dataList.get(position) instanceof Drug) {
-            icon.setImageResource(R.mipmap.ic_drug);
-        }
         label.setText(((Listble)dataList.get(position)).getDescription());
+        icon.setImageResource(((Listble)dataList.get(position)).getDrawable());
         return convertView;
     }
 

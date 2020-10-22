@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.viewmodel;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
@@ -24,6 +25,7 @@ import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.service.DispenseDrugService;
 import mz.org.fgh.idartlite.service.DispenseService;
 import mz.org.fgh.idartlite.service.DrugService;
@@ -127,7 +129,7 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
     }
 
     public List<Drug> getAllDrugsFromPrescritionRegimen() throws SQLException {
-        return drugService.getAllOfTherapeuticRegimen(this.dispense.getPrescription().getTherapeuticRegimen());
+        return drugService.getAllOfTherapeuticRegimen((TherapeuticRegimen) this.dispense.getPrescription().getTherapeuticRegimen());
     }
 
     public List<Drug> getDrugsWithoutRectParanthesis(List<Drug> drugs) throws SQLException {
@@ -327,5 +329,9 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
                 + dispensedDrugsList + "\n" + gostariaDeRemoverAdispensaAnterior;
 
         Utilities.displayConfirmationDialog(getRelatedActivity(), editWillRemoveSelectedDispense, getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), DispenseVM.this).show();
+    }
+
+    public void changeDataViewStatus(View view){
+        ((CreateDispenseActivity) getRelatedActivity()).changeFormSectionVisibility(view);
     }
 }
