@@ -140,10 +140,11 @@ public class Drug extends BaseModel implements Listble {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Drug drug = (Drug) o;
+        if (id == drug.id && fnmcode.equals(drug.fnmcode)) return true;
+
         return id == drug.id &&
                 packSize == drug.packSize &&
                 fnmcode.equals(drug.fnmcode) &&
-                description.equals(drug.description) &&
                 instruction.equals(drug.instruction) &&
                 form.getId() == drug.form.getId() &&
                 diseaseType.getId() == drug.diseaseType.getId();

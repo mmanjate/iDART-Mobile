@@ -76,7 +76,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
         stockEntranceBinding.ibtnDrugs.animate().setDuration(200).rotation(180);
 
         stockEntranceBinding.setViewModel(getRelatedViewModel());
-        
+
         getRelatedViewModel().setInitialDataVisible(true);
         getRelatedViewModel().setDrugDataVisible(false);
 

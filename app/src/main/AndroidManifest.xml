@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+
     <application
         android:name=".base.IdartLiteApplication"
         android:allowBackup="true"
@@ -16,7 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.AboutActivity"></activity>
+
+        <provider android:authorities="mz.org.fgh.idartlite.FileProvider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+        <activity android:name=".view.reports.ReportActivity">
+
+        </activity>
+        <activity android:name=".view.AboutActivity" />
         <activity
             android:name=".view.SecondSplashActivity"
             android:noHistory="true" />
