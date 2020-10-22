@@ -62,17 +62,35 @@
             android:padding="@dimen/dimen_4dp"
             >
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/initial_data"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text='@{!viewModel.currentStep.applicationStepDisplay ? "Adicionar Aviamento - Dados Iniciais" : "Dados Iniciais"}'
+                android:layout_height="match_parent"
                 android:background="@drawable/shape_normal"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:paddingLeft="@dimen/dimen_10dp"
-                app:drawableEndCompat="@drawable/ic_row_dados_pessoais"
-                android:layout_margin="@dimen/dimen_4dp"/>
+                android:layout_margin="@dimen/dimen_4dp"
+                android:padding="3dp"
+                android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text='@{!viewModel.currentStep.applicationStepDisplay ? "Adicionar Aviamento - Dados Iniciais" : "Dados Iniciais"}'
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="@dimen/dimen_10dp"/>
+
+                <ImageButton
+                    android:id="@+id/ibtn_initial_data"
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/background_layout"
+                    android:src="@drawable/ic_row_dados_pessoais"
+                    android:layout_marginRight="@dimen/dimen_2dp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
 
         <LinearLayout
             android:id="@+id/initial_data_lyt"
@@ -128,17 +146,36 @@
 
         </LinearLayout>
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/txv_drugs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text= '@{!viewModel.currentStep.applicationStepDisplay ? "Adicionar Aviamento - Medicamentos" : "Medicamentos"}'
+                android:layout_height="match_parent"
                 android:background="@drawable/shape_normal"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:paddingLeft="@dimen/dimen_10dp"
-                app:drawableEndCompat="@drawable/ic_expand_less"
-                android:layout_margin="@dimen/dimen_4dp"/>
+                android:layout_margin="@dimen/dimen_4dp"
+                android:padding="3dp"
+                android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:text= '@{!viewModel.currentStep.applicationStepDisplay ? "Adicionar Aviamento - Medicamentos" : "Medicamentos"}'
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="@dimen/dimen_10dp"/>
+
+                <ImageButton
+                    android:id="@+id/ibtn_drugs"
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/background_layout"
+                    android:src="@drawable/ic_row_dados_pessoais"
+                    android:layout_marginRight="@dimen/dimen_2dp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/drugs_data_lyt"
@@ -188,6 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_4dp"
+                android:background="@drawable/listble_shape"
                 android:scrollbars="vertical"/>
 
             <RelativeLayout
