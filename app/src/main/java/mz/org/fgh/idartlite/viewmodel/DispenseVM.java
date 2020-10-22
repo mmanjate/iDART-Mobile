@@ -161,38 +161,39 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
 
         String validationErrors = this.patientHasEndingEpisode();
 
-        String secondValidationErrors = this.dispenseOnDateBeforePickupDate();
 
-        if (!Utilities.stringHasValue(secondValidationErrors)) {
+        if (!Utilities.stringHasValue(validationErrors)) {
+
+            validationErrors = ((CreateDispenseActivity) getRelatedActivity()).validateDispenseDurationByPrescription();
 
             if (!Utilities.stringHasValue(validationErrors)) {
 
-                validationErrors = ((CreateDispenseActivity) getRelatedActivity()).validateDispenseDurationByPrescription();
+                validationErrors = ((CreateDispenseActivity) getRelatedActivity()).validateStockForSelectedDrugs();
 
                 if (!Utilities.stringHasValue(validationErrors)) {
 
-                    validationErrors = ((CreateDispenseActivity) getRelatedActivity()).validateStockForSelectedDrugs();
+                    validationErrors = this.dispense.validate();
 
                     if (!Utilities.stringHasValue(validationErrors)) {
+                        try {
+                            if (dispense.getId() > 0) {
+                                this.editDispenseAndRemovePrior();
+                            } else {
 
-                        validationErrors = this.dispense.validate();
+                                String secondValidationErrors = this.dispenseOnDateBeforePickupDate();
 
-                        if (!Utilities.stringHasValue(validationErrors)) {
-                            try {
-                                if (dispense.getId() > 0) {
-                                    this.editDispenseAndRemovePrior();
-                                } else {
+                                if (!Utilities.stringHasValue(secondValidationErrors)) {
                                     String patientNid = this.dispense.getPrescription().getPatient().getNid();
                                     this.dispenseService.saveOrUpdateDispense(dispense);
                                     Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+                                } else {
+                                    Utilities.displayAlertDialog(getRelatedActivity(), secondValidationErrors).show();
                                 }
-
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg) + e.getLocalizedMessage()).show();
                             }
-                        } else {
-                            Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg) + e.getLocalizedMessage()).show();
                         }
                     } else {
                         Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
@@ -204,8 +205,9 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
                 Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
             }
         } else {
-            Utilities.displayAlertDialog(getRelatedActivity(), secondValidationErrors).show();
+            Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
         }
+
     }
 
     public List<DispensedDrug> findDispensedDrugsByDispenseId(int id) throws SQLException {
