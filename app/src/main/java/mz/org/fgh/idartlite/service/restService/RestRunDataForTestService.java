@@ -9,10 +9,14 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.DispenseService;
+import mz.org.fgh.idartlite.service.EpisodeService;
+import mz.org.fgh.idartlite.service.PatientService;
 import mz.org.fgh.idartlite.service.StockService;
 
 public class RestRunDataForTestService extends BaseService {
@@ -22,8 +26,12 @@ public class RestRunDataForTestService extends BaseService {
         DispenseService dispenseService = new DispenseService(application, currentUser);
         StockService stockService = new StockService(application, currentUser);
         ClinicService clinicService = new ClinicService(application, currentUser);
+        PatientService patientService = new PatientService(application, currentUser);
+        EpisodeService episodeService = new EpisodeService(application, currentUser);
         List<Stock> stockList;
         List<Dispense> dispenseList;
+        List<Patient> patientList;
+        Episode episode;
         RestPharmacyTypeService.restGetAllPharmacyType();
         RestFormService.restGetAllForms();
         RestDrugService.restGetAllDrugs();
@@ -75,5 +83,20 @@ public class RestRunDataForTestService extends BaseService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        try {
+            patientList = patientService.getALLPatient();
+            if (patientList != null)
+                if (patientList.size() > 0) {
+                    for (Patient patient : patientList) {
+                        episode = episodeService.findEpisodeWithStopReasonByPatient(patient);
+                        if (episode == null)
+                            RestDispenseService.restGetLastDispense(patient);
+                    }
+                }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -32,6 +32,7 @@ public class SecondSplashActivity extends BaseActivity implements RestResponseLi
         executeWorkerScheduler.initPatchStockDataTaskWork();
         executeWorkerScheduler.initPostPatientDataTaskWork();
         executeWorkerScheduler.initPostStockDataTaskWork();
+        executeWorkerScheduler.initPatientDispenseTaskWork();
 
         new Thread(new Runnable() {
             public void run() {
