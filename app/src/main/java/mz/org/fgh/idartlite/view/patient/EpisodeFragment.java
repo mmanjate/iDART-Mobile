@@ -220,7 +220,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
     @Override
     public void remove(int position) {
 
-        if(episodeList.get(position).getSyncStatus().equals("R")){
+        if(episodeList.get(position).getSyncStatus().equals("S")){
         episodeList.remove(episodeList.get(position));
 
         for (int i = 0; i < episodeList.size(); i++){
