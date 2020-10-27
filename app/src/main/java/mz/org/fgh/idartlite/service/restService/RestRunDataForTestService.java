@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.service.restService;
 
 import android.app.Application;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,10 +10,12 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.ClinicService;
 import mz.org.fgh.idartlite.service.DispenseService;
+import mz.org.fgh.idartlite.service.EpisodeService;
 import mz.org.fgh.idartlite.service.StockService;
 
 public class RestRunDataForTestService extends BaseService {
@@ -21,6 +24,8 @@ public class RestRunDataForTestService extends BaseService {
 
         DispenseService dispenseService = new DispenseService(application, currentUser);
         StockService stockService = new StockService(application, currentUser);
+        EpisodeService episodeService = new EpisodeService(application, currentUser);
+
         ClinicService clinicService = new ClinicService(application, currentUser);
         List<Stock> stockList;
         List<Dispense> dispenseList;
@@ -32,7 +37,7 @@ public class RestRunDataForTestService extends BaseService {
         RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
         RestTherapeuticLineService.restGetAllTherapeuticLine();
         RestPatientService.restGetAllPatient(null);
-
+        RestEpisodeService.restGetAllEpisodes(null);
         try {
             RestStockService.restGetStock(clinicService.getCLinic().get(0));
         } catch (SQLException e) {
@@ -72,6 +77,17 @@ public class RestRunDataForTestService extends BaseService {
                         RestDispenseService.restPostDispense(dispense);
                     }
                 }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<Episode> episodeList=episodeService.getAllEpisodeByStatus(BaseModel.SYNC_SATUS_READY);
+            if(episodeList != null && episodeList.size() > 0) {
+                for (Episode episode : episodeList) {
+                    RestEpisodeService.restPostEpisode(episode);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
