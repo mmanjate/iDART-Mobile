@@ -168,13 +168,13 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
         List<String> spinnerReasonToStopArray =  new ArrayList<String>();
         spinnerReasonToStopArray.add("");
         spinnerReasonToStopArray.add("Referido para mesma US");
-        spinnerReasonToStopArray.add("Abandono");
+     /*   spinnerReasonToStopArray.add("Abandono");
         spinnerReasonToStopArray.add("Parametros Laboratoriais");
         spinnerReasonToStopArray.add("Gravidez");
         spinnerReasonToStopArray.add("Tuberculose");
         spinnerReasonToStopArray.add("Falha de adesão");
         spinnerReasonToStopArray.add("A pedido do paciente");
-        spinnerReasonToStopArray.add("Óbito");
+        spinnerReasonToStopArray.add("Óbito");*/
 
         ArrayAdapter<ValorSimples> adapter = new ArrayAdapter<ValorSimples>(getApplicationContext(), layout.simple_spinner_item, spinnerReasonToStartArray);
 
