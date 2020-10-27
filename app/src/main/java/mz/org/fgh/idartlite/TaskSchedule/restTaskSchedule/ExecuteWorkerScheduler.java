@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetConfigWorkerScheduler;
 import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetPatientDataWorkerScheduler;
+import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetPatientDispensationWorkerScheduler;
 import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetStockWorkerScheduler;
 import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestPatchStockConfigWorkerScheduler;
 import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestPostStockWorkerScheduler;
@@ -70,6 +71,22 @@ public class ExecuteWorkerScheduler {
                 .setConstraints(constraints)
                 .setInitialDelay(1,TimeUnit.HOURS)
                 .addTag("INIT_STOCK_ID " + JOB_ID)
+                .build();
+
+        WorkManager.getInstance(context).enqueue(periodicConfigDataWorkRequest);
+    }
+
+    public void initPatientDispenseTaskWork() {
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(true)
+                .build();
+
+        PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetPatientDispensationWorkerScheduler.class, 1, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .setInitialDelay(1,TimeUnit.HOURS)
+                .addTag("INIT_PATIENT_DISPENSE_ID " + JOB_ID)
                 .build();
 
         WorkManager.getInstance(context).enqueue(periodicConfigDataWorkRequest);
