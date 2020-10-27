@@ -220,12 +220,13 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
     @Override
     public void doOnConfirmed() {
-        Map<String, Object> params = new HashMap<>();
+/*        Map<String, Object> params = new HashMap<>();
         params.put("patient", this.getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("requestedFragment", EpisodeFragment.FRAGMENT_CODE_EPISODE);
-        nextActivity(PatientActivity.class,params);
+        nextActivity(PatientActivity.class,params);*/
+        finish();
     }
 
     @Override

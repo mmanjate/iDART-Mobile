@@ -37,6 +37,7 @@ public class RestRunDataForTestService extends BaseService {
         RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
         RestTherapeuticLineService.restGetAllTherapeuticLine();
         RestPatientService.restGetAllPatient(null);
+        RestEpisodeService.restGetAllReadyEpisodes(null);
         RestEpisodeService.restGetAllEpisodes(null);
         try {
             RestStockService.restGetStock(clinicService.getCLinic().get(0));

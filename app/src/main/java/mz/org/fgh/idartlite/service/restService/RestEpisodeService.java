@@ -123,7 +123,7 @@ public class RestEpisodeService extends BaseService {
     }
 
 
-    public static void restGetAllEpisodes(RestResponseListener listener) {
+    public static void restGetAllReadyEpisodes(RestResponseListener listener) {
 
         try {
             clinicService = new ClinicService(getApp(),null);
@@ -223,5 +223,65 @@ public class RestEpisodeService extends BaseService {
 
 
         });
+    }
+
+    public static void restGetAllEpisodes(RestResponseListener listener) {
+
+        try {
+            clinicService = new ClinicService(getApp(),null);
+            episodeService = new EpisodeService(getApp(), null);
+            Clinic clinic = clinicService.getCLinic().get(0);
+
+            String url = BaseService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid();
+
+            if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+                getRestServiceExecutor().execute(() -> {
+
+                    RESTServiceHandler handler = new RESTServiceHandler();
+                    handler.addHeader("Content-Type", "Application/json");
+
+                    handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
+                        @Override
+                        public void onResponse(Object[] episodes) {
+                            Log.d("Response", String.valueOf(episodes.length));
+
+                            if (episodes.length > 0) {
+                                for (Object episode : episodes) {
+                                    Log.i(TAG, "onResponse: " + episode);
+                                    try {
+                                        LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) episode;
+                                        if(!episodeService.checkEpisodeExists(itemresult)){
+                                            episodeService.saveOnEpisodeEnding(itemresult);
+                                            Log.w(TAG, "Numero de Episodios Criados" + episodes.length);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }finally {
+                                        continue;
+                                    }
+                                }
+                            }else {
+                                Log.w(TAG, "Response Sem Info." + episodes.length);
+                            }
+
+                            if(listener != null){
+                                listener.doOnRestSucessResponse(null);
+                            }
+                        }
+
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("Response", generateErrorMsg(error));
+                        }
+                    });
+                });
+
+            } else {
+                Log.e(TAG,"Response Servidor Offline");
+            }
+        } catch ( Exception e) {
+            e.printStackTrace();
+        }
     }
 }
