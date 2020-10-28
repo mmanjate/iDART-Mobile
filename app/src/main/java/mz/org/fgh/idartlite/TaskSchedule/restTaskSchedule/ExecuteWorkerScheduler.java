@@ -10,6 +10,7 @@ import androidx.work.WorkManager;
 import java.util.concurrent.TimeUnit;
 
 import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetConfigWorkerScheduler;
+import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetEpisodeWorkerScheduler;
 import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetPatientDataWorkerScheduler;
 import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetPatientDispensationWorkerScheduler;
 import mz.org.fgh.idartlite.TaskSchedule.workScheduler.RestGetStockWorkerScheduler;
@@ -141,4 +142,20 @@ public class ExecuteWorkerScheduler {
         WorkManager.getInstance(context).enqueue(periodicPostDataWorkRequest);
     }
 
+
+    public void initEpisodeTaskWork() {
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(true)
+                .build();
+
+        PeriodicWorkRequest periodicEpisodeDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetEpisodeWorkerScheduler.class, 8, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .setInitialDelay(8,TimeUnit.HOURS)
+                .addTag("EPISODE ID " + JOB_ID)
+                .build();
+
+        WorkManager.getInstance(context).enqueue(periodicEpisodeDataWorkRequest);
+    }
 }

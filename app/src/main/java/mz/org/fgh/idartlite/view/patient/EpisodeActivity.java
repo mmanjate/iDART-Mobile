@@ -168,13 +168,13 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
         List<String> spinnerReasonToStopArray =  new ArrayList<String>();
         spinnerReasonToStopArray.add("");
         spinnerReasonToStopArray.add("Referido para mesma US");
-        spinnerReasonToStopArray.add("Abandono");
+     /*   spinnerReasonToStopArray.add("Abandono");
         spinnerReasonToStopArray.add("Parametros Laboratoriais");
         spinnerReasonToStopArray.add("Gravidez");
         spinnerReasonToStopArray.add("Tuberculose");
         spinnerReasonToStopArray.add("Falha de adesão");
         spinnerReasonToStopArray.add("A pedido do paciente");
-        spinnerReasonToStopArray.add("Óbito");
+        spinnerReasonToStopArray.add("Óbito");*/
 
         ArrayAdapter<ValorSimples> adapter = new ArrayAdapter<ValorSimples>(getApplicationContext(), layout.simple_spinner_item, spinnerReasonToStartArray);
 
@@ -220,12 +220,13 @@ public class EpisodeActivity extends BaseActivity implements DialogListener {
 
     @Override
     public void doOnConfirmed() {
-        Map<String, Object> params = new HashMap<>();
+/*        Map<String, Object> params = new HashMap<>();
         params.put("patient", this.getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("requestedFragment", EpisodeFragment.FRAGMENT_CODE_EPISODE);
-        nextActivity(PatientActivity.class,params);
+        nextActivity(PatientActivity.class,params);*/
+        finish();
     }
 
     @Override

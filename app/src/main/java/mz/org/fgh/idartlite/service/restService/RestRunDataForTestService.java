@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.service.restService;
 
 import android.app.Application;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class RestRunDataForTestService extends BaseService {
 
         DispenseService dispenseService = new DispenseService(application, currentUser);
         StockService stockService = new StockService(application, currentUser);
+        EpisodeService episodeService = new EpisodeService(application, currentUser);
+
         ClinicService clinicService = new ClinicService(application, currentUser);
         PatientService patientService = new PatientService(application, currentUser);
         EpisodeService episodeService = new EpisodeService(application, currentUser);
@@ -40,7 +43,8 @@ public class RestRunDataForTestService extends BaseService {
         RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
         RestTherapeuticLineService.restGetAllTherapeuticLine();
         RestPatientService.restGetAllPatient(null);
-
+        RestEpisodeService.restGetAllReadyEpisodes(null);
+        RestEpisodeService.restGetAllEpisodes(null);
         try {
             RestStockService.restGetStock(clinicService.getCLinic().get(0));
         } catch (SQLException e) {
@@ -85,6 +89,16 @@ public class RestRunDataForTestService extends BaseService {
         }
 
         try {
+
+            List<Episode> episodeList=episodeService.getAllEpisodeByStatus(BaseModel.SYNC_SATUS_READY);
+            if(episodeList != null && episodeList.size() > 0) {
+                for (Episode episode : episodeList) {
+                    RestEpisodeService.restPostEpisode(episode);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
             patientList = patientService.getALLPatient();
             if (patientList != null)
                 if (patientList.size() > 0) {
@@ -97,6 +111,5 @@ public class RestRunDataForTestService extends BaseService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }
