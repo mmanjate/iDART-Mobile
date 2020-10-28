@@ -63,8 +63,8 @@ public class DispenseType extends BaseModel implements Listble {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DispenseType that = (DispenseType) o;
-        if (!Utilities.stringHasValue(code) && id <= 0) return false;
-        return code.equals(that.code);
+        if (!Utilities.stringHasValue(description) && id <= 0) return false;
+        return description.equals(that.description);
     }
 
     @Override
