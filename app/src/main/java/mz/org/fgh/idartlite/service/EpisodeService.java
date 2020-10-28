@@ -107,9 +107,9 @@ public class EpisodeService extends BaseService {
             localEpisode.setPatient(localPatient);
             localEpisode.setSanitaryUnit(getLatestByPatient(localPatient).getSanitaryUnit());
             localEpisode.setUsUuid(Objects.requireNonNull(episode.get("usuuid")).toString());;
-            localEpisode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(episode.get("stopdate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+            localEpisode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(episode.get("startdate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
             localEpisode.setStopReason("Referido para mesma US");
-            localEpisode.setNotes(Objects.requireNonNull(episode.get("stopnotes")).toString());;
+            localEpisode.setNotes(Objects.requireNonNull(episode.get("startnotes")).toString());;
             localEpisode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
             localEpisode.setUuid(UUID.randomUUID().toString());
             createEpisode(localEpisode);
