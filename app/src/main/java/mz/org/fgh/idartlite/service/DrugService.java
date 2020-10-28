@@ -19,6 +19,7 @@ import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
 
 import static java.util.Objects.*;
+import static mz.org.fgh.idartlite.model.Drug.COLUMN_DESCRIPTION;
 import static mz.org.fgh.idartlite.model.Drug.COLUMN_FNMCODE;
 import static mz.org.fgh.idartlite.model.Drug.COLUMN_REST_ID;
 
@@ -51,6 +52,17 @@ public class DrugService extends BaseService {
     public Drug getDrug(String code) throws SQLException {
 
         List<Drug> typeList = getDataBaseHelper().getDrugDao().queryForEq(COLUMN_FNMCODE, code);
+
+        if (typeList != null)
+            if (!typeList.isEmpty())
+                return typeList.get(0);
+
+        return null;
+    }
+
+    public Drug getDrugFromDescription(String description) throws SQLException {
+
+        List<Drug> typeList = getDataBaseHelper().getDrugDao().queryForEq(COLUMN_DESCRIPTION, description);
 
         if (typeList != null)
             if (!typeList.isEmpty())

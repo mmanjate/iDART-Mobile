@@ -32,7 +32,10 @@ public class TherapeuthicLineService extends BaseService {
 
         List<TherapeuticLine> typeList = getDataBaseHelper().getTherapeuticLineDao().queryForEq(COLUMN_DESCRIPTION,code);
 
-        if (typeList != null)
+        if (typeList == null)
+
+            typeList = getAll();
+
             if (!typeList.isEmpty())
                 return typeList.get(0);
 
