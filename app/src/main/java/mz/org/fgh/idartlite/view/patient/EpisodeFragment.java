@@ -36,6 +36,7 @@ import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.patient.adapter.DispenseAdapter;
 import mz.org.fgh.idartlite.view.patient.adapter.EpisodeAdapter;
 
 import mz.org.fgh.idartlite.viewmodel.EpisodeVM;
@@ -197,6 +198,23 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.rcvEpisodes = fragmentEpisodeBinding.rcvEpisodes;
+
+        try {
+            this.episodeList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (Utilities.listHasElements(episodeList)) {
+            episodeAdapter = new EpisodeAdapter(rcvEpisodes, this.episodeList, getMyActivity(),firstEpisode,lastDispense);
+            displayDataOnRecyclerView(rcvEpisodes, episodeAdapter, getContext());
+        }
+    }
+
 
     public PatientActivity getMyActivity(){
         return (PatientActivity) getActivity();
@@ -220,7 +238,7 @@ public class EpisodeFragment extends GenericFragment implements ListbleDialogLis
     @Override
     public void remove(int position) {
 
-        if(episodeList.get(position).getSyncStatus().equals("S")){
+        if(episodeList.get(position).getSyncStatus().equals("R")){
         episodeList.remove(episodeList.get(position));
 
         for (int i = 0; i < episodeList.size(); i++){

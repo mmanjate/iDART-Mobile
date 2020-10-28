@@ -23,6 +23,7 @@ import mz.org.fgh.idartlite.databinding.PatientPrescriptionRowBinding;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.view.patient.PatientActivity;
 
 public class EpisodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -38,6 +39,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.firstEpisode=firstEpisode;
         this.lastDispense=lastDispense;
     }
+
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
