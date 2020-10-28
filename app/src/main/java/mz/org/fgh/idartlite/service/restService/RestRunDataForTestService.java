@@ -30,7 +30,6 @@ public class RestRunDataForTestService extends BaseService {
 
         ClinicService clinicService = new ClinicService(application, currentUser);
         PatientService patientService = new PatientService(application, currentUser);
-        EpisodeService episodeService = new EpisodeService(application, currentUser);
         List<Stock> stockList;
         List<Dispense> dispenseList;
         List<Patient> patientList;
@@ -92,13 +91,14 @@ public class RestRunDataForTestService extends BaseService {
 
             List<Episode> episodeList=episodeService.getAllEpisodeByStatus(BaseModel.SYNC_SATUS_READY);
             if(episodeList != null && episodeList.size() > 0) {
-                for (Episode episode : episodeList) {
-                    RestEpisodeService.restPostEpisode(episode);
+                for (Episode episode1 : episodeList) {
+                    RestEpisodeService.restPostEpisode(episode1);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try{
             patientList = patientService.getALLPatient();
             if (patientList != null)
                 if (patientList.size() > 0) {
