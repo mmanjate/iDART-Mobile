@@ -91,15 +91,28 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     }
 
     public void nextActivity(Class clazz){
-        nextActivity(clazz, null);
+        nextActivity(clazz, null, false);
     }
+
+    public void nextActivityFinishingCurrent(Class clazz){
+        nextActivity(clazz, null, true);
+    }
+
+    public void nextActivity(Class clazz, Map<String, Object> params){
+        nextActivity(clazz, params, false);
+    }
+
+    public void nextActivityFinishingCurrent(Class clazz, Map<String, Object> params){
+        nextActivity(clazz, params, true);
+    }
+
     /**
      * Move from one {@link android.app.Activity} to another
      *
      * @param clazz
      * @param params
      */
-    public void nextActivity(Class clazz, Map<String, Object> params){
+    private void nextActivity(Class clazz, Map<String, Object> params, boolean finishCurrentActivity){
 
         Intent intent = new Intent(getApplication(), clazz);
         Bundle bundle = new Bundle();
@@ -113,6 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
             intent.putExtras(bundle);
         }
         startActivity(intent);
+        if (finishCurrentActivity) finish();
     }
 
     @Override

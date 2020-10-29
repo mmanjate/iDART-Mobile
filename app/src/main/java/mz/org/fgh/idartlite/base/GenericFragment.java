@@ -50,8 +50,22 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
         return getMyActivity().getCurrentUser();
     }
 
-    public void nextActivity(Context context, Class clazz){
-        nextActivity(clazz, null);
+
+
+    public void nextActivity(Class clazz){
+        nextActivity(clazz, null, false);
+    }
+
+    public void nextActivityFinishingCurrent(Class clazz){
+        nextActivity(clazz, null, true);
+    }
+
+    public void nextActivity(Class clazz, Map<String, Object> params){
+        nextActivity(clazz, params, false);
+    }
+
+    public void nextActivityFinishingCurrent(Class clazz, Map<String, Object> params){
+        nextActivity(clazz, params, true);
     }
 
     /**
@@ -60,7 +74,7 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
      * @param clazz
      * @param params
      */
-    public void nextActivity(Class clazz, Map<String, Object> params){
+    private void nextActivity(Class clazz, Map<String, Object> params, boolean finishCurrentActivity){
 
         Intent intent = new Intent(getContext(), clazz);
         Bundle bundle = new Bundle();
@@ -74,6 +88,7 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
             intent.putExtras(bundle);
         }
         startActivity(intent);
+        if (finishCurrentActivity) getMyActivity().finish();
     }
 
     protected void displayDataOnRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter, Context context) {

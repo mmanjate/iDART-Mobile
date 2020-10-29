@@ -9,6 +9,7 @@ import androidx.databinding.Bindable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -403,8 +404,7 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("requestedFragment", PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION);
-        getRelatedActivity().nextActivity(PatientActivity.class,params);
-        getRelatedActivity().finish();
+        getRelatedActivity().nextActivityFinishingCurrent(PatientActivity.class,params);
     }
 
     public void checkIfMustBeUrgentPrescription() throws SQLException {
@@ -499,10 +499,6 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
         return selectedDrugs;
     }
 
-    public PrescriptionService getPrescriptionService() {
-        return prescriptionService;
-    }
-
     public List<ValorSimples> getDurations() {
         return durations;
     }
@@ -517,5 +513,15 @@ public class PrescriptionVM extends BaseViewModel implements DialogListener {
 
     public void changeInitialDataViewStatus(View view){
         ((PrescriptionActivity) getRelatedActivity()).changeFormSectionVisibility(view);
+    }
+
+    public void setPrescriptionDate(Date date) {
+        this.prescription.setPrescriptionDate(date);
+        notifyPropertyChanged(BR.prescriptionDate);
+    }
+
+    @Bindable
+    public Date getPrescriptionDate() {
+        return this.prescription.getPrescriptionDate();
     }
 }
