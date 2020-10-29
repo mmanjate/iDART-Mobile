@@ -119,7 +119,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_calendar"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.prescription.prescriptionDate)}"
+                            android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.prescriptionDate)}"
                             android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                             style="@style/bottom_border_edit_text_style"/>
                         <TextView

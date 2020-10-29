@@ -139,9 +139,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
 
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                                prescriptionBinding.prescriptionDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
+                                getRelatedViewModel().setPrescriptionDate(DateUtilitis.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtilitis.DATE_FORMAT));
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -151,7 +149,6 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         prescriptionBinding.autCmpDrugs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                //this is the way to find selected object/item
                 getRelatedViewModel().setSelectedDrug((Listble) adapterView.getItemAtPosition(pos));
             }
         });
@@ -313,7 +310,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("step", ApplicationStep.STEP_CREATE);
-        nextActivity(CreateDispenseActivity.class,params);
+        nextActivityFinishingCurrent(CreateDispenseActivity.class,params);
     }
 
     @Override
@@ -332,7 +329,7 @@ public class PrescriptionActivity extends BaseActivity implements DialogListener
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("requestedFragment", PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION);
-        nextActivity(PatientActivity.class,params);
+        nextActivityFinishingCurrent(PatientActivity.class,params);
     }
 
     public void changeMotiveSpinnerStatus(boolean b) {

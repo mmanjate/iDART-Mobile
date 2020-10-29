@@ -124,8 +124,7 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
 
                     Map<String, Object> params = new HashMap<>();
                     params.put("clinicList", clinicList);
-                    nextActivity(LoginActivity.class, params);
-                    finish();
+                    nextActivityFinishingCurrent(LoginActivity.class, params);
                 }
             }).start();
         }else {
@@ -197,8 +196,7 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
             finishAffinity();
             System.exit(0);
         }else {
-            nextActivity(LoginActivity.class);
-            finish();
+            nextActivityFinishingCurrent(LoginActivity.class);
         }
     }
 

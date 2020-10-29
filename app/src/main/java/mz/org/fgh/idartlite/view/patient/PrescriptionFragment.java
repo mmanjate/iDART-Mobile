@@ -104,7 +104,7 @@ public class PrescriptionFragment extends GenericFragment implements ListbleDial
             params.put("user", getCurrentUser());
             params.put("clinic", getMyActivity().getCurrentClinic());
             params.put("step", ApplicationStep.STEP_CREATE);
-            nextActivity(PrescriptionActivity.class, params);
+            nextActivityFinishingCurrent(PrescriptionActivity.class, params);
         }
     }
 
