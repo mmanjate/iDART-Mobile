@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.service;
 import android.app.Application;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.BaseModel;
@@ -159,6 +160,10 @@ public class DispenseService extends BaseService {
 
             this.stockService.updateStock(stock);
         }
+    }
+
+    public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException{
+       return getDataBaseHelper().getDispenseDao().getDispensesBetweenStartDateAndEndDate(startDate,endDate);
     }
 
 }

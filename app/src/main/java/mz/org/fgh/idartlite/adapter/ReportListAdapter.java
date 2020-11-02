@@ -1,0 +1,79 @@
+package mz.org.fgh.idartlite.adapter;
+
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.databinding.ContentReportBinding;
+import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
+import mz.org.fgh.idartlite.model.Report;
+
+public class ReportListAdapter extends AbstractRecycleViewAdapter<Report> {
+
+    public ReportListAdapter(RecyclerView recyclerView, List<Report> reportList, Activity activity) {
+        super(recyclerView, reportList, activity);
+    }
+
+    private List<String> mReports;
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ContentReportBinding contentReportBinding;
+        ItemLoadingBinding itemLoadingBinding;
+
+        if (viewType == VIEW_TYPE_ITEM) {
+            contentReportBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.content_report, parent, false);
+            return new ReportListAdapter.ReportViewHolder(contentReportBinding);
+        }else if (viewType == VIEW_TYPE_LOADING) {
+            itemLoadingBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_loading, parent, false);
+            return new ReportListAdapter.LoadingViewHolder(itemLoadingBinding);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        if (viewHolder instanceof ReportListAdapter.ReportViewHolder){
+            ((ReportListAdapter.ReportViewHolder) viewHolder).contentReportBinding.setReport(records.get(position));
+        }else
+        if (viewHolder instanceof ReportListAdapter.LoadingViewHolder){
+            showLoadingView((ReportListAdapter.LoadingViewHolder) viewHolder, position);
+        }
+
+    }
+
+    public class ReportViewHolder extends RecyclerView.ViewHolder{
+
+        private ContentReportBinding contentReportBinding;
+
+        public ReportViewHolder(@NonNull ContentReportBinding contentReportBinding) {
+            super(contentReportBinding.getRoot());
+            this.contentReportBinding = contentReportBinding;
+        }
+    }
+
+    private class LoadingViewHolder extends RecyclerView.ViewHolder {
+
+        ProgressBar progressBar;
+
+        ItemLoadingBinding itemLoadingBinding;
+
+        public LoadingViewHolder(@NonNull ItemLoadingBinding itemLoadingBinding) {
+            super(itemLoadingBinding.getRoot());
+            this.itemLoadingBinding = itemLoadingBinding;
+        }
+    }
+
+    private void showLoadingView(LoadingViewHolder viewHolder, int position) {
+        //ProgressBar would be displayed
+    }
+}

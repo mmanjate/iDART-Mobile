@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+
     <application
         android:name=".base.IdartLiteApplication"
         android:allowBackup="true"
@@ -16,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".view.reports.ReportTypeActivity"></activity>
+        <activity android:name=".view.reports.ReportsListingActivity"></activity>
+        <activity android:name=".view.reports.DispenseReportActivity"></activity>
+        <provider
         <activity android:name=".view.reports.DispensedDrugsReportActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +36,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
+                android:resource="@xml/provider_paths"/>
         </provider>
 
         <activity android:name=".view.reports.PatientReportActivity">
@@ -43,7 +48,13 @@
             android:noHistory="true" />
         <activity
             android:name=".view.SplashActivity"
-            android:noHistory="true"></activity>
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.patient.PrescriptionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
