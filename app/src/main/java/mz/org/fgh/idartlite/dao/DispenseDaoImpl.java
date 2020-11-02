@@ -7,6 +7,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.model.Dispense;
@@ -72,6 +73,11 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
 
         return null;
 
+    }
+
+    @Override
+    public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException {
+        return queryBuilder().where().between(Dispense.COLUMN_PICKUP_DATE,startDate,endDate).query();
     }
 
 }

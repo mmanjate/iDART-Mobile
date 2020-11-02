@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.HomeVM" />
+            type="mz.org.fgh.idartlite.viewmodel.ReportTypeVM" />
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="android.view.View"/>
     </data>
@@ -108,7 +108,7 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="@dimen/dimen_8dp"
 
-                     />
+                    />
 
                 <TextView
                     android:id="@+id/textView"
@@ -154,20 +154,9 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:drawableTop="@drawable/ic_gestao_patient"
-                    android:onClick="@{()-> viewModel.callSearchPatient()}"
-                    android:layout_gravity="center"
-                    android:text="@string/gestao_patient"/>
-
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/ic_gestao_patient"
                     android:onClick="@{()-> viewModel.callReports()}"
                     android:layout_gravity="center"
-                    android:text="@string/relatorios"/>
+                    android:text="@string/relatorios_listagem"/>
 
 
             </LinearLayout>
@@ -184,8 +173,8 @@
                     android:background="@android:color/transparent"
                     android:drawableTop="@drawable/ic_gestao_stock"
                     android:layout_gravity="center"
-                    android:onClick="@{()-> viewModel.callStck()}"
-                    android:text="@string/gestao_stock"/>
+                    android:onClick="@{()-> viewModel.callReports()}"
+                    android:text="@string/relatorios_graficos"/>
 
             </LinearLayout>
 

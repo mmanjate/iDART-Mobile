@@ -14,32 +14,14 @@ import mz.org.fgh.idartlite.view.reports.ReportTypeActivity;
 import mz.org.fgh.idartlite.view.reports.ReportsListingActivity;
 import mz.org.fgh.idartlite.view.stock.StockActivity;
 
-public class HomeVM extends BaseViewModel {
+public class ReportTypeVM extends BaseViewModel {
 
-    public HomeVM(@NonNull Application application) {
+    public ReportTypeVM(@NonNull Application application) {
         super(application);
     }
 
-    public void callSearchPatient(){
-        Intent intent = new Intent(getApplication(), SearchPatientActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", getRelatedActivity().getCurrentUser());
-        bundle.putSerializable("clinic", getRelatedActivity().getCurrentClinic());
-        intent.putExtras(bundle);
-        getRelatedActivity().startActivity(intent);
-    }
-
-    public void callStck(){
-        Intent intent = new Intent(getApplication(), StockActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", getRelatedActivity().getCurrentUser());
-        bundle.putSerializable("clinic", getRelatedActivity().getCurrentClinic());
-        intent.putExtras(bundle);
-        getRelatedActivity().startActivity(intent);
-    }
-
     public void callReports(){
-        Intent intent = new Intent(getApplication(), ReportTypeActivity.class);
+        Intent intent = new Intent(getApplication(), ReportsListingActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", getRelatedActivity().getCurrentUser());
         bundle.putSerializable("clinic", getRelatedActivity().getCurrentClinic());
@@ -48,8 +30,8 @@ public class HomeVM extends BaseViewModel {
     }
 
     @Override
-    public HomeActivity getRelatedActivity(){
-        return (HomeActivity) super.getRelatedActivity();
+    public ReportTypeActivity getRelatedActivity(){
+        return (ReportTypeActivity) super.getRelatedActivity();
     }
 
     @Bindable
