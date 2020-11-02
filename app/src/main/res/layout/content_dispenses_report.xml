@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="dispense"
+            type="mz.org.fgh.idartlite.model.Dispense" />
+        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10dp">
+
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_dispense" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/nid_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/pacient_nid"
+                    android:layout_toLeftOf="@+id/pacient_nid"
+                    android:gravity="right"
+                    android:text="@string/nid"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/pacient_nid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@{dispense.prescription.patient.nid}"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nid"
+                    android:layout_toStartOf="@+id/pacient_name"
+                    android:layout_toLeftOf="@+id/pacient_name"
+                    android:gravity="right"
+                    android:text="@string/name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/pacient_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_nid"
+                    android:layout_alignParentRight="true"
+                    android:text="@{dispense.prescription.patient.fullName}"
+                    android:layout_alignParentEnd="true" />
+
+               
+
+                <TextView
+                    android:id="@+id/emptyspace2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/idade"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/idade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_name"
+                    android:layout_toLeftOf="@+id/emptyspace3"
+                    android:gravity="right"
+                    android:text="@string/data_levantamento"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emptyspace3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/pacient_idade"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/pacient_idade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_name"
+                    android:layout_alignParentRight="true"
+                    android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.pickupDate)}"/>
+
+                <TextView
+                    android:id="@+id/dataProximoLevantamento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/idade"
+                    android:layout_toLeftOf="@+id/emptyspace3"
+                    android:gravity="right"
+                    android:text="@string/dt_proximo_levantamento"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emptyspace4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/pacient_idade"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/pickUpDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_idade"
+                    android:layout_alignParentRight="true"
+                    android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.nextPickupDate)}"/>
+
+
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:id="@+id/linearDetails">
+                <TextView
+                    android:id="@+id/regime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/nextPickUpDate"
+                    android:layout_toLeftOf="@+id/nextPickUpDate"
+                    android:gravity="right"
+                    android:text="@string/regime_terapeutico"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/regime_thera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@{dispense.prescription.therapeuticRegimen.description}"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/dispenseType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/nextPickUpDate"
+                    android:layout_toLeftOf="@+id/nextPickUpDate"
+                    android:gravity="right"
+                    android:text="@string/dispense_type"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/dispense_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@{dispense.prescription.dispenseType.description}"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
