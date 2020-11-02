@@ -6,8 +6,9 @@ import androidx.annotation.NonNull;
 
 import mz.org.fgh.idartlite.base.BaseViewModel;
 
-public class ReportVM extends BaseViewModel {
-    public ReportVM(@NonNull Application application) {
+public class DispensedDrugsReportVM extends BaseViewModel {
+
+    public DispensedDrugsReportVM(@NonNull Application application) {
         super(application);
     }
 }
