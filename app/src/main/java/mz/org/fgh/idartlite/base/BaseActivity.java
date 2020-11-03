@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.pm.PackageInfoCompat;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
@@ -22,6 +23,8 @@ import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.view.LoginActivity;
+import mz.org.fgh.idartlite.view.patient.PatientActivity;
+import mz.org.fgh.idartlite.view.patient.PrescriptionFragment;
 
 /**
  * Generic class that represent all application activities
@@ -167,6 +170,12 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         if (finishCurrentActivity) finish();
     }
 
+    public <T extends BaseActivity> void nextActivityWithGenericParams(Class<T> clazz){
+        Map<String, Object> params = new HashMap<>();
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        nextActivity(clazz,params);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_items, menu);

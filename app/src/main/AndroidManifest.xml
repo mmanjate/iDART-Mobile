@@ -20,13 +20,9 @@
         <activity android:name=".view.reports.ReportTypeActivity"></activity>
         <activity android:name=".view.reports.ReportsListingActivity"></activity>
         <activity android:name=".view.reports.DispenseReportActivity"></activity>
-        <provider
-        <activity android:name=".view.reports.DispensedDrugsReportActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".view.reports.DispensedDrugsReportActivity">
+
         </activity>
 
         <provider

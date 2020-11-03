@@ -8,6 +8,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.highsoft.highcharts.Common.HIChartsClasses.HIChart;
@@ -46,6 +47,8 @@ public class PatientReportActivity extends BaseActivity {
     private String start;
     private String end;
     private HIChartView chartView;
+    private EditText edtStart;
+    private EditText edtEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +59,19 @@ public class PatientReportActivity extends BaseActivity {
 
         chartView.setVisibility(View.GONE);
 
-        EditText edtStart = findViewById(R.id.start);
-        EditText edtEnd = findViewById(R.id.end);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        edtStart = findViewById(R.id.start);
+        edtEnd = findViewById(R.id.end);
         ImageView search = findViewById(R.id.buttonSearch);
 
         edtStart.setOnClickListener(new View.OnClickListener() {
@@ -107,13 +121,30 @@ public class PatientReportActivity extends BaseActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utilities.hideSoftKeyboard(PatientReportActivity.this);
-                generateGraph(start, end);
+                if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
+                    Utilities.displayAlertDialog(PatientReportActivity.this, "Por favor indicar o período por analisar!").show();
+                }else
+                if (DateUtilitis.dateDiff(DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) < 0){
+                    Utilities.displayAlertDialog(PatientReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
+                }else
+                if ((int) (DateUtilitis.dateDiff(DateUtilitis.getCurrentDate(), DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT)) < 0){
+                    Utilities.displayAlertDialog(PatientReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
+                }
+                else
+                if ((int) DateUtilitis.dateDiff(DateUtilitis.getCurrentDate(), DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) < 0){
+                    Utilities.displayAlertDialog(PatientReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
+                }else {
+                    Utilities.hideSoftKeyboard(PatientReportActivity.this);
+                    generateGraph(start, end);
+                }
             }
         });
     }
 
     private void generateGraph(String start, String end) {
+        start = edtStart.getText().toString();
+        end = edtEnd.getText().toString();
+
         List<DateTime> datesBetween = getRelatedViewModel().processPeriods(start, end);
 
         HIOptions options = new HIOptions();

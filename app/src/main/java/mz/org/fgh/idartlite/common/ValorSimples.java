@@ -17,6 +17,8 @@ public class ValorSimples extends BaseModel implements Listble{
 
     private String code;
 
+    private String qty;
+
     public ValorSimples(String description) {
         this.description = description;
     }
@@ -37,7 +39,13 @@ public class ValorSimples extends BaseModel implements Listble{
         return id;
     }
 
+    public String getQty() {
+        return qty;
+    }
 
+    public void setQty(String qty) {
+        this.qty = qty;
+    }
 
     public void setDescription(String description) {
         this.description = description;
