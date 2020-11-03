@@ -2,6 +2,9 @@ package mz.org.fgh.idartlite.base;
 
 import java.io.Serializable;
 
+/**
+ * Generic class that represent all application entities
+ */
 public abstract class BaseModel implements Serializable {
 
     protected int listPosition;

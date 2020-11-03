@@ -34,6 +34,10 @@ public class DispenseService extends BaseService {
 
     }
 
+    public DispenseService(Application application) {
+        super(application);
+    }
+
     public List<Dispense> getAllDispenseByPrescription(Prescription prescription) throws SQLException {
         return getDataBaseHelper().getDispenseDao().getAllByPrescription(prescription);
     }

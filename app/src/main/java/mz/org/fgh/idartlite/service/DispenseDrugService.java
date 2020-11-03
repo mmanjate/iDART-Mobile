@@ -23,7 +23,7 @@ public class DispenseDrugService extends BaseService {
 
     public List<DispensedDrug> findDispensedDrugByDispenseId(int id) throws SQLException {
 
-        return getDataBaseHelper().getDispensedDrugDao().findAllGenericObjectByField(DispensedDrug.class, DispensedDrug.COLUMN_DISPENSE, id);
+        return getDataBaseHelper().getDispensedDrugDao().queryForEq(DispensedDrug.COLUMN_DISPENSE, id);
     }
 
     public void saveOrUpdateDispensedDrug(DispensedDrug dispensedDrug) throws SQLException {

@@ -1,7 +1,9 @@
 package mz.org.fgh.idartlite.view;
 
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -24,6 +26,7 @@ public class HomeActivity extends BaseActivity {
         activityHomeBinding.setViewModel(getRelatedViewModel());
 
         activityHomeBinding.executePendingBindings();
+
     }
 
     @Override

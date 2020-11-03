@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Gráfico de entrada de pacientes por período"
+                android:text="Gráfico de aviamentos por regime por período"
                 android:textColor="@color/text_color"
                 android:textSize="16sp"
                 android:textStyle="bold" />

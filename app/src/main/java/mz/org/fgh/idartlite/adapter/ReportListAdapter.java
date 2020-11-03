@@ -15,14 +15,13 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.databinding.ContentReportBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
 import mz.org.fgh.idartlite.model.Report;
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class ReportListAdapter extends AbstractRecycleViewAdapter<Report> {
 
     public ReportListAdapter(RecyclerView recyclerView, List<Report> reportList, Activity activity) {
         super(recyclerView, reportList, activity);
     }
-
-    private List<String> mReports;
 
     @NonNull
     @Override
@@ -44,11 +43,17 @@ public class ReportListAdapter extends AbstractRecycleViewAdapter<Report> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof ReportListAdapter.ReportViewHolder){
             ((ReportListAdapter.ReportViewHolder) viewHolder).contentReportBinding.setReport(records.get(position));
+            ((ReportViewHolder) viewHolder).contentReportBinding.reportTypeIcon.setImageResource(records.get(position).getIcon());
         }else
         if (viewHolder instanceof ReportListAdapter.LoadingViewHolder){
             showLoadingView((ReportListAdapter.LoadingViewHolder) viewHolder, position);
         }
 
+    }
+
+    public Report getItemAtPosition(int position){
+        if (!Utilities.listHasElements(records)) return  null;
+        return this.records.get(position);
     }
 
     public class ReportViewHolder extends RecyclerView.ViewHolder{

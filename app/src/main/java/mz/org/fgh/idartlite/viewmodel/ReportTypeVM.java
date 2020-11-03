@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.viewmodel;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
@@ -10,6 +11,7 @@ import androidx.databinding.Bindable;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.view.HomeActivity;
 import mz.org.fgh.idartlite.view.SearchPatientActivity;
+import mz.org.fgh.idartlite.view.patient.PrescriptionActivity;
 import mz.org.fgh.idartlite.view.reports.ReportTypeActivity;
 import mz.org.fgh.idartlite.view.reports.ReportsListingActivity;
 import mz.org.fgh.idartlite.view.stock.StockActivity;
@@ -54,5 +56,9 @@ public class ReportTypeVM extends BaseViewModel {
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("mz.org.fgh.idartlite.ACTION_LOGOUT");
         getRelatedActivity().sendBroadcast(broadcastIntent);
+    }
+
+    public void changeInitialDataViewStatus(View view){
+        getRelatedActivity().changeFormSectionVisibility(view);
     }
 }

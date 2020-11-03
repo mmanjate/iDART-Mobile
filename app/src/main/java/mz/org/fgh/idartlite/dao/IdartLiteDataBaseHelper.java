@@ -125,9 +125,9 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         return therapeuticRegimenDao;
     }
 
-    public GenericDao getGenericDao(BaseModel model) throws SQLException {
+    public <T extends BaseModel> GenericDao getGenericDao(Class<T> clazz) throws SQLException {
         if(genericDao == null){
-            genericDao = getDao(model.getClass());
+            genericDao = getDao(clazz);
         }
         return genericDao;
     }

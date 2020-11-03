@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 
+import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
@@ -24,4 +25,5 @@ public interface DispenseDao extends GenericDao<Dispense, Integer> {
     public Dispense getLastDispensePrescription(Prescription prescription)  throws SQLException;
 
     public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException;
+
 }

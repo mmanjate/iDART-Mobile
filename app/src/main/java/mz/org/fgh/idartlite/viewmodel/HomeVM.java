@@ -21,30 +21,15 @@ public class HomeVM extends BaseViewModel {
     }
 
     public void callSearchPatient(){
-        Intent intent = new Intent(getApplication(), SearchPatientActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", getRelatedActivity().getCurrentUser());
-        bundle.putSerializable("clinic", getRelatedActivity().getCurrentClinic());
-        intent.putExtras(bundle);
-        getRelatedActivity().startActivity(intent);
+        getRelatedActivity().nextActivityWithGenericParams(SearchPatientActivity.class);
     }
 
     public void callStck(){
-        Intent intent = new Intent(getApplication(), StockActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", getRelatedActivity().getCurrentUser());
-        bundle.putSerializable("clinic", getRelatedActivity().getCurrentClinic());
-        intent.putExtras(bundle);
-        getRelatedActivity().startActivity(intent);
+        getRelatedActivity().nextActivityWithGenericParams(StockActivity.class);
     }
 
     public void callReports(){
-        Intent intent = new Intent(getApplication(), ReportTypeActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", getRelatedActivity().getCurrentUser());
-        bundle.putSerializable("clinic", getRelatedActivity().getCurrentClinic());
-        intent.putExtras(bundle);
-        getRelatedActivity().startActivity(intent);
+        getRelatedActivity().nextActivityWithGenericParams(ReportTypeActivity.class);
     }
 
     @Override
@@ -68,7 +53,6 @@ public class HomeVM extends BaseViewModel {
     }
 
     public void endSession(){
-
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("mz.org.fgh.idartlite.ACTION_LOGOUT");
         getRelatedActivity().sendBroadcast(broadcastIntent);
