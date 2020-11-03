@@ -79,8 +79,20 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
     }
 
     @Override
+    public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return queryBuilder().limit(limit)
+                .offset(offset).where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
+                .and()
+                .le(Dispense.COLUMN_PICKUP_DATE, endDate).query();
+    }
+
+
+
+    @Override
     public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException {
-        return queryBuilder().where().between(Dispense.COLUMN_PICKUP_DATE,startDate,endDate).query();
+        return queryBuilder().where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
+                .and()
+                .le(Dispense.COLUMN_PICKUP_DATE, endDate).query();
     }
 
 

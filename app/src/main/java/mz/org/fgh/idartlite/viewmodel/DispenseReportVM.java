@@ -14,12 +14,9 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.service.DispenseService;
-import mz.org.fgh.idartlite.service.EpisodeService;
-import mz.org.fgh.idartlite.service.PatientService;
+import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.SearchPatientActivity;
 import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
 
 public class DispenseReportVM extends SearchVM<Dispense> {
@@ -41,8 +38,8 @@ public class DispenseReportVM extends SearchVM<Dispense> {
 
     }
 
-    public List<Dispense> getDispensesByDates(Date startDate,Date endDate) throws SQLException {
-        return dispenseService.getDispensesBetweenStartDateAndEndDate(startDate, endDate);
+    public List<Dispense> getDispensesByDates(Date startDate,Date endDate, long offset, long limit) throws SQLException {
+        return dispenseService.getDispensesBetweenStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
     }
 
 
@@ -53,15 +50,22 @@ public class DispenseReportVM extends SearchVM<Dispense> {
             Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.start_end_date_is_mandatory)).show();
         }else {
 
-                displaySearchResults();
+            try {
+                super.initSearch();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
         }
     }
 
-    @Override
+
     public List<Dispense> doSearch(long offset, long limit) throws SQLException {
-        return null;
+
+        return getDispensesByDates(DateUtilitis.createDate(startDate, DateUtilitis.DATE_FORMAT),DateUtilitis.createDate(endDate, DateUtilitis.DATE_FORMAT),offset,limit);
     }
+
+
 
     @Override
     public void displaySearchResults() {

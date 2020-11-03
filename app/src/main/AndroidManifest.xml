@@ -23,8 +23,9 @@
 
         <activity android:name=".view.reports.DispensedDrugsReportActivity">
 
-        </activity>
 
+        </activity>
+        <activity android:name=".view.reports.StockAlertReportActivity"></activity>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="mz.org.fgh.idartlite.FileProvider"

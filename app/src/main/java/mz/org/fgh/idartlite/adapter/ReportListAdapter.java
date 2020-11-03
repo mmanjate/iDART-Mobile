@@ -43,7 +43,7 @@ public class ReportListAdapter extends AbstractRecycleViewAdapter<Report> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof ReportListAdapter.ReportViewHolder){
             ((ReportListAdapter.ReportViewHolder) viewHolder).contentReportBinding.setReport(records.get(position));
-            ((ReportViewHolder) viewHolder).contentReportBinding.reportTypeIcon.setImageResource(records.get(position).getIcon());
+           // ((ReportViewHolder) viewHolder).contentReportBinding.reportTypeIcon.setImageResource(records.get(position).getIcon());
         }else
         if (viewHolder instanceof ReportListAdapter.LoadingViewHolder){
             showLoadingView((ReportListAdapter.LoadingViewHolder) viewHolder, position);
