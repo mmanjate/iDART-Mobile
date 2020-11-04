@@ -82,6 +82,9 @@ public class PatientReportVM extends BaseViewModel {
                 dateBetween = start.plusYears(4);
             }
 
+            if ((int) DateUtilitis.dateDiff(DateUtilitis.getCurrentDate(), dateBetween.toDate(), DateUtilitis.DAY_FORMAT) < 0){
+                dateBetween = new DateTime();
+            }
             start = dateBetween;
 
             datesBetween.add(dateBetween);

@@ -63,7 +63,7 @@ public class PatientService extends BaseService {
     }
 
     public int countnewPatientsByPeriod(Date start, Date end) throws SQLException {
-        return patientDao.countNewPatientsByPeriod(start, end);
+        return patientDao.countNewPatientsByPeriod(start, end, getApplication());
     }
 
     public Patient getPatient(String uuid) throws SQLException {
