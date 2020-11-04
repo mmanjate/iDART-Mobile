@@ -24,6 +24,7 @@ public interface DispenseDao extends GenericDao<Dispense, Integer> {
 
     public Dispense getLastDispensePrescription(Prescription prescription)  throws SQLException;
 
-    public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException;
+    public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate,long offset, long limit) throws SQLException;
 
+    public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException;
 }

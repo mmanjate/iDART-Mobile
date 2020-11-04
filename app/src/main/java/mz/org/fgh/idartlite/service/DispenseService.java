@@ -3,17 +3,26 @@ package mz.org.fgh.idartlite.service;
 import android.app.Application;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.base.BaseService;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
+import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.model.StockReportData;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.util.DateUtilitis;
 
 import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
 
@@ -166,8 +175,95 @@ public class DispenseService extends BaseService {
         }
     }
 
+    public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException{
+        return getDataBaseHelper().getDispenseDao().getDispensesBetweenStartDateAndEndDateWithLimit(startDate,endDate,offset,limit);
+    }
+
     public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException{
-       return getDataBaseHelper().getDispenseDao().getDispensesBetweenStartDateAndEndDate(startDate,endDate);
+        return getDataBaseHelper().getDispenseDao().getDispensesBetweenStartDateAndEndDate(startDate,endDate);
+    }
+
+
+    public List<StockReportData> getStockAlertReportLastThreeMonthsPeriod() throws SQLException{
+
+        List<Dispense> dispenses= getDispensesBetweenStartDateAndEndDate(DateUtilitis.getDateOfPreviousDays(DateUtilitis.getCurrentDate(),90),DateUtilitis.getCurrentDate());
+
+        List<DispensedDrug> dispensedDrugs = getDataBaseHelper().getDispensedDrugDao().getDispensedDrugsByDispenses(dispenses);
+
+        Map<Drug,List<DispensedDrug>> drugsMap=new HashMap<>();
+        Set<Stock> stocksList=new HashSet<>();
+        List<StockReportData> stockReportData= new ArrayList<>();
+
+        for (int i=0;i<dispensedDrugs.size();i++){
+            Drug value = null;
+
+            value = dispensedDrugs.get(i).getStock().getDrug();
+            stocksList.add(dispensedDrugs.get(i).getStock());
+
+            Collection<DispensedDrug> al = drugsMap.get(value);
+
+            if (al == null)
+            {
+                drugsMap.put(value, (List<DispensedDrug>) (al = new ArrayList<DispensedDrug>()));
+            }
+
+            al.add(dispensedDrugs.get(i));
+        }
+
+        for (Drug drug: drugsMap.keySet()) {
+            StockReportData stockReport= new StockReportData();
+
+            stockReport.setDrugDescription(drug.getDescription());
+            List<DispensedDrug> dispenseDrugs= drugsMap.get(drug);
+            int quantityDispensed=0;
+            int totalUnits=0;
+            for (DispensedDrug dispenseD:
+                    dispenseDrugs) {
+
+
+                quantityDispensed+=dispenseD.getQuantitySupplied();
+
+                for (Stock stock : stocksList){
+
+                    if(!stock.equals(dispenseD.getStock()) && drug.equals(stock.getDrug())){
+                        totalUnits +=  dispenseD.getStock().getUnitsReceived()+stock.getUnitsReceived();
+                    }
+
+                }
+
+
+            }
+            if(totalUnits==0){
+                totalUnits=dispenseDrugs.get(0).getStock().getUnitsReceived();
+            }
+            totalUnits-=quantityDispensed;
+            int maxConsumption= quantityDispensed/drug.getPackSize();
+
+
+            int stockActual=totalUnits;
+
+            int validStock=maxConsumption/3;
+
+
+            stockReport.setMaximumConsumption(Integer.toString(maxConsumption));
+            stockReport.setActualStock(Integer.toString(stockActual));
+            stockReport.setValidStock(Integer.toString(validStock));
+
+            if(validStock >= stockActual) {
+                stockReport.setStockDescription("Ruptura de Stock");
+            }
+            else if(maxConsumption >= stockActual) {
+                stockReport.setStockDescription("Stock Baixo");
+            }
+            else if(validStock < stockActual) {
+                stockReport.setStockDescription(" Acima do Consumo Máximo");
+            }
+            stockReportData.add(stockReport);
+        }
+
+        return stockReportData;
+
+
     }
 
 }

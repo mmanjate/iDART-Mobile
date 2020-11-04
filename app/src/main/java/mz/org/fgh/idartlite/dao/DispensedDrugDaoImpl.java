@@ -2,11 +2,14 @@ package mz.org.fgh.idartlite.dao;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
+
+import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Stock;
 
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class DispensedDrugDaoImpl extends GenericDaoImpl<DispensedDrug, Integer> implements DispensedDrugDao {
 
@@ -24,5 +27,10 @@ public class DispensedDrugDaoImpl extends GenericDaoImpl<DispensedDrug, Integer>
 
     public boolean checkStockIsDispensedDrug(Stock stock) throws SQLException {
         return queryBuilder().where().eq(DispensedDrug.COLUMN_STOCK, stock.getId()).query().isEmpty();
+    }
+
+    @Override
+    public List<DispensedDrug> getDispensedDrugsByDispenses(List<Dispense> dispenses) throws SQLException {
+        return queryBuilder().where().in(DispensedDrug.COLUMN_DISPENSE,dispenses).query();
     }
 }

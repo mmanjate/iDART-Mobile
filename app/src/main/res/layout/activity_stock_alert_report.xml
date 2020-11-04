@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.DispenseReportVM" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".view.reports.DispenseReportActivity" >
+
+        <include layout="@layout/app_bar" />
+
+
+        <TextView
+            android:id="@+id/initial_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alerta Stock"
+            android:background="@drawable/shape_normal"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:paddingLeft="@dimen/dimen_10dp"
+            app:drawableEndCompat="@drawable/ic_expand_less"
+            android:layout_margin="@dimen/dimen_10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reyclerStock"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="@dimen/dimen_10dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+</layout>

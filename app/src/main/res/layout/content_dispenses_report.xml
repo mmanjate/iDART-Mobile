@@ -88,12 +88,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/pacient_name"
-                    android:layout_toLeftOf="@id/idade"
+                    android:layout_toLeftOf="@id/pickUpDate"
                     android:gravity="right"
                     android:text="   " />
 
                 <TextView
-                    android:id="@+id/idade"
+                    android:id="@+id/pickUpDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/pacient_name"
@@ -107,23 +107,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/pacient_name"
-                    android:layout_toLeftOf="@id/pacient_idade"
+                    android:layout_toLeftOf="@id/pick_up_date"
                     android:gravity="right"
                     android:text="   " />
 
                 <TextView
-                    android:id="@+id/pacient_idade"
+                    android:id="@+id/pick_up_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/pacient_name"
                     android:layout_alignParentRight="true"
                     android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.pickupDate)}"/>
 
+
+
                 <TextView
                     android:id="@+id/dataProximoLevantamento"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/idade"
+                    android:layout_below="@id/pickUpDate"
                     android:layout_toLeftOf="@+id/emptyspace3"
                     android:gravity="right"
                     android:text="@string/dt_proximo_levantamento"
@@ -134,78 +136,76 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/pacient_name"
-                    android:layout_toLeftOf="@id/pacient_idade"
+                    android:layout_toLeftOf="@id/pick_up_date"
                     android:gravity="right"
                     android:text="   " />
 
                 <TextView
-                    android:id="@+id/pickUpDate"
+                    android:id="@+id/next_pickUpDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/pacient_idade"
+                    android:layout_below="@id/pick_up_date"
                     android:layout_alignParentRight="true"
                     android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.nextPickupDate)}"/>
 
+                <LinearLayout
+                    android:id="@+id/linearDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/next_pickUpDate"
+                    android:layout_marginTop="0dp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/nid_data1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/regime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_toLeftOf="@+id/regime_thera"
+                            android:gravity="right"
+                            android:text="@string/regime_terapeutico"
+                            android:textStyle="bold" />
 
 
+                        <TextView
+                            android:id="@+id/regime_thera"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/dimen_4dp"
+                            android:text="@{dispense.prescription.therapeuticRegimen.description}" />
+
+                        <TextView
+                            android:id="@+id/dispenseType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/regime"
+                            android:layout_toLeftOf="@+id/dispense_type"
+                            android:gravity="right"
+                            android:text="@string/dispense_type"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/dispense_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/regime_thera"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:layout_toLeftOf="@+id/regime_thera"
+                            android:paddingLeft="@dimen/dimen_4dp"
+                            android:text="@{dispense.prescription.dispenseType.description}" />
+                    </RelativeLayout>
+                </LinearLayout>
             </RelativeLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:id="@+id/linearDetails">
-                <TextView
-                    android:id="@+id/regime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/nextPickUpDate"
-                    android:layout_toLeftOf="@+id/nextPickUpDate"
-                    android:gravity="right"
-                    android:text="@string/regime_terapeutico"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="@dimen/dimen_4dp"
-                    android:layout_marginBottom="@dimen/dimen_10dp"/>
 
-                <TextView
-                    android:id="@+id/regime_thera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:text="@{dispense.prescription.therapeuticRegimen.description}"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="@dimen/dimen_10dp"/>
-
-                <TextView
-                    android:id="@+id/dispenseType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/nextPickUpDate"
-                    android:layout_toLeftOf="@+id/nextPickUpDate"
-                    android:gravity="right"
-                    android:text="@string/dispense_type"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_marginRight="@dimen/dimen_4dp"
-                    android:layout_marginBottom="@dimen/dimen_10dp"/>
-
-                <TextView
-                    android:id="@+id/dispense_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:text="@{dispense.prescription.dispenseType.description}"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="@dimen/dimen_10dp"/>
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
