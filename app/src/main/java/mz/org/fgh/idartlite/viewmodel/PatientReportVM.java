@@ -21,6 +21,7 @@ public class PatientReportVM extends BaseViewModel {
 
     private PatientService patientService;
 
+    private String prerioType;
 
 
     public PatientReportVM(@NonNull Application application) {
@@ -43,8 +44,6 @@ public class PatientReportVM extends BaseViewModel {
     public List<DateTime> processPeriods(String startDate, String endDate){
         DateTimeFormatter formatter = DateTimeFormat.forPattern(DateUtilitis.DATE_FORMAT);
 
-        String prerioType;
-
         if (DateUtilitis.dateDiff(DateUtilitis.createDate(endDate, DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(startDate, DateUtilitis.DATE_FORMAT), DateUtilitis.MONTH_FORMAT) <= 6){
             prerioType = "WEEK";
         }else if ((DateUtilitis.dateDiff(DateUtilitis.createDate(endDate, DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(startDate, DateUtilitis.DATE_FORMAT), DateUtilitis.MONTH_FORMAT) > 6) &&
@@ -61,6 +60,16 @@ public class PatientReportVM extends BaseViewModel {
         DateTime end = formatter.parseDateTime(endDate);
 
         return generatePeriods(start, end, prerioType);
+    }
+
+    public String getPrerioType(){
+        if (this.prerioType.equals("WEEK")){
+            return "Semana";
+        }else if (this.prerioType.equals("MONTH")){
+            return "Mês";
+        }else {
+            return "Ano";
+        }
     }
 
     private List<DateTime> generatePeriods(DateTime start, DateTime end, String prerioType) {

@@ -1,15 +1,14 @@
 package mz.org.fgh.idartlite.view.reports;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.highsoft.highcharts.Common.HIChartsClasses.HIChart;
 import com.highsoft.highcharts.Common.HIChartsClasses.HIDataLabels;
@@ -161,7 +160,7 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         options.setChart(chart);
 
         HITitle title = new HITitle();
-        title.setText("Percentagem de aviamentos por regime, "+start+" à "+end);
+        title.setText("Percentagem de Aviamentos por Regime, "+start+" à "+end);
         options.setTitle(title);
 
         HITooltip tooltip = new HITooltip();
