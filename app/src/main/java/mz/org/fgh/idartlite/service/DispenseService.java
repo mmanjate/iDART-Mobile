@@ -198,8 +198,10 @@ public class DispenseService extends BaseService {
             Drug value = null;
 
             value = dispensedDrugs.get(i).getStock().getDrug();
-            stocksList.add(dispensedDrugs.get(i).getStock());
+            List<Stock> stocks= stockService.getAllStocksByDrug(dispensedDrugs.get(i).getStock().getDrug());
 
+            stocksList.add(dispensedDrugs.get(i).getStock());
+            stocksList.addAll(stocks);
             Collection<DispensedDrug> al = drugsMap.get(value);
 
             if (al == null)
@@ -209,6 +211,8 @@ public class DispenseService extends BaseService {
 
             al.add(dispensedDrugs.get(i));
         }
+
+        Set<Drug> drugs=drugsMap.keySet();
 
         for (Drug drug: drugsMap.keySet()) {
             StockReportData stockReport= new StockReportData();
@@ -223,16 +227,21 @@ public class DispenseService extends BaseService {
 
                 quantityDispensed+=dispenseD.getQuantitySupplied();
 
-                for (Stock stock : stocksList){
 
-                    if(!stock.equals(dispenseD.getStock()) && drug.equals(stock.getDrug())){
-                        totalUnits +=  dispenseD.getStock().getUnitsReceived()+stock.getUnitsReceived();
-                    }
+
+            }
+            for (Stock stock : stocksList){
+
+                if( drug.equals(stock.getDrug())){
+
+                    totalUnits +=  stock.getUnitsReceived();
 
                 }
 
 
             }
+
+
             if(totalUnits==0){
                 totalUnits=dispenseDrugs.get(0).getStock().getUnitsReceived();
             }
@@ -262,6 +271,7 @@ public class DispenseService extends BaseService {
         }
 
         return stockReportData;
+
 
 
     }

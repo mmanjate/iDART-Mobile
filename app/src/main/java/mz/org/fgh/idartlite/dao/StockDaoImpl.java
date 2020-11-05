@@ -44,4 +44,9 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements Stoc
     public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) throws SQLException {
         return queryBuilder().where().eq(Stock.COLUMN_CLINIC,clinic.getId()).and().eq(Stock.COLUMN_DRUG, drug.getId()).query();
     }
+
+    @Override
+    public List<Stock> getAllStocksByDrug(Drug drug) throws SQLException {
+        return queryBuilder().where().eq(Stock.COLUMN_DRUG, drug.getId()).query();
+    }
 }
