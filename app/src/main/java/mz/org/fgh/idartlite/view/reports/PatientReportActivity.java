@@ -2,7 +2,6 @@ package mz.org.fgh.idartlite.view.reports;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,23 +22,16 @@ import com.highsoft.highcharts.Common.HIChartsClasses.HIYAxis;
 import com.highsoft.highcharts.Core.HIChartView;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseViewModel;
 import mz.org.fgh.idartlite.util.DateUtilitis;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.patient.PrescriptionActivity;
 import mz.org.fgh.idartlite.viewmodel.PatientReportVM;
 
 public class PatientReportActivity extends BaseActivity {
@@ -155,7 +147,7 @@ public class PatientReportActivity extends BaseActivity {
 
         HITitle title = new HITitle();
 
-        title.setText("Número de pacientes por período");
+        title.setText("Número de Pacientes Referidos da US por "+getRelatedViewModel().getPrerioType());
         HISubtitle subtitle = new HISubtitle();
         subtitle.setText(start+" - "+end);
         options.setTitle(title);

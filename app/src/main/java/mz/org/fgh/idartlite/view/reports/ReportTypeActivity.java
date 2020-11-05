@@ -1,16 +1,16 @@
 package mz.org.fgh.idartlite.view.reports;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,8 +154,8 @@ public class ReportTypeActivity extends BaseActivity {
 
     private List<Report> loadGraphReports(){
         List<Report> reports= new ArrayList<Report>();
-        reports.add(Report.fastCreate("001", "Entrada de Pacientes por Período", R.drawable.ic_graphic, PatientReportActivity.class));
-        reports.add(Report.fastCreate("002", "Dispensas por Regime Terapeutico por Período", R.drawable.ic_graphic, DispensedDrugsReportActivity.class));
+        reports.add(Report.fastCreate("001", "Entrada de Pacientes Referidos", R.drawable.ic_graphic, PatientReportActivity.class));
+        reports.add(Report.fastCreate("002", "Dispensas por Regime Terapêutico", R.drawable.ic_graphic, DispensedDrugsReportActivity.class));
 
         return reports;
     }

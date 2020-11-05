@@ -45,7 +45,7 @@ public class DispensedDrugsReportVM extends BaseViewModel {
             }
 
             for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                percentageMap.put(entry.getKey()+" ["+entry.getValue()+"]", ((100*entry.getValue())/totalAviamentos));
+                percentageMap.put(entry.getKey()+" ["+entry.getValue()+"]-["+((100*entry.getValue())/totalAviamentos)+"%]", ((100*entry.getValue())/totalAviamentos));
             }
         }
         return percentageMap;
