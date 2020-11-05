@@ -182,4 +182,18 @@
     <string name="dispense_has_final_episode_cant_be_edit">Não pode se editar/remover a dispensa porque o paciente já tem o episódio final.</string>
     <string name="patient_has_final_episode_cant_create_dispense">Não pode criar nova dispensa porque o paciente já tem o episódio final.</string>
 
+
+    <string name="relatorios">Relatorios</string>
+    <string name="data_inicio">Data de Inicio</string>
+    <string name="data_fim">Data de Fim</string>
+    <string name="sync_status">Estado de Sicronização</string>
+
+    <string name="relatorios_listagem">Listagem</string>
+    <string name="relatorios_graficos">Graficos</string>
+    <string name="start_end_date_is_mandatory">Deve informar a data de Inicio e data de Fim para pesquisar.</string>
+
+    <string name="amc">AMC(Consumo Maximo)</string>
+    <string name="stock_actual">Stock Actual</string>
+    <string name="stock_status">Estado</string>
+
 </resources>

@@ -9,11 +9,12 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.base.BaseActivity;
 import mz.org.fgh.idartlite.base.BaseModel;
 import mz.org.fgh.idartlite.dao.DiseaseTypeDaoImpl;
 
 
-public class Report extends BaseModel {
+public class Report<T extends BaseActivity> extends BaseModel {
 
     public static final String COLUMN_CODE = "code";
     public static final String COLUMN_DESCRIPTION = "description";
@@ -24,8 +25,25 @@ public class Report extends BaseModel {
     @DatabaseField(columnName = COLUMN_DESCRIPTION)
     private String description;
 
+    private Class<T> displayActivity;
 
+    private int icon;
 
+    public Report(String code, String description, int icon) {
+        this.code = code;
+        this.description = description;
+        this.icon = icon;
+    }
+
+    public Report(String code, String description, Class displayActivity, int icon) {
+        this.code = code;
+        this.description = description;
+        this.displayActivity = displayActivity;
+        this.icon = icon;
+    }
+
+    public Report() {
+    }
 
     public String getCode() {
         return code;
@@ -41,6 +59,14 @@ public class Report extends BaseModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 
     @Override
@@ -64,5 +90,21 @@ public class Report extends BaseModel {
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public static Report fastCreate(String code, String description, int icon){
+        return new Report(code, description, icon);
+    }
+
+    public static Report fastCreate(String code, String description, int icon, Class displayActivity){
+        return new Report(code, description, displayActivity, icon);
+    }
+
+    public Class<T> getDisplayActivity() {
+        return displayActivity;
+    }
+
+    public void setDisplayActivity(Class<T> displayActivity) {
+        this.displayActivity = displayActivity;
     }
 }

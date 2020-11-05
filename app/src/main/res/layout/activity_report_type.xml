@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.ReportTypeVM" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".view.reports.ReportTypeActivity" >
+
+        <include layout="@layout/app_bar" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:background="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/background_layout"
+            android:text="@string/relatorios"
+            android:gravity="center"
+            android:padding="@dimen/dimen_10dp"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen_22dp"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:textColor="@color/white"/>
+
+        <LinearLayout
+            android:id="@+id/listing_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_normal"
+            android:layout_margin="@dimen/dimen_4dp"
+            android:padding="3dp"
+            android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_list_white"
+                android:layout_marginLeft="@dimen/dimen_4dp"
+                android:layout_weight="0.5"/>
+            <TextView
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:text='Listagens'
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="@dimen/dimen_10dp"/>
+
+            <ImageButton
+                android:id="@+id/ibtn_listing"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="match_parent"
+                android:background="@color/background_layout"
+                android:src="@drawable/ic_row_dados_pessoais"
+                android:layout_marginRight="@dimen/dimen_2dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+       <LinearLayout
+           android:id="@+id/lists_lyt"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/reyclerReports"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:padding="@dimen/dimen_10dp" />
+       </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/graph_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_normal"
+            android:layout_margin="@dimen/dimen_4dp"
+            android:padding="3dp"
+            android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_graphic_white"
+                android:layout_marginLeft="@dimen/dimen_4dp"
+                android:layout_weight="0.5"/>
+            <TextView
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:text='Gráficos'
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="@dimen/dimen_10dp"/>
+
+            <ImageButton
+                android:id="@+id/graphs"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="match_parent"
+                android:background="@color/background_layout"
+                android:src="@drawable/ic_row_dados_pessoais"
+                android:layout_marginRight="@dimen/dimen_2dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/graphs_lyt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reyclerGraphs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_10dp"/>
+    </LinearLayout>
+
+    </LinearLayout>
+</layout>

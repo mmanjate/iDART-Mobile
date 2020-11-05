@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -301,5 +303,16 @@ public class DateUtilitis {
             default:
                 return 0;
         }
+    }
+
+    public static Date getDateOfPreviousDays(Date date, int days)
+    {
+        if (days < 0)
+        {
+            throw new IllegalArgumentException(
+                    "The days must be a positive value");
+        }
+
+        return DateUtils.addDays(date, (-1) * days);
     }
 }

@@ -17,9 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".view.reports.ReportTypeActivity"></activity>
+        <activity android:name=".view.reports.ReportsListingActivity"></activity>
+        <activity android:name=".view.reports.DispenseReportActivity"></activity>
 
-        <provider android:authorities="mz.org.fgh.idartlite.FileProvider"
+        <activity android:name=".view.reports.DispensedDrugsReportActivity">
+
+
+        </activity>
+        <activity android:name=".view.reports.StockAlertReportActivity"></activity>
+        <provider
             android:name="androidx.core.content.FileProvider"
+            android:authorities="mz.org.fgh.idartlite.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -27,7 +36,7 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <activity android:name=".view.reports.ReportActivity">
+        <activity android:name=".view.reports.PatientReportActivity">
 
         </activity>
         <activity android:name=".view.AboutActivity" />

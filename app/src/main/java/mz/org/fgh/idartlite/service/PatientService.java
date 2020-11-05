@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +39,16 @@ public class PatientService extends BaseService {
         }
     }
 
+    public PatientService(Application application) {
+        super(application);
+
+        try {
+            patientDao = getDataBaseHelper().getPatientDao();
+        } catch (SQLException sql) {
+            Log.i("erro ", sql.getMessage());
+        }
+    }
+
     public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic, long offset, long limit) throws SQLException {
             return getDataBaseHelper().getPatientDao().searchPatientByParamAndClinic(param, clinic, offset , limit);
 
@@ -49,6 +60,10 @@ public class PatientService extends BaseService {
 
     public void  savePatient(Patient patient) throws SQLException {
         getDataBaseHelper().getPatientDao().create(patient);
+    }
+
+    public int countnewPatientsByPeriod(Date start, Date end) throws SQLException {
+        return patientDao.countNewPatientsByPeriod(start, end, getApplication());
     }
 
     public Patient getPatient(String uuid) throws SQLException {

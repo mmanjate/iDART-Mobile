@@ -1,12 +1,19 @@
 package mz.org.fgh.idartlite.dao;
 
+import android.app.Application;
+
 import com.j256.ormlite.dao.BaseDaoImpl;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+
+import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.common.ValorSimples;
 
 public class GenericDaoImpl<T, ID> extends BaseDaoImpl<T, ID> implements GenericDao<T, ID> {
 
@@ -22,35 +29,16 @@ public class GenericDaoImpl<T, ID> extends BaseDaoImpl<T, ID> implements Generic
         super(connectionSource, tableConfig);
     }
 
-    public List findAllGenericObjectByClass(Class clazz) throws SQLException {
-        return queryForAll();
+    public List<ValorSimples> countDispensesRegimenByPeriod(Date start, Date end) throws SQLException {
+
+        String sql = "select therapeutic_regimen.description, count(*) as qty\n" +
+                "from Dispense inner join prescription on dispense.prescription_id = prescription.id\n" +
+                "\t\t\t  inner join therapeutic_regimen on therapeutic_regimen.id = prescription.regimen_id\n" +
+                "GROUP by therapeutic_regimen.description";
+
+        GenericRawResults<T> rawResults = queryRaw(sql, getRawRowMapper());
+
+        return (List<ValorSimples>) rawResults.getResults();
     }
 
-    public List findAllGenericObjectByQuery(PreparedQuery query, Class clazz) throws SQLException {
-        return query(query);
-    }
-
-    public List findAllGenericObjectById(Class clazz, Long id) throws SQLException {
-        return queryForEq("id", id);
-    }
-
-    public List findAllGenericObjectByField(Class clazz, String Field, String value) throws SQLException {
-        return queryForEq(Field, value);
-    }
-
-    public List findAllGenericObjectByField(Class clazz, String Field, int value) throws SQLException {
-        return queryForEq(Field, value);
-    }
-
-    public void saveGenericObjectByClass(T object) throws SQLException {
-        create(object);
-    }
-
-    public void deleteGenericObjectByClass(T object) throws SQLException {
-        delete(object);
-    }
-
-    public void updateGenericObjectByClass(T object) throws SQLException {
-        update(object);
-    }
 }

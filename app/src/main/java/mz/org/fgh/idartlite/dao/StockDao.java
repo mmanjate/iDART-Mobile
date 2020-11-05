@@ -16,4 +16,6 @@ public interface StockDao extends GenericDao<Stock, Integer> {
 
     public List<Stock> getAllStocksByClinicAndDrug(Clinic clinic, Drug drug) throws SQLException;
 
+    public List<Stock> getAllStocksByDrug( Drug drug) throws SQLException;
+
 }

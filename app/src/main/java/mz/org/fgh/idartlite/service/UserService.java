@@ -53,7 +53,7 @@ public class UserService extends BaseService {
 
     public void saveUser(User user) throws SQLException {
         user.setPassword(Utilities.MD5Crypt(user.getPassword()));
-        userDao.saveGenericObjectByClass(user);
+        userDao.create(user);
     }
 
 

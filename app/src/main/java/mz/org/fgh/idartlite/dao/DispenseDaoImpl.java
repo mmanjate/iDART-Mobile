@@ -2,18 +2,22 @@ package mz.org.fgh.idartlite.dao;
 
 import android.app.Application;
 
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
+import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
+import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 
 public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implements DispenseDao {
 
@@ -73,5 +77,23 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
         return null;
 
     }
+
+    @Override
+    public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return queryBuilder().limit(limit)
+                .offset(offset).where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
+                .and()
+                .le(Dispense.COLUMN_PICKUP_DATE, endDate).query();
+    }
+
+
+
+    @Override
+    public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException {
+        return queryBuilder().where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
+                .and()
+                .le(Dispense.COLUMN_PICKUP_DATE, endDate).query();
+    }
+
 
 }
