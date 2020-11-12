@@ -17,7 +17,7 @@ import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.service.restService.RestUserService;
+import mz.org.fgh.idartlite.rest.service.RestUserService;
 import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.login.LoginVM;

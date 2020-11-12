@@ -13,16 +13,18 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.service.DispenseService;
-import mz.org.fgh.idartlite.service.EpisodeService;
+import mz.org.fgh.idartlite.service.dispense.DispenseService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseService;
+import mz.org.fgh.idartlite.service.episode.EpisodeService;
+import mz.org.fgh.idartlite.service.episode.IEpisodeService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.episode.EpisodeActivity;
 
 public class EpisodeVM extends BaseViewModel {
 
-    private EpisodeService episodeService;
-    private DispenseService dispenseService;
+    private IEpisodeService episodeService;
+    private IDispenseService dispenseService;
     private Patient patient;
     private Episode episode;
 

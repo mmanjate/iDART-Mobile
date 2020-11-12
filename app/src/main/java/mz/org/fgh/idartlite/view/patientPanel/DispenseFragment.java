@@ -22,13 +22,13 @@ import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.ClickListener;
+import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.common.ApplicationStep;
-import mz.org.fgh.idartlite.common.ListbleDialogListener;
 import mz.org.fgh.idartlite.databinding.FragmentDispenseBinding;
+import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
+import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
@@ -40,7 +40,7 @@ import mz.org.fgh.idartlite.view.dispense.CreateDispenseActivity;
 import mz.org.fgh.idartlite.view.patient.adapter.DispenseAdapter;
 import mz.org.fgh.idartlite.viewmodel.dispense.DispenseVM;
 
-public class DispenseFragment extends GenericFragment implements ListbleDialogListener {
+public class DispenseFragment extends GenericFragment implements IListbleDialogListener {
 
     public static final String FRAGMENT_CODE_DISPENSE = "DispenseFragment";
     int dispensePosition;

@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.dao.UserDaoImpl;
+import mz.org.fgh.idartlite.dao.user.UserDaoImpl;
 import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "user", daoClass = UserDaoImpl.class)

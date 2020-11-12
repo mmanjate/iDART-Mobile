@@ -13,16 +13,18 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.service.EpisodeService;
-import mz.org.fgh.idartlite.service.PatientService;
+import mz.org.fgh.idartlite.service.episode.EpisodeService;
+import mz.org.fgh.idartlite.service.episode.IEpisodeService;
+import mz.org.fgh.idartlite.service.patient.IPatientService;
+import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patientSearch.SearchPatientActivity;
 
 public class PatientVM extends SearchVM<Patient> {
 
     private Patient patient;
-    private PatientService patientService;
-    private EpisodeService episodeService;
+    private IPatientService patientService;
+    private IEpisodeService episodeService;
 
     
     private String searchParam;

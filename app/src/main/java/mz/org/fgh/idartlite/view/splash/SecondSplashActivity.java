@@ -13,9 +13,9 @@ import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.service.ClinicService;
-import mz.org.fgh.idartlite.service.restService.RestPatientService;
-import mz.org.fgh.idartlite.service.restService.RestStockService;
+import mz.org.fgh.idartlite.service.clinic.ClinicService;
+import mz.org.fgh.idartlite.rest.service.RestPatientService;
+import mz.org.fgh.idartlite.rest.service.RestStockService;
 
 public class SecondSplashActivity extends BaseActivity implements RestResponseListener {
 

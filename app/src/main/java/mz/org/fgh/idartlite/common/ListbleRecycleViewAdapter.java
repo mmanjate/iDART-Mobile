@@ -15,9 +15,10 @@ import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.databinding.HeaderitemBinding;
 import mz.org.fgh.idartlite.databinding.ListableItemBinding;
+import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ListbleDialogListener {
+public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IListbleDialogListener {
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;

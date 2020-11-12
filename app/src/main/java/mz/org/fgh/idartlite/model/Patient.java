@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.dao.PatientDaoImpl;
+import mz.org.fgh.idartlite.dao.patient.PatientDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 

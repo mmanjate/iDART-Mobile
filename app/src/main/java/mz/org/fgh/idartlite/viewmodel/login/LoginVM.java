@@ -17,11 +17,13 @@ import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.rest.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.ClinicService;
-import mz.org.fgh.idartlite.service.UserService;
-import mz.org.fgh.idartlite.service.restService.RestRunDataForTestService;
-import mz.org.fgh.idartlite.service.restService.RestUserService;
+import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.clinic.ClinicService;
+import mz.org.fgh.idartlite.service.clinic.IClinicService;
+import mz.org.fgh.idartlite.service.user.IUserService;
+import mz.org.fgh.idartlite.service.user.UserService;
+import mz.org.fgh.idartlite.rest.service.RestRunDataForTestService;
+import mz.org.fgh.idartlite.rest.service.RestUserService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.home.HomeActivity;
 import mz.org.fgh.idartlite.view.login.LoginActivity;
@@ -29,8 +31,8 @@ import mz.org.fgh.idartlite.view.splash.SecondSplashActivity;
 
 public class LoginVM extends BaseViewModel {
     private RestUserService restUserService;
-    private UserService userService;
-    private ClinicService clinicService;
+    private IUserService userService;
+    private IClinicService clinicService;
 
     private Clinic selectedClinic;
 

@@ -28,23 +28,23 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityStockEntranceBinding;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
-import mz.org.fgh.idartlite.service.DispenseDrugService;
-import mz.org.fgh.idartlite.service.DrugService;
-import mz.org.fgh.idartlite.service.StockService;
+import mz.org.fgh.idartlite.service.dispense.DispenseDrugService;
+import mz.org.fgh.idartlite.service.drug.DrugService;
+import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.stock.StockEntranceVM;
 
-public class StockEntranceActivity extends BaseActivity implements DialogListener {
+public class StockEntranceActivity extends BaseActivity implements IDialogListener {
 
     private ActivityStockEntranceBinding stockEntranceBinding;
     private DrugService drugService;

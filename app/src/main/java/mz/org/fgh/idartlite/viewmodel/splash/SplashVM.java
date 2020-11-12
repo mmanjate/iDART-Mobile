@@ -11,17 +11,21 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.PharmacyType;
-import mz.org.fgh.idartlite.service.DiseaseTypeService;
-import mz.org.fgh.idartlite.service.DrugService;
-import mz.org.fgh.idartlite.service.PharmacyTypeService;
-import mz.org.fgh.idartlite.service.UserService;
+import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
+import mz.org.fgh.idartlite.service.drug.DiseaseTypeService;
+import mz.org.fgh.idartlite.service.drug.DrugService;
+import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
+import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
+import mz.org.fgh.idartlite.service.drug.IDrugService;
+import mz.org.fgh.idartlite.service.user.IUserService;
+import mz.org.fgh.idartlite.service.user.UserService;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public class SplashVM extends BaseViewModel {
-    private UserService userService;
-    private PharmacyTypeService pharmacyTypeService;
-    private DiseaseTypeService diseaseTypeService;
-    private DrugService drugService;
+    private IUserService userService;
+    private IPharmacyTypeService pharmacyTypeService;
+    private IDiseaseTypeService diseaseTypeService;
+    private IDrugService drugService;
 
     public SplashVM(@NonNull Application application) {
         super(application);

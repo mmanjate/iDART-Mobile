@@ -27,7 +27,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
-import mz.org.fgh.idartlite.common.DialogListener;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
@@ -47,7 +47,7 @@ import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 import mz.org.fgh.idartlite.view.patientPanel.PrescriptionFragment;
 import mz.org.fgh.idartlite.viewmodel.prescription.PrescriptionVM;
 
-public class PrescriptionActivity extends BaseActivity implements DialogListener {
+public class PrescriptionActivity extends BaseActivity implements IDialogListener {
 
     private ActivityPrescriptionBinding prescriptionBinding;
 
