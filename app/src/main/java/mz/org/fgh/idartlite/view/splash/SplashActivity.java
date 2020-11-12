@@ -16,28 +16,29 @@ import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.base.RestResponseListener;
-import mz.org.fgh.idartlite.common.DialogListener;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.rest.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.PharmacyTypeService;
-import mz.org.fgh.idartlite.service.restService.RestClinicService;
-import mz.org.fgh.idartlite.service.restService.RestDiseaseTypeService;
-import mz.org.fgh.idartlite.service.restService.RestDispenseTypeService;
-import mz.org.fgh.idartlite.service.restService.RestDrugService;
-import mz.org.fgh.idartlite.service.restService.RestFormService;
-import mz.org.fgh.idartlite.service.restService.RestPharmacyTypeService;
-import mz.org.fgh.idartlite.service.restService.RestTherapeuticLineService;
-import mz.org.fgh.idartlite.service.restService.RestTherapeuticRegimenService;
+import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
+import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
+import mz.org.fgh.idartlite.rest.service.RestClinicService;
+import mz.org.fgh.idartlite.rest.service.RestDiseaseTypeService;
+import mz.org.fgh.idartlite.rest.service.RestDispenseTypeService;
+import mz.org.fgh.idartlite.rest.service.RestDrugService;
+import mz.org.fgh.idartlite.rest.service.RestFormService;
+import mz.org.fgh.idartlite.rest.service.RestPharmacyTypeService;
+import mz.org.fgh.idartlite.rest.service.RestTherapeuticLineService;
+import mz.org.fgh.idartlite.rest.service.RestTherapeuticRegimenService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.login.LoginActivity;
 import mz.org.fgh.idartlite.viewmodel.splash.SplashVM;
 
-public class SplashActivity extends BaseActivity implements RestResponseListener, DialogListener {
+public class SplashActivity extends BaseActivity implements RestResponseListener, IDialogListener {
 
     private static final String TAG = "SplashActivity";
 
     private RestClinicService restClinicService;
-    private PharmacyTypeService pharmacyTypeService;
+    private IPharmacyTypeService pharmacyTypeService;
 
     private List<Clinic> clinicList = new ArrayList<Clinic>();
 

@@ -16,7 +16,7 @@ import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.common.DialogListener;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
@@ -26,21 +26,27 @@ import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
-import mz.org.fgh.idartlite.service.DispenseDrugService;
-import mz.org.fgh.idartlite.service.DispenseService;
-import mz.org.fgh.idartlite.service.DrugService;
-import mz.org.fgh.idartlite.service.EpisodeService;
-import mz.org.fgh.idartlite.service.PrescriptionService;
-import mz.org.fgh.idartlite.service.StockService;
+import mz.org.fgh.idartlite.service.dispense.DispenseDrugService;
+import mz.org.fgh.idartlite.service.dispense.DispenseService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseDrugService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseService;
+import mz.org.fgh.idartlite.service.drug.DrugService;
+import mz.org.fgh.idartlite.service.drug.IDrugService;
+import mz.org.fgh.idartlite.service.episode.EpisodeService;
+import mz.org.fgh.idartlite.service.episode.IEpisodeService;
+import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
+import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
+import mz.org.fgh.idartlite.service.stock.IStockService;
+import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.dispense.CreateDispenseActivity;
 import mz.org.fgh.idartlite.view.patientPanel.DispenseFragment;
 import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 
-public class DispenseVM extends BaseViewModel implements DialogListener {
+public class DispenseVM extends BaseViewModel implements IDialogListener {
 
-    private DispenseService dispenseService;
+    private IDispenseService dispenseService;
 
     private Dispense dispense;
 
@@ -48,15 +54,15 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
 
     private boolean drugDataVisible;
 
-    private PrescriptionService prescriptionService;
+    private IPrescriptionService prescriptionService;
 
-    private DispenseDrugService dispenseDrugService;
+    private IDispenseDrugService dispenseDrugService;
 
-    private DrugService drugService;
+    private IDrugService drugService;
 
-    private StockService stockService;
+    private IStockService stockService;
 
-    private EpisodeService episodeService;
+    private IEpisodeService episodeService;
 
 
     public DispenseVM(@NonNull Application application) {

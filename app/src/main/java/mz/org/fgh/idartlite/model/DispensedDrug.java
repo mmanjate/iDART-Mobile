@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.dao.DispensedDrugDaoImpl;
+import mz.org.fgh.idartlite.dao.dispense.DispensedDrugDaoImpl;
 
 import java.util.Objects;
 

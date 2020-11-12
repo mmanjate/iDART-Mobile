@@ -12,9 +12,9 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Stock;
-import mz.org.fgh.idartlite.rest.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.StockService;
-import mz.org.fgh.idartlite.service.restService.RestStockService;
+import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.stock.StockService;
+import mz.org.fgh.idartlite.rest.service.RestStockService;
 
 public class RestPatchStockConfigWorkerScheduler extends Worker {
 

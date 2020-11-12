@@ -1,7 +1,6 @@
 package mz.org.fgh.idartlite.base.service;
 
 import android.app.Application;
-import android.os.Bundle;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -19,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 
 import mz.org.fgh.idartlite.dao.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.rest.ExecutorThreadProvider;
+import mz.org.fgh.idartlite.rest.helper.ExecutorThreadProvider;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public abstract class BaseService {
@@ -34,7 +33,6 @@ public abstract class BaseService {
     protected Application application;
     public static Application app;
 
-
     public BaseService(Application application, User currentUser) {
         initServices(application,currentUser);
     }
@@ -43,8 +41,7 @@ public abstract class BaseService {
         initServices(application,null);
     }
 
-
-    private void initServices(Application application, User currentUser){
+    public void initServices(Application application, User currentUser){
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
         restServiceExecutor = ExecutorThreadProvider.getInstance().getExecutorService();
 
@@ -52,7 +49,6 @@ public abstract class BaseService {
         this.application=application;
         BaseService.app = application;
     }
-
 
     protected IdartLiteDataBaseHelper getDataBaseHelper() {
         return dataBaseHelper;

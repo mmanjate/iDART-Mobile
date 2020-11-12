@@ -22,8 +22,8 @@ import java.util.UUID;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.common.DialogListener;
-import mz.org.fgh.idartlite.common.ListbleDialogListener;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
+import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
 import mz.org.fgh.idartlite.model.Prescription;
 
 public class Utilities {
@@ -90,7 +90,7 @@ public class Utilities {
      *
      * @param mContext, Context of where to display
      */
-    public static AlertDialog displayAlertDialog(final Context mContext, final String alertMessage, DialogListener listener) {
+    public static AlertDialog displayAlertDialog(final Context mContext, final String alertMessage, IDialogListener listener) {
         return genericDisplayAlertDialog(mContext, alertMessage, listener);
     }
 
@@ -107,7 +107,7 @@ public class Utilities {
      *
      * @param mContext, Context of where to display
      */
-    private static AlertDialog genericDisplayAlertDialog(final Context mContext, final String alertMessage, DialogListener listener) {
+    private static AlertDialog genericDisplayAlertDialog(final Context mContext, final String alertMessage, IDialogListener listener) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
                 .setMessage(alertMessage)
@@ -123,7 +123,7 @@ public class Utilities {
         return builder.create();
     }
 
-    private static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, int position, BaseModel baseModel, ListbleDialogListener listener)
+    private static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, int position, BaseModel baseModel, IListbleDialogListener listener)
         {
             AlertDialog myQuittingDialogBox = new AlertDialog.Builder(mContext)
                     // set message, title, and icon
@@ -158,7 +158,7 @@ public class Utilities {
             return myQuittingDialogBox;
         }
 
-    public static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, DialogListener listener)
+    public static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, IDialogListener listener)
     {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(mContext)
                 // set message, title, and icon
@@ -185,11 +185,11 @@ public class Utilities {
         return myQuittingDialogBox;
     }
 
-    public static AlertDialog displayDeleteConfirmationDialogFromList(final Context mContext, final String dialogMesg, int position, ListbleDialogListener listener) {
+    public static AlertDialog displayDeleteConfirmationDialogFromList(final Context mContext, final String dialogMesg, int position, IListbleDialogListener listener) {
         return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel), position, null, listener);
     }
 
-    public static AlertDialog displayDeleteConfirmationDialog(final Context mContext, final String dialogMesg,  BaseModel baseModel, ListbleDialogListener listener) {
+    public static AlertDialog displayDeleteConfirmationDialog(final Context mContext, final String dialogMesg,  BaseModel baseModel, IListbleDialogListener listener) {
         return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel), 0, baseModel, listener);
     }
 

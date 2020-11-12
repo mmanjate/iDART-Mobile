@@ -14,7 +14,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.service.DispenseService;
+import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
@@ -22,9 +22,7 @@ import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
 public class DispenseReportVM extends SearchVM<Dispense> {
 
 
-    private DispenseService dispenseService;
-
-
+    private IDispenseService dispenseService;
 
     private String startDate;
 

@@ -8,14 +8,14 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
-import mz.org.fgh.idartlite.rest.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.restService.RestDiseaseTypeService;
-import mz.org.fgh.idartlite.service.restService.RestDispenseTypeService;
-import mz.org.fgh.idartlite.service.restService.RestDrugService;
-import mz.org.fgh.idartlite.service.restService.RestFormService;
-import mz.org.fgh.idartlite.service.restService.RestPharmacyTypeService;
-import mz.org.fgh.idartlite.service.restService.RestTherapeuticLineService;
-import mz.org.fgh.idartlite.service.restService.RestTherapeuticRegimenService;
+import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.rest.service.RestDiseaseTypeService;
+import mz.org.fgh.idartlite.rest.service.RestDispenseTypeService;
+import mz.org.fgh.idartlite.rest.service.RestDrugService;
+import mz.org.fgh.idartlite.rest.service.RestFormService;
+import mz.org.fgh.idartlite.rest.service.RestPharmacyTypeService;
+import mz.org.fgh.idartlite.rest.service.RestTherapeuticLineService;
+import mz.org.fgh.idartlite.rest.service.RestTherapeuticRegimenService;
 
 public class RestGetConfigWorkerScheduler extends Worker {
 

@@ -28,12 +28,11 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
-import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.databinding.ActivityCreateDispenseBinding;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
@@ -42,10 +41,11 @@ import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.dispense.DispenseVM;
 
-public class CreateDispenseActivity extends BaseActivity implements DialogListener {
+public class CreateDispenseActivity extends BaseActivity implements IDialogListener {
 
     private ActivityCreateDispenseBinding activityCreateDispenseBinding;
 

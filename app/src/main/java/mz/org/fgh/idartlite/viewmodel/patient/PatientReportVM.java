@@ -14,12 +14,13 @@ import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.service.PatientService;
+import mz.org.fgh.idartlite.service.patient.IPatientService;
+import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 
 public class PatientReportVM extends BaseViewModel {
 
-    private PatientService patientService;
+    private IPatientService patientService;
 
     private String prerioType;
 
@@ -34,7 +35,7 @@ public class PatientReportVM extends BaseViewModel {
 
         int p = 0;
         try {
-            p = patientService.countnewPatientsByPeriod(start, end);
+            p = patientService.countNewPatientsByPeriod(start, end);
         } catch (SQLException e) {
             e.printStackTrace();
         }

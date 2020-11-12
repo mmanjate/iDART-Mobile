@@ -12,10 +12,10 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.rest.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.EpisodeService;
-import mz.org.fgh.idartlite.service.PatientService;
-import mz.org.fgh.idartlite.service.restService.RestDispenseService;
+import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.episode.EpisodeService;
+import mz.org.fgh.idartlite.service.patient.PatientService;
+import mz.org.fgh.idartlite.rest.service.RestDispenseService;
 
 public class RestGetPatientDispensationWorkerScheduler extends Worker {
     private static final String TAG = "RestGetPatientDispense";
