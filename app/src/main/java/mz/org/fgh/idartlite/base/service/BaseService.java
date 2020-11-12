@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.base.service;
 
 import android.app.Application;
+import android.os.Bundle;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -33,6 +34,7 @@ public abstract class BaseService {
     protected Application application;
     public static Application app;
 
+
     public BaseService(Application application, User currentUser) {
         initServices(application,currentUser);
     }
@@ -40,6 +42,7 @@ public abstract class BaseService {
     public BaseService(Application application) {
         initServices(application,null);
     }
+
 
     private void initServices(Application application, User currentUser){
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
@@ -49,6 +52,7 @@ public abstract class BaseService {
         this.application=application;
         BaseService.app = application;
     }
+
 
     protected IdartLiteDataBaseHelper getDataBaseHelper() {
         return dataBaseHelper;

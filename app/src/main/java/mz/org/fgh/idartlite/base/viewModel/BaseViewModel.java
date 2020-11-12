@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.service.BaseServiceFactory;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.model.Clinic;
@@ -27,9 +28,13 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     protected User currentUser;
     protected Clinic currentClinic;
 
+    protected BaseServiceFactory baseServiceFactory;
+
     public BaseViewModel(@NonNull Application application) {
         super(application);
         callbacks = new PropertyChangeRegistry();
+
+        baseServiceFactory = BaseServiceFactory.getInstance(application);
 
     }
 
@@ -125,5 +130,9 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     public void setCurrentClinic(Clinic currentClinic) {
         this.currentClinic = currentClinic;
         notifyPropertyChanged(BR.currentClinic);
+    }
+
+    public BaseServiceFactory getBaseServiceFactory() {
+        return baseServiceFactory;
     }
 }

@@ -101,7 +101,7 @@
                             android:id="@+id/editEpisodeDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(episode.episodeDate)}"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(episode.episodeDate)}"
                             android:drawableLeft="@drawable/ic_calendar"
                             android:paddingStart="@dimen/dimen_4dp"
                             android:paddingLeft="@dimen/dimen_4dp" />

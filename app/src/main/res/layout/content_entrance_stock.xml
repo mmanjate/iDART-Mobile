@@ -95,7 +95,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:textStyle="bold"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(stock.dateReceived)}" />
+                            android:text="@{DateUtilities.formatToDDMMYYYY(stock.dateReceived)}" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

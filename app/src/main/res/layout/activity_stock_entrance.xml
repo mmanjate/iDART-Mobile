@@ -134,7 +134,7 @@
                             android:layout_height="wrap_content"
                             style="@style/bottom_border_edit_text_style"
                             android:drawableLeft="@drawable/ic_calendar"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(stock.dateReceived)}"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(stock.dateReceived)}"
                             android:paddingStart="@dimen/dimen_4dp"
                             android:paddingLeft="@dimen/dimen_4dp" />
 
@@ -245,7 +245,7 @@
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_calendar"
                             style="@style/bottom_border_edit_text_style"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(stock.expiryDate)}"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(stock.expiryDate)}"
                             android:paddingStart="@dimen/dimen_4dp"
                             android:paddingLeft="@dimen/dimen_4dp" />
 
