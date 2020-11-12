@@ -5,13 +5,11 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Objects;
 
-import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.DiseaseTypeDaoImpl;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 
 
 public class Report<T extends BaseActivity> extends BaseModel {

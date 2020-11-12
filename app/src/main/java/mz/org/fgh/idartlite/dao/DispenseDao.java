@@ -2,13 +2,9 @@ package mz.org.fgh.idartlite.dao;
 
 import android.app.Application;
 
-import com.j256.ormlite.stmt.QueryBuilder;
-
-import mz.org.fgh.idartlite.common.ValorSimples;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
-import mz.org.fgh.idartlite.model.TherapeuticLine;
 
 import java.sql.SQLException;
 import java.util.Date;

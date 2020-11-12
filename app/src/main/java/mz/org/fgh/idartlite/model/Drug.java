@@ -10,7 +10,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.dao.DrugDaoImpl;
 

@@ -4,13 +4,12 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.PatientDaoImpl;
-import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -155,7 +154,7 @@ public class Patient extends BaseModel {
 	}
 
 	public String getDateString(){
-		return DateUtilitis.parseDateToDDMMYYYYString(this.birthDate);
+		return DateUtilities.parseDateToDDMMYYYYString(this.birthDate);
 	}
 
 	public List<Episode> getEpisodes() {
@@ -183,7 +182,7 @@ public class Patient extends BaseModel {
 	public int getAge() {
 		int age = 0;
 		try {
-			age = (int) DateUtilitis.calculaIdade(DateUtilitis.formatToDDMMYYYY(this.birthDate, "-"),DateUtilitis.YEAR_FORMAT);
+			age = (int) DateUtilities.calculaIdade(DateUtilities.formatToDDMMYYYY(this.birthDate, "-"), DateUtilities.YEAR_FORMAT);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -196,9 +195,9 @@ public class Patient extends BaseModel {
 
 	public String getDateStartTarv(){
 		if(this.startARVDate == null){
-			return DateUtilitis.parseDateToDDMMYYYYString(Calendar.getInstance().getTime());
+			return DateUtilities.parseDateToDDMMYYYYString(Calendar.getInstance().getTime());
 		}else {
-			return DateUtilitis.parseDateToDDMMYYYYString(this.startARVDate);
+			return DateUtilities.parseDateToDDMMYYYYString(this.startARVDate);
 		}
 	}
 

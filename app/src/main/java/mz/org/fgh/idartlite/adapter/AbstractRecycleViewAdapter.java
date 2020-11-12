@@ -1,16 +1,14 @@
 package mz.org.fgh.idartlite.adapter;
 
 import android.app.Activity;
-import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 
 public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {

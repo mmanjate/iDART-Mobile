@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.patient.EpisodeActivity"
+    tools:context=".view.episode.EpisodeActivity"
     >
 
     <data>
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.EpisodeVM" />
+            type="mz.org.fgh.idartlite.viewmodel.episode.EpisodeVM" />
         <variable
             name="patient"
             type="mz.org.fgh.idartlite.model.Patient" />
@@ -17,7 +17,7 @@
             name="episode"
             type="mz.org.fgh.idartlite.model.Episode" />
 
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
     </data>
 

@@ -6,7 +6,7 @@
         <variable
             name="report"
             type="mz.org.fgh.idartlite.model.Report" />
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="android.view.View"/>
     </data>

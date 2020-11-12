@@ -13,9 +13,9 @@
             type="mz.org.fgh.idartlite.model.Stock" />
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.StockEntranceVM" />
+            type="mz.org.fgh.idartlite.viewmodel.stock.StockEntranceVM" />
 
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
     </data>
 

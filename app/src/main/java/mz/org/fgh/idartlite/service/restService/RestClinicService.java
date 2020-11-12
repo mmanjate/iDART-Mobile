@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;

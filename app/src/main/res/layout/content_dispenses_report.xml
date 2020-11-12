@@ -6,7 +6,7 @@
         <variable
             name="dispense"
             type="mz.org.fgh.idartlite.model.Dispense" />
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
     </data>
 

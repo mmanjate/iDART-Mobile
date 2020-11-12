@@ -18,8 +18,8 @@ import java.util.Map;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.ClickListener;
 import mz.org.fgh.idartlite.adapter.ReportListAdapter;
-import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityReportsListingBinding;
 import mz.org.fgh.idartlite.model.Report;
 

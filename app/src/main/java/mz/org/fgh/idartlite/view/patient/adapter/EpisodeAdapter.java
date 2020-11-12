@@ -1,17 +1,10 @@
 package mz.org.fgh.idartlite.view.patient.adapter;
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.core.widget.PopupMenuCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,11 +12,8 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.databinding.PatientEpisodeRowBinding;
-import mz.org.fgh.idartlite.databinding.PatientPrescriptionRowBinding;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.Prescription;
-import mz.org.fgh.idartlite.view.patient.PatientActivity;
 
 public class EpisodeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

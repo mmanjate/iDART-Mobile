@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseActivity;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.databinding.HeaderitemReportBinding;
 import mz.org.fgh.idartlite.databinding.ListableItemReportBinding;
 import mz.org.fgh.idartlite.model.StockReportData;

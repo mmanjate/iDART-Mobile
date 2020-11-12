@@ -5,15 +5,12 @@ import android.app.Application;
 import com.google.gson.internal.LinkedTreeMap;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
-import org.json.JSONException;
-
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;

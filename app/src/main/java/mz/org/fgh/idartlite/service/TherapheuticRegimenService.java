@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.google.gson.internal.LinkedTreeMap;
 
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.util.Utilities;

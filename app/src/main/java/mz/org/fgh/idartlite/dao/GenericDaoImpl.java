@@ -1,10 +1,7 @@
 package mz.org.fgh.idartlite.dao;
 
-import android.app.Application;
-
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.GenericRawResults;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
@@ -12,8 +9,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.common.ValorSimples;
+import mz.org.fgh.idartlite.util.SimpleValue;
 
 public class GenericDaoImpl<T, ID> extends BaseDaoImpl<T, ID> implements GenericDao<T, ID> {
 
@@ -29,7 +25,7 @@ public class GenericDaoImpl<T, ID> extends BaseDaoImpl<T, ID> implements Generic
         super(connectionSource, tableConfig);
     }
 
-    public List<ValorSimples> countDispensesRegimenByPeriod(Date start, Date end) throws SQLException {
+    public List<SimpleValue> countDispensesRegimenByPeriod(Date start, Date end) throws SQLException {
 
         String sql = "select therapeutic_regimen.description, count(*) as qty\n" +
                 "from Dispense inner join prescription on dispense.prescription_id = prescription.id\n" +
@@ -38,7 +34,7 @@ public class GenericDaoImpl<T, ID> extends BaseDaoImpl<T, ID> implements Generic
 
         GenericRawResults<T> rawResults = queryRaw(sql, getRawRowMapper());
 
-        return (List<ValorSimples>) rawResults.getResults();
+        return (List<SimpleValue>) rawResults.getResults();
     }
 
 }

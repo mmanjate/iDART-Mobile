@@ -7,10 +7,9 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.EpisodeDaoImpl;
-import mz.org.fgh.idartlite.util.DateUtilitis;
-import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -170,14 +169,14 @@ public class Episode extends BaseModel {
 	}
 
 	public String getStringEpisodeDate(){
-		return DateUtilitis.parseDateToDDMMYYYYString(this.episodeDate);
+		return DateUtilities.parseDateToDDMMYYYYString(this.episodeDate);
 	}
 
 	public String validateEpisodeData(Context context){
 		if(episodeDate==null){
 			return context.getString(R.string.episode_date_required);
 		}
-		if(DateUtilitis.dateDiff(episodeDate, Calendar.getInstance().getTime(),DateUtilitis.DAY_FORMAT) >=0){
+		if(DateUtilities.dateDiff(episodeDate, Calendar.getInstance().getTime(), DateUtilities.DAY_FORMAT) >=0){
 			return context.getString(R.string.visit_date_cannot_be_future);
 		}
 		if(stopReason.isEmpty()){

@@ -1,6 +1,6 @@
 package mz.org.fgh.idartlite.model;
 
-import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 
 
 public class StockReportData extends BaseModel {

@@ -9,7 +9,7 @@
         <variable
             name="prescription"
             type="mz.org.fgh.idartlite.model.Prescription" />
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
     </data>
 
     <LinearLayout

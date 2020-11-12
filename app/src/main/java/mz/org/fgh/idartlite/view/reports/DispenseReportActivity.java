@@ -19,14 +19,14 @@ import java.util.Calendar;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.ContentListDispenseAdapter;
-import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.ContentDispensesReportBinding;
 import mz.org.fgh.idartlite.databinding.DispenseReportBinding;
 import mz.org.fgh.idartlite.service.DispenseService;
-import mz.org.fgh.idartlite.view.AboutActivity;
-import mz.org.fgh.idartlite.viewmodel.DispenseReportVM;
+import mz.org.fgh.idartlite.view.about.AboutActivity;
+import mz.org.fgh.idartlite.viewmodel.dispense.DispenseReportVM;
 
 public class DispenseReportActivity extends BaseActivity {
 

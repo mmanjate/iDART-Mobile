@@ -11,7 +11,7 @@ import com.android.volley.VolleyError;
 
 import java.util.Map;
 
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.PharmacyTypeService;

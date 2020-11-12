@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.PatientVM" />
+            type="mz.org.fgh.idartlite.viewmodel.patient.PatientVM" />
     </data>
 
     <LinearLayout

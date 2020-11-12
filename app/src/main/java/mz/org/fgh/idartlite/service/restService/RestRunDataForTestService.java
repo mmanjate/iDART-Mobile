@@ -1,14 +1,12 @@
 package mz.org.fgh.idartlite.service.restService;
 
 import android.app.Application;
-import android.util.Log;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;

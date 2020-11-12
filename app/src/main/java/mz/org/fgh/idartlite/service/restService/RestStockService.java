@@ -22,8 +22,8 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;

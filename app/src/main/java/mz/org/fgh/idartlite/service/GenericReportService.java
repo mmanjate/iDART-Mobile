@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import mz.org.fgh.idartlite.base.BaseService;
-import mz.org.fgh.idartlite.common.ValorSimples;
+import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.dao.GenericDao;
 
 public class GenericReportService extends BaseService {
@@ -17,13 +17,13 @@ public class GenericReportService extends BaseService {
         super(application);
 
         try {
-            genericDao = getDataBaseHelper().getGenericDao(ValorSimples.class);
+            genericDao = getDataBaseHelper().getGenericDao(SimpleValue.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<ValorSimples> countDispensesRegimenByPeriod(Date start, Date end) throws SQLException {
+    public List<SimpleValue> countDispensesRegimenByPeriod(Date start, Date end) throws SQLException {
         return genericDao.countDispensesRegimenByPeriod(start,end);
     }
 

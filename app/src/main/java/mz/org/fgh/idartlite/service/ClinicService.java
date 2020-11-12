@@ -5,7 +5,7 @@ import android.app.Application;
 import java.sql.SQLException;
 import java.util.List;
 
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 

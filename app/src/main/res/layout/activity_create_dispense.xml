@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.patient.CreateDispenseActivity">
+    tools:context=".view.dispense.CreateDispenseActivity">
 
     <data>
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.DispenseVM" />
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+            type="mz.org.fgh.idartlite.viewmodel.dispense.DispenseVM" />
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="android.view.View"/>
     </data>
 

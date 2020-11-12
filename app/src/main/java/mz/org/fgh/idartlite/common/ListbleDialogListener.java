@@ -2,7 +2,7 @@ package mz.org.fgh.idartlite.common;
 
 import java.sql.SQLException;
 
-import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 
 public interface ListbleDialogListener  {
 

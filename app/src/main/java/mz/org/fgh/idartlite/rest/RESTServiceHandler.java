@@ -1,18 +1,15 @@
 package mz.org.fgh.idartlite.rest;
 
 import android.os.StrictMode;
-import android.util.Base64;
 import android.widget.ImageView;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.ImageLoader;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.ObjectOutput;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.net.HttpURLConnection;
@@ -20,8 +17,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import mz.org.fgh.idartlite.base.BaseService;
-import mz.org.fgh.idartlite.base.IdartLiteApplication;
+import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
 import mz.org.fgh.idartlite.model.User;
 
 public class RESTServiceHandler {

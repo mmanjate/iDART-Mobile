@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.dao.PatientDao;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
