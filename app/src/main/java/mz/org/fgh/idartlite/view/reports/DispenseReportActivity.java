@@ -21,10 +21,11 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.ContentListDispenseAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.ContentDispensesReportBinding;
 import mz.org.fgh.idartlite.databinding.DispenseReportBinding;
-import mz.org.fgh.idartlite.service.DispenseService;
+import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
+import mz.org.fgh.idartlite.service.dispense.DispenseService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.dispense.DispenseReportVM;
 
@@ -34,7 +35,7 @@ public class DispenseReportActivity extends BaseActivity {
     private DispenseReportBinding dispenseReportBinding;
     private ContentDispensesReportBinding contentDispenseReportBinding;
     private ContentListDispenseAdapter adapter;
-    private DispenseService dispenseService;
+    private IDispenseService dispenseService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +201,7 @@ public class DispenseReportActivity extends BaseActivity {
         }
 
         if (adapter.getOnLoadMoreListener() == null) {
-            adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
                     getRelatedViewModel().loadMoreRecords(recyclerDispenses, adapter);

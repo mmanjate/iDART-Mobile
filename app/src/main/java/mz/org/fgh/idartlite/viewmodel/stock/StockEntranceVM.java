@@ -14,7 +14,8 @@ import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
-import mz.org.fgh.idartlite.service.StockService;
+import mz.org.fgh.idartlite.service.stock.IStockService;
+import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.view.stock.StockEntranceActivity;
 import mz.org.fgh.idartlite.view.stock.StockEntranceFragment;
 
@@ -22,7 +23,7 @@ public class StockEntranceVM extends SearchVM<Stock> {
 
     private Clinic clinic;
     private Stock stock;
-    private StockService stockService;
+    private IStockService stockService;
     private boolean initialDataVisible;
     private boolean drugDataVisible;
 

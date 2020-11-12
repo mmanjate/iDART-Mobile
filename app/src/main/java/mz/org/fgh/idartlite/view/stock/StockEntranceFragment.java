@@ -23,20 +23,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.ClickListener;
+
 import mz.org.fgh.idartlite.adapter.StockEntranceAdapter;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.base.fragment.GenericFragment;
-import mz.org.fgh.idartlite.common.ListbleDialogListener;
-import mz.org.fgh.idartlite.common.OnLoadMoreListener;
+
 import mz.org.fgh.idartlite.databinding.FragmentStockEntranceBinding;
+import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
+import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
+import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Stock;
-import mz.org.fgh.idartlite.service.DispenseDrugService;
+import mz.org.fgh.idartlite.service.dispense.DispenseDrugService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.stock.StockEntranceVM;
 
-public class StockEntranceFragment extends GenericFragment implements ListbleDialogListener {
+public class StockEntranceFragment extends GenericFragment implements IListbleDialogListener {
 
     private RecyclerView rcvFragmentStock;
     private Stock stock;
@@ -183,7 +185,7 @@ public class StockEntranceFragment extends GenericFragment implements ListbleDia
         stockEntranceAdapter = new StockEntranceAdapter(this.rcvFragmentStock, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
         rcvFragmentStock.setAdapter(stockEntranceAdapter);
 
-        stockEntranceAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+        stockEntranceAdapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 getRelatedViewModel().loadMoreRecords(rcvFragmentStock, stockEntranceAdapter);

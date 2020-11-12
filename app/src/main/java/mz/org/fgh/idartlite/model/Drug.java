@@ -12,7 +12,7 @@ import java.util.Objects;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.dao.DrugDaoImpl;
+import mz.org.fgh.idartlite.dao.drug.DrugDaoImpl;
 
 @DatabaseTable(tableName = "drug", daoClass = DrugDaoImpl.class)
 public class Drug extends BaseModel implements Listble {

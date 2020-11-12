@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.dao.TherapeuticRegimenDaoImpl;
+import mz.org.fgh.idartlite.dao.drug.TherapeuticRegimenDaoImpl;
 import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "therapeutic_regimen", daoClass = TherapeuticRegimenDaoImpl.class)

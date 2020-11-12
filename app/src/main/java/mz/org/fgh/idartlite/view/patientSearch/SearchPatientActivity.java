@@ -19,12 +19,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.ClickListener;
+
 import mz.org.fgh.idartlite.adapter.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
+import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
+import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
@@ -120,7 +121,7 @@ public class SearchPatientActivity extends BaseActivity {
         }
 
         if (adapter.getOnLoadMoreListener() == null) {
-            adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
                     getRelatedViewModel().loadMoreRecords(recyclerPatient, adapter);

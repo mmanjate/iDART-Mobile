@@ -19,18 +19,18 @@ import java.util.List;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.common.DialogListener;
-import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.databinding.EpisodeActivityBinding;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.episode.EpisodeVM;
 
 import static android.R.layout;
 
-public class EpisodeActivity extends BaseActivity implements DialogListener {
+public class EpisodeActivity extends BaseActivity implements IDialogListener {
 
     private EpisodeActivityBinding createEpisodeBinding;
 

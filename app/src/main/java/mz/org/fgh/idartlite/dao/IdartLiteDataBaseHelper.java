@@ -11,6 +11,24 @@ import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.clinic.IClinicDao;
+import mz.org.fgh.idartlite.dao.clinic.IPharmacyTypeDao;
+import mz.org.fgh.idartlite.dao.drug.IDiseaseTypeDao;
+import mz.org.fgh.idartlite.dao.dispense.IDispenseTypeDao;
+import mz.org.fgh.idartlite.dao.dispense.IDispensedDrugDao;
+import mz.org.fgh.idartlite.dao.dispense.IDispenseDao;
+import mz.org.fgh.idartlite.dao.drug.IDrugDao;
+import mz.org.fgh.idartlite.dao.drug.IRegimenDrugDao;
+import mz.org.fgh.idartlite.dao.drug.ITherapeuticLineDao;
+import mz.org.fgh.idartlite.dao.drug.ITherapeuticRegimenDao;
+import mz.org.fgh.idartlite.dao.episode.IEpisodeDao;
+import mz.org.fgh.idartlite.dao.drug.IFormDao;
+import mz.org.fgh.idartlite.dao.generic.IGenericDao;
+import mz.org.fgh.idartlite.dao.patient.IPatientDao;
+import mz.org.fgh.idartlite.dao.prescription.IPrescribedDrugDao;
+import mz.org.fgh.idartlite.dao.prescription.IPrescriptionDao;
+import mz.org.fgh.idartlite.dao.stock.IStockDao;
+import mz.org.fgh.idartlite.dao.user.IUserDao;
 import mz.org.fgh.idartlite.model.*;
 
 public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
@@ -20,147 +38,147 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int    DATABASE_VERSION = 1;
 
 
-    private UserDao userDao;
-    private GenericDao genericDao;
+    private IUserDao userDao;
+    private IGenericDao genericDao;
 
-    private ClinicDao clinicDao;
-    private DiseaseTypeDao diseaseTypeDao;
-    private DispenseDao dispenseDao;
-    private DispensedDrugDao dispensedDrugDao;
-    private DispenseTypeDao dispenseTypeDao;
-    private DrugDao drugDao;
+    private IClinicDao IClinicDao;
+    private IDiseaseTypeDao IDiseaseTypeDao;
+    private IDispenseDao dispenseDao;
+    private IDispensedDrugDao dispensedDrugDao;
+    private IDispenseTypeDao dispenseTypeDao;
+    private IDrugDao drugDao;
 
-    private EpisodeDao episodeDao;
-    private FormDao formDao;
-    private PatientDao patientDao;
-    private PharmacyTypeDao pharmacyTypeDao;
-    private PrescribedDrugDao prescribedDrugDao;
-    private PrescriptionDao prescriptionDao;
-    private RegimenDrugDao regimenDrugDao;
-    private StockDao stockDao;
-    private TherapeuticLineDao therapeuticLineDao;
-    private TherapeuticRegimenDao therapeuticRegimenDao;
+    private IEpisodeDao episodeDao;
+    private IFormDao formDao;
+    private IPatientDao patientDao;
+    private IPharmacyTypeDao pharmacyTypeDao;
+    private IPrescribedDrugDao prescribedDrugDao;
+    private IPrescriptionDao prescriptionDao;
+    private IRegimenDrugDao regimenDrugDao;
+    private IStockDao stockDao;
+    private ITherapeuticLineDao therapeuticLineDao;
+    private ITherapeuticRegimenDao therapeuticRegimenDao;
 
-    public ClinicDao getClinicDao() throws SQLException {
-        if(clinicDao == null){
-            clinicDao = getDao(Clinic.class);
+    public IClinicDao getIClinicDao() throws SQLException {
+        if(IClinicDao == null){
+            IClinicDao = getDao(Clinic.class);
         }
-        return clinicDao;
+        return IClinicDao;
     }
 
-    public DiseaseTypeDao getDiseaseTypeDao() throws SQLException {
-        if(diseaseTypeDao == null){
-            diseaseTypeDao = getDao(DiseaseType.class);
+    public IDiseaseTypeDao getIDiseaseTypeDao() throws SQLException {
+        if(IDiseaseTypeDao == null){
+            IDiseaseTypeDao = getDao(DiseaseType.class);
         }
-        return diseaseTypeDao;
+        return IDiseaseTypeDao;
     }
 
-    public DispensedDrugDao getDispensedDrugDao() throws SQLException {
+    public IDispensedDrugDao getDispensedDrugDao() throws SQLException {
         if(dispensedDrugDao == null){
             dispensedDrugDao = getDao(DispensedDrug.class);
         }
         return dispensedDrugDao;
     }
 
-    public DispenseTypeDao getDispenseTypeDao() throws SQLException {
+    public IDispenseTypeDao getDispenseTypeDao() throws SQLException {
         if(dispenseTypeDao == null){
             dispenseTypeDao = getDao(DispenseType.class);
         }
         return dispenseTypeDao;
     }
 
-    public DrugDao getDrugDao() throws SQLException {
+    public IDrugDao getDrugDao() throws SQLException {
         if(drugDao == null){
             drugDao = getDao(Drug.class);
         }
         return drugDao;
     }
 
-    public FormDao getFormDao() throws SQLException {
+    public IFormDao getFormDao() throws SQLException {
         if(formDao == null){
             formDao = getDao(Form.class);
         }
         return formDao;
     }
 
-    public PatientDao getPatientDao() throws SQLException {
+    public IPatientDao getPatientDao() throws SQLException {
         if(patientDao == null){
             patientDao = getDao(Patient.class);
         }
         return patientDao;
     }
 
-    public PharmacyTypeDao getPharmacyTypeDao() throws SQLException {
+    public IPharmacyTypeDao getPharmacyTypeDao() throws SQLException {
         if(pharmacyTypeDao == null){
             pharmacyTypeDao = getDao(PharmacyType.class);
         }
         return pharmacyTypeDao;
     }
 
-    public PrescribedDrugDao getPrescribedDrugDao() throws SQLException {
+    public IPrescribedDrugDao getPrescribedDrugDao() throws SQLException {
         if(prescribedDrugDao == null){
             prescribedDrugDao = getDao(PrescribedDrug.class);
         }
         return prescribedDrugDao;
     }
 
-    public RegimenDrugDao getRegimenDrugDao() throws SQLException {
+    public IRegimenDrugDao getRegimenDrugDao() throws SQLException {
         if(regimenDrugDao == null){
             regimenDrugDao = getDao(RegimenDrug.class);
         }
         return regimenDrugDao;
     }
 
-    public TherapeuticLineDao getTherapeuticLineDao() throws SQLException {
+    public ITherapeuticLineDao getTherapeuticLineDao() throws SQLException {
         if(therapeuticLineDao == null){
             therapeuticLineDao = getDao(TherapeuticLine.class);
         }
         return therapeuticLineDao;
     }
 
-    public TherapeuticRegimenDao getTherapeuticRegimenDao() throws SQLException {
+    public ITherapeuticRegimenDao getTherapeuticRegimenDao() throws SQLException {
         if(therapeuticRegimenDao == null){
             therapeuticRegimenDao = getDao(TherapeuticRegimen.class);
         }
         return therapeuticRegimenDao;
     }
 
-    public <T extends BaseModel> GenericDao getGenericDao(Class<T> clazz) throws SQLException {
+    public <T extends BaseModel> IGenericDao getGenericDao(Class<T> clazz) throws SQLException {
         if(genericDao == null){
             genericDao = getDao(clazz);
         }
         return genericDao;
     }
 
-    public UserDao getUserDao() throws SQLException {
+    public IUserDao getUserDao() throws SQLException {
         if(userDao == null){
             userDao = getDao(User.class);
         }
         return userDao;
     }
 
-    public EpisodeDao getEpisodeDao() throws SQLException {
+    public IEpisodeDao getEpisodeDao() throws SQLException {
         if(episodeDao == null){
             episodeDao = getDao(Episode.class);
         }
         return episodeDao;
     }
 
-    public PrescriptionDao getPrescriptionDao() throws SQLException {
+    public IPrescriptionDao getPrescriptionDao() throws SQLException {
         if(prescriptionDao == null){
             prescriptionDao = getDao(Prescription.class);
         }
         return prescriptionDao;
     }
 
-    public DispenseDao getDispenseDao() throws SQLException {
+    public IDispenseDao getDispenseDao() throws SQLException {
         if(dispenseDao == null){
             dispenseDao = getDao(Dispense.class);
         }
         return dispenseDao;
     }
 
-    public StockDao getStockDao() throws SQLException {
+    public IStockDao getStockDao() throws SQLException {
         if(stockDao == null){
             stockDao = getDao(Stock.class);
         }

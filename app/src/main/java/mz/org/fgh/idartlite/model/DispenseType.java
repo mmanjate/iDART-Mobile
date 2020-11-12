@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.dao.DispenseTypeDaoImpl;
+import mz.org.fgh.idartlite.dao.dispense.DispenseTypeDaoImpl;
 import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "Dispense_type", daoClass = DispenseTypeDaoImpl.class)

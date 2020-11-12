@@ -13,11 +13,11 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.rest.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.DispenseService;
-import mz.org.fgh.idartlite.service.EpisodeService;
-import mz.org.fgh.idartlite.service.restService.RestDispenseService;
-import mz.org.fgh.idartlite.service.restService.RestEpisodeService;
+import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.dispense.DispenseService;
+import mz.org.fgh.idartlite.service.episode.EpisodeService;
+import mz.org.fgh.idartlite.rest.service.RestDispenseService;
+import mz.org.fgh.idartlite.rest.service.RestEpisodeService;
 
 public class RestPostPatientDataWorkerScheduler extends Worker {
 

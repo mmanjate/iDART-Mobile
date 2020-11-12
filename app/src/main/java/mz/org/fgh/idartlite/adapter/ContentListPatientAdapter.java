@@ -5,16 +5,13 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.widget.ProgressBar;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.ContentPatientBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
 import mz.org.fgh.idartlite.model.Patient;

@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.dao.EpisodeDaoImpl;
+import mz.org.fgh.idartlite.dao.episode.EpisodeDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilities;
 
 import java.util.Calendar;

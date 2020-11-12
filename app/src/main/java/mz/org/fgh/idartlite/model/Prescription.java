@@ -17,7 +17,7 @@ import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.dao.PrescriptionDaoImpl;
+import mz.org.fgh.idartlite.dao.prescription.PrescriptionDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 

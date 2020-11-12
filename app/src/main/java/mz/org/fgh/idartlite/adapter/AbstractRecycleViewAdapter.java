@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.common.OnLoadMoreListener;
+import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 
 public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
@@ -18,7 +18,7 @@ public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends Re
     protected final int VIEW_TYPE_ITEM = 0;
     protected final int VIEW_TYPE_LOADING = 1;
     protected Activity activity;
-    protected OnLoadMoreListener onLoadMoreListener;
+    protected IOnLoadMoreListener onLoadMoreListener;
     protected boolean isLoading;
     protected int visibleThreshold = 5;
     protected int lastVisibleItem, totalItemCount;
@@ -44,11 +44,11 @@ public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends Re
         });
     }
 
-    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+    public void setOnLoadMoreListener(IOnLoadMoreListener onLoadMoreListener) {
         this.onLoadMoreListener = onLoadMoreListener;
     }
 
-    public OnLoadMoreListener getOnLoadMoreListener() {
+    public IOnLoadMoreListener getOnLoadMoreListener() {
         return onLoadMoreListener;
     }
 

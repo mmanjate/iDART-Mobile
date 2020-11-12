@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.dao.StockDaoImpl;
+import mz.org.fgh.idartlite.dao.stock.StockDaoImpl;
 
 @DatabaseTable(tableName = "Stock", daoClass = StockDaoImpl.class)
 public class Stock extends BaseModel implements Listble {

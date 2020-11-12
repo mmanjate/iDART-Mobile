@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 
 import mz.org.fgh.idartlite.dao.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.rest.ExecutorThreadProvider;
+import mz.org.fgh.idartlite.rest.helper.ExecutorThreadProvider;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public abstract class BaseService {
@@ -41,7 +41,7 @@ public abstract class BaseService {
         initServices(application,null);
     }
 
-    private void initServices(Application application, User currentUser){
+    public void initServices(Application application, User currentUser){
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
         restServiceExecutor = ExecutorThreadProvider.getInstance().getExecutorService();
 
