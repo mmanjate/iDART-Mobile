@@ -16,8 +16,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
@@ -41,8 +41,7 @@ import mz.org.fgh.idartlite.service.PrescriptionService;
 import mz.org.fgh.idartlite.service.StockService;
 import mz.org.fgh.idartlite.service.TherapeuthicLineService;
 import mz.org.fgh.idartlite.service.TherapheuticRegimenService;
-import mz.org.fgh.idartlite.util.DateUtilitis;
-import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
 public class RestDispenseService extends BaseService {
 
@@ -94,12 +93,12 @@ public class RestDispenseService extends BaseService {
                                             Prescription newPrescription = getPrescroptionRest(dispense, patient);
                                             Prescription lastPrescription = prescriptionService.getLastPatientPrescription(patient);
 
-                                            if (DateUtilitis.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilitis.DAY_FORMAT) > 0) {
+                                            if (DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) > 0) {
                                                 prescriptionService.createPrescription(newPrescription);
                                                 savePrescribedDrugOnRest(dispense, newPrescription);
                                                 lastPrescription.setExpiryDate(newPrescription.getPrescriptionDate());
                                                 prescriptionService.updatePrescriptionEntity(lastPrescription);
-                                            } else if (DateUtilitis.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilitis.DAY_FORMAT) == 0) {
+                                            } else if (DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) == 0) {
                                                 newPrescription = lastPrescription;
                                             } else {
                                                 break;
@@ -109,7 +108,7 @@ public class RestDispenseService extends BaseService {
                                             Dispense lastDispense = dispenseService.getLastDispenseFromPrescription(newPrescription);
 
                                             if (lastDispense != null) {
-                                                if (DateUtilitis.dateDiff(newDispense.getPickupDate(), lastDispense.getPickupDate(), DateUtilitis.DAY_FORMAT) > 0) {
+                                                if (DateUtilities.dateDiff(newDispense.getPickupDate(), lastDispense.getPickupDate(), DateUtilities.DAY_FORMAT) > 0) {
                                                     dispenseService.createDispense(newDispense);
                                                     saveDispensedOnRest(dispense, newDispense);
                                                 } else {
@@ -223,8 +222,8 @@ public class RestDispenseService extends BaseService {
         prescription.setPrescriptionSeq(itemresult.get("prescriptionid").toString());
         prescription.setPatient(patient);
         if (itemresult.get("expirydate") != null)
-            prescription.setExpiryDate(DateUtilitis.createDate(itemresult.get("expirydate").toString(), "yyyy-MM-dd"));
-        prescription.setPrescriptionDate(DateUtilitis.createDate(itemresult.get("date").toString(), "yyyy-MM-dd"));
+            prescription.setExpiryDate(DateUtilities.createDate(itemresult.get("expirydate").toString(), "yyyy-MM-dd"));
+        prescription.setPrescriptionDate(DateUtilities.createDate(itemresult.get("date").toString(), "yyyy-MM-dd"));
 
         return prescription;
 
@@ -236,7 +235,7 @@ public class RestDispenseService extends BaseService {
 
         localDispense.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
         localDispense.setNextPickupDate(BaseService.getUtilDateFromString(itemresult.get("dateexpectedstring").toString(), "dd MMM yyyy"));
-        localDispense.setPickupDate(DateUtilitis.createDate(itemresult.get("pickupdate").toString(), "yyyy-MM-dd"));
+        localDispense.setPickupDate(DateUtilities.createDate(itemresult.get("pickupdate").toString(), "yyyy-MM-dd"));
         localDispense.setSupply((int) Float.parseFloat(itemresult.get("weekssupply").toString()));
         localDispense.setPrescription(prescription);
         localDispense.setUuid(UUID.randomUUID().toString());

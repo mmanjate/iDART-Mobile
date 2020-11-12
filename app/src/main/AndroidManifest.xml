@@ -9,7 +9,7 @@
 
 
     <application
-        android:name=".base.IdartLiteApplication"
+        android:name=".base.application.IdartLiteApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -39,12 +39,12 @@
         <activity android:name=".view.reports.PatientReportActivity">
 
         </activity>
-        <activity android:name=".view.AboutActivity" />
+        <activity android:name=".view.about.AboutActivity" />
         <activity
-            android:name=".view.SecondSplashActivity"
+            android:name=".view.splash.SecondSplashActivity"
             android:noHistory="true" />
         <activity
-            android:name=".view.SplashActivity"
+            android:name=".view.splash.SplashActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,10 +53,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.patient.PrescriptionActivity"
+            android:name=".view.prescription.PrescriptionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.patient.CreateDispenseActivity"
+            android:name=".view.dispense.CreateDispenseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.stock.StockEntranceActivity"
@@ -69,24 +69,24 @@
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.SearchPatientActivity"
+            android:name=".view.patientSearch.SearchPatientActivity"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.patient.PatientActivity"
+            android:name=".view.patientPanel.PatientPanelActivity"
             android:label="@string/title_activity_patient"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.login.LoginActivity"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.HomeActivity"
+            android:name=".view.home.HomeActivity"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.patient.EpisodeActivity"
+            android:name=".view.episode.EpisodeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

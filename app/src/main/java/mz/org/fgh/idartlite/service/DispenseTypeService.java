@@ -4,9 +4,8 @@ import android.app.Application;
 
 import com.google.gson.internal.LinkedTreeMap;
 
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.DispenseType;
-import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.User;
 
 import java.sql.SQLException;

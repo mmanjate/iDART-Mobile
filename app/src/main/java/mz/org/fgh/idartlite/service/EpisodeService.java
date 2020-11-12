@@ -9,16 +9,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.base.BaseService;
-import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.patient.EpisodeFragment;
-
-import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
 
 public class EpisodeService extends BaseService {
 

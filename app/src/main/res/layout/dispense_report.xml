@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.DispenseReportVM" />
+            type="mz.org.fgh.idartlite.viewmodel.dispense.DispenseReportVM" />
     </data>
 
     <LinearLayout

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.ListbleDialogListener;
 import mz.org.fgh.idartlite.model.Prescription;

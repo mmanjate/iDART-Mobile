@@ -42,8 +42,6 @@ public class DataBindingAdapter {
         for(int i=0; i<a.getCount(); i++){
             if (a.getItem(i) == null) return 0;
 
-            //if (!Utilities.stringHasValue(((Listble)a.getItem(i)).getCode()) && ((Listble)a.getItem(i)).getId() <= 0) return 0;
-
             if((a.getItem(i)).equals(item)){
                 return i;
             }

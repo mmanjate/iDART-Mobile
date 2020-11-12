@@ -28,11 +28,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseViewModel;
-import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.viewmodel.PatientReportVM;
+import mz.org.fgh.idartlite.viewmodel.patient.PatientReportVM;
 
 public class PatientReportActivity extends BaseActivity {
 
@@ -116,14 +116,14 @@ public class PatientReportActivity extends BaseActivity {
                 if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
                     Utilities.displayAlertDialog(PatientReportActivity.this, "Por favor indicar o período por analisar!").show();
                 }else
-                if (DateUtilitis.dateDiff(DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) < 0){
+                if (DateUtilities.dateDiff(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
                     Utilities.displayAlertDialog(PatientReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
                 }else
-                if ((int) (DateUtilitis.dateDiff(DateUtilitis.getCurrentDate(), DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT)) < 0){
+                if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
                     Utilities.displayAlertDialog(PatientReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
                 }
                 else
-                if ((int) DateUtilitis.dateDiff(DateUtilitis.getCurrentDate(), DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) < 0){
+                if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
                     Utilities.displayAlertDialog(PatientReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
                 }else {
                     Utilities.hideSoftKeyboard(PatientReportActivity.this);
@@ -169,13 +169,13 @@ public class PatientReportActivity extends BaseActivity {
             if ( i < datesBetween.size()-2) {
                 int qty = getRelatedViewModel().countNewPatientByPeriod(datesBetween.get(i).toDate(), datesBetween.get(i + 1).minusDays(1).toDate());
                 if (qty > 0) {
-                    categories.add(DateUtilitis.formatToDDMMYYYY(datesBetween.get(i).toDate()) + " TO " + DateUtilitis.formatToDDMMYYYY(datesBetween.get(i + 1).minusDays(1).toDate()));
+                    categories.add(DateUtilities.formatToDDMMYYYY(datesBetween.get(i).toDate()) + " TO " + DateUtilities.formatToDDMMYYYY(datesBetween.get(i + 1).minusDays(1).toDate()));
                     serieData.add(qty);
                 }
             }else {
                 int qty = getRelatedViewModel().countNewPatientByPeriod(datesBetween.get(i).toDate(), datesBetween.get(i + 1).toDate());
                 if (qty > 0) {
-                    categories.add(DateUtilitis.formatToDDMMYYYY(datesBetween.get(i).toDate()) + " TO " + DateUtilitis.formatToDDMMYYYY(datesBetween.get(i + 1).toDate()));
+                    categories.add(DateUtilities.formatToDDMMYYYY(datesBetween.get(i).toDate()) + " TO " + DateUtilities.formatToDDMMYYYY(datesBetween.get(i + 1).toDate()));
                     serieData.add(qty);
                 }
             }

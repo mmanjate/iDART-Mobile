@@ -25,9 +25,9 @@ import java.util.Collections;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.DialogListener;
 import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.common.Listble;
@@ -39,10 +39,10 @@ import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.service.DispenseDrugService;
 import mz.org.fgh.idartlite.service.DrugService;
 import mz.org.fgh.idartlite.service.StockService;
-import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.AboutActivity;
-import mz.org.fgh.idartlite.viewmodel.StockEntranceVM;
+import mz.org.fgh.idartlite.view.about.AboutActivity;
+import mz.org.fgh.idartlite.viewmodel.stock.StockEntranceVM;
 
 public class StockEntranceActivity extends BaseActivity implements DialogListener {
 
@@ -323,10 +323,10 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                             stockEntranceBinding.numeroPreco.getText().length() != 0 &&
                             stockEntranceBinding.numeroQuantidadeRecebida.getText().length() != 0) {
 
-                        if(DateUtilitis.dateDiff(DateUtilitis.createDate(DateUtilitis.parseDateToDDMMYYYYString(Calendar.getInstance().getTime()),
-                                DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) >= 0) {
-                            if(DateUtilitis.dateDiff(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT),
-                                    DateUtilitis.createDate(DateUtilitis.parseDateToDDMMYYYYString(Calendar.getInstance().getTime()), DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) >= 60) {
+                        if(DateUtilities.dateDiff(DateUtilities.createDate(DateUtilities.parseDateToDDMMYYYYString(Calendar.getInstance().getTime()),
+                                DateUtilities.DATE_FORMAT), DateUtilities.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) >= 0) {
+                            if(DateUtilities.dateDiff(DateUtilities.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilities.DATE_FORMAT),
+                                    DateUtilities.createDate(DateUtilities.parseDateToDDMMYYYYString(Calendar.getInstance().getTime()), DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) >= 60) {
                                 if(Integer.valueOf(stockEntranceBinding.numeroQuantidadeRecebida.getText().toString()) != 0) {
                                     loadDataForm();
                                     getRelatedViewModel().getStock().setUuid(Utilities.getNewUUID().toString());
@@ -365,8 +365,8 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
     private void loadDataForm() {
         drug = selectedDrug;
         getRelatedViewModel().getStock().setDrug(selectedDrug);
-        getRelatedViewModel().getStock().setExpiryDate(DateUtilitis.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilitis.DATE_FORMAT));
-        getRelatedViewModel().getStock().setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
+        getRelatedViewModel().getStock().setExpiryDate(DateUtilities.createDate(stockEntranceBinding.dataValidade.getText().toString(), DateUtilities.DATE_FORMAT));
+        getRelatedViewModel().getStock().setDateReceived(DateUtilities.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilities.DATE_FORMAT));
         getRelatedViewModel().getStock().setBatchNumber(stockEntranceBinding.numeroLote.getText().toString());
         getRelatedViewModel().getStock().setOrderNumber(stockEntranceBinding.numeroGuia.getText().toString());
         String cleanString = stockEntranceBinding.numeroPreco.getText().toString().replace("(MZN) ", "").replaceAll("[,]", "");
@@ -430,7 +430,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                         for (Listble listble : this.selectedStock) {
                             Stock stSave = (Stock) listble;
                             stSave.setOrderNumber(stockEntranceBinding.numeroGuia.getText().toString());
-                            stSave.setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
+                            stSave.setDateReceived(DateUtilities.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilities.DATE_FORMAT));
                             stockService.saveOrUpdateStock(stSave);
                         }
                         Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.stock_edited_sucessfully), StockEntranceActivity.this).show();
@@ -442,7 +442,7 @@ public class StockEntranceActivity extends BaseActivity implements DialogListene
                             for (Listble listble : this.selectedStock) {
                                 Stock stSave = (Stock) listble;
                                 stSave.setOrderNumber(stockEntranceBinding.numeroGuia.getText().toString());
-                                stSave.setDateReceived(DateUtilitis.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilitis.DATE_FORMAT));
+                                stSave.setDateReceived(DateUtilities.createDate(stockEntranceBinding.dataEntrada.getText().toString(), DateUtilities.DATE_FORMAT));
                                 stockService.saveOrUpdateStock(stSave);
                             }
                             Utilities.displayAlertDialog(StockEntranceActivity.this, getString(R.string.stock_edited_sucessfully), StockEntranceActivity.this).show();

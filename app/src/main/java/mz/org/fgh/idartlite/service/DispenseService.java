@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
@@ -22,7 +22,7 @@ import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.StockReportData;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
 import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
 
@@ -186,7 +186,7 @@ public class DispenseService extends BaseService {
 
     public List<StockReportData> getStockAlertReportLastThreeMonthsPeriod() throws SQLException{
 
-        List<Dispense> dispenses= getDispensesBetweenStartDateAndEndDate(DateUtilitis.getDateOfPreviousDays(DateUtilitis.getCurrentDate(),90),DateUtilitis.getCurrentDate());
+        List<Dispense> dispenses= getDispensesBetweenStartDateAndEndDate(DateUtilities.getDateOfPreviousDays(DateUtilities.getCurrentDate(),90), DateUtilities.getCurrentDate());
 
         List<DispensedDrug> dispensedDrugs = getDataBaseHelper().getDispensedDrugDao().getDispensedDrugsByDispenses(dispenses);
 

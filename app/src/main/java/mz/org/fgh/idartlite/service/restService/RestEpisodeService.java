@@ -13,25 +13,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.SQLException;
-import java.util.Objects;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.base.BaseService;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.SyncDispense;
 import mz.org.fgh.idartlite.model.SyncEpisode;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.ClinicService;
-import mz.org.fgh.idartlite.service.DiseaseTypeService;
-import mz.org.fgh.idartlite.service.DispenseDrugService;
-import mz.org.fgh.idartlite.service.DispenseService;
 import mz.org.fgh.idartlite.service.EpisodeService;
-import mz.org.fgh.idartlite.service.PatientService;
 
 public class RestEpisodeService extends BaseService {
 

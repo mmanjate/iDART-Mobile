@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTableConfig;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
-import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -43,7 +43,7 @@ public class PrescriptionDaoImpl extends GenericDaoImpl<Prescription, Integer> i
 
     @Override
     public void closePrescription(Prescription prescription) throws SQLException {
-        prescription.setExpiryDate(DateUtilitis.getCurrentDate());
+        prescription.setExpiryDate(DateUtilities.getCurrentDate());
         update(prescription);
     }
 }

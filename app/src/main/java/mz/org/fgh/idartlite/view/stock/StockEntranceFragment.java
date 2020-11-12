@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,19 +23,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.adapter.ClickListener;
 import mz.org.fgh.idartlite.adapter.StockEntranceAdapter;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.base.BaseViewModel;
-import mz.org.fgh.idartlite.base.GenericFragment;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.common.ListbleDialogListener;
 import mz.org.fgh.idartlite.common.OnLoadMoreListener;
 import mz.org.fgh.idartlite.databinding.FragmentStockEntranceBinding;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.service.DispenseDrugService;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.viewmodel.StockEntranceVM;
+import mz.org.fgh.idartlite.viewmodel.stock.StockEntranceVM;
 
 public class StockEntranceFragment extends GenericFragment implements ListbleDialogListener {
 

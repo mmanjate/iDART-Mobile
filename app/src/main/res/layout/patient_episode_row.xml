@@ -14,7 +14,7 @@
             name="lastDispense"
             type="mz.org.fgh.idartlite.model.Dispense" />
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"

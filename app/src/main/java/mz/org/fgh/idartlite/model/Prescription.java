@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.PrescriptionDaoImpl;
-import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "prescription", daoClass = PrescriptionDaoImpl.class)
@@ -218,7 +218,7 @@ public class Prescription extends BaseModel {
 
 	public double getDurationInMonths(){
 		if (expiryDate == null) return  0;
-		return DateUtilitis.dateDiff(this.prescriptionDate, this.expiryDate, DateUtilitis.MONTH_FORMAT);
+		return DateUtilities.dateDiff(this.prescriptionDate, this.expiryDate, DateUtilities.MONTH_FORMAT);
 	}
 	
 	public String getDurationToUserUI(){
@@ -278,7 +278,7 @@ public class Prescription extends BaseModel {
 
     public String validate(Context context) {
 		if (this.prescriptionDate == null) return context.getString(R.string.prescription_date_mandatory);
-		if(DateUtilitis.dateDiff(this.prescriptionDate, DateUtilitis.getCurrentDate(), DateUtilitis.DAY_FORMAT) > 0) {
+		if(DateUtilities.dateDiff(this.prescriptionDate, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT) > 0) {
 			return context.getString(R.string.prescription_date_not_correct);
 		}
 		if(this.supply <= 0) return context.getString(R.string.prescription_durationmandatory);
@@ -346,7 +346,7 @@ public class Prescription extends BaseModel {
 
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Regime: "+this.therapeuticRegimen.getDescription(), "\n");
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Duração: "+getDurationToUserUI(), "\n");
-		prescriptionData = Utilities.concatStrings(prescriptionData, "Registado em: "+DateUtilitis.formatToDDMMYYYY(this.prescriptionDate), "\n");
+		prescriptionData = Utilities.concatStrings(prescriptionData, "Registado em: "+ DateUtilities.formatToDDMMYYYY(this.prescriptionDate), "\n");
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Medicamentos na Prescrição: \n"+getPrescribedDrugsAsString(), "\n");
 		prescriptionData = Utilities.concatStrings(prescriptionData, "\n Gostaria de apagar esta Prescrição anterior, e substituí-la com a que esta para criar? ", "");
 

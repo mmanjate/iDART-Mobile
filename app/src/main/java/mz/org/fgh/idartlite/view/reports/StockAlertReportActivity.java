@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseViewModel;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ListbleReportRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityStockAlertReportBinding;
 import mz.org.fgh.idartlite.model.StockReportData;
 import mz.org.fgh.idartlite.service.DispenseService;
-import mz.org.fgh.idartlite.view.AboutActivity;
+import mz.org.fgh.idartlite.view.about.AboutActivity;
 
 public class StockAlertReportActivity extends BaseActivity {
 

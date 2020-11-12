@@ -1,6 +1,6 @@
 package mz.org.fgh.idartlite.common;
 
-import mz.org.fgh.idartlite.base.BaseModel;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 
 public interface Listble<T extends BaseModel> extends Comparable<T>{
 

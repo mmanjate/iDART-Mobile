@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseViewModel;
-import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.viewmodel.DispensedDrugsReportVM;
+import mz.org.fgh.idartlite.viewmodel.dispense.DispensedDrugsReportVM;
 
 public class DispensedDrugsReportActivity extends BaseActivity {
 
@@ -116,14 +116,14 @@ public class DispensedDrugsReportActivity extends BaseActivity {
                 if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
                     Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Por favor indicar o período por analisar!").show();
                 }else
-                if (DateUtilitis.dateDiff(DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) < 0){
+                if (DateUtilities.dateDiff(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
                     Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
                 }else
-                if ((int) (DateUtilitis.dateDiff(DateUtilitis.getCurrentDate(), DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT)) < 0){
+                if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
                     Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
                 }
                 else
-                if ((int) DateUtilitis.dateDiff(DateUtilitis.getCurrentDate(), DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) < 0){
+                if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
                     Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
                 }else {
                     Utilities.hideSoftKeyboard(DispensedDrugsReportActivity.this);
@@ -140,7 +140,7 @@ public class DispensedDrugsReportActivity extends BaseActivity {
 
         Map<String, Double> map = new HashMap<>();
         try {
-            map = getRelatedViewModel().search(DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT));
+            map = getRelatedViewModel().search(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
         } catch (SQLException e) {
             e.printStackTrace();
         }
