@@ -109,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"
-                        android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.pickupDate)}" />
+                        android:text="@{DateUtilities.formatToDDMMYYYY(dispense.pickupDate)}" />
 
                     <TextView
                         android:id="@+id/supply"
@@ -123,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"
-                        android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.nextPickupDate)}" />
+                        android:text="@{DateUtilities.formatToDDMMYYYY(dispense.nextPickupDate)}" />
 
                 </LinearLayout>
                 <LinearLayout

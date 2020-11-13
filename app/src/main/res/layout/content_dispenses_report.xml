@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/pacient_name"
                     android:layout_alignParentRight="true"
-                    android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.pickupDate)}"/>
+                    android:text="@{DateUtilities.formatToDDMMYYYY(dispense.pickupDate)}"/>
 
 
 
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/pick_up_date"
                     android:layout_alignParentRight="true"
-                    android:text="@{DateUtilitis.formatToDDMMYYYY(dispense.nextPickupDate)}"/>
+                    android:text="@{DateUtilities.formatToDDMMYYYY(dispense.nextPickupDate)}"/>
 
                 <LinearLayout
                     android:id="@+id/linearDetails"

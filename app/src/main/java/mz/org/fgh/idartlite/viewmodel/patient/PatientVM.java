@@ -32,7 +32,8 @@ public class PatientVM extends SearchVM<Patient> {
 
     public PatientVM(@NonNull Application application) {
         super(application);
-        patientService = new PatientService(application, getCurrentUser());
+
+        patientService = (PatientService) getBaseServiceFactory().get(PatientService.class);
         episodeService = new EpisodeService(application,getCurrentUser());
 
     }
