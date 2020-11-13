@@ -28,6 +28,7 @@ import mz.org.fgh.idartlite.service.drug.ITherapeuthicLineService;
 import mz.org.fgh.idartlite.service.drug.ITherapheuticRegimenService;
 import mz.org.fgh.idartlite.service.prescription.IPrescribedDrugService;
 import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
+import mz.org.fgh.idartlite.service.prescription.PrescribedDrugService;
 import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
@@ -164,6 +165,7 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
         dispenseTypeService = new DispenseTypeService(application, getCurrentUser());
         drugService = new DrugService(application, getCurrentUser());
         dispenseService = new DispenseService(application, getCurrentUser());
+        prescribedDrugService = new PrescribedDrugService(application, getCurrentUser());
     }
 
     public List<Prescription> gatAllOfPatient(Patient patient) throws SQLException {
