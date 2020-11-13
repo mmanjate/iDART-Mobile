@@ -23,6 +23,7 @@ import mz.org.fgh.idartlite.common.ListbleReportRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityStockAlertReportBinding;
 import mz.org.fgh.idartlite.model.StockReportData;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 
 public class StockAlertReportActivity extends BaseActivity {

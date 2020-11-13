@@ -5,9 +5,11 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class BaseServiceFactory<T extends BaseService> {
 
@@ -53,8 +55,11 @@ public class BaseServiceFactory<T extends BaseService> {
     }
 
     public T get(Class<T> tClass) {
-        for (T t : services){
-            if (t.getClass().equals(tClass)) return t;
+        if (services == null) services = new ArrayList<>();
+        if (Utilities.listHasElements(services)) {
+            for (T t : services){
+                if (t.getClass().equals(tClass)) return t;
+            }
         }
 
         T service;

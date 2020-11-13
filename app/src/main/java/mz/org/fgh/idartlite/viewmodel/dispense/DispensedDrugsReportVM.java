@@ -13,6 +13,7 @@ import java.util.Map;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public class DispensedDrugsReportVM extends BaseViewModel {
