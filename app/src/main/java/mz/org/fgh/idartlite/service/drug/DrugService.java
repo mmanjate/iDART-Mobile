@@ -19,7 +19,6 @@ import mz.org.fgh.idartlite.model.User;
 
 import static java.util.Objects.*;
 import static mz.org.fgh.idartlite.model.Drug.COLUMN_DESCRIPTION;
-import static mz.org.fgh.idartlite.model.Drug.COLUMN_FNMCODE;
 import static mz.org.fgh.idartlite.model.Drug.COLUMN_REST_ID;
 
 public class DrugService extends BaseService implements IDrugService {
@@ -39,44 +38,34 @@ public class DrugService extends BaseService implements IDrugService {
         return getDataBaseHelper().getDrugDao().queryForAll();
     }
 
-    public List<Drug> getAllOfTherapeuticRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException {
+    public List<Drug> getAllByTherapeuticRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException {
 
-        QueryBuilder<RegimenDrug, Integer> regimeDrugQb = getDataBaseHelper().getRegimenDrugDao().queryBuilder();
-        regimeDrugQb.where().eq(RegimenDrug.COLUMN_THERAPEUTIC_REGIMEN_ID, therapeuticRegimen.getId());
-
-        QueryBuilder<Drug, Integer> drugQb = getDataBaseHelper().getDrugDao().queryBuilder();
-        return drugQb.join(regimeDrugQb).query();
+        return  getDataBaseHelper().getDrugDao().getAllByTherapeuticRegimen(getApplication(),therapeuticRegimen);
     }
 
-    public Drug getDrug(String code) throws SQLException {
+    public Drug getDrugByFNMCode(String code) throws SQLException {
 
-        List<Drug> typeList = getDataBaseHelper().getDrugDao().queryForEq(COLUMN_FNMCODE, code);
+        Drug typeList = getDataBaseHelper().getDrugDao().getDrugByFNMCode(code);
 
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
+        if (typeList != null) return typeList;
 
         return null;
     }
 
-    public Drug getDrugFromDescription(String description) throws SQLException {
+    public Drug getDrugByDescription(String description) throws SQLException {
 
-        List<Drug> typeList = getDataBaseHelper().getDrugDao().queryForEq(COLUMN_DESCRIPTION, description);
+        Drug typeList = getDataBaseHelper().getDrugDao().getDrugByDescription(description);
 
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
+        if (typeList != null) return typeList;
 
         return null;
     }
 
     public Drug getDrugByRestID(int restId) throws SQLException {
 
-        List<Drug> typeList = getDataBaseHelper().getDrugDao().queryForEq(COLUMN_REST_ID, restId);
+        Drug typeList = getDataBaseHelper().getDrugDao().getDrugByRestID(restId);
 
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
+        if (typeList != null) return typeList;
 
         return null;
     }
@@ -87,7 +76,7 @@ public class DrugService extends BaseService implements IDrugService {
         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) (Object) drug;
         try {
 
-            Drug localDrug = getDrug(requireNonNull(itemresult.get("atccode_id")).toString());
+            Drug localDrug = getDrugByFNMCode(requireNonNull(itemresult.get("atccode_id")).toString());
 
             if (localDrug != null)
                 result = true;
@@ -106,8 +95,8 @@ public class DrugService extends BaseService implements IDrugService {
 
             LinkedTreeMap<String, Object> itemSubResult = (LinkedTreeMap<String, Object>) requireNonNull(itemresult.get("form"));
 
-            DiseaseType diseaseType = diseaseTypeService.getdDiseaseType((requireNonNull(itemresult.get("tipodoenca")).toString()));
-            Form form = formService.getForm((requireNonNull(itemSubResult.get("form")).toString()));
+            DiseaseType diseaseType = diseaseTypeService.getDiseaseTypeByCode((requireNonNull(itemresult.get("tipodoenca")).toString()));
+            Form form = formService.getFormByDescription((requireNonNull(itemSubResult.get("form")).toString()));
 
             localDrug.setRestId((int) Float.parseFloat(requireNonNull(itemresult.get("id")).toString()));
             localDrug.setDescription((requireNonNull(itemresult.get("name")).toString()));

@@ -29,7 +29,7 @@ public class RestGetStockWorkerScheduler extends Worker {
         try {
             if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
                 Log.d(TAG, "doWork: Sync Stock Data");
-                RestStockService.restGetStock(clinicService.getCLinic().get(0));
+                RestStockService.restGetStock(clinicService.getAllClinics().get(0));
             } else {
                 Log.e(TAG, "Response Servidor Offline");
                 return Result.failure();

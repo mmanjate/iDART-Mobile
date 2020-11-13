@@ -23,12 +23,9 @@ public class DispenseDrugService extends BaseService implements IDispenseDrugSer
 
     public List<DispensedDrug> findDispensedDrugByDispenseId(int id) throws SQLException {
 
-        return getDataBaseHelper().getDispensedDrugDao().queryForEq(DispensedDrug.COLUMN_DISPENSE, id);
+        return getDataBaseHelper().getDispensedDrugDao().findDispensedDrugByDispenseId(id);
     }
 
-    public void saveOrUpdateDispensedDrug(DispensedDrug dispensedDrug) throws SQLException {
-        getDataBaseHelper().getDispensedDrugDao().createOrUpdate(dispensedDrug);
-    }
 
     public boolean checkStockIsDispensedDrug(Stock stock) throws SQLException {
         return getDataBaseHelper().getDispensedDrugDao().checkStockIsDispensedDrug(stock);

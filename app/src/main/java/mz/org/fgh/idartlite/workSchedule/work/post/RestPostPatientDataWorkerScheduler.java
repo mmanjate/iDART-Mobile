@@ -40,7 +40,7 @@ public class RestPostPatientDataWorkerScheduler extends Worker {
             episodeService = new EpisodeService(BaseService.getApp(),null);
             if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
                 Log.d(TAG, "doWork: Sync Patient Data");
-                dispenseList = dispenseService.getAllDispenseByStatus(BaseModel.SYNC_SATUS_READY);
+                dispenseList = dispenseService.getAllDispensesByStatus(BaseModel.SYNC_SATUS_READY);
                 if(dispenseList != null)
                 if(dispenseList.size() > 0) {
                     for (Dispense dispense : dispenseList) {

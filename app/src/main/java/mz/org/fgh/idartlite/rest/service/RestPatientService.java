@@ -36,7 +36,7 @@ public class RestPatientService extends BaseService {
         try {
             clinicService = new ClinicService(getApp(),null);
 
-            Clinic clinic = clinicService.getCLinic().get(0);
+            Clinic clinic = clinicService.getAllClinics().get(0);
 
         patientService = new PatientService(getApp(),null);
 

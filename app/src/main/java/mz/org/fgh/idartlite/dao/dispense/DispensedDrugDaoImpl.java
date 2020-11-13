@@ -34,4 +34,9 @@ public class DispensedDrugDaoImpl extends GenericDaoImpl<DispensedDrug, Integer>
     public List<DispensedDrug> getDispensedDrugsByDispenses(List<Dispense> dispenses) throws SQLException {
         return queryBuilder().where().in(DispensedDrug.COLUMN_DISPENSE,dispenses).query();
     }
+
+    @Override
+    public List<DispensedDrug> findDispensedDrugByDispenseId(int id) throws SQLException {
+        return queryBuilder().where().eq(DispensedDrug.COLUMN_DISPENSE, id).query();
+    }
 }

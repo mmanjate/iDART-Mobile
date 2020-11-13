@@ -128,7 +128,7 @@ public class DispenseService extends BaseService implements IDispenseService {
         }
     }
 
-    public List<Dispense> getAllDispenseByStatus(String status) throws SQLException {
+    public List<Dispense> getAllDispensesByStatus(String status) throws SQLException {
 
         List<Dispense> typeList = getDataBaseHelper().getDispenseDao().queryForEq(COLUMN_SYNC_STATUS, status);
 

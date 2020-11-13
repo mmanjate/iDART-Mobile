@@ -6,6 +6,7 @@ import com.j256.ormlite.table.DatabaseTableConfig;
 import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
+import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Form;
 
 public class FormDaoImpl extends GenericDaoImpl<Form, Integer> implements IFormDao {
@@ -19,5 +20,10 @@ public class FormDaoImpl extends GenericDaoImpl<Form, Integer> implements IFormD
 
     public FormDaoImpl(ConnectionSource connectionSource, DatabaseTableConfig tableConfig) throws SQLException {
         super(connectionSource, tableConfig);
+    }
+
+    @Override
+    public Form getFormByDescription(String description) throws SQLException {
+        return queryBuilder().where().eq(Form.COLUMN_DESCRIPTION, description).queryForFirst();
     }
 }

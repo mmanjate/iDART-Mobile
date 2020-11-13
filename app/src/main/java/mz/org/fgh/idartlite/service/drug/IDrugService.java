@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.service.drug;
 
+import android.app.Application;
+
 import com.google.gson.internal.LinkedTreeMap;
 import com.j256.ormlite.stmt.QueryBuilder;
 
@@ -26,11 +28,11 @@ public interface IDrugService extends IBaseService {
 
     public List<Drug> getAll() throws SQLException;
 
-    public List<Drug> getAllOfTherapeuticRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException;
+    public List<Drug> getAllByTherapeuticRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException;
 
-    public Drug getDrug(String code) throws SQLException;
+    public Drug getDrugByFNMCode(String code) throws SQLException;
 
-    public Drug getDrugFromDescription(String description) throws SQLException ;
+    public Drug getDrugByDescription(String description) throws SQLException ;
 
     public Drug getDrugByRestID(int restId) throws SQLException;
 

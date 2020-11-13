@@ -25,7 +25,6 @@ public interface IPrescriptionService extends IBaseService {
     public void createPrescription(Prescription prescription) throws SQLException ;
 
     public void savePriscribedDrus(List<PrescribedDrug> prescribedDrugs) throws SQLException ;
-    public List<PrescribedDrug> getAllOfPrescription(Prescription prescription) throws SQLException;
 
     public void updatePrescription(Prescription prescription) throws SQLException ;
 

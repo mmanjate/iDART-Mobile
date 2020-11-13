@@ -22,9 +22,9 @@ public interface ITherapheuticRegimenService extends IBaseService {
 
     public List<TherapeuticRegimen> getAll() throws SQLException ;
 
-    public TherapeuticRegimen getTherapeuticRegimenFromDescription(String code) throws SQLException ;
+    public TherapeuticRegimen getTherapeuticRegimenByDescription(String description) throws SQLException ;
 
-    public TherapeuticRegimen getTherapeuticRegimenFromCode(String code) throws SQLException ;
+    public TherapeuticRegimen getTherapeuticRegimenByCode(String code) throws SQLException ;
 
     public boolean checkRegimen(Object regimen) ;
 

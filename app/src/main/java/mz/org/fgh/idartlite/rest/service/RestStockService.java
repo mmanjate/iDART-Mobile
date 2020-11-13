@@ -55,7 +55,7 @@ public class RestStockService extends BaseService {
         stockService = new StockService(getApp(), null);
 
         if (clinic == null)
-            clinic = clinicService.getCLinic().get(0);
+            clinic = clinicService.getAllClinics().get(0);
 
         try {
             Clinic finalClinic = clinic;
@@ -103,7 +103,7 @@ public class RestStockService extends BaseService {
         clinicService = new ClinicService(BaseService.getApp(), null);
 
         if (clinic == null)
-            clinic = clinicService.getCLinic().get(0);
+            clinic = clinicService.getAllClinics().get(0);
 
         Clinic finalClinic = clinic;
         String url = BaseService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";

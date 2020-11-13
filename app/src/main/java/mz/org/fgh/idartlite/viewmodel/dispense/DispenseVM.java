@@ -34,7 +34,9 @@ import mz.org.fgh.idartlite.service.drug.DrugService;
 import mz.org.fgh.idartlite.service.drug.IDrugService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
+import mz.org.fgh.idartlite.service.prescription.IPrescribedDrugService;
 import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
+import mz.org.fgh.idartlite.service.prescription.PrescribedDrugService;
 import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
@@ -64,6 +66,7 @@ public class DispenseVM extends BaseViewModel implements IDialogListener {
 
     private IEpisodeService episodeService;
 
+    private IPrescribedDrugService prescribedDrugService;
 
     public DispenseVM(@NonNull Application application) {
         super(application);
@@ -75,6 +78,7 @@ public class DispenseVM extends BaseViewModel implements IDialogListener {
         this.drugService = new DrugService(application, getCurrentUser());
         this.stockService = new StockService(application, getCurrentUser());
         this.episodeService = new EpisodeService(application, getCurrentUser());
+        this.prescribedDrugService = new PrescribedDrugService(application, getCurrentUser());
         this.setViewListRemoveButton(true);
 
     }
@@ -135,7 +139,7 @@ public class DispenseVM extends BaseViewModel implements IDialogListener {
     }
 
     public List<Drug> getAllDrugsFromPrescritionRegimen() throws SQLException {
-        return drugService.getAllOfTherapeuticRegimen((TherapeuticRegimen) this.dispense.getPrescription().getTherapeuticRegimen());
+        return drugService.getAllByTherapeuticRegimen((TherapeuticRegimen) this.dispense.getPrescription().getTherapeuticRegimen());
     }
 
     public List<Drug> getDrugsWithoutRectParanthesis(List<Drug> drugs) throws SQLException {
@@ -228,7 +232,7 @@ public class DispenseVM extends BaseViewModel implements IDialogListener {
 
     public List<PrescribedDrug> getAllPrescribedDrugsByPrescription(Prescription prescription) throws SQLException {
 
-        return this.prescriptionService.getAllOfPrescription(prescription);
+        return this.prescribedDrugService.getAllByPrescription(prescription);
     }
 
     public void backToPreviusActivity() {

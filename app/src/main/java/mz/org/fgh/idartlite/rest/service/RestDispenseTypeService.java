@@ -44,7 +44,7 @@ public class RestDispenseTypeService extends BaseService {
                                 try {
                                     if(!dispenseTypeService.checkDipsenseType(dispenseType)){
                                         Log.i(TAG, "onResponse: " + dispenseType);
-                                        dispenseTypeService.saveDispoenseType(dispenseType);
+                                        dispenseTypeService.saveDispenseType(dispenseType);
                                     }
                                     else{
                                         Log.i(TAG, "onResponse: "+dispenseType+" Ja Existe");

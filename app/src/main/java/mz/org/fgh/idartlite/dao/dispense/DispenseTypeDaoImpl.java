@@ -4,9 +4,12 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.DispenseType;
+
+import static mz.org.fgh.idartlite.model.Clinic.COLUMN_CODE;
 
 public class DispenseTypeDaoImpl extends GenericDaoImpl<DispenseType, Integer> implements IDispenseTypeDao {
     public DispenseTypeDaoImpl(Class dataClass) throws SQLException {
@@ -19,5 +22,15 @@ public class DispenseTypeDaoImpl extends GenericDaoImpl<DispenseType, Integer> i
 
     public DispenseTypeDaoImpl(ConnectionSource connectionSource, DatabaseTableConfig tableConfig) throws SQLException {
         super(connectionSource, tableConfig);
+    }
+
+    @Override
+    public List<DispenseType> getAll() throws SQLException {
+        return queryForAll();
+    }
+
+    @Override
+    public DispenseType getDispenseTypeByCode(String code) throws SQLException {
+        return queryBuilder().where().eq(COLUMN_CODE, code).queryForFirst();
     }
 }

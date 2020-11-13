@@ -46,7 +46,7 @@ public interface IDispenseService extends IBaseService {
 
     public void saveOrUpdateDispensedDrugs(List<DispensedDrug> dispensedDrugs, Dispense dispense) throws SQLException;
 
-    public List<Dispense> getAllDispenseByStatus(String status) throws SQLException;
+    public List<Dispense> getAllDispensesByStatus(String status) throws SQLException;
 
     public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException;
 

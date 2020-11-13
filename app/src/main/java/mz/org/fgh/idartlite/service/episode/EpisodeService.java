@@ -100,7 +100,7 @@ public class EpisodeService extends BaseService implements IEpisodeService{
 
             this.patientService = new PatientService(getApp(), null);
             this.clinicService = new ClinicService(getApp(), null);
-            Patient localPatient = patientService.getPatient(Objects.requireNonNull(episode.get("patientuuid")).toString());
+            Patient localPatient = patientService.getPatientByUuid(Objects.requireNonNull(episode.get("patientuuid")).toString());
             localEpisode.setPatient(localPatient);
             localEpisode.setSanitaryUnit(getLatestByPatient(localPatient).getSanitaryUnit());
             localEpisode.setUsUuid(Objects.requireNonNull(episode.get("usuuid")).toString());;
@@ -126,7 +126,7 @@ public class EpisodeService extends BaseService implements IEpisodeService{
        Patient localPatient=null;
         this.patientService = new PatientService(getApp(), null);
         try {
-             localPatient = patientService.getPatient(Objects.requireNonNull(episode.get("patientuuid")).toString());
+             localPatient = patientService.getPatientByUuid(Objects.requireNonNull(episode.get("patientuuid")).toString());
         }
      catch (SQLException e) {
         e.printStackTrace();

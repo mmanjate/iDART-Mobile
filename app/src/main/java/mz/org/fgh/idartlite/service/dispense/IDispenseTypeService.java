@@ -19,10 +19,10 @@ public interface IDispenseTypeService extends IBaseService {
 
     public List<DispenseType> getAll() throws SQLException;
 
-    public DispenseType getDispenseType(String code) throws SQLException;
+    public DispenseType getDispenseTypeByCode(String code) throws SQLException;
 
     public boolean checkDipsenseType(Object dispenseType);
 
-    public void saveDispoenseType(Object dispenseType);
+    public void saveDispenseType(Object dispenseType);
 
 }

@@ -57,11 +57,6 @@ public class PrescriptionService extends BaseService implements IPrescriptionSer
         }
     }
 
-    public List<PrescribedDrug> getAllOfPrescription(Prescription prescription) throws SQLException {
-        return getDataBaseHelper().getPrescribedDrugDao().queryForEq(PrescribedDrug.COLUMN_PRESCRIPTION, prescription.getId());
-    }
-
-
     public void updatePrescription(Prescription prescription) throws SQLException {
         getDataBaseHelper().getPrescriptionDao().update(prescription);
 
@@ -94,8 +89,8 @@ public class PrescriptionService extends BaseService implements IPrescriptionSer
         try {
             Prescription prescription = new Prescription();
 
-            TherapeuticRegimen therapeuticRegimen = therapeuticRegimenService.getTherapeuticRegimenFromDescription(requireNonNull(patient.get("regimenome")).toString());
-            TherapeuticLine therapeuticLine = therapeuticLineService.getTherapeuticLine(requireNonNull(patient.get("linhanome")).toString());
+            TherapeuticRegimen therapeuticRegimen = therapeuticRegimenService.getTherapeuticRegimenByDescription(requireNonNull(patient.get("regimenome")).toString());
+            TherapeuticLine therapeuticLine = therapeuticLineService.getTherapeuticLineByCode(requireNonNull(patient.get("linhanome")).toString());
 
             prescription.setPrescriptionDate(getSqlDateFromString(requireNonNull(patient.get("prescriptiondate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
             if (patient.get("prescriptionenddate") != null)
@@ -111,11 +106,11 @@ public class PrescriptionService extends BaseService implements IPrescriptionSer
             prescription.setUuid(UUID.randomUUID().toString());
 
             if ((int) Float.parseFloat(requireNonNull(patient.get("dispensasemestral")).toString()) > 0)
-                prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa Semestral (DS)"));
+                prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Semestral (DS)"));
             else if ((int) Float.parseFloat(requireNonNull(patient.get("dispensatrimestral")).toString()) > 0)
-                prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa Trimestral (DT)"));
+                prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Trimestral (DT)"));
             else
-                prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa Mensal (DM)"));
+                prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Mensal (DM)"));
             createPrescription(prescription);
 
                 prescribedDrugService.savePrescribedDrug(prescription,requireNonNull(patient.get("jsonprescribeddrugs")).toString());

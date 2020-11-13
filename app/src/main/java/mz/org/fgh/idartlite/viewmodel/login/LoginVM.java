@@ -84,7 +84,7 @@ public class LoginVM extends BaseViewModel {
 
 
     public void saveLogingUser() throws SQLException {
-        this.currentUser.setClinic(clinicService.getCLinic().get(0));
+        this.currentUser.setClinic(clinicService.getAllClinics().get(0));
         userService.saveUser(getRelatedActivity().getCurrentUser());
     }
 
@@ -119,8 +119,8 @@ public class LoginVM extends BaseViewModel {
                     }
 
                     if (!userService.login(getCurrentUser())) {
-                        if (Utilities.listHasElements(clinicService.getCLinic())) {
-                            setCurrentClinic(clinicService.getCLinic().get(0));
+                        if (Utilities.listHasElements(clinicService.getAllClinics())) {
+                            setCurrentClinic(clinicService.getAllClinics().get(0));
                             getRelatedActivity().changeViewToNormalMode();
                             moveToHome();
                             this.getRelatedActivity().savingSharedPreferences();

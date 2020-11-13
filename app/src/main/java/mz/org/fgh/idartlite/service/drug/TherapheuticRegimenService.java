@@ -30,27 +30,22 @@ public class TherapheuticRegimenService extends BaseService implements  ITheraph
     }
 
     public List<TherapeuticRegimen> getAll() throws SQLException {
-        return getDataBaseHelper().getTherapeuticRegimenDao().queryForAll();
+        return getDataBaseHelper().getTherapeuticRegimenDao().getAll();
     }
 
-    public TherapeuticRegimen getTherapeuticRegimenFromDescription(String code) throws SQLException {
+    public TherapeuticRegimen getTherapeuticRegimenByDescription(String description) throws SQLException {
 
-        List<TherapeuticRegimen> typeList = getDataBaseHelper().getTherapeuticRegimenDao().queryForEq(COLUMN_DESCRIPTION,code);
+        TherapeuticRegimen typeList = getDataBaseHelper().getTherapeuticRegimenDao().getTherapeuticRegimenByDescription(description);
 
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
+        if (typeList != null) return typeList;
 
         return null;
     }
 
-    public TherapeuticRegimen getTherapeuticRegimenFromCode(String code) throws SQLException {
+    public TherapeuticRegimen getTherapeuticRegimenByCode(String code) throws SQLException {
 
-        List<TherapeuticRegimen> typeList = getDataBaseHelper().getTherapeuticRegimenDao().queryForEq(COLUMN_REGIMEN_CODE,code);
-
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
+        TherapeuticRegimen typeList = getDataBaseHelper().getTherapeuticRegimenDao().getTherapeuticRegimenByCode(code);
+        if (typeList != null) return typeList;
 
         return null;
     }
@@ -63,7 +58,7 @@ public class TherapheuticRegimenService extends BaseService implements  ITheraph
 
         try {
 
-            TherapeuticRegimen localRegimen = getTherapeuticRegimenFromCode(Objects.requireNonNull(itemresult.get("codigoregime")).toString());
+            TherapeuticRegimen localRegimen = getTherapeuticRegimenByCode(Objects.requireNonNull(itemresult.get("codigoregime")).toString());
 
             if(localRegimen != null)
                 result = true;

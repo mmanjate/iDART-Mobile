@@ -23,6 +23,6 @@ public interface IPrescribedDrugService extends IBaseService {
 
     public void savePrescribedDrug(Prescription prescription, String drugs) ;
 
-
+    public List<PrescribedDrug> getAllByPrescription(Prescription prescription) throws SQLException;
 
 }

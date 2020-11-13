@@ -14,8 +14,6 @@ public interface IDispenseDrugService extends IBaseService {
 
     public List<DispensedDrug> findDispensedDrugByDispenseId(int id) throws SQLException;
 
-    public void saveOrUpdateDispensedDrug(DispensedDrug dispensedDrug) throws SQLException;
-
     public boolean checkStockIsDispensedDrug(Stock stock) throws SQLException;
 
 }

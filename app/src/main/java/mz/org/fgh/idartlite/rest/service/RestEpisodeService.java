@@ -122,7 +122,7 @@ public class RestEpisodeService extends BaseService {
         try {
             clinicService = new ClinicService(getApp(),null);
              episodeService = new EpisodeService(getApp(), null);
-            Clinic clinic = clinicService.getCLinic().get(0);
+            Clinic clinic = clinicService.getAllClinics().get(0);
 
             String url = BaseService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.R";
 
@@ -224,7 +224,7 @@ public class RestEpisodeService extends BaseService {
         try {
             clinicService = new ClinicService(getApp(),null);
             episodeService = new EpisodeService(getApp(), null);
-            Clinic clinic = clinicService.getCLinic().get(0);
+            Clinic clinic = clinicService.getAllClinics().get(0);
 
             String url = BaseService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid();
 

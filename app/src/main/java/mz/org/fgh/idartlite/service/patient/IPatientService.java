@@ -25,7 +25,7 @@ public interface IPatientService extends IBaseService {
 
     public int countNewPatientsByPeriod(Date start, Date end) throws SQLException ;
 
-    public Patient getPatient(String uuid) throws SQLException ;
+    public Patient getPatientByUuid(String uuid) throws SQLException ;
 
     public boolean checkPatient(LinkedTreeMap<String, Object> patient) ;
 

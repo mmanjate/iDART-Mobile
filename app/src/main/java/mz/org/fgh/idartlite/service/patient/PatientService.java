@@ -53,7 +53,7 @@ public class PatientService extends BaseService implements IPatientService {
     }
 
     public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic, long offset, long limit) throws SQLException {
-            return getDataBaseHelper().getPatientDao().searchPatientByParamAndClinic(param, clinic, offset , limit);
+            return patientDao.searchPatientByParamAndClinic(param, clinic, offset , limit);
 
     }
 
@@ -62,20 +62,18 @@ public class PatientService extends BaseService implements IPatientService {
     }
 
     public void  savePatient(Patient patient) throws SQLException {
-        getDataBaseHelper().getPatientDao().create(patient);
+        patientDao.create(patient);
     }
 
     public int countNewPatientsByPeriod(Date start, Date end) throws SQLException {
         return patientDao.countNewPatientsByPeriod(start, end, getApplication());
     }
 
-    public Patient getPatient(String uuid) throws SQLException {
+    public Patient getPatientByUuid(String uuid) throws SQLException {
 
-        List<Patient> typeList = getDataBaseHelper().getPatientDao().queryForEq(COLUMN_UUID, uuid);
+        Patient typeList = patientDao.getPatientByUuid(uuid);
 
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
+        if (typeList != null) return typeList;
 
         return null;
     }
@@ -85,7 +83,7 @@ public class PatientService extends BaseService implements IPatientService {
         boolean result = false;
 
         try {
-            Patient localPatient = getPatient((Objects.requireNonNull(patient.get("uuidopenmrs")).toString()));
+            Patient localPatient = getPatientByUuid((Objects.requireNonNull(patient.get("uuidopenmrs")).toString()));
 
             if (localPatient != null)
                 result = true;
@@ -102,7 +100,7 @@ public class PatientService extends BaseService implements IPatientService {
         Patient localPatient = new Patient();
         try {
 
-            Clinic clinic = clinicService.getClinic(Objects.requireNonNull(patient.get("clinicuuid")).toString());
+            Clinic clinic = clinicService.getClinicByUuid(Objects.requireNonNull(patient.get("clinicuuid")).toString());
 
             String concatAdrees = getFullAdreess(Objects.requireNonNull(patient.get("address1")).toString(),
                     Objects.requireNonNull(patient.get("address2")).toString(),

@@ -13,7 +13,6 @@ import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.RegimenDrug;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.service.drug.DrugService;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public class RegimenDrugsService extends BaseService implements IRegimenDrugsService{
@@ -39,7 +38,7 @@ public class RegimenDrugsService extends BaseService implements IRegimenDrugsSer
 
                     if (Utilities.stringHasValue((String) itemresult.get("atccode_id")) && ((String) itemresult.get("atccode_id")).length() > 2) {
 
-                        Drug localDrug = drugService.getDrug(Objects.requireNonNull(itemresult.get("atccode_id")).toString());
+                        Drug localDrug = drugService.getDrugByFNMCode(Objects.requireNonNull(itemresult.get("atccode_id")).toString());
 
                         RegimenDrug regimenDrug = new RegimenDrug();
                         regimenDrug.setTherapeuticRegimen(regimen);

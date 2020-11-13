@@ -93,5 +93,10 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
                 .le(Dispense.COLUMN_PICKUP_DATE, endDate).query();
     }
 
+    @Override
+    public List<Dispense> getAllDispensesByStatus(String status) throws SQLException {
+        return queryBuilder().where().eq(Dispense.COLUMN_SYNC_STATUS, status).query();
+    }
+
 
 }

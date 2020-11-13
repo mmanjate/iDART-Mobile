@@ -42,7 +42,7 @@ public class PrescribedDrugService extends BaseService implements IPrescribedDru
                 try {
                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) drug;
 
-                    Drug localDrug = drugService.getDrug(Objects.requireNonNull(itemresult.get("drugcode")).toString());
+                    Drug localDrug = drugService.getDrugByFNMCode(Objects.requireNonNull(itemresult.get("drugcode")).toString());
 
                     if (localDrug != null) {
                         PrescribedDrug prescribedDrug = new PrescribedDrug();
@@ -57,6 +57,11 @@ public class PrescribedDrugService extends BaseService implements IPrescribedDru
                 }
             }
         }
+    }
+
+    @Override
+    public List<PrescribedDrug> getAllByPrescription(Prescription prescription) throws SQLException {
+        return getDataBaseHelper().getPrescribedDrugDao().getAllByPrescription(prescription);
     }
 
     private List getListofObjectFromString(String stringJsonObject){

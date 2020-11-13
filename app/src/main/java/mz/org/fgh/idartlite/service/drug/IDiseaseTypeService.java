@@ -19,7 +19,7 @@ public interface IDiseaseTypeService extends IBaseService {
 
     public List<DiseaseType> getAllDiseaseTypes() throws SQLException ;
 
-    public DiseaseType getdDiseaseType(String code) throws SQLException ;
+    public DiseaseType getDiseaseTypeByCode(String code) throws SQLException ;
 
     public boolean checkDisease(Object disease);
 

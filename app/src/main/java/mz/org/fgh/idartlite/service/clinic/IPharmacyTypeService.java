@@ -19,7 +19,7 @@ public interface IPharmacyTypeService extends IBaseService {
 
     public List<PharmacyType> getAllPharmacyType() throws SQLException ;
 
-    public PharmacyType getPharmacyType(String code) throws SQLException ;
+    public PharmacyType getPharmacyTypeByCode(String code) throws SQLException ;
 
     public boolean checkPharmacyType(Object pharmacyType) ;
 

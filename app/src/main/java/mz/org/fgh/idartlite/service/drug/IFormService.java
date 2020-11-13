@@ -18,7 +18,7 @@ public interface IFormService extends IBaseService {
 
     public void saveForm(Form form) throws SQLException ;
 
-    public Form getForm(String code) throws SQLException ;
+    public Form getFormByDescription(String description) throws SQLException ;
 
     public boolean checkForm(Object form);
 
