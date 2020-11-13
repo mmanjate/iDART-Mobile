@@ -10,12 +10,11 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
-import mz.org.fgh.idartlite.dao.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 
 public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements IPatientDao {
 

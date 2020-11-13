@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.episode.EpisodeAdapter;
 import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
@@ -30,7 +31,6 @@ import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.episode.EpisodeActivity;
-import mz.org.fgh.idartlite.view.patient.adapter.EpisodeAdapter;
 import mz.org.fgh.idartlite.viewmodel.episode.EpisodeVM;
 
 public class EpisodeFragment extends GenericFragment implements IListbleDialogListener {

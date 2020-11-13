@@ -19,8 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
-
-import mz.org.fgh.idartlite.adapter.ContentListPatientAdapter;
+import mz.org.fgh.idartlite.adapter.recyclerview.patient.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;

@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.common;
+package mz.org.fgh.idartlite.adapter.spinner.generic;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +9,8 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingAdapter;
 import androidx.databinding.InverseBindingListener;
+
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 
 public class DataBindingAdapter {
 

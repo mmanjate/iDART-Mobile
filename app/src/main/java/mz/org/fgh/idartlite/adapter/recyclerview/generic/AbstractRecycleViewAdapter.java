@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.adapter;
+package mz.org.fgh.idartlite.adapter.recyclerview.generic;
 
 import android.app.Activity;
 

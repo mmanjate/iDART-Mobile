@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.base;
+package mz.org.fgh.idartlite.listener.rest;
 
 public interface RestResponseListener {
 

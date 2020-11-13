@@ -88,12 +88,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/pacient_name"
-                    android:layout_toLeftOf="@id/pickUpDate"
+                    android:layout_toLeftOf="@id/lbl_pick_up_date"
                     android:gravity="right"
                     android:text="   " />
 
                 <TextView
-                    android:id="@+id/pickUpDate"
+                    android:id="@+id/lbl_pick_up_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/pacient_name"
@@ -125,7 +125,7 @@
                     android:id="@+id/dataProximoLevantamento"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/pickUpDate"
+                    android:layout_below="@id/lbl_pick_up_date"
                     android:layout_toLeftOf="@+id/emptyspace3"
                     android:gravity="right"
                     android:text="@string/dt_proximo_levantamento"
@@ -183,7 +183,7 @@
                             android:text="@{dispense.prescription.therapeuticRegimen.description}" />
 
                         <TextView
-                            android:id="@+id/dispenseType"
+                            android:id="@+id/lbl_dispense_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/regime"

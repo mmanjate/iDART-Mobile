@@ -16,13 +16,13 @@ import com.google.android.material.tabs.TabLayout;
 import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.tab.patient.PatientTabAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.view.patient.adapter.PatientTabAdapter;
 import mz.org.fgh.idartlite.viewmodel.patient.PatientVM;
 
 

@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view.patient.adapter;
+package mz.org.fgh.idartlite.adapter.recyclerview.dispense;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -12,9 +12,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.databinding.PatientDispenseRowBinding;
-import mz.org.fgh.idartlite.databinding.PatientEpisodeRowBinding;
 import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.Episode;
 
 public class DispenseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

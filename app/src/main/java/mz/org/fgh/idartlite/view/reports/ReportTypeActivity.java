@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
-import mz.org.fgh.idartlite.adapter.ReportListAdapter;
+import mz.org.fgh.idartlite.adapter.recyclerview.report.ReportListAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityReportTypeBinding;
+import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.model.Report;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.report.ReportTypeVM;

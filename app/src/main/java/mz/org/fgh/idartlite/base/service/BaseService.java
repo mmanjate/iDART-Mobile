@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 
-import mz.org.fgh.idartlite.dao.IdartLiteDataBaseHelper;
+import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.ExecutorThreadProvider;
 import mz.org.fgh.idartlite.util.Utilities;

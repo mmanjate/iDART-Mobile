@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseAdapter;
 import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
@@ -37,7 +38,6 @@ import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.dispense.CreateDispenseActivity;
-import mz.org.fgh.idartlite.view.patient.adapter.DispenseAdapter;
 import mz.org.fgh.idartlite.viewmodel.dispense.DispenseVM;
 
 public class DispenseFragment extends GenericFragment implements IListbleDialogListener {

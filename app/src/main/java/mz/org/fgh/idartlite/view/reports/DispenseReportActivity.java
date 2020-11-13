@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Calendar;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.ContentListDispenseAdapter;
+import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ContentDispensesReportBinding;
@@ -34,7 +34,7 @@ public class DispenseReportActivity extends BaseActivity {
     private RecyclerView recyclerDispenses;
     private DispenseReportBinding dispenseReportBinding;
     private ContentDispensesReportBinding contentDispenseReportBinding;
-    private ContentListDispenseAdapter adapter;
+    private DispenseReportAdapter adapter;
     private IDispenseService dispenseService;
 
     @Override
@@ -195,7 +195,7 @@ public class DispenseReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new ContentListDispenseAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this);
+            adapter = new DispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this);
 
             recyclerDispenses.setAdapter(adapter);
         }
