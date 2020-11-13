@@ -8,11 +8,11 @@
 
     <data>
         <variable name="viewModel"              type="mz.org.fgh.idartlite.viewmodel.prescription.PrescriptionVM" />
-        <variable name="dispenseTypeAdapter"    type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="lineAdapter"            type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="regimenAdapter"         type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="motiveAdapter"          type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="durationAdapter"        type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
+        <variable name="dispenseTypeAdapter"    type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="lineAdapter"            type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="regimenAdapter"         type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="motiveAdapter"          type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="durationAdapter"        type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
 
         <import type="mz.org.fgh.idartlite.model.Prescription"/>
         <import type="mz.org.fgh.idartlite.util.DateUtilities"/>

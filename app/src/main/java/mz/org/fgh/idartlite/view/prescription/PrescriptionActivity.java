@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.ListbleRecycleViewAdapter;
+import mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
-import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
-import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
-import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.common.ListbleRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityPrescriptionBinding;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;

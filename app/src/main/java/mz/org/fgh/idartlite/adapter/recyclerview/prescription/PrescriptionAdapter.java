@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view.patient.adapter;
+package mz.org.fgh.idartlite.adapter.recyclerview.prescription;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

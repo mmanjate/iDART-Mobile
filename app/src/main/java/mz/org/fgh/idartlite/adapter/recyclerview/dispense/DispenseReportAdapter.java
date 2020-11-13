@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.adapter;
+package mz.org.fgh.idartlite.adapter.recyclerview.dispense;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -14,15 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ContentDispensesReportBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class ContentListDispenseAdapter extends AbstractRecycleViewAdapter<Dispense> {
+public class DispenseReportAdapter extends AbstractRecycleViewAdapter<Dispense> {
 
 
-    public ContentListDispenseAdapter(RecyclerView recyclerView, List<Dispense> dispenseList, Activity activity) {
+    public DispenseReportAdapter(RecyclerView recyclerView, List<Dispense> dispenseList, Activity activity) {
         super(recyclerView, dispenseList, activity);
     }
 
@@ -114,5 +115,5 @@ public class ContentListDispenseAdapter extends AbstractRecycleViewAdapter<Dispe
         }
     }
 
-    protected void showLoadingView(ContentListDispenseAdapter.LoadingViewHolder viewHolder, int position) {}
+    protected void showLoadingView(DispenseReportAdapter.LoadingViewHolder viewHolder, int position) {}
 }

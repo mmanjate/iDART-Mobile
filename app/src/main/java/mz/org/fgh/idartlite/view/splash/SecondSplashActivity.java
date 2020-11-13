@@ -7,15 +7,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.view.home.HomeActivity;
-import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.base.RestResponseListener;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.rest.service.RestPatientService;
 import mz.org.fgh.idartlite.rest.service.RestStockService;
+import mz.org.fgh.idartlite.service.clinic.ClinicService;
+import mz.org.fgh.idartlite.view.home.HomeActivity;
+import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 
 public class SecondSplashActivity extends BaseActivity implements RestResponseListener {
 

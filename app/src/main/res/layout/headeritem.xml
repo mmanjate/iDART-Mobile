@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="listble" type="mz.org.fgh.idartlite.common.Listble" />
+        <variable name="listble" type="mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble" />
 
         <variable name="viewListEditButton" type="boolean" />
         <variable name="viewListRemoveButton" type="boolean" />

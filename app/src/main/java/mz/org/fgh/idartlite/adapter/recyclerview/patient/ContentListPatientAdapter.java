@@ -1,17 +1,18 @@
-package mz.org.fgh.idartlite.adapter;
+package mz.org.fgh.idartlite.adapter.recyclerview.patient;
 
-import android.view.ViewGroup;
 import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import androidx.databinding.DataBindingUtil;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ContentPatientBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
 import mz.org.fgh.idartlite.model.Patient;
