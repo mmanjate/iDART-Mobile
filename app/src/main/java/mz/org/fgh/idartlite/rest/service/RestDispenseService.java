@@ -209,11 +209,11 @@ public class RestDispenseService extends BaseService {
         Prescription prescription = new Prescription();
 
         if (itemresult.get("dispensatrimestral").toString().contains("1"))
-            prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa Trimestral (DT)"));
+            prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Trimestral (DT)"));
         else if (itemresult.get("dispensasemestral").toString().contains("1"))
-            prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa Semestral (DS)"));
+            prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Semestral (DS)"));
         else
-            prescription.setDispenseType(dispenseTypeService.getDispenseType("Dispensa Mensal (DM)"));
+            prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Mensal (DM)"));
         prescription.setUuid(UUID.randomUUID().toString());
         if (itemresult.get("prescricaoespecial").toString().contains("F") || itemresult.get("prescricaoespecial").toString().contains("f")) {
             prescription.setUrgentPrescription(Prescription.URGENT_PRESCRIPTION);
@@ -222,8 +222,8 @@ public class RestDispenseService extends BaseService {
             prescription.setUrgentPrescription(Prescription.NOT_URGENT_PRESCRIPTION);
             prescription.setUrgentNotes("");
         }
-        prescription.setTherapeuticRegimen(therapheuticRegimenService.getTherapeuticRegimenFromDescription(itemresult.get("regimenome").toString()));
-        prescription.setTherapeuticLine(therapeuthicLineService.getTherapeuticLine(itemresult.get("linhanome").toString()));
+        prescription.setTherapeuticRegimen(therapheuticRegimenService.getTherapeuticRegimenByDescription(itemresult.get("regimenome").toString()));
+        prescription.setTherapeuticLine(therapeuthicLineService.getTherapeuticLineByCode(itemresult.get("linhanome").toString()));
         prescription.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
         prescription.setSupply((int) Float.parseFloat(itemresult.get("duration").toString()));
         prescription.setPrescriptionSeq(itemresult.get("prescriptionid").toString());
@@ -258,8 +258,8 @@ public class RestDispenseService extends BaseService {
         IClinicService clinicService = new ClinicService(getApp(), null);
         DispensedDrug dispensedDrug = new DispensedDrug();
 
-        Clinic clinic = clinicService.getCLinic().get(0);
-        Drug localDrug = drugService.getDrugFromDescription(itemresult.get("drugname").toString());
+        Clinic clinic = clinicService.getAllClinics().get(0);
+        Drug localDrug = drugService.getDrugByDescription(itemresult.get("drugname").toString());
         String inHand = itemresult.get("qtyinhand").toString();
         if (!inHand.isEmpty())
             inHand = inHand.replace('(', ' ').replace(')', ' ');
@@ -286,7 +286,7 @@ public class RestDispenseService extends BaseService {
         PrescribedDrugService prescribedDrugService = new PrescribedDrugService(getApp(), null);
         PrescribedDrug prescribedDrug = new PrescribedDrug();
 
-        Drug localDrug = drugService.getDrugFromDescription(itemresult.get("drugname").toString());
+        Drug localDrug = drugService.getDrugByDescription(itemresult.get("drugname").toString());
 
         if (localDrug != null) {
             prescribedDrug.setPrescription(prescription);

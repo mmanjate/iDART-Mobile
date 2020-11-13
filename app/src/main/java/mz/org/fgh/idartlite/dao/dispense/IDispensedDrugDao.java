@@ -12,4 +12,7 @@ public interface IDispensedDrugDao extends IGenericDao<DispensedDrug, Integer> {
     public boolean checkStockIsDispensedDrug(Stock stock) throws SQLException;
 
     public List<DispensedDrug> getDispensedDrugsByDispenses(List<Dispense> dispenses) throws SQLException;
+
+    public List<DispensedDrug> findDispensedDrugByDispenseId(int id) throws SQLException;
+
 }

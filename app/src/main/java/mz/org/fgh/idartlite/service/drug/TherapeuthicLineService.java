@@ -25,19 +25,14 @@ public class TherapeuthicLineService extends BaseService implements  ITherapeuth
     }
 
     public List<TherapeuticLine> getAll() throws SQLException {
-        return getDataBaseHelper().getTherapeuticLineDao().queryForAll();
+        return getDataBaseHelper().getTherapeuticLineDao().getAll();
     }
 
-    public TherapeuticLine getTherapeuticLine(String code) throws SQLException {
+    public TherapeuticLine getTherapeuticLineByCode(String code) throws SQLException {
 
-        List<TherapeuticLine> typeList = getDataBaseHelper().getTherapeuticLineDao().queryForEq(COLUMN_DESCRIPTION,code);
+        TherapeuticLine typeList = getDataBaseHelper().getTherapeuticLineDao().getTherapeuticLineByCode(code);
 
-        if (typeList == null)
-
-            typeList = getAll();
-
-            if (!typeList.isEmpty())
-                return typeList.get(0);
+        if (typeList == null) return typeList;
 
         return null;
     }
@@ -48,7 +43,7 @@ public class TherapeuthicLineService extends BaseService implements  ITherapeuth
         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) line;
 
         try {
-            TherapeuticLine localLine = getTherapeuticLine((Objects.requireNonNull(itemresult.get("linhanome")).toString()));
+            TherapeuticLine localLine = getTherapeuticLineByCode((Objects.requireNonNull(itemresult.get("linhanome")).toString()));
 
             if(localLine != null)
                 result = true;

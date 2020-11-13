@@ -16,24 +16,17 @@ public class ClinicService extends BaseService implements IClinicService {
         super(application, currentUser);
     }
 
-    public List<Clinic> getCLinic() throws SQLException {
-         List<Clinic> list =getDataBaseHelper().getIClinicDao().queryForAll();
-        return list;
+    public List<Clinic> getAllClinics() throws SQLException {
+      return getDataBaseHelper().getIClinicDao().getAllClinics();
     }
 
     public void saveClinic(Clinic clinic) throws SQLException {
         getDataBaseHelper().getIClinicDao().create(clinic);
     }
 
-    public Clinic getClinic(String uuid) throws SQLException {
+    public Clinic getClinicByUuid(String uuid) throws SQLException {
 
-        List<Clinic> typeList = getDataBaseHelper().getIClinicDao().queryForEq(COLUMN_UUID, uuid);
-
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
-
-        return null;
+        return getDataBaseHelper().getIClinicDao().getClinicByUuid(uuid);
     }
 
 }

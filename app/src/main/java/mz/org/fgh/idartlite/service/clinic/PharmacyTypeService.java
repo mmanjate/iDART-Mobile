@@ -27,7 +27,7 @@ public class PharmacyTypeService extends BaseService implements IPharmacyTypeSer
         return getDataBaseHelper().getPharmacyTypeDao().queryForAll();
     }
 
-    public PharmacyType getPharmacyType(String code) throws SQLException {
+    public PharmacyType getPharmacyTypeByCode(String code) throws SQLException {
 
         List<PharmacyType> typeList = getDataBaseHelper().getPharmacyTypeDao().queryForEq(COLUMN_DESCRIPTION,code);
 
@@ -46,7 +46,7 @@ public class PharmacyTypeService extends BaseService implements IPharmacyTypeSer
         boolean result = false;
         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) pharmacyType;
         try {
-            PharmacyType localPharmacyType = getPharmacyType(Objects.requireNonNull(itemresult.get("value")).toString());
+            PharmacyType localPharmacyType = getPharmacyTypeByCode(Objects.requireNonNull(itemresult.get("value")).toString());
             if(localPharmacyType != null)
                 result = true;
         }catch (Exception e){

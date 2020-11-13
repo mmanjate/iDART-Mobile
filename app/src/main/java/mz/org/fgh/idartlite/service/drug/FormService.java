@@ -23,13 +23,11 @@ public class FormService extends BaseService implements IFormService {
         getDataBaseHelper().getFormDao().create(form);
     }
 
-    public Form getForm(String code) throws SQLException {
+    public Form getFormByDescription(String description) throws SQLException {
 
-        List<Form> typeList = getDataBaseHelper().getFormDao().queryForEq(COLUMN_DESCRIPTION,code);
+        Form type = getDataBaseHelper().getFormDao().getFormByDescription(description);
 
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
+        if (type != null) return type;
 
         return null;
     }
@@ -42,7 +40,7 @@ public class FormService extends BaseService implements IFormService {
 
         try {
 
-            Form localForm = getForm((Objects.requireNonNull(itemresult.get("form")).toString()));
+            Form localForm = getFormByDescription((Objects.requireNonNull(itemresult.get("form")).toString()));
 
             if(localForm != null)
                 result = true;

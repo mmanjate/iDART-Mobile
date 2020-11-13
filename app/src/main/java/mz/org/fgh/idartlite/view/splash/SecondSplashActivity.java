@@ -62,7 +62,7 @@ public class SecondSplashActivity extends BaseActivity implements RestResponseLi
         ClinicService clinicService = new ClinicService(getApplication(),getCurrentUser());
         Clinic localClinic = null;
         try {
-            localClinic = clinicService.getCLinic().get(0);
+            localClinic = clinicService.getAllClinics().get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }

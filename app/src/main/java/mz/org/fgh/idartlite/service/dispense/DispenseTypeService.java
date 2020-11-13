@@ -24,18 +24,12 @@ public class DispenseTypeService extends BaseService  implements  IDispenseTypeS
     }
 
     public List<DispenseType> getAll() throws SQLException {
-        return getDataBaseHelper().getDispenseTypeDao().queryForAll();
+        return getDataBaseHelper().getDispenseTypeDao().getAll();
     }
 
-    public DispenseType getDispenseType(String code) throws SQLException {
+    public DispenseType getDispenseTypeByCode(String code) throws SQLException {
 
-        List<DispenseType> typeList = getDataBaseHelper().getDispenseTypeDao().queryForEq(COLUMN_DESCRIPTION,code);
-
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
-
-        return null;
+        return getDataBaseHelper().getDispenseTypeDao().getDispenseTypeByCode(code);
     }
 
     public boolean checkDipsenseType(Object dispenseType) {
@@ -46,7 +40,7 @@ public class DispenseTypeService extends BaseService  implements  IDispenseTypeS
 
         try {
 
-            DispenseType localDispenseType = getDispenseType(itemresult.get("value").toString());
+            DispenseType localDispenseType = getDispenseTypeByCode(itemresult.get("value").toString());
 
             if(localDispenseType != null)
                 result = true;
@@ -59,7 +53,7 @@ public class DispenseTypeService extends BaseService  implements  IDispenseTypeS
     }
 
 
-    public void saveDispoenseType(Object dispenseType){
+    public void saveDispenseType(Object dispenseType){
 
         DispenseType loalDispensetype = new DispenseType();
         try {

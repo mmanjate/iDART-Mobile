@@ -48,7 +48,7 @@ public class RestRunDataForTestService extends BaseService {
         RestEpisodeService.restGetAllReadyEpisodes(null);
         RestEpisodeService.restGetAllEpisodes(null);
         try {
-            RestStockService.restGetStock(clinicService.getCLinic().get(0));
+            RestStockService.restGetStock(clinicService.getAllClinics().get(0));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class RestRunDataForTestService extends BaseService {
 
 
         try {
-            dispenseList = dispenseService.getAllDispenseByStatus(BaseModel.SYNC_SATUS_READY);
+            dispenseList = dispenseService.getAllDispensesByStatus(BaseModel.SYNC_SATUS_READY);
             if (dispenseList != null)
                 if (dispenseList.size() > 0) {
                     for (Dispense dispense : dispenseList) {

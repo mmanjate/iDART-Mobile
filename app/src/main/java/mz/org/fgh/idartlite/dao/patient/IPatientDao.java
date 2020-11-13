@@ -16,5 +16,7 @@ public interface IPatientDao extends IGenericDao<Patient, Integer> {
 
     public int countNewPatientsByPeriod(Date start, Date end, Application application) throws SQLException;
 
+    public Patient getPatientByUuid(String uuid) throws SQLException ;
+
 
 }

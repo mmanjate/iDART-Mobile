@@ -15,6 +15,7 @@ import mz.org.fgh.idartlite.dao.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 
 public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements IPatientDao {
 
@@ -55,6 +56,11 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
                 .le(Episode.COLUMN_EPISODE_DATE, end);
 
         return (int) episodeQb.countOf();
+    }
+
+    @Override
+    public Patient getPatientByUuid(String uuid) throws SQLException {
+        return queryBuilder().where().eq(Patient.COLUMN_UUID, uuid).queryForFirst();
     }
 
     public boolean checkIsEmpty(String param, Clinic clinic) throws SQLException {

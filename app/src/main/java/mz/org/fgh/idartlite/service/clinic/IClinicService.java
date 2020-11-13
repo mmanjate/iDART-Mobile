@@ -12,9 +12,9 @@ import mz.org.fgh.idartlite.model.User;
 
 public interface IClinicService  extends IBaseService {
 
-    public List<Clinic> getCLinic() throws SQLException;
+    public List<Clinic> getAllClinics() throws SQLException;
 
     public void saveClinic(Clinic clinic) throws SQLException;
 
-    public Clinic getClinic(String uuid) throws SQLException;
+    public Clinic getClinicByUuid(String uuid) throws SQLException;
 }

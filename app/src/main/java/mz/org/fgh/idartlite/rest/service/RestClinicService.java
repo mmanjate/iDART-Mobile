@@ -65,7 +65,7 @@ public class RestClinicService extends BaseService {
                                     clinicRest.setRestId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
                                     clinicRest.setCode(Objects.requireNonNull(itemresult.get("code")).toString());
                                     clinicRest.setClinicName(Objects.requireNonNull(itemresult.get("clinicname")).toString());
-                                    clinicRest.setPharmacyType(pharmacyTypeService.getPharmacyType(Objects.requireNonNull(itemresult.get("facilitytype")).toString()));
+                                    clinicRest.setPharmacyType(pharmacyTypeService.getPharmacyTypeByCode(Objects.requireNonNull(itemresult.get("facilitytype")).toString()));
                                     clinicRest.setAddress(Objects.requireNonNull(itemresult.get("province")).toString().concat(Objects.requireNonNull(itemresult.get("district")).toString()));
                                     clinicRest.setPhone(Objects.requireNonNull(itemresult.get("telephone")).toString());
                                     clinicRest.setUuid(Objects.requireNonNull(itemresult.get("uuid")).toString());

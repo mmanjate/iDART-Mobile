@@ -26,6 +26,7 @@ import mz.org.fgh.idartlite.service.dispense.IDispenseTypeService;
 import mz.org.fgh.idartlite.service.drug.IDrugService;
 import mz.org.fgh.idartlite.service.drug.ITherapeuthicLineService;
 import mz.org.fgh.idartlite.service.drug.ITherapheuticRegimenService;
+import mz.org.fgh.idartlite.service.prescription.IPrescribedDrugService;
 import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
 import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.model.DispenseType;
@@ -77,6 +78,7 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
 
     private List<Listble> selectedDrugs;
 
+    private IPrescribedDrugService prescribedDrugService;
 
 
     public PrescriptionVM(@NonNull Application application) {
@@ -139,7 +141,7 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
 
                 if (!this.prescription.isClosed()) {
 
-                    this.prescription.setPrescribedDrugs(prescriptionService.getAllOfPrescription(this.prescription));
+                    this.prescription.setPrescribedDrugs(prescribedDrugService.getAllByPrescription(this.prescription));
 
                     newPrescriptionMustBeEspetial = true;
 
@@ -227,7 +229,7 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
     }
 
     public List<Drug> getAllDrugsOfTheraputicRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException {
-        return drugService.getAllOfTherapeuticRegimen(therapeuticRegimen);
+        return drugService.getAllByTherapeuticRegimen(therapeuticRegimen);
     }
 
     public void setPrescriptionToSpetial(){
@@ -316,12 +318,12 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
     }
 
     public void loadPrescribedDrugsOfPrescription() throws SQLException {
-        this.prescription.setPrescribedDrugs(prescriptionService.getAllOfPrescription(this.prescription));
+        this.prescription.setPrescribedDrugs(prescribedDrugService.getAllByPrescription(this.prescription));
     }
 
     public void loadLastPatientPrescription() throws SQLException {
         this.prescription = prescriptionService.getLastPatientPrescription(this.prescription.getPatient());
-        this.prescription.setPrescribedDrugs(prescriptionService.getAllOfPrescription(this.prescription));
+        this.prescription.setPrescribedDrugs(prescribedDrugService.getAllByPrescription(this.prescription));
         this.prescription.setId(0);
     }
 

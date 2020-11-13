@@ -24,18 +24,12 @@ public class DiseaseTypeService extends BaseService implements IDiseaseTypeServi
     }
 
     public List<DiseaseType> getAllDiseaseTypes() throws SQLException {
-        return getDataBaseHelper().getIDiseaseTypeDao().queryForAll();
+        return getDataBaseHelper().getIDiseaseTypeDao().getAllDiseaseTypes();
     }
 
-    public DiseaseType getdDiseaseType(String code) throws SQLException {
+    public DiseaseType getDiseaseTypeByCode(String code) throws SQLException {
 
-        List<DiseaseType> typeList = getDataBaseHelper().getIDiseaseTypeDao().queryForEq(COLUMN_CODE,code);
-
-        if (typeList != null)
-            if (!typeList.isEmpty())
-                return typeList.get(0);
-
-        return null;
+        return getDataBaseHelper().getIDiseaseTypeDao().getDiseaseTypeByCode(code);
     }
 
     public boolean checkDisease(Object disease) {
@@ -46,7 +40,7 @@ public class DiseaseTypeService extends BaseService implements IDiseaseTypeServi
 
         try {
 
-            DiseaseType localDiseaseType = getdDiseaseType((Objects.requireNonNull(itemresult.get("value")).toString()));
+            DiseaseType localDiseaseType = getDiseaseTypeByCode((Objects.requireNonNull(itemresult.get("value")).toString()));
 
             if(localDiseaseType != null)
                 result = true;

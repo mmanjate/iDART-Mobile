@@ -20,7 +20,7 @@ public interface ITherapeuthicLineService extends IBaseService {
 
     public List<TherapeuticLine> getAll() throws SQLException;
 
-    public TherapeuticLine getTherapeuticLine(String code) throws SQLException;
+    public TherapeuticLine getTherapeuticLineByCode(String code) throws SQLException;
 
     public boolean checkLine(Object line);
 
