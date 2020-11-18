@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-
     <application
         android:name=".base.application.IdartLiteApplication"
         android:allowBackup="true"
@@ -17,15 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.reports.ReportTypeActivity"></activity>
-        <activity android:name=".view.reports.ReportsListingActivity"></activity>
-        <activity android:name=".view.reports.DispenseReportActivity"></activity>
+        <activity android:name=".view.patientPanel.AddNewPatientActivity"></activity>
+        <activity android:name=".view.home.PatientHomeActivity" />
+        <activity android:name=".view.reports.ReportTypeActivity" />
+        <activity android:name=".view.reports.ReportsListingActivity" />
+        <activity android:name=".view.reports.DispenseReportActivity" />
+        <activity android:name=".view.reports.DispensedDrugsReportActivity" />
+        <activity android:name=".view.reports.StockAlertReportActivity" />
 
-        <activity android:name=".view.reports.DispensedDrugsReportActivity">
-
-
-        </activity>
-        <activity android:name=".view.reports.StockAlertReportActivity"></activity>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="mz.org.fgh.idartlite.FileProvider"
@@ -33,12 +31,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".view.reports.PatientReportActivity">
-
-        </activity>
+        <activity android:name=".view.reports.PatientReportActivity" />
         <activity android:name=".view.about.AboutActivity" />
         <activity
             android:name=".view.splash.SecondSplashActivity"

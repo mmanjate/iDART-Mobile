@@ -2,29 +2,40 @@ package mz.org.fgh.idartlite.viewmodel.home;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.common.ApplicationStep;
+import mz.org.fgh.idartlite.view.episode.EpisodeActivity;
 import mz.org.fgh.idartlite.view.home.HomeActivity;
 import mz.org.fgh.idartlite.view.home.PatientHomeActivity;
+import mz.org.fgh.idartlite.view.patientPanel.AddNewPatientActivity;
 import mz.org.fgh.idartlite.view.patientSearch.SearchPatientActivity;
 import mz.org.fgh.idartlite.view.reports.ReportTypeActivity;
 import mz.org.fgh.idartlite.view.stock.StockActivity;
 
-public class HomeVM extends BaseViewModel {
+public class PatientHomeVM extends BaseViewModel {
 
-    public HomeVM(@NonNull Application application) {
+    public PatientHomeVM(@NonNull Application application) {
         super(application);
     }
 
-    public void callHomePatient(){
-        getRelatedActivity().nextActivityWithGenericParams(PatientHomeActivity.class);
+    public void callSearchPatient(){
+        getRelatedActivity().nextActivityWithGenericParams(SearchPatientActivity.class);
     }
 
-    public void callStck(){
-        getRelatedActivity().nextActivityWithGenericParams(StockActivity.class);
+    public void callAddNewPatient(){
+      //  getRelatedActivity().nextActivityWithGenericParams(AddNewPatientActivity.class);
+        Intent intent = new Intent(getRelatedActivity(), AddNewPatientActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", getCurrentUser());
+        bundle.putSerializable("clinic", getRelatedActivity().getCurrentClinic());
+        bundle.putSerializable("step", ApplicationStep.STEP_CREATE);
+        intent.putExtras(bundle);
+        getRelatedActivity().startActivity(intent);
     }
 
     public void callReports(){
@@ -32,8 +43,8 @@ public class HomeVM extends BaseViewModel {
     }
 
     @Override
-    public HomeActivity getRelatedActivity(){
-        return (HomeActivity) super.getRelatedActivity();
+    public PatientHomeActivity getRelatedActivity(){
+        return (PatientHomeActivity) super.getRelatedActivity();
     }
 
     @Bindable

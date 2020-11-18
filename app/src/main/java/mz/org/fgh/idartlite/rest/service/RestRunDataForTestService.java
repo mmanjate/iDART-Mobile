@@ -7,12 +7,15 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
+import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
@@ -22,21 +25,36 @@ import mz.org.fgh.idartlite.service.patient.IPatientService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
+import mz.org.fgh.idartlite.service.territory.CountryService;
+import mz.org.fgh.idartlite.service.territory.ICountryService;
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class RestRunDataForTestService extends BaseService {
-    public RestRunDataForTestService(Application application, User currentUser) {
+    public RestRunDataForTestService(Application application, User currentUser) throws SQLException {
         super(application, currentUser);
 
         IDispenseService dispenseService = new DispenseService(application, currentUser);
         IStockService stockService = new StockService(application, currentUser);
         IEpisodeService episodeService = new EpisodeService(application, currentUser);
+        ICountryService countryService = new CountryService(application, currentUser);
 
         IClinicService clinicService = new ClinicService(application, currentUser);
         IPatientService patientService = new PatientService(application, currentUser);
+        IClinicSectorService clinicSectorService = new ClinicSectorService(application, currentUser);
         List<Stock> stockList;
         List<Dispense> dispenseList;
         List<Patient> patientList;
         Episode episode;
+
+
+
+            RestTerritoryService.restGetAllCountries();
+
+            RestTerritoryService.restGetAllProvinces();
+            RestTerritoryService.restGetAllDistricts();
+
+
+
         RestPharmacyTypeService.restGetAllPharmacyType();
         RestFormService.restGetAllForms();
         RestDrugService.restGetAllDrugs();
@@ -107,12 +125,25 @@ public class RestRunDataForTestService extends BaseService {
                 if (patientList.size() > 0) {
                     for (Patient patient : patientList) {
                         episode = episodeService.findEpisodeWithStopReasonByPatient(patient);
-                        if (episode == null)
-                            RestDispenseService.restGetLastDispense(patient);
+                        //if (episode == null)
+                          //  RestDispenseService.restGetLastDispense(patient);
                     }
                 }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+      List<ClinicSector>  clinicSectors= clinicSectorService.getClinicSectorsByClinic(clinicService.getAllClinics().get(0));
+
+        if(clinicSectors.isEmpty()){
+            ClinicSector clinicSector=new ClinicSector();
+            clinicSector.setClinicId(clinicService.getAllClinics().get(0).getId());
+            clinicSector.setCode("001");
+            clinicSector.setPhone("84464422");
+            clinicSector.setSectorName("Paragem Unic HIV");
+            clinicSector.setUuid(Utilities.getNewUUID().toString());
+
+            clinicSectorService.saveClinicSector(clinicSector);
         }
     }
 }

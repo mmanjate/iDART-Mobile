@@ -94,7 +94,7 @@ public class RestEpisodeService extends BaseService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (episode.getStopReason()!= null || episode.getStopReason().length()>0)
+        if (episode.getStopReason()!= null && episode.getStopReason().length()>0)
         {
             syncEpisode.setStopDate(episode.getEpisodeDate());
             syncEpisode.setStopReason(episode.getStopReason());

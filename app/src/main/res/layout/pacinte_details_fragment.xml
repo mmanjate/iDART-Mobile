@@ -320,9 +320,22 @@
 
                     </LinearLayout>
 
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/editPatient"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|end"
+                            android:layout_margin="@dimen/fab_margin"
+                            android:src="@android:drawable/ic_menu_edit"
+                            app:backgroundTint="@color/colorPrimary"
+                            android:onClick="@{() -> viewModel.editPatient()}"
+                            app:elevation="6dp"
+                            app:pressedTranslationZ="12dp" />
                     </LinearLayout>
 
                 </ScrollView>
+
+
 
             </LinearLayout>
 

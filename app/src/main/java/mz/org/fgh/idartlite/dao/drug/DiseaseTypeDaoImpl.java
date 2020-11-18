@@ -31,6 +31,6 @@ public class DiseaseTypeDaoImpl extends GenericDaoImpl<DiseaseType, Integer> imp
 
     @Override
     public DiseaseType getDiseaseTypeByCode(String code) throws SQLException {
-        return queryBuilder().where().eq(COLUMN_CODE, code).queryForFirst();
+        return queryBuilder().where().eq(DiseaseType.COLUMN_CODE, code).queryForFirst();
     }
 }
