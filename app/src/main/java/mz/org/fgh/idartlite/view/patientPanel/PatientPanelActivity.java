@@ -14,11 +14,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.tab.patient.PatientTabAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -138,4 +141,6 @@ public class PatientPanelActivity extends BaseActivity {
     public PatientVM getRelatedViewModel() {
         return (PatientVM) super.getRelatedViewModel();
     }
+
+
 }

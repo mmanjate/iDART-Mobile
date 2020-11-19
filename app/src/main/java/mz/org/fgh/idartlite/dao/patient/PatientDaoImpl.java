@@ -62,6 +62,11 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
         return queryBuilder().where().eq(Patient.COLUMN_UUID, uuid).queryForFirst();
     }
 
+    @Override
+    public Patient checkExistsPatientWithNID(String nid) throws SQLException {
+        return queryBuilder().where().eq(Patient.COLUMN_NID,nid).queryForFirst();
+    }
+
     public boolean checkIsEmpty(String param, Clinic clinic) throws SQLException {
        return  queryBuilder().where().like(Patient.COLUMN_NID, "%" + param + "%").or().like(Patient.COLUMN_FIRST_NAME, "%" + param + "%").or().like(Patient.COLUMN_LAST_NAME, "%" + param + "%").and().eq(Patient.COLUMN_CLINIC_ID, clinic.getId()).query().isEmpty();
     }

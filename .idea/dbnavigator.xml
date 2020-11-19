@@ -27,7 +27,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="baff84a6-a0fa-420b-9410-1ffa63f40974">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from drug]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from patient;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -84,7 +84,7 @@
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="$USER_HOME$/AndroidStudio/DeviceExplorer/emulator-5554/data/data/mz.org.fgh.idartlite/databases/databases/idartlite.db" schema="main" />
+            <file path="$USER_HOME$/Documents/idartlite.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

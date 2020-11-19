@@ -125,6 +125,16 @@ public class PatientService extends BaseService implements IPatientService {
         }
     }
 
+    @Override
+    public void updatePatient(Patient patient) throws SQLException {
+      this.getDataBaseHelper().getPatientDao().update(patient);
+    }
+
+    @Override
+    public Patient checkExistsPatientWithNID(String nid) throws SQLException {
+       return getDataBaseHelper().getPatientDao().checkExistsPatientWithNID(nid);
+    }
+
     private String getFullAdreess(String address1, String address2, String address3) {
         return address1 + " " + address2 + " " + address3;
     }

@@ -31,4 +31,8 @@ public interface IPatientService extends IBaseService {
 
     public void saveOnPatient(LinkedTreeMap<String, Object> patient) ;
 
+    public void  updatePatient(Patient patient) throws SQLException ;
+
+    public Patient checkExistsPatientWithNID(String nid) throws SQLException ;
+
 }
