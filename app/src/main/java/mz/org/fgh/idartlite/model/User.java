@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.model;
 
+import android.content.Context;
+
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -69,5 +71,20 @@ public class User extends BaseModel {
         if (!Utilities.stringHasValue(this.password)) return "O campo Senha deve ser preenchido.";
 
         return "";
+    }
+
+    @Override
+    public String isValid(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
     }
 }

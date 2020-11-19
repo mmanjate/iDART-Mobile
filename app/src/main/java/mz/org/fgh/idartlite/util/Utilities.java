@@ -234,6 +234,10 @@ public class Utilities {
         return string != null && !string.isEmpty() && string.trim().length() > 0;
     }
 
+    public static boolean objectNotNull(Object obj){
+        return obj != null;
+    }
+
     public static String parseIntToString(int toParse){
         return String.valueOf(toParse);
     }

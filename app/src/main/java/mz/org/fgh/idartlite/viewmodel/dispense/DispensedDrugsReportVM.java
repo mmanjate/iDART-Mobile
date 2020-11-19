@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
@@ -24,6 +26,21 @@ public class DispensedDrugsReportVM extends BaseViewModel {
     public DispensedDrugsReportVM(@NonNull Application application) {
         super(application);
         dispenseService = new DispenseService(application);
+    }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
+    }
+
+    @Override
+    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+        return null;
+    }
+
+    @Override
+    protected void initFormData() {
+
     }
 
     public Map<String, Double> search(Date start, Date end) throws SQLException {

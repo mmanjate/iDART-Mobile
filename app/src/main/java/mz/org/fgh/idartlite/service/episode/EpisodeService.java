@@ -14,10 +14,12 @@ import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
+import mz.org.fgh.idartlite.service.patient.PatientService;
 
-public class EpisodeService extends BaseService implements IEpisodeService{
+import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
+
+public class EpisodeService extends BaseService<Episode> implements IEpisodeService{
 
     protected PatientService patientService;
     protected ClinicService clinicService;
@@ -25,6 +27,20 @@ public class EpisodeService extends BaseService implements IEpisodeService{
     public EpisodeService(Application application, User currUser) {
         super(application, currUser);
        // this.patientService = new PatientService(getApp(), currUser);
+    }
+
+    public EpisodeService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(Episode record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(Episode relatedRecord) throws SQLException {
+
     }
 
     public List<Episode> getAllEpisodesByPatient(Patient patient) throws SQLException{

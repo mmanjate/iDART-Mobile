@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateUtilities {
 
@@ -314,5 +315,36 @@ public class DateUtilities {
         }
 
         return DateUtils.addDays(date, (-1) * days);
+    }
+
+    public static Date getSqlDateFromString(String stringDate, String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ROOT);
+        try {
+            Date date = (Date) format.parse(stringDate);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Date getUtilDateFromString(String stringDate, String pattern) {
+        SimpleDateFormat format = new SimpleDateFormat(pattern,Locale.ROOT);
+        try {
+            Date date = (Date) format.parse(stringDate);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static String getStringDateFromDate(Date date, String pattern) {
+        SimpleDateFormat datetemp = new SimpleDateFormat(pattern,Locale.ROOT);
+        String data = datetemp.format(date);
+        return data;
+
     }
 }

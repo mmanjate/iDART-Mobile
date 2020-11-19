@@ -11,6 +11,8 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
@@ -34,6 +36,21 @@ public class DispenseReportVM extends SearchVM<Dispense> {
         super(application);
         dispenseService = new DispenseService(application, getCurrentUser());
 
+
+    }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
+    }
+
+    @Override
+    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+        return null;
+    }
+
+    @Override
+    protected void initFormData() {
 
     }
 

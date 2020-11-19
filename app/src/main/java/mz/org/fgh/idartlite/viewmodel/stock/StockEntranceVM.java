@@ -11,13 +11,15 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
-import mz.org.fgh.idartlite.view.stock.StockEntranceActivity;
-import mz.org.fgh.idartlite.view.stock.StockEntranceFragment;
+import mz.org.fgh.idartlite.view.stock.panel.StockEntranceActivity;
+import mz.org.fgh.idartlite.view.stock.panel.StockEntranceFragment;
 
 public class StockEntranceVM extends SearchVM<Stock> {
 
@@ -34,6 +36,21 @@ public class StockEntranceVM extends SearchVM<Stock> {
         super(application);
         stockService = new StockService(getApplication(), getCurrentUser());
         stock = new Stock();
+    }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
+    }
+
+    @Override
+    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+        return null;
+    }
+
+    @Override
+    protected void initFormData() {
+
     }
 
     private List<Stock> getStockByClinic(Clinic clinic, long offset, long limit) throws SQLException {

@@ -7,13 +7,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.dispense.DispenseTypeService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseTypeService;
 
-public class RestDispenseTypeService extends BaseService {
+public class RestDispenseTypeService extends BaseRestService {
 
     private static final String TAG = "RestDispenseTypeService";
     private  static IDispenseTypeService dispenseTypeService;
@@ -26,7 +26,7 @@ public class RestDispenseTypeService extends BaseService {
 
     public static void restGetAllDispenseType() {
 
-        String url = BaseService.baseUrl + "/simpledomain?description=eq.dispense_type";
+        String url = BaseRestService.baseUrl + "/simpledomain?description=eq.dispense_type";
         dispenseTypeService = new DispenseTypeService(getApp(), null);
 
             getRestServiceExecutor().execute(() -> {

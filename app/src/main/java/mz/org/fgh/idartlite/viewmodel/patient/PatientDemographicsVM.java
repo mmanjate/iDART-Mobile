@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.view.patientPanel.PatientDemographicFragment;
@@ -23,6 +25,21 @@ public class PatientDemographicsVM extends BaseViewModel {
 
     public PatientDemographicsVM(@NonNull Application application) {
         super(application);
+    }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
+    }
+
+    @Override
+    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+        return null;
+    }
+
+    @Override
+    protected void initFormData() {
+
     }
 
     @Bindable

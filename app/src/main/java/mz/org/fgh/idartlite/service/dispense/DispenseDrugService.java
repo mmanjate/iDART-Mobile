@@ -9,12 +9,25 @@ import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
 
-public class DispenseDrugService extends BaseService implements IDispenseDrugService {
+public class DispenseDrugService extends BaseService<DispensedDrug> implements IDispenseDrugService {
 
     public DispenseDrugService(Application application, User currUser) {
         super(application, currUser);
+    }
+
+    public DispenseDrugService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(DispensedDrug record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(DispensedDrug relatedRecord) throws SQLException {
+
     }
 
     public void createDispensedDrug(DispensedDrug dispenseDrug) throws SQLException {

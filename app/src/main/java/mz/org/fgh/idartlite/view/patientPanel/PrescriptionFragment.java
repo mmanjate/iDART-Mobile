@@ -92,8 +92,6 @@ public class PrescriptionFragment extends GenericFragment implements IListbleDia
                     }
                 }
             ));
-
-        getRelatedViewModel().setRelatedListingFragment(this);
     }
 
     public void startPrescriptionActivity(){

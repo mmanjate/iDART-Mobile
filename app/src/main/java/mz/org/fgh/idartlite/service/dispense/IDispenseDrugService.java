@@ -8,7 +8,7 @@ import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Stock;
 
 
-public interface IDispenseDrugService extends IBaseService {
+public interface IDispenseDrugService extends IBaseService<DispensedDrug> {
 
     public void createDispensedDrug(DispensedDrug dispenseDrug) throws SQLException;
 

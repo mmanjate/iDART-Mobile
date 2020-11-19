@@ -21,9 +21,10 @@ import mz.org.fgh.idartlite.service.dispense.DispenseTypeService;
 import mz.org.fgh.idartlite.service.drug.TherapeuthicLineService;
 import mz.org.fgh.idartlite.service.drug.TherapheuticRegimenService;
 
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
+import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
 
-public class PrescriptionService extends BaseService implements IPrescriptionService {
+public class PrescriptionService extends BaseService<Prescription> implements IPrescriptionService {
 
     protected TherapheuticRegimenService therapeuticRegimenService;
     protected TherapeuthicLineService therapeuticLineService;
@@ -36,6 +37,20 @@ public class PrescriptionService extends BaseService implements IPrescriptionSer
         this.therapeuticLineService = new TherapeuthicLineService(getApp(), currUser);
         this.dispenseTypeService = new DispenseTypeService(getApp(), currUser);
         this.prescribedDrugService = new PrescribedDrugService(getApp(),currUser);
+
+    }
+
+    public PrescriptionService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(Prescription record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(Prescription relatedRecord) throws SQLException {
 
     }
 

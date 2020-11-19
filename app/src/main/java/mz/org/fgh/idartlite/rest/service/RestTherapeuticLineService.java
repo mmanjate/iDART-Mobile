@@ -7,13 +7,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.drug.ITherapeuthicLineService;
 import mz.org.fgh.idartlite.service.drug.TherapeuthicLineService;
 
-public class RestTherapeuticLineService extends BaseService {
+public class RestTherapeuticLineService extends BaseRestService {
 
     private static final String TAG = "RestTherapeuticLineServ";
     private static ITherapeuthicLineService therapeuticLineService;
@@ -27,7 +27,7 @@ public class RestTherapeuticLineService extends BaseService {
 
     public static void restGetAllTherapeuticLine() {
 
-        String url = BaseService.baseUrl + "/linhat";
+        String url = BaseRestService.baseUrl + "/linhat";
         therapeuticLineService = new TherapeuthicLineService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {

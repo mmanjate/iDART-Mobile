@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view.stock;
+package mz.org.fgh.idartlite.view.stock.panel;
 
 import android.content.Intent;
 import android.os.Bundle;

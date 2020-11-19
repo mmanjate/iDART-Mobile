@@ -10,17 +10,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
@@ -48,7 +46,7 @@ import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 import mz.org.fgh.idartlite.view.patientPanel.PrescriptionFragment;
 import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;
 
-public class PrescriptionVM extends BaseViewModel implements IDialogListener {
+public class PrescriptionVM extends BaseViewModel {
 
     private IPrescriptionService prescriptionService;
 
@@ -102,6 +100,21 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
         initialDataVisible = true;
     }
 
+    @Override
+    protected BaseModel initRecord() {
+        return null;
+    }
+
+    @Override
+    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+        return (Class<T>) PrescriptionService.class;
+    }
+
+    @Override
+    protected void initFormData() {
+
+    }
+
     private void initNewPrescription() {
         this.prescription = new Prescription();
 
@@ -127,10 +140,15 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
         motives.add(SimpleValue.fastCreate("Outro"));
     }
 
+    @Override
+    public PrescriptionFragment getRelatedFragment() {
+        return (PrescriptionFragment) super.getRelatedFragment();
+    }
+
     public void requestForNewRecord(){
         try {
 
-            if (getRelatedListingFragment().getMyActivity().getPatient().hasEndEpisode()) {
+            if (getRelatedFragment().getMyActivity().getPatient().hasEndEpisode()) {
                 Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.cant_edit_patient_data)).show();
             } else {
                 getCurrentStep().changeToInit();
@@ -408,14 +426,7 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
         }
     }
 
-    public void backToPreviusActivity(){
-        Map<String, Object> params = new HashMap<>();
-        params.put("patient", getPrescription().getPatient());
-        params.put("user", getCurrentUser());
-        params.put("clinic", getCurrentClinic());
-        params.put("requestedFragment", PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION);
-        getRelatedActivity().nextActivityFinishingCurrent(PatientPanelActivity.class,params);
-    }
+
 
     public void checkIfMustBeUrgentPrescription() throws SQLException {
         oldPrescription = prescriptionService.getLastPatientPrescription(this.prescription.getPatient());
@@ -492,6 +503,7 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
 
             if (!selectedDrugs.contains(selectedDrug)) {
                 selectedDrug.setListPosition(selectedDrugs.size()+1);
+                selectedDrug.setListType(Listble.PRESCRIPTION_DRUG_LISTING);
                 selectedDrugs.add(selectedDrug);
                 Collections.sort(selectedDrugs);
 

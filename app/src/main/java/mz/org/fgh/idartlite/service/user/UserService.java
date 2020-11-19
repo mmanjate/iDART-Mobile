@@ -9,7 +9,7 @@ import mz.org.fgh.idartlite.dao.user.IUserDao;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class UserService extends BaseService implements IUserService {
+public class UserService extends BaseService<User> implements IUserService {
 
     private static final String TAG = "UserService";
 
@@ -17,6 +17,10 @@ public class UserService extends BaseService implements IUserService {
 
     public UserService(Application application, User currUser) {
         super(application, currUser);
+        initDao();
+    }
+
+    private void initDao() {
         try {
             userDao = getDataBaseHelper().getUserDao();
         } catch (SQLException e) {
@@ -24,13 +28,20 @@ public class UserService extends BaseService implements IUserService {
         }
     }
 
+
     public UserService(Application application) {
         super(application);
-        try {
-            userDao = getDataBaseHelper().getUserDao();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        initDao();
+    }
+
+    @Override
+    public void save(User record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(User relatedRecord) throws SQLException {
+
     }
 
     public boolean login(User user) throws SQLException {
@@ -45,6 +56,5 @@ public class UserService extends BaseService implements IUserService {
         user.setPassword(Utilities.MD5Crypt(user.getPassword()));
         userDao.create(user);
     }
-
 
 }

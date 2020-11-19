@@ -13,7 +13,7 @@ import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
@@ -49,7 +49,7 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
         restClinicService = new RestClinicService(getApplication(), null);
         pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
 
-        if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+        if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
             new Thread(new Runnable() {
                 public void run() {
                     RestPharmacyTypeService.restGetAllPharmacyType();

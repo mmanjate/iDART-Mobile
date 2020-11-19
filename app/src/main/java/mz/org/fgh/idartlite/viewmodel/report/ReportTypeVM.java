@@ -8,6 +8,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.view.reports.ReportTypeActivity;
 import mz.org.fgh.idartlite.view.reports.ReportsListingActivity;
@@ -16,6 +18,21 @@ public class ReportTypeVM extends BaseViewModel {
 
     public ReportTypeVM(@NonNull Application application) {
         super(application);
+    }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
+    }
+
+    @Override
+    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+        return null;
+    }
+
+    @Override
+    protected void initFormData() {
+
     }
 
     public void callReports(){

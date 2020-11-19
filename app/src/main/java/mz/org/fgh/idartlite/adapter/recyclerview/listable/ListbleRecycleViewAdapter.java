@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.adapter.recyclerview.listable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -61,6 +62,19 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
             ((ListbleViewHolder) viewHolder).listableItemBinding.setListble(listbles.get(position - 1));
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListEditButton(activity.isViewListEditButton());
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
+
+            ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyDestroy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+
+                    if (!hasFocus){
+                        if (Utilities.stringHasValue(((EditText)v).getText().toString())) {
+                            getItemAtPosition(position).setQtyToModify(Integer.valueOf(((EditText) v).getText().toString()));
+                        }
+                    }
+                }
+            });
+
             ((ListbleViewHolder) viewHolder).listableItemBinding.imvRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -75,6 +89,12 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 }
             });
         }
+    }
+
+    public Listble getItemAtPosition(int position){
+        if (!Utilities.listHasElements(listbles)) return null;
+
+        return listbles.get(position-1);
     }
 
     public void remove(int position) {
@@ -100,6 +120,10 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
             return TYPE_HEADER;
         }
         return TYPE_ITEM;
+    }
+
+    public List<Listble> getListbles() {
+        return listbles;
     }
 
     @Override

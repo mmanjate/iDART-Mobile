@@ -7,13 +7,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.drug.DiseaseTypeService;
 import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
 
-public class RestDiseaseTypeService extends BaseService {
+public class RestDiseaseTypeService extends BaseRestService {
 
     private static final String TAG = "RestDiseaseTypeService";
     private static IDiseaseTypeService diseaseTypeService;
@@ -26,7 +26,7 @@ public class RestDiseaseTypeService extends BaseService {
 
     public static void restGetAllDiseaseType()  {
 
-        String url = BaseService.baseUrl + "/simpledomain?description=eq.disease_type";
+        String url = BaseRestService.baseUrl + "/simpledomain?description=eq.disease_type";
         diseaseTypeService = new DiseaseTypeService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {

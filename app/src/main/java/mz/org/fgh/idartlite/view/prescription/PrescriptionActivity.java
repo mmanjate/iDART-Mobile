@@ -192,6 +192,7 @@ public class PrescriptionActivity extends BaseActivity implements IDialogListene
         for (PrescribedDrug prescribedDrug : getRelatedViewModel().getPrescription().getPrescribedDrugs()){
             Drug d = prescribedDrug.getDrug();
             d.setListPosition(i);
+            d.setListType(Listble.PRESCRIPTION_DRUG_LISTING);
             i++;
             getRelatedViewModel().getSelectedDrugs().add(d);
         }

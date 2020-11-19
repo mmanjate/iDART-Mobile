@@ -9,8 +9,6 @@ import java.util.List;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.DispenseType;
 
-import static mz.org.fgh.idartlite.model.Clinic.COLUMN_CODE;
-
 public class DispenseTypeDaoImpl extends GenericDaoImpl<DispenseType, Integer> implements IDispenseTypeDao {
     public DispenseTypeDaoImpl(Class dataClass) throws SQLException {
         super(dataClass);
@@ -31,6 +29,6 @@ public class DispenseTypeDaoImpl extends GenericDaoImpl<DispenseType, Integer> i
 
     @Override
     public DispenseType getDispenseTypeByCode(String code) throws SQLException {
-        return queryBuilder().where().eq(COLUMN_CODE, code).queryForFirst();
+        return queryBuilder().where().eq(DispenseType.COLUMN_CODE, code).queryForFirst();
     }
 }

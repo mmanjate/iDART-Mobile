@@ -14,14 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.activity.GenericActivity;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
 import mz.org.fgh.idartlite.model.User;
 
-public abstract class GenericFragment extends Fragment implements GenericActivity {
+public abstract class GenericFragment extends Fragment implements GenericActivity, IListbleDialogListener {
 
     protected BaseViewModel relatedViewModel;
 
@@ -35,7 +38,7 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
             this.relatedViewModel.setRelatedActivity(getMyActivity());
             this.relatedViewModel.setCurrentUser(getMyActivity().getCurrentUser());
             this.relatedViewModel.setCurrentClinic(getMyActivity().getCurrentClinic());
-
+            this.relatedViewModel.setRelatedFragment(this);
         }
 
     }
@@ -100,6 +103,16 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(context, 0));
         recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void remove(int position) throws SQLException {
+
+    }
+
+    @Override
+    public void remove(BaseModel baseModel) {
 
     }
 }

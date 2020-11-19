@@ -14,13 +14,13 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class RestUserService extends BaseService {
+public class RestUserService extends BaseRestService {
 
     private static final String TAG = "RestUserService";
     public static final String auth = "USER_AUTHENTIC";
@@ -32,7 +32,7 @@ public class RestUserService extends BaseService {
 
     public void restGetUser(String clinicuuid){
 
-        String url = BaseService.baseUrl + "/users?username=eq."+currentUser.getUserName()+"&password=eq."+currentUser.getPassword()+"&clinicuuid=eq."+clinicuuid;
+        String url = BaseRestService.baseUrl + "/users?username=eq."+currentUser.getUserName()+"&password=eq."+currentUser.getPassword()+"&clinicuuid=eq."+clinicuuid;
 
         getRestServiceExecutor().execute(() -> {
 
@@ -63,9 +63,9 @@ public class RestUserService extends BaseService {
 
         final String[] result = {null};
 
-        if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+        if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {
-                String url = BaseService.baseUrl + "/users?select=*,clinic(*)&cl_username=eq." +
+                String url = BaseRestService.baseUrl + "/users?select=*,clinic(*)&cl_username=eq." +
                         username + "&cl_password=eq." + Utilities.MD5Crypt(password) +
                         "&clinic.uuid=eq." + clinicuuid;
 

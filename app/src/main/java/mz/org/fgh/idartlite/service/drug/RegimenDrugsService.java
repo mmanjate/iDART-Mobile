@@ -15,7 +15,7 @@ import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class RegimenDrugsService extends BaseService implements IRegimenDrugsService{
+public class RegimenDrugsService extends BaseService<RegimenDrug> implements IRegimenDrugsService{
 
     private static final String TAG = "RegimenDrugsService";
 
@@ -23,6 +23,20 @@ public class RegimenDrugsService extends BaseService implements IRegimenDrugsSer
 
     public RegimenDrugsService(Application application, User currentUser) {
         super(application, currentUser);
+    }
+
+    public RegimenDrugsService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(RegimenDrug record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(RegimenDrug relatedRecord) throws SQLException {
+
     }
 
     public void createRegimenDrug(RegimenDrug regimenDrug) throws SQLException {

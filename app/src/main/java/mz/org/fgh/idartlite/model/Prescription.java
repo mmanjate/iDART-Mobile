@@ -36,7 +36,7 @@ public class Prescription extends BaseModel {
 	public static final String COLUMN_PRESCRIPTION_SEQ = "prescription_seq";
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
-	public static final String COLUMN_SYNC_STATUS = "sync_status";
+
 
 	public static final String DURATION_TWO_WEEKS = "2 Semanas";
 	public static final String DURATION_ONE_MONTH = "1 Mês";
@@ -364,5 +364,20 @@ public class Prescription extends BaseModel {
 
 
 		return drugs;
+	}
+
+	@Override
+	public String isValid(Context context) {
+		return validate(context);
+	}
+
+	@Override
+	public String canBeEdited(Context context) {
+		return null;
+	}
+
+	@Override
+	public String canBeRemoved(Context context) {
+		return null;
 	}
 }

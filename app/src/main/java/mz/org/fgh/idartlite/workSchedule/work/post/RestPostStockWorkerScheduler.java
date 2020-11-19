@@ -10,11 +10,11 @@ import androidx.work.WorkerParameters;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.rest.service.RestStockService;
+import mz.org.fgh.idartlite.service.stock.StockService;
 
 public class RestPostStockWorkerScheduler extends Worker {
     private static final String TAG = "RestPostConfigDataWorke";
@@ -29,8 +29,8 @@ public class RestPostStockWorkerScheduler extends Worker {
     @Override
     public Result doWork() {
         try {
-            stockService = new StockService(BaseService.getApp(), null);
-            if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+            stockService = new StockService(BaseRestService.getApp(), null);
+            if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 Log.d(TAG, "doWork: Sync Stock Data");
                 stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_READY);
                 if (stockList != null)

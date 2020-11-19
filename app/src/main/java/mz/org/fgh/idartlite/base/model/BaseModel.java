@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.base.model;
 
+import android.content.Context;
+
 import java.io.Serializable;
 
 /**
@@ -7,7 +9,11 @@ import java.io.Serializable;
  */
 public abstract class BaseModel implements Serializable {
 
+    public static final String COLUMN_SYNC_STATUS = "sync_status";
+
     protected int listPosition;
+
+    protected String listType;
 
     public static final String SYNC_SATUS_READY = "R";
     public static final String SYNC_SATUS_SENT = "S";
@@ -32,5 +38,16 @@ public abstract class BaseModel implements Serializable {
     public boolean isSyncStatusUpdated(String syncStatus){
         return syncStatus.equals(SYNC_SATUS_UPDATED);
     }
+
+    public abstract String isValid(Context context);
+
+    public abstract String canBeEdited(Context context);
+
+    public abstract String canBeRemoved(Context context);
+
+    public void setListType(String listType) {
+        this.listType = listType;
+    }
+
 
 }

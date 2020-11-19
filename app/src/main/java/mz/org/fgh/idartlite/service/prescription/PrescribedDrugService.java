@@ -17,7 +17,7 @@ import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.drug.DrugService;
 
-public class PrescribedDrugService extends BaseService implements IPrescribedDrugService {
+public class PrescribedDrugService extends BaseService<PrescribedDrug> implements IPrescribedDrugService {
 
     private static final String TAG = "PrescriptionDrugService";
 
@@ -25,6 +25,20 @@ public class PrescribedDrugService extends BaseService implements IPrescribedDru
 
     public PrescribedDrugService(Application application, User currentUser) {
         super(application, currentUser);
+    }
+
+    public PrescribedDrugService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(PrescribedDrug record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(PrescribedDrug relatedRecord) throws SQLException {
+
     }
 
 

@@ -1,30 +1,18 @@
 package mz.org.fgh.idartlite.service.dispense;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
-import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
-import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.StockReportData;
-import mz.org.fgh.idartlite.util.DateUtilities;
-
-import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
 
 
-public interface IDispenseService extends IBaseService {
+public interface IDispenseService extends IBaseService<Dispense> {
 
     public List<Dispense> getAllDispenseByPrescription(Prescription prescription) throws SQLException;
 

@@ -269,6 +269,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                     }
                     if (!selectedDrugs.contains(listble)) {
                         listble.setListPosition(selectedDrugs.size() + 1);
+                        selectedDrug.setListType(Listble.DISPENSE_DRUG_LISTING);
                         selectedDrugs.add(listble);
                         Collections.sort(selectedDrugs);
 
@@ -376,6 +377,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
         ) {
             Drug drug = pd.getDrug();
             drug.setListPosition(i);
+            drug.setListType(Listble.DISPENSE_DRUG_LISTING);
             i++;
             selectedDrugs.add(drug);
             Collections.sort(selectedDrugs);
@@ -402,6 +404,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             for (DispensedDrug dispensedDrugDrug : dispensedDrugs) {
                 Drug d = dispensedDrugDrug.getStock().getDrug();
                 d.setListPosition(i);
+                d.setListType(Listble.DISPENSE_DRUG_LISTING);
                 i++;
                 selectedDrugs.add(d);
             }

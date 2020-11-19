@@ -1,24 +1,17 @@
 package mz.org.fgh.idartlite.service.prescription;
 
 import com.google.gson.internal.LinkedTreeMap;
-import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
 
-import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
-import mz.org.fgh.idartlite.model.TherapeuticLine;
-import mz.org.fgh.idartlite.model.TherapeuticRegimen;
-
-import static java.util.Objects.requireNonNull;
 
 
-public interface IPrescriptionService extends IBaseService {
+public interface IPrescriptionService extends IBaseService<Prescription> {
 
     public List<Prescription> getAllPrescriptionsByPatient(Patient patient) throws SQLException ;
 

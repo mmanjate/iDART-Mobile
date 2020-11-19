@@ -14,9 +14,23 @@ import mz.org.fgh.idartlite.model.User;
 
 import static mz.org.fgh.idartlite.model.PharmacyType.COLUMN_DESCRIPTION;
 
-public class PharmacyTypeService extends BaseService implements IPharmacyTypeService {
+public class PharmacyTypeService extends BaseService<PharmacyType> implements IPharmacyTypeService {
     public PharmacyTypeService(Application application, User currentUser) {
         super(application, currentUser);
+    }
+
+    public PharmacyTypeService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(PharmacyType record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(PharmacyType relatedRecord) throws SQLException {
+
     }
 
     public void savePharmacyType(PharmacyType pharmacyType) throws SQLException {

@@ -17,8 +17,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 
 public class RESTServiceHandler {
@@ -103,7 +103,7 @@ public class RESTServiceHandler {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         HttpURLConnection connection = null;
-        String url = BaseService.baseUrl + "/rpc/login";
+        String url = BaseRestService.baseUrl + "/rpc/login";
         String parameters = "{\"username\":\"" + username + "\",\"pass\":\"" + pass + "\"}";
 
         String result = "";

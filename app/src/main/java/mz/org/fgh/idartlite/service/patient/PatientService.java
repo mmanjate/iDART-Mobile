@@ -19,9 +19,9 @@ import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
 
-import static mz.org.fgh.idartlite.model.Patient.COLUMN_UUID;
+import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
 
-public class PatientService extends BaseService implements IPatientService {
+public class PatientService extends BaseService<Patient> implements IPatientService {
 
     private IPatientDao patientDao;
     protected ClinicService clinicService;
@@ -50,6 +50,16 @@ public class PatientService extends BaseService implements IPatientService {
         } catch (SQLException sql) {
             Log.i("erro ", sql.getMessage());
         }
+    }
+
+    @Override
+    public void save(Patient record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(Patient relatedRecord) throws SQLException {
+
     }
 
     public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic, long offset, long limit) throws SQLException {

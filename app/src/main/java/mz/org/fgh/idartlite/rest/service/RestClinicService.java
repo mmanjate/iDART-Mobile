@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
@@ -26,7 +26,7 @@ import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.user.IUserService;
 import mz.org.fgh.idartlite.service.user.UserService;
 
-public class RestClinicService extends BaseService {
+public class RestClinicService extends BaseRestService {
     private static final String TAG = "RestClinicService";
     private static IClinicService clinicService;
     private static IUserService userService;
@@ -38,15 +38,15 @@ public class RestClinicService extends BaseService {
 
     public List<Clinic> restGetAllClinic(RestResponseListener listener) {
 
-        String url = BaseService.baseUrl + "/clinic?facilitytype=neq.Unidade%20Sanitária&mainclinic=eq.false";
-        clinicService = new ClinicService(getApplication(), null);
-        userService = new UserService(getApplication());
+        String url = BaseRestService.baseUrl + "/clinic?facilitytype=neq.Unidade%20Sanitária&mainclinic=eq.false";
 
-        pharmacyTypeService = new PharmacyTypeService(getApplication(), null);
+        clinicService = (IClinicService) getServiceFactory().get(ClinicService.class);
+        userService = (IUserService) getServiceFactory().get(UserService.class);
+        pharmacyTypeService = (IPharmacyTypeService) getServiceFactory().get(PharmacyTypeService.class);
+
         ArrayList<Clinic> clinicList = new ArrayList<>();
 
-
-        if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+        if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {
 
                 RESTServiceHandler handler = new RESTServiceHandler();

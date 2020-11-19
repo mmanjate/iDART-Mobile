@@ -2,48 +2,31 @@ package mz.org.fgh.idartlite.base.service;
 
 import android.app.Application;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.ExecutorService;
+import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.rest.helper.ExecutorThreadProvider;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public abstract class BaseService {
+public abstract class BaseService<T extends BaseModel> implements IBaseService<T>{
 
     protected IdartLiteDataBaseHelper dataBaseHelper;
-
-
-    protected static ExecutorService restServiceExecutor;
-    public static final String baseUrl = "http://dev.fgh.org.mz:3110";
 
     protected User currentUser;
     protected Application application;
     public static Application app;
 
     public BaseService(Application application, User currentUser) {
-        initServices(application,currentUser);
+        init(application,currentUser);
     }
 
     public BaseService(Application application) {
-        initServices(application,null);
+        init(application,null);
     }
 
-    public void initServices(Application application, User currentUser){
+    public void init(Application application, User currentUser){
         this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
-        restServiceExecutor = ExecutorThreadProvider.getInstance().getExecutorService();
 
         this.currentUser = currentUser;
         this.application=application;
@@ -52,10 +35,6 @@ public abstract class BaseService {
 
     protected IdartLiteDataBaseHelper getDataBaseHelper() {
         return dataBaseHelper;
-    }
-
-    public static ExecutorService getRestServiceExecutor() {
-        return restServiceExecutor;
     }
 
     public User getCurrentUser() {
@@ -69,54 +48,33 @@ public abstract class BaseService {
         return app;
     }
 
+    @Override
+    public void save(T record) throws SQLException {
+        String errors = record.isValid(getApplication().getApplicationContext());
 
-    public Date getSqlDateFromString(String stringDate, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ROOT);
-        try {
-            Date date = (Date) format.parse(stringDate);
-            return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (Utilities.stringHasValue(errors)) {
+            Utilities.displayAlertDialog(getApplication().getApplicationContext(), errors).show();
+            return;
         }
-
-        return null;
     }
 
-    public static Date getUtilDateFromString(String stringDate, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern,Locale.ROOT);
-        try {
-            Date date = (Date) format.parse(stringDate);
-            return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
+    @Override
+    public void update(T relatedRecord) throws SQLException {
+        String errors = relatedRecord.isValid(getApplication().getApplicationContext());
+
+        if (Utilities.stringHasValue(errors)) {
+            Utilities.displayAlertDialog(getApplication().getApplicationContext(), errors).show();
+            return;
         }
-
-        return null;
     }
 
-    public static String getStringDateFromDate(Date date, String pattern) {
-        SimpleDateFormat datetemp = new SimpleDateFormat(pattern,Locale.ROOT);
-        String data = datetemp.format(date);
-        return data;
+    @Override
+    public void deleteRecord(T selectedRecord) throws SQLException {
+        String errors = selectedRecord.canBeRemoved(getApplication().getApplicationContext());
 
-    }
-
-    protected static String generateErrorMsg(VolleyError error){
-        if (error instanceof NetworkError) {
-            return "A network error as occured ";
-        } else if (error instanceof ServerError) {
-            return "A server error as occured ";
-        } else if (error instanceof AuthFailureError) {
-            return "An authentication error as occured ";
-        } else if (error instanceof ParseError) {
-            return "A parse error as occured ";
-        } else if (error instanceof NoConnectionError) {
-            return "No connection ";
-        } else if (error instanceof TimeoutError) {
-            return "Connection timeout";
+        if (Utilities.stringHasValue(errors)) {
+            Utilities.displayAlertDialog(getApplication().getApplicationContext(), errors).show();
+            return;
         }
-        return Utilities.stringHasValue(error.getMessage()) ? error.getMessage() : "Erro desconhecido";
     }
-
-
 }

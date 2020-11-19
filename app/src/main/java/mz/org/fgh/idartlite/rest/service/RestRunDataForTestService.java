@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
@@ -23,7 +23,7 @@ import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 
-public class RestRunDataForTestService extends BaseService {
+public class RestRunDataForTestService extends BaseRestService {
     public RestRunDataForTestService(Application application, User currentUser) {
         super(application, currentUser);
 

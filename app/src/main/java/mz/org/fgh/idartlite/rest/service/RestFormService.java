@@ -7,13 +7,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.drug.FormService;
 import mz.org.fgh.idartlite.service.drug.IFormService;
 
-public class RestFormService extends BaseService {
+public class RestFormService extends BaseRestService {
 
     private static final String TAG = "RestFormService";
     private static IFormService formService;
@@ -27,7 +27,7 @@ public class RestFormService extends BaseService {
 
     public static void restGetAllForms() {
 
-        String url = BaseService.baseUrl + "/form";
+        String url = BaseRestService.baseUrl + "/form";
         formService = new FormService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {

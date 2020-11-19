@@ -5,18 +5,29 @@ import android.app.Application;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Form;
 import mz.org.fgh.idartlite.model.User;
 
-import static mz.org.fgh.idartlite.model.DiseaseType.COLUMN_DESCRIPTION;
-
-public class FormService extends BaseService implements IFormService {
+public class FormService extends BaseService<Form> implements IFormService {
     public FormService(Application application, User currentUser) {
         super(application, currentUser);
+    }
+
+    public FormService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(Form record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(Form relatedRecord) throws SQLException {
+
     }
 
     public void saveForm(Form form) throws SQLException {

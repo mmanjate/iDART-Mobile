@@ -7,13 +7,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.drug.ITherapheuticRegimenService;
 import mz.org.fgh.idartlite.service.drug.TherapheuticRegimenService;
 
-public class RestTherapeuticRegimenService extends BaseService {
+public class RestTherapeuticRegimenService extends BaseRestService {
 
     private static final String TAG = "RestTherapeuticRegimenS";
     private static ITherapheuticRegimenService therapeuticRegimenService;
@@ -27,7 +27,7 @@ public class RestTherapeuticRegimenService extends BaseService {
 
     public static void restGetAllTherapeuticRegimen() {
 
-        String url = BaseService.baseUrl + "/regimeterapeutico?select=*,drug(*)&active=eq.true";
+        String url = BaseRestService.baseUrl + "/regimeterapeutico?select=*,drug(*)&active=eq.true";
         therapeuticRegimenService = new TherapheuticRegimenService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {

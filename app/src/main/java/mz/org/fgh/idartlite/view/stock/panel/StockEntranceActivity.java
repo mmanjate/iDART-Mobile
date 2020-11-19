@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view.stock;
+package mz.org.fgh.idartlite.view.stock.panel;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -133,6 +133,9 @@ public class StockEntranceActivity extends BaseActivity implements IDialogListen
                                 stb.setDateReceived(stockListEdit.get(0).getDateReceived());
                                 stb.setOrderNumber(stockListEdit.get(0).getOrderNumber());
                                 getRelatedViewModel().setStock(stb);
+                                for (Listble listble : stockListEdit){
+                                    ((Stock) listble).setListType(Listble.STOCK_LISTING);
+                                }
                                 selectedStock.addAll(stockListEdit);
                                 Collections.sort(selectedStock);
                                 displaySelectedDrugs();
@@ -142,6 +145,7 @@ public class StockEntranceActivity extends BaseActivity implements IDialogListen
                         } else if (bundle.getSerializable("mode").equals("view")) {
                             disableForm();
                             selectedStock = (List<Listble>) bundle.getSerializable("listStock");
+                            setListingType(selectedStock);
                             Collections.sort(selectedStock);
                             displaySelectedDrugs();
                         } else {
@@ -169,6 +173,12 @@ public class StockEntranceActivity extends BaseActivity implements IDialogListen
 
         //stockEntranceBinding.spnDrugs.setOnGenericMotionListener();
         stockEntranceBinding.setStock(getRelatedViewModel().getStock());
+    }
+
+    private void setListingType(List<Listble> stockListEdit) {
+        for (Listble listble : stockListEdit){
+            ((Stock) listble).setListType(Listble.STOCK_LISTING);
+        }
     }
 
     //Handling Action Bar button click
@@ -335,6 +345,8 @@ public class StockEntranceActivity extends BaseActivity implements IDialogListen
 
                                     if (!selectedStock.contains(listble)) {
                                         listble.setListPosition(selectedStock.size() + 1);
+                                        ((Stock)listble).setListType(Listble.STOCK_LISTING);
+
                                         selectedStock.add(listble);
                                         getRelatedViewModel().initNewStock();
                                         Collections.sort(selectedStock);

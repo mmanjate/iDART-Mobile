@@ -3,7 +3,6 @@ package mz.org.fgh.idartlite.service.drug;
 import android.app.Application;
 
 import com.google.gson.internal.LinkedTreeMap;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,21 +12,32 @@ import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Form;
-import mz.org.fgh.idartlite.model.RegimenDrug;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
 
-import static java.util.Objects.*;
-import static mz.org.fgh.idartlite.model.Drug.COLUMN_DESCRIPTION;
-import static mz.org.fgh.idartlite.model.Drug.COLUMN_REST_ID;
+import static java.util.Objects.requireNonNull;
 
-public class DrugService extends BaseService implements IDrugService {
+public class DrugService extends BaseService<Drug> implements IDrugService {
 
     protected DiseaseTypeService diseaseTypeService = new DiseaseTypeService(getApplication(), null);
     protected FormService formService = new FormService(getApplication(), null);
 
     public DrugService(Application application, User currentUser) {
         super(application, currentUser);
+    }
+
+    public DrugService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(Drug record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(Drug relatedRecord) throws SQLException {
+
     }
 
     public void saveDrug(Drug drug) throws SQLException {
