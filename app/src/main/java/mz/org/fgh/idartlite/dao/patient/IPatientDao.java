@@ -18,5 +18,7 @@ public interface IPatientDao extends IGenericDao<Patient, Integer> {
 
     public Patient getPatientByUuid(String uuid) throws SQLException ;
 
+    public Patient checkExistsPatientWithNID(String nid) throws SQLException ;
+
 
 }

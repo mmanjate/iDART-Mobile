@@ -33,4 +33,6 @@ public interface IPatientService extends IBaseService {
 
     public void  updatePatient(Patient patient) throws SQLException ;
 
+    public Patient checkExistsPatientWithNID(String nid) throws SQLException ;
+
 }

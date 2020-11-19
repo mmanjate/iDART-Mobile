@@ -358,6 +358,12 @@ public class AddNewPatientActivity extends BaseActivity implements IDialogListen
     public void doOnConfirmed() {
 
         if(getApplicationStep().isApplicationStepEdit()){
+           /* Map<String, Object> params = new HashMap<>();
+            params.put("patient",  getRelatedViewModel().getPatient());
+            params.put("user", getCurrentUser());
+            params.put("clinic", getCurrentClinic());
+            params.put("requestedFragment", PatientPanelActivity.FRAGMENT_CODE_PRESCRIPTION);
+            nextActivityFinishingCurrent(PatientPanelActivity.class,params);*/
             finish();
         }
         else {

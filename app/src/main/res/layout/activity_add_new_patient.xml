@@ -331,7 +331,7 @@
                             android:id="@+id/telefone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@={patient.phone}"
+                            android:text="@={viewModel.patient.phone}"
                             android:inputType="number"
                             style="@style/bottom_border_edit_text_style"
                             android:drawableLeft="@drawable/ic_quantidade_recebida"/>

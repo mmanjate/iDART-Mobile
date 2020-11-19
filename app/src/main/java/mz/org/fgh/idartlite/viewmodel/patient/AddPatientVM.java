@@ -114,22 +114,39 @@ public class AddPatientVM extends BaseViewModel {
 
             String validationErros=patient.validate(getRelatedActivity());
 
-            if(validationErros.isEmpty()) {
+            String validationErrorsEpisode=episode.validateEpisodeDataForCreatingPatient(getRelatedActivity());
+
+            Patient localPatient = patientService.checkExistsPatientWithNID(patient.getNid());
+
+
+            if(validationErros.isEmpty() && validationErrorsEpisode.isEmpty()) {
 
                 if(getRelatedActivity().getApplicationStep().isApplicationStepEdit()){
-                    patientService.updatePatient(this.patient);
-                    episodeService.udpateEpisode(episode);
-                    Utilities.displayAlertDialog( getRelatedActivity(), getRelatedActivity().getString(R.string.patient_updated_sucessfuly),getRelatedActivity()).show();
+                    if(localPatient.getId() == patient.getId()){
+                        patientService.updatePatient(this.patient);
+                        episodeService.udpateEpisode(episode);
+                        Utilities.displayAlertDialog( getRelatedActivity(), getRelatedActivity().getString(R.string.patient_updated_sucessfuly),getRelatedActivity()).show();
+
+                    }
+                    else{
+                        Utilities.displayAlertDialog( getRelatedActivity(),"Ja Existe um Paciente com o NID colocado").show();
+                    }
+
                 }
                 else {
-                    patientService.savePatient(this.patient);
-                    episodeService.createEpisode(episode);
-                    Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.patient_created_sucessfuly), getRelatedActivity()).show();
+                    if(localPatient==null) {
+                        patientService.savePatient(this.patient);
+                        episodeService.createEpisode(episode);
+                        Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.patient_created_sucessfuly), getRelatedActivity()).show();
+                    }
+                    else{
+                        Utilities.displayAlertDialog( getRelatedActivity(),"Ja Existe um Paciente com o NID colocado").show();
+                    }
                 }
             }
             else {
 
-                Utilities.displayAlertDialog( getRelatedActivity(),validationErros).show();
+                Utilities.displayAlertDialog( getRelatedActivity(),validationErros + validationErrorsEpisode).show();
 
             }
         }
@@ -140,7 +157,7 @@ public class AddPatientVM extends BaseViewModel {
     }
 
     public void save()  {
-        getCurrentStep().changeToSave();
+     //   getCurrentStep().changeToSave();
         try {
             doSave();
         } catch (SQLException e) {

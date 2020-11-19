@@ -513,7 +513,7 @@ public class PrescriptionVM extends BaseViewModel implements IDialogListener {
         return durations;
     }
 
-    public List<SimpleValue> getMotives() {
+    public List<SimpleValue>  getMotives() {
         return motives;
     }
 

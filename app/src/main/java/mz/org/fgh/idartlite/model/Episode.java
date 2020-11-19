@@ -185,6 +185,16 @@ public class Episode extends BaseModel {
 		return "";
 	}
 
+	public String validateEpisodeDataForCreatingPatient(Context context){
+		if(episodeDate==null){
+			return context.getString(R.string.admission_date_mandatory);
+		}
+		if(DateUtilities.dateDiff(episodeDate, Calendar.getInstance().getTime(), DateUtilities.DAY_FORMAT) >=0){
+			return context.getString(R.string.admission_date_not_correct);
+		}
+		return "";
+	}
+
 	//Filling the Next PickUpDate Label
 	public String getNoInfoString(){
 		if(stopReason!=null){
