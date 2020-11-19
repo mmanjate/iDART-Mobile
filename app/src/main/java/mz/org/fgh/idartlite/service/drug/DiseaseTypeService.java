@@ -12,11 +12,23 @@ import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.User;
 
-import static mz.org.fgh.idartlite.model.DiseaseType.COLUMN_CODE;
-
-public class DiseaseTypeService extends BaseService implements IDiseaseTypeService{
+public class DiseaseTypeService extends BaseService<DiseaseType> implements IDiseaseTypeService{
     public DiseaseTypeService(Application application, User currentUser) {
         super(application, currentUser);
+    }
+
+    public DiseaseTypeService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(DiseaseType record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(DiseaseType relatedRecord) throws SQLException {
+
     }
 
     public void saveDiseaseType(DiseaseType diseaseType) throws SQLException {

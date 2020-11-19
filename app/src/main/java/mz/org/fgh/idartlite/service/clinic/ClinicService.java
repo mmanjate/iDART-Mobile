@@ -9,11 +9,24 @@ import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 
-import static mz.org.fgh.idartlite.model.Clinic.COLUMN_UUID;
+public class ClinicService extends BaseService<Clinic> implements IClinicService {
 
-public class ClinicService extends BaseService implements IClinicService {
     public ClinicService(Application application, User currentUser) {
         super(application, currentUser);
+    }
+
+    public ClinicService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(Clinic record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(Clinic relatedRecord) throws SQLException {
+
     }
 
     public List<Clinic> getAllClinics() throws SQLException {

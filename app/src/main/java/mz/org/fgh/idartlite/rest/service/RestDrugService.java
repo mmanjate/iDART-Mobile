@@ -7,17 +7,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.drug.DiseaseTypeService;
 import mz.org.fgh.idartlite.service.drug.DrugService;
-import mz.org.fgh.idartlite.service.drug.FormService;
 import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
 import mz.org.fgh.idartlite.service.drug.IDrugService;
 import mz.org.fgh.idartlite.service.drug.IFormService;
 
-public class RestDrugService extends BaseService {
+public class RestDrugService extends BaseRestService {
 
     private static final String TAG = "RestDrugService";
     private static IDrugService drugService;
@@ -32,7 +30,7 @@ public class RestDrugService extends BaseService {
 
     public static void restGetAllDrugs() {
 
-        String url = BaseService.baseUrl + "/drug?select=*,form(*)&active=eq."+Boolean.TRUE;
+        String url = BaseRestService.baseUrl + "/drug?select=*,form(*)&active=eq."+Boolean.TRUE;
         drugService = new DrugService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {

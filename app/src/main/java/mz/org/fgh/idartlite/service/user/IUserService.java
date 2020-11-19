@@ -1,17 +1,12 @@
 package mz.org.fgh.idartlite.service.user;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.IBaseService;
-import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Drug;
-import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.util.Utilities;
 
 
-public interface IUserService extends IBaseService {
+public interface IUserService extends IBaseService<User> {
 
     public boolean login(User user) throws SQLException;
 

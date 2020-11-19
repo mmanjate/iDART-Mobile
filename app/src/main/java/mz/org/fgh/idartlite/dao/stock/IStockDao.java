@@ -19,4 +19,5 @@ public interface IStockDao extends IGenericDao<Stock, Integer> {
 
     public List<Stock> getAllStocksByDrug( Drug drug) throws SQLException;
 
+    List<Stock> getAll(Drug drug) throws SQLException;
 }

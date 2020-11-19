@@ -1,15 +1,16 @@
 package mz.org.fgh.idartlite.dao.stock;
 
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
-
-import java.sql.SQLException;
-import java.util.List;
 
 public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements IStockDao {
 
@@ -48,5 +49,13 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements ISto
     @Override
     public List<Stock> getAllStocksByDrug(Drug drug) throws SQLException {
         return queryBuilder().where().eq(Stock.COLUMN_DRUG, drug.getId()).query();
+    }
+
+    @Override
+    public List<Stock> getAll(Drug drug) throws SQLException {
+        QueryBuilder qb = queryBuilder();
+        qb.where().eq(Stock.COLUMN_DRUG, drug.getId());
+        qb.orderBy(Stock.COLUMN_EXPIRY_DATE, true);
+        return qb.query();
     }
 }

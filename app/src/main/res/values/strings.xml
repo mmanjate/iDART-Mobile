@@ -195,6 +195,9 @@
     <string name="amc">AMC(Consumo Maximo)</string>
     <string name="stock_actual">Stock Actual</string>
     <string name="stock_status">Estado</string>
+    <string name="unknown_error">Erro desconhecido</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
     <string name="novo_paciente">Novo Paciente</string>

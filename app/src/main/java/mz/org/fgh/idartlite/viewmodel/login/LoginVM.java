@@ -14,6 +14,8 @@ import java.util.Map;
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
@@ -48,6 +50,21 @@ public class LoginVM extends BaseViewModel {
         userService = new UserService(getApplication(), getCurrentUser());
         restUserService = new RestUserService(getApplication(), getCurrentUser());
         clinicService = new ClinicService(getApplication(), getCurrentUser());
+    }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
+    }
+
+    @Override
+    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+        return null;
+    }
+
+    @Override
+    protected void initFormData() {
+
     }
 
     public void setUserName(String userName) {
@@ -114,7 +131,7 @@ public class LoginVM extends BaseViewModel {
 
                 } else {
                     // Somente para testes --- estas funcionalidades foram alocadas no WorkManager da app
-                    if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+                    if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                         RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
                     }
 

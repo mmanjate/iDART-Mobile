@@ -199,6 +199,7 @@
     <string name="amc">AMC(Consumo Maximo)</string>
     <string name="stock_actual">Stock Actual</string>
     <string name="stock_status">Estado</string>
+    <string name="unknown_error">Erro desconhecido</string>
 
     <string name="novo_paciente">Novo Paciente</string>
     <string name="procurar_paciente">Procurar Paciente</string>

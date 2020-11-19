@@ -16,13 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.patientPanel.AddNewPatientActivity"></activity>
+        <activity android:name=".view.patientPanel.AddNewPatientActivity"/>
         <activity android:name=".view.home.PatientHomeActivity" />
         <activity android:name=".view.reports.ReportTypeActivity" />
         <activity android:name=".view.reports.ReportsListingActivity" />
         <activity android:name=".view.reports.DispenseReportActivity" />
         <activity android:name=".view.reports.DispensedDrugsReportActivity" />
         <activity android:name=".view.reports.StockAlertReportActivity" />
+        <activity android:name=".view.stock.inventory.IventoryActivity"/>
+        <activity android:name=".view.stock.destroy.DestroyStockActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -55,12 +57,12 @@
             android:name=".view.dispense.CreateDispenseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.stock.StockEntranceActivity"
+            android:name=".view.stock.panel.StockEntranceActivity"
             android:label="@string/title_activity_stock"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.stock.StockActivity"
+            android:name=".view.stock.panel.StockActivity"
             android:label="@string/title_activity_stock"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />

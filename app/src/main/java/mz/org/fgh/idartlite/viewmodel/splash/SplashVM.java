@@ -7,14 +7,16 @@ import androidx.annotation.NonNull;
 import java.sql.SQLException;
 import java.util.List;
 
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
+import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.drug.DiseaseTypeService;
 import mz.org.fgh.idartlite.service.drug.DrugService;
-import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
 import mz.org.fgh.idartlite.service.drug.IDrugService;
 import mz.org.fgh.idartlite.service.user.IUserService;
@@ -34,6 +36,22 @@ public class SplashVM extends BaseViewModel {
         diseaseTypeService = new DiseaseTypeService(application, null);
         drugService = new DrugService(application, null);
     }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
+    }
+
+    @Override
+    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+        return null;
+    }
+
+    @Override
+    protected void initFormData() {
+
+    }
+
     public boolean appHasNoUsersOnDB(){
         boolean usersOnDB = false;
         try {

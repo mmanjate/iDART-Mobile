@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.model;
 
 
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -273,5 +274,40 @@ public class Stock extends BaseModel implements Listble {
     @Override
     public String getCode() {
         return uuid;
+    }
+
+    @Override
+    public String isValid(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
+    }
+
+    @Override
+    public Date getValidate() {
+        return this.expiryDate;
+    }
+
+    @Override
+    public int getSaldoActual() {
+        return this.stockMoviment;
+    }
+
+    @Override
+    public boolean isStockListing() {
+        return listType.equals(Listble.STOCK_LISTING);
+    }
+
+    @Override
+    public boolean isStockDestroyListing() {
+        return listType.equals(Listble.STOCK_DESTROY_LISTING);
     }
 }

@@ -23,6 +23,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
@@ -37,7 +38,9 @@ import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class RestStockService extends BaseService {
+import static mz.org.fgh.idartlite.util.DateUtilities.getUtilDateFromString;
+
+public class RestStockService extends BaseRestService {
 
     private static final String TAG = "RestStockService";
     private static IStockService stockService;
@@ -50,7 +53,7 @@ public class RestStockService extends BaseService {
 
     public static void restPostStockCenter(Clinic clinic) throws SQLException{
 
-        String url = BaseService.baseUrl + "/stockcenter?on_conflict=id";
+        String url = BaseRestService.baseUrl + "/stockcenter?on_conflict=id";
         clinicService = new ClinicService(BaseService.getApp(), null);
         stockService = new StockService(getApp(), null);
 
@@ -106,7 +109,7 @@ public class RestStockService extends BaseService {
             clinic = clinicService.getAllClinics().get(0);
 
         Clinic finalClinic = clinic;
-        String url = BaseService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
+        String url = BaseRestService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
 
         getRestServiceExecutor().execute(() -> {
             RESTServiceHandler handler = new RESTServiceHandler();
@@ -149,7 +152,7 @@ public class RestStockService extends BaseService {
 
     public static void restPostStock(Stock localStock) {
 
-        String url = BaseService.baseUrl + "/stock?select=id";
+        String url = BaseRestService.baseUrl + "/stock?select=id";
 
         stockService = new StockService(getApp(), null);
 
@@ -197,7 +200,7 @@ public class RestStockService extends BaseService {
 
     public static void restPostStockLevel(Stock localStock) {
 
-        String url = BaseService.baseUrl + "/stocklevel";
+        String url = BaseRestService.baseUrl + "/stocklevel";
 
         stockService = new StockService(getApp(), null);
 
@@ -239,7 +242,7 @@ public class RestStockService extends BaseService {
 
     public static void restGetAndPatchStockLevel(Stock stock) {
 
-        String url = BaseService.baseUrl + "/stocklevel?batch=eq." + stock.getRestId();
+        String url = BaseRestService.baseUrl + "/stocklevel?batch=eq." + stock.getRestId();
         getRestServiceExecutor().execute(() -> {
 
             RESTServiceHandler handler = new RESTServiceHandler();
@@ -281,7 +284,7 @@ public class RestStockService extends BaseService {
 
     public static void restPatchStockLevel(Stock localStock) {
 
-        String url = BaseService.baseUrl + "/stocklevel?batch=eq." + localStock.getRestId();
+        String url = BaseRestService.baseUrl + "/stocklevel?batch=eq." + localStock.getRestId();
         try {
             getRestServiceExecutor().execute(() -> {
                 RESTServiceHandler handler = new RESTServiceHandler();

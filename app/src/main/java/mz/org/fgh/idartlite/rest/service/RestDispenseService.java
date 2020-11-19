@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
@@ -50,7 +50,7 @@ import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 
-public class RestDispenseService extends BaseService {
+public class RestDispenseService extends BaseRestService {
 
     private static final String TAG = "RestDispenseService";
     private static IDispenseService dispenseService;
@@ -79,7 +79,7 @@ public class RestDispenseService extends BaseService {
 
         if (episode != null) {
 
-            String url = BaseService.baseUrl + "/sync_temp_dispense?uuidopenmrs=eq." + patient.getUuid() + "&mainclinicuuid=eq." + episode.getUsUuid() + "&order=pickupdate.desc";
+            String url = BaseRestService.baseUrl + "/sync_temp_dispense?uuidopenmrs=eq." + patient.getUuid() + "&mainclinicuuid=eq." + episode.getUsUuid() + "&order=pickupdate.desc";
 
             try {
                 getRestServiceExecutor().execute(() -> {
@@ -149,7 +149,7 @@ public class RestDispenseService extends BaseService {
 
     public static void restPostDispense(Dispense dispense) {
 
-        String url = BaseService.baseUrl + "/sync_temp_dispense";
+        String url = BaseRestService.baseUrl + "/sync_temp_dispense";
 
         dispenseService = new DispenseService(getApp(), null);
         dispenseDrugService = new DispenseDrugService(getApp(), null);
@@ -241,7 +241,7 @@ public class RestDispenseService extends BaseService {
         Dispense localDispense = new Dispense();
 
         localDispense.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
-        localDispense.setNextPickupDate(BaseService.getUtilDateFromString(itemresult.get("dateexpectedstring").toString(), "dd MMM yyyy"));
+        localDispense.setNextPickupDate(DateUtilities.getUtilDateFromString(itemresult.get("dateexpectedstring").toString(), "dd MMM yyyy"));
         localDispense.setPickupDate(DateUtilities.createDate(itemresult.get("pickupdate").toString(), "yyyy-MM-dd"));
         localDispense.setSupply((int) Float.parseFloat(itemresult.get("weekssupply").toString()));
         localDispense.setPrescription(prescription);
@@ -355,7 +355,7 @@ public class RestDispenseService extends BaseService {
             syncDispense.setWeekssupply(dispense.getPrescription().getSupply());
             syncDispense.setExpirydate(dispense.getNextPickupDate());
 
-            syncDispense.setDateexpectedstring(BaseService.getStringDateFromDate(dispense.getNextPickupDate(), "dd MMM yyyy"));
+            syncDispense.setDateexpectedstring(DateUtilities.getStringDateFromDate(dispense.getNextPickupDate(), "dd MMM yyyy"));
             syncDispense.setDrugname(dispensedDrug.getStock().getDrug().getDescription());
             syncDispense.setDispensedate(dispense.getPickupDate());
 

@@ -4,19 +4,31 @@ import android.app.Application;
 
 import com.google.gson.internal.LinkedTreeMap;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.User;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import static mz.org.fgh.idartlite.model.DiseaseType.COLUMN_DESCRIPTION;
-
-public class DispenseTypeService extends BaseService  implements  IDispenseTypeService{
+public class DispenseTypeService extends BaseService<DispenseType>  implements  IDispenseTypeService{
 
     public DispenseTypeService(Application application, User currUser) {
         super(application, currUser);
+    }
+
+    public DispenseTypeService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(DispenseType record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(DispenseType relatedRecord) throws SQLException {
+
     }
 
     public void createDispenseType(DispenseType dispenseType) throws SQLException {

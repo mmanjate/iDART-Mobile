@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.model;
 
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -19,7 +20,7 @@ import mz.org.fgh.idartlite.util.Utilities;
 public class Clinic extends BaseModel implements Listble {
 
 	public static final String COLUMN_ID = "id";
-	public static final String COLUMN_CODE = "password";
+	public static final String COLUMN_CODE = "code";
 	public static final String COLUMN_CLINIC_NAME = "clinic_name";
 	public static final String COLUMN_PHONE = "phone";
 	public static final String COLUMN_ADDRESS = "address";
@@ -178,5 +179,20 @@ public class Clinic extends BaseModel implements Listble {
 	@Override
 	public int compareTo(Object o) {
 		return 0;
+	}
+
+	@Override
+	public String isValid(Context context) {
+		return null;
+	}
+
+	@Override
+	public String canBeEdited(Context context) {
+		return null;
+	}
+
+	@Override
+	public String canBeRemoved(Context context) {
+		return null;
 	}
 }

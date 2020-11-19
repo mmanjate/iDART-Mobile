@@ -9,8 +9,6 @@ import java.util.List;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.DiseaseType;
 
-import static mz.org.fgh.idartlite.model.Clinic.COLUMN_CODE;
-
 public class DiseaseTypeDaoImpl extends GenericDaoImpl<DiseaseType, Integer> implements IDiseaseTypeDao {
     public DiseaseTypeDaoImpl(Class dataClass) throws SQLException {
         super(dataClass);

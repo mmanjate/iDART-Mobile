@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Episode;
@@ -27,7 +27,7 @@ import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
 
-public class RestEpisodeService extends BaseService {
+public class RestEpisodeService extends BaseRestService {
 
     private static final String TAG = "RestEpisodeService";
 
@@ -42,7 +42,7 @@ public class RestEpisodeService extends BaseService {
 
     public static void restPostEpisode(Episode episode) {
 
-        String url = BaseService.baseUrl + "/sync_temp_episode";
+        String url = BaseRestService.baseUrl + "/sync_temp_episode";
 
         EpisodeService episodeService = new EpisodeService(getApp(), null);
             getRestServiceExecutor().execute(() -> {
@@ -124,9 +124,9 @@ public class RestEpisodeService extends BaseService {
              episodeService = new EpisodeService(getApp(), null);
             Clinic clinic = clinicService.getAllClinics().get(0);
 
-            String url = BaseService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.R";
+            String url = BaseRestService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.R";
 
-            if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+            if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
 
                     RESTServiceHandler handler = new RESTServiceHandler();
@@ -184,7 +184,7 @@ public class RestEpisodeService extends BaseService {
 
         Double myDouble = Double.valueOf((Double) episode.get("id"));
         int id= myDouble.intValue();
-        String url = BaseService.baseUrl + "/sync_temp_episode?id=eq." + id ;
+        String url = BaseRestService.baseUrl + "/sync_temp_episode?id=eq." + id ;
 
         EpisodeService episodeService = new EpisodeService(getApp(), null);
         getRestServiceExecutor().execute(() -> {
@@ -226,9 +226,9 @@ public class RestEpisodeService extends BaseService {
             episodeService = new EpisodeService(getApp(), null);
             Clinic clinic = clinicService.getAllClinics().get(0);
 
-            String url = BaseService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid();
+            String url = BaseRestService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid();
 
-            if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+            if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
 
                     RESTServiceHandler handler = new RESTServiceHandler();

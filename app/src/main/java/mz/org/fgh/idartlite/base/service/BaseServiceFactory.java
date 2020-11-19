@@ -55,6 +55,8 @@ public class BaseServiceFactory<T extends BaseService> {
     }
 
     public T get(Class<T> tClass) {
+        if (tClass == null) return null;
+
         if (services == null) services = new ArrayList<>();
         if (Utilities.listHasElements(services)) {
             for (T t : services){

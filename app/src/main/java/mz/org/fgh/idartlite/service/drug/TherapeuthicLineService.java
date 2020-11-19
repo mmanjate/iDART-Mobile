@@ -4,20 +4,32 @@ import android.app.Application;
 
 import com.google.gson.internal.LinkedTreeMap;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
-import mz.org.fgh.idartlite.model.TherapeuticLine;
-import mz.org.fgh.idartlite.model.User;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-import static mz.org.fgh.idartlite.model.DiseaseType.COLUMN_DESCRIPTION;
+import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.model.TherapeuticLine;
+import mz.org.fgh.idartlite.model.User;
 
-public class TherapeuthicLineService extends BaseService implements  ITherapeuthicLineService{
+public class TherapeuthicLineService extends BaseService<TherapeuticLine> implements  ITherapeuthicLineService{
 
     public TherapeuthicLineService(Application application, User currUser) {
         super(application, currUser);
+    }
+
+    public TherapeuthicLineService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(TherapeuticLine record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(TherapeuticLine relatedRecord) throws SQLException {
+
     }
 
     public void createTherapheuticLine(TherapeuticLine therapeuticLine) throws SQLException {

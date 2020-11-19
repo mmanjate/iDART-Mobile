@@ -11,4 +11,6 @@ import mz.org.fgh.idartlite.util.SimpleValue;
 public interface IGenericDao<T, ID> extends Dao<T, ID> {
 
     public List<SimpleValue> countDispensesRegimenByPeriod(Date start, Date end) throws SQLException;
+
+    List<T> searchRecords(long offset, long limit) throws SQLException;
 }

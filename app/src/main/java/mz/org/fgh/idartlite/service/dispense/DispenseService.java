@@ -28,7 +28,7 @@ import mz.org.fgh.idartlite.util.DateUtilities;
 
 import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
 
-public class DispenseService extends BaseService implements IDispenseService {
+public class DispenseService extends BaseService<Dispense> implements IDispenseService {
 
     private StockService stockService;
 
@@ -47,6 +47,16 @@ public class DispenseService extends BaseService implements IDispenseService {
 
     public DispenseService(Application application) {
         super(application);
+    }
+
+    @Override
+    public void save(Dispense record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(Dispense relatedRecord) throws SQLException {
+
     }
 
     public List<Dispense> getAllDispenseByPrescription(Prescription prescription) throws SQLException {

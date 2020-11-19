@@ -37,4 +37,9 @@ public class GenericDaoImpl<T, ID> extends BaseDaoImpl<T, ID> implements IGeneri
         return (List<SimpleValue>) rawResults.getResults();
     }
 
+    @Override
+    public List<T> searchRecords(long offset, long limit) throws SQLException {
+        return queryBuilder().limit(limit).offset(offset).query();
+    }
+
 }

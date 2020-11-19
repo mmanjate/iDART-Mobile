@@ -8,7 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.internal.LinkedTreeMap;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
@@ -18,7 +18,7 @@ import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.patient.IPatientService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
 
-public class RestPatientService extends BaseService {
+public class RestPatientService extends BaseRestService {
 
     private static final String TAG = "RestPatientService";
     private static IClinicService clinicService ;
@@ -40,9 +40,9 @@ public class RestPatientService extends BaseService {
 
         patientService = new PatientService(getApp(),null);
 
-        String url = BaseService.baseUrl + "/sync_temp_patients?clinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
+        String url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
 
-        if (RESTServiceHandler.getServerStatus(BaseService.baseUrl)) {
+        if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {
 
                 RESTServiceHandler handler = new RESTServiceHandler();

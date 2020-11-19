@@ -15,6 +15,7 @@ import java.util.Map;
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
@@ -80,6 +81,21 @@ public class DispenseVM extends BaseViewModel implements IDialogListener {
         this.episodeService = new EpisodeService(application, getCurrentUser());
         this.prescribedDrugService = new PrescribedDrugService(application, getCurrentUser());
         this.setViewListRemoveButton(true);
+
+    }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
+    }
+
+    @Override
+    protected  Class<DispenseService> getRecordServiceClass() {
+        return DispenseService.class;
+    }
+
+    @Override
+    protected void initFormData() {
 
     }
 

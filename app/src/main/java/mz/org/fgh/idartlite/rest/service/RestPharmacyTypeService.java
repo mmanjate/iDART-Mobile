@@ -11,13 +11,13 @@ import com.android.volley.VolleyError;
 
 import java.util.Map;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
 import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
 
-public class RestPharmacyTypeService extends BaseService {
+public class RestPharmacyTypeService extends BaseRestService {
 
     private static final String TAG = "RestPharmacyTypeService";
     private static IPharmacyTypeService pharmacyTypeService;
@@ -25,14 +25,15 @@ public class RestPharmacyTypeService extends BaseService {
     public RestPharmacyTypeService(Application application, User currentUser) {
         super(application, currentUser);
 
-        pharmacyTypeService = new PharmacyTypeService(application,currentUser);
+        pharmacyTypeService = (IPharmacyTypeService) getServiceFactory().get(PharmacyTypeService.class);
 
     }
 
     public static void restGetAllPharmacyType()  {
 
-        String url = BaseService.baseUrl + "/simpledomain?description=eq.pharmacy_type";
-        pharmacyTypeService = new PharmacyTypeService(getApp(),null);
+        String url = BaseRestService.baseUrl + "/simpledomain?description=eq.pharmacy_type";
+
+        pharmacyTypeService = (IPharmacyTypeService) getServiceFactory().get(PharmacyTypeService.class);
 
         getRestServiceExecutor().execute(() -> {
 

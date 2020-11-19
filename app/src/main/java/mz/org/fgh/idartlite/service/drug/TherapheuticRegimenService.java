@@ -4,25 +4,36 @@ import android.app.Application;
 
 import com.google.gson.internal.LinkedTreeMap;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
-import mz.org.fgh.idartlite.model.TherapeuticRegimen;
-import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.util.Utilities;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static mz.org.fgh.idartlite.model.TherapeuticRegimen.COLUMN_DESCRIPTION;
-import static mz.org.fgh.idartlite.model.TherapeuticRegimen.COLUMN_REGIMEN_CODE;
+import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.util.Utilities;
 
-public class TherapheuticRegimenService extends BaseService implements  ITherapheuticRegimenService{
+public class TherapheuticRegimenService extends BaseService<TherapeuticRegimen> implements  ITherapheuticRegimenService{
 
     private RegimenDrugsService regimenDrugsService = new RegimenDrugsService(getApplication(),null);
 
     public TherapheuticRegimenService(Application application, User currUser) {
         super(application, currUser);
+    }
+
+    public TherapheuticRegimenService(Application application) {
+        super(application);
+    }
+
+    @Override
+    public void save(TherapeuticRegimen record) throws SQLException {
+
+    }
+
+    @Override
+    public void update(TherapeuticRegimen relatedRecord) throws SQLException {
+
     }
 
     public void createTherapheuticRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException {

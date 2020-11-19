@@ -1,14 +1,18 @@
 package mz.org.fgh.idartlite.model;
 
 
+import android.content.Context;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.dao.drug.FormDaoImpl;
 
 import java.util.Objects;
+
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.drug.FormDaoImpl;
 
 @DatabaseTable(tableName = "form", daoClass = FormDaoImpl.class)
 public class Form extends BaseModel {
@@ -80,5 +84,20 @@ public class Form extends BaseModel {
                 ", unit='" + unit + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    @Override
+    public String isValid(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
     }
 }

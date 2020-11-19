@@ -2,18 +2,20 @@ package mz.org.fgh.idartlite.model;
 
 import android.content.Context;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.episode.EpisodeDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilities;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
 
 @DatabaseTable(tableName = "episode", daoClass = EpisodeDaoImpl.class)
 public class Episode extends BaseModel {
@@ -214,4 +216,18 @@ public class Episode extends BaseModel {
 		return isSyncStatusReady(this.syncStatus);
 	}
 
+	@Override
+	public String isValid(Context context) {
+		return null;
+	}
+
+	@Override
+	public String canBeEdited(Context context) {
+		return null;
+	}
+
+	@Override
+	public String canBeRemoved(Context context) {
+		return null;
+	}
 }

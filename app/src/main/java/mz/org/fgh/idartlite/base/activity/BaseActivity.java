@@ -23,6 +23,7 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.login.LoginActivity;
 
 /**
@@ -60,8 +61,11 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
                 if (this.relatedViewModel != null) {
                     this.relatedViewModel.setCurrentUser((User) bundle.getSerializable("user"));
                     this.relatedViewModel.setCurrentClinic((Clinic) bundle.getSerializable("clinic"));
+                    this.relatedViewModel.setSelectedRecord(bundle.getSerializable("relatedRecord"));
                 }
-                applicationStep = ApplicationStep.fastCreate((String) bundle.getSerializable("step"));
+                if (Utilities.stringHasValue((String) bundle.getSerializable("step"))) {
+                    applicationStep = ApplicationStep.fastCreate((String) bundle.getSerializable("step"));
+                }
             }
         }
 

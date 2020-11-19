@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.base.viewModel;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
@@ -8,18 +9,33 @@ import androidx.databinding.Observable;
 import androidx.databinding.PropertyChangeRegistry;
 import androidx.lifecycle.AndroidViewModel;
 
+import java.io.Serializable;
+import java.sql.SQLException;
+
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.fragment.GenericFragment;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.service.BaseServiceFactory;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.common.ApplicationStep;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.util.Utilities;
 
-public abstract class BaseViewModel  extends AndroidViewModel implements Observable {
+public abstract class BaseViewModel  extends AndroidViewModel implements Observable, IDialogListener {
 
     private PropertyChangeRegistry callbacks;
     private BaseActivity relatedActivity;
+
+    protected BaseModel relatedRecord;
+
+    protected IBaseService recordService;
+
+    protected GenericFragment relatedFragment;
 
     private boolean viewListEditButton;
     private boolean viewListRemoveButton;
@@ -36,7 +52,59 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
         baseServiceFactory = BaseServiceFactory.getInstance(application);
 
+        this.relatedRecord = initRecord();
+
+        recordService = initRecordService();
+
+        initFormData();
+
     }
+
+    protected abstract BaseModel initRecord();
+
+    protected abstract <T extends BaseService>  Class<T> getRecordServiceClass();
+
+    private  <T extends BaseService> T initRecordService(){
+        return (T) baseServiceFactory.get(getRecordServiceClass());
+    }
+
+    protected abstract void initFormData();
+
+    public void save(){
+        try {
+            if (getCurrentStep().isApplicationstepCreate()){
+                recordService.save(relatedRecord);
+            }else if (getCurrentStep().isApplicationStepEdit()){
+                recordService.update(relatedRecord);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void initEdition(Context context){
+        String errors = getSelectedRecord().canBeEdited(context);
+
+        if (Utilities.stringHasValue(errors)){
+            Utilities.displayAlertDialog(context, errors);
+            return;
+        }else {
+            getCurrentStep().changeToEdit();
+        }
+    }
+
+    public void initRemotion(Context context){
+        String errors = getSelectedRecord().canBeRemoved(context);
+
+        if (Utilities.stringHasValue(errors)){
+            Utilities.displayAlertDialog(context, errors);
+            return;
+        }else {
+            getCurrentStep().changeToRemove();
+        }
+    }
+
+
 
     public BaseActivity getRelatedActivity() {
         return relatedActivity;
@@ -134,5 +202,43 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public BaseServiceFactory getBaseServiceFactory() {
         return baseServiceFactory;
+    }
+
+    public BaseModel getRelatedRecord() {
+        return relatedRecord;
+    }
+
+    @Override
+    public void doOnConfirmed() {
+
+    }
+
+    @Override
+    public void doOnDeny() {
+
+    }
+
+    public GenericFragment getRelatedFragment() {
+        return relatedFragment;
+    }
+
+    public void setRelatedFragment(GenericFragment relatedFragment) {
+        this.relatedFragment = relatedFragment;
+    }
+
+    public IBaseService getRecordService() {
+        return recordService;
+    }
+
+    public BaseModel getSelectedRecord() {
+        return relatedRecord;
+    }
+
+    public void setSelectedRecord(Serializable selectedRecord) {
+        this.relatedRecord = (BaseModel) selectedRecord;
+    }
+
+    public void backToPreviusActivity(){
+        getRelatedActivity().finish();
     }
 }

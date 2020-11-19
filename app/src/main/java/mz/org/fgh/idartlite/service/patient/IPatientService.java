@@ -5,17 +5,13 @@ import com.google.gson.internal.LinkedTreeMap;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 
-import static mz.org.fgh.idartlite.model.Patient.COLUMN_UUID;
 
-
-public interface IPatientService extends IBaseService {
+public interface IPatientService extends IBaseService<Patient> {
 
     public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic, long offset, long limit) throws SQLException ;
 

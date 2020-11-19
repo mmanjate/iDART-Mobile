@@ -1,11 +1,10 @@
-package mz.org.fgh.idartlite.view.stock;
+package mz.org.fgh.idartlite.view.stock.panel;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
@@ -52,21 +51,17 @@ public class StockActivity extends BaseActivity {
 
         adapter = new StockTabAdapter(getSupportFragmentManager());
         adapter.addFragment(new StockEntranceFragment(), getString(R.string.stock_entrance));
-        adapter.addFragment(new StockInventoryFragment(), "");//getString(R.string.stock_inventory)
+        adapter.addFragment(StockReferenceFragment.newInstance(), "Entrada/Saida por referencia");
+        adapter.addFragment(DestroiedStockListFragment.newInstance(), "Destruir");
+        adapter.addFragment(StockInventoryListingFragment.newInstance(), "Inventario");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
-        tabStrip.setEnabled(false);
-        for(int i = 0; i < tabStrip.getChildCount(); i++) {
-            tabStrip.getChildAt(i).setClickable(false);
-        }
-
-        tabLayout.clearOnTabSelectedListeners();
-
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_stock_entrance);
-        //tabLayout.getTabAt(1).setIcon(R.drawable.ic_stock_inventory);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_close);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_close);
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_stock_inventory);
     }
 
     @Override
