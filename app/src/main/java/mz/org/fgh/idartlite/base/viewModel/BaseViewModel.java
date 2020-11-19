@@ -9,10 +9,10 @@ import androidx.databinding.PropertyChangeRegistry;
 import androidx.lifecycle.AndroidViewModel;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.service.BaseServiceFactory;
 import mz.org.fgh.idartlite.common.ApplicationStep;
-import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 

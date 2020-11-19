@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.base.RestResponseListener;
-import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.rest.service.RestUserService;
 import mz.org.fgh.idartlite.util.SecurePreferences;

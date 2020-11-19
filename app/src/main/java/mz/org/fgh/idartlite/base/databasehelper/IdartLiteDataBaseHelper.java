@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.dao;
+package mz.org.fgh.idartlite.base.databasehelper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,16 +14,16 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.clinic.IClinicDao;
 import mz.org.fgh.idartlite.dao.clinic.IClinicSectorDao;
 import mz.org.fgh.idartlite.dao.clinic.IPharmacyTypeDao;
-import mz.org.fgh.idartlite.dao.drug.IDiseaseTypeDao;
+import mz.org.fgh.idartlite.dao.dispense.IDispenseDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispenseTypeDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispensedDrugDao;
-import mz.org.fgh.idartlite.dao.dispense.IDispenseDao;
+import mz.org.fgh.idartlite.dao.drug.IDiseaseTypeDao;
 import mz.org.fgh.idartlite.dao.drug.IDrugDao;
+import mz.org.fgh.idartlite.dao.drug.IFormDao;
 import mz.org.fgh.idartlite.dao.drug.IRegimenDrugDao;
 import mz.org.fgh.idartlite.dao.drug.ITherapeuticLineDao;
 import mz.org.fgh.idartlite.dao.drug.ITherapeuticRegimenDao;
 import mz.org.fgh.idartlite.dao.episode.IEpisodeDao;
-import mz.org.fgh.idartlite.dao.drug.IFormDao;
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
 import mz.org.fgh.idartlite.dao.patient.IPatientDao;
 import mz.org.fgh.idartlite.dao.patient.IPatientSectorDao;
@@ -35,7 +35,23 @@ import mz.org.fgh.idartlite.dao.territory.IDistrictDao;
 import mz.org.fgh.idartlite.dao.territory.IProvinceDao;
 import mz.org.fgh.idartlite.dao.territory.ISubdistrictDao;
 import mz.org.fgh.idartlite.dao.user.IUserDao;
-import mz.org.fgh.idartlite.model.*;
+import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.DiseaseType;
+import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.DispenseType;
+import mz.org.fgh.idartlite.model.DispensedDrug;
+import mz.org.fgh.idartlite.model.Drug;
+import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.Form;
+import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.PharmacyType;
+import mz.org.fgh.idartlite.model.PrescribedDrug;
+import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.RegimenDrug;
+import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.model.TherapeuticLine;
+import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.model.User;
 
 public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 

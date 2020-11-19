@@ -9,7 +9,7 @@
         name="viewModel"
         type="mz.org.fgh.idartlite.viewmodel.login.LoginVM" />
 
-    <variable name="clinicAdapter" type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
+    <variable name="clinicAdapter" type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
     <import type="android.view.View"/>
 </data>
     <ScrollView

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.tab.patient.PatientTabAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
@@ -25,7 +26,6 @@ import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.view.patient.adapter.PatientTabAdapter;
 import mz.org.fgh.idartlite.viewmodel.patient.PatientVM;
 
 

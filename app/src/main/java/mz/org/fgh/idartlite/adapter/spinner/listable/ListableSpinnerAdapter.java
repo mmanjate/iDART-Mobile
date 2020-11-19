@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.common;
+package mz.org.fgh.idartlite.adapter.spinner.listable;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
 

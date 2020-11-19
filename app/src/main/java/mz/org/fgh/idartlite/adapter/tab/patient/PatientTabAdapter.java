@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view.patient.adapter;
+package mz.org.fgh.idartlite.adapter.tab.patient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -1,10 +1,5 @@
 package mz.org.fgh.idartlite.view.stock;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,10 +7,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.tabs.TabLayout;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.stockadapter.StockTabAdapter;
+import mz.org.fgh.idartlite.adapter.tab.stock.StockTabAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityStockBinding;

@@ -6,8 +6,8 @@ import androidx.annotation.RequiresApi;
 
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.common.Listble;
 
 public class SimpleValue extends BaseModel implements Listble {
 

@@ -16,20 +16,11 @@ import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.common.Listble;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
-import mz.org.fgh.idartlite.service.dispense.IDispenseService;
-import mz.org.fgh.idartlite.service.dispense.IDispenseTypeService;
-import mz.org.fgh.idartlite.service.drug.IDrugService;
-import mz.org.fgh.idartlite.service.drug.ITherapeuthicLineService;
-import mz.org.fgh.idartlite.service.drug.ITherapheuticRegimenService;
-import mz.org.fgh.idartlite.service.prescription.IPrescribedDrugService;
-import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
-import mz.org.fgh.idartlite.service.prescription.PrescribedDrugService;
-import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Patient;
@@ -39,14 +30,23 @@ import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.DispenseTypeService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseTypeService;
 import mz.org.fgh.idartlite.service.drug.DrugService;
-import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
+import mz.org.fgh.idartlite.service.drug.IDrugService;
+import mz.org.fgh.idartlite.service.drug.ITherapeuthicLineService;
+import mz.org.fgh.idartlite.service.drug.ITherapheuticRegimenService;
 import mz.org.fgh.idartlite.service.drug.TherapeuthicLineService;
 import mz.org.fgh.idartlite.service.drug.TherapheuticRegimenService;
+import mz.org.fgh.idartlite.service.prescription.IPrescribedDrugService;
+import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
+import mz.org.fgh.idartlite.service.prescription.PrescribedDrugService;
+import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
+import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
-import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;
 import mz.org.fgh.idartlite.view.patientPanel.PrescriptionFragment;
+import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;
 
 public class PrescriptionVM extends BaseViewModel implements IDialogListener {
 

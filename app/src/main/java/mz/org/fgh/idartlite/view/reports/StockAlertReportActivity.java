@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.ListbleReportRecycleViewAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.common.ListbleReportRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ActivityStockAlertReportBinding;
 import mz.org.fgh.idartlite.model.StockReportData;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;

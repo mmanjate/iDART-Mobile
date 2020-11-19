@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.adapter.stockadapter;
+package mz.org.fgh.idartlite.adapter.tab.stock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

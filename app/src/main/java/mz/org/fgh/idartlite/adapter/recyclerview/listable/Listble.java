@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.common;
+package mz.org.fgh.idartlite.adapter.recyclerview.listable;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 
