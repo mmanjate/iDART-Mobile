@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.prescription.PrescriptionActivity"
+    >
+
+    <data>
+        <variable name="viewModel"              type="mz.org.fgh.idartlite.viewmodel.patient.AddPatientVM" />
+        <variable name="identifierTypeAdapter"    type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="genderAdapter"            type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="provinceAdapter"         type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="districtAdapter"          type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+
+        <import type="mz.org.fgh.idartlite.model.Patient"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="android.view.View"/>
+
+        <variable
+            name="patient"
+            type="mz.org.fgh.idartlite.model.Patient" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            app:elevation="6dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/app_bar"   />
+
+            <include
+                layout="@layout/pacient_header"  bind:viewModel="@{viewModel}" />
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="1dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_4dp"
+                    >
+                    <LinearLayout
+                        android:id="@+id/demografic_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text='@{viewModel.currentStep.applicationStepEdit ? @string/actualizar_paciente_dados_demograficos : @string/adicionar_paciente_dados_demograficos}'
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_initial_data"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/demografic_data_lyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dimen_4dp">
+
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tipo_identificador"
+                            style="@style/input_labels"
+                            />
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spn_identifier_type"
+                            android:layout_width="fill_parent"
+                            style="@style/bottom_spinner_style"
+                            android:layout_height="wrap_content"
+                            app:adapter="@{identifierTypeAdapter}"
+                            bind:selectedOpt="@={viewModel.identifierType}"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/nid"
+                            style="@style/input_labels" />
+
+                        <EditText
+                            android:id="@+id/nidPatient"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.patient.nid}"
+                            style="@style/bottom_border_edit_text_style"
+                            android:drawableLeft="@drawable/ic_numero_guia" />
+                        />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/name"
+                            style="@style/input_labels"
+                            />
+                        <EditText
+                            android:id="@+id/namePatient"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.patient.firstName}"
+                            style="@style/bottom_border_edit_text_style"
+                            android:drawableLeft="@drawable/ic_numero_guia" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/last_name"
+                            style="@style/input_labels"
+                            />
+                        <EditText
+                            android:id="@+id/lastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.patient.lastName}"
+                            style="@style/bottom_border_edit_text_style"
+                            android:drawableLeft="@drawable/ic_numero_guia" />
+
+                        <LinearLayout
+                            android:id="@+id/ageData"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <LinearLayout
+                                android:id="@+id/ageData1"
+                                android:layout_width="207dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="@dimen/dimen_4dp">
+
+                                <TextView
+                                    style="@style/input_labels"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/data_nascimento" />
+
+                                <EditText
+                                    android:id="@+id/birthDate"
+                                    style="@style/bottom_border_edit_text_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableLeft="@drawable/ic_calendar"
+                                    android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.birthDate)}" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ageData2"
+                                android:layout_width="184dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="@dimen/dimen_4dp">
+
+                                <TextView
+                                    style="@style/input_labels"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/idade" />
+
+                                <EditText
+                                    android:id="@+id/numberAge"
+                                    style="@style/bottom_border_edit_text_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableLeft="@drawable/ic_quantidade_recebida"
+                                    android:text="@{viewModel.age}"
+                                    android:inputType="number"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/genero"
+                            style="@style/input_labels"
+                            />
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spn_gender"
+                            android:layout_width="fill_parent"
+                            style="@style/bottom_spinner_style"
+                            android:layout_height="wrap_content"
+                            app:adapter="@{genderAdapter}"
+                            bind:selectedOpt="@={viewModel.gender}"
+
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/address_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text='@{viewModel.currentStep.applicationStepEdit ? @string/actualizar_paciente_endereco_contacto : @string/adicionar_paciente_endereco_contacto}'
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_address"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/address_data_lyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/provincia"
+                            style="@style/input_labels"
+                            />
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spn_province"
+                            android:layout_width="fill_parent"
+                            style="@style/bottom_spinner_style"
+                            android:layout_height="wrap_content"
+                            app:adapter="@{provinceAdapter}"
+                            bind:selectedOpt="@={viewModel.province}"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/distrito"
+                            style="@style/input_labels"
+                            />
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spn_district"
+                            android:layout_width="fill_parent"
+                            style="@style/bottom_spinner_style"
+                            android:layout_height="wrap_content"
+                            app:adapter="@{districtAdapter}"
+                            bind:selectedOpt="@={viewModel.district}"
+                           />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/local"
+                            style="@style/input_labels" />
+
+                        <EditText
+                            android:id="@+id/local"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.nearPlace}"
+                            style="@style/bottom_border_edit_text_style"
+                            android:drawableLeft="@drawable/ic_numero_guia" />
+
+
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/telefone"
+                            style="@style/input_labels" />
+
+                        <EditText
+                            android:id="@+id/telefone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.patient.phone}"
+                            android:inputType="number"
+                            style="@style/bottom_border_edit_text_style"
+                            android:drawableLeft="@drawable/ic_quantidade_recebida"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/clinic_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text='@{viewModel.currentStep.applicationStepEdit ? @string/actualizar_paciente_information_clinic : @string/adicionar_paciente_information_clinic}'
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_clinic"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:id="@+id/clinic_data_lyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dimen_4dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/date_tarv"
+                            style="@style/input_labels"
+                            />
+                        <EditText
+                            android:id="@+id/tarvDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_calendar"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.initalDateTarv)}"
+                            android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
+                            style="@style/bottom_border_edit_text_style"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/data_admissao_na_paragem"
+                            style="@style/input_labels"
+                            />
+                        <EditText
+                            android:id="@+id/admissionDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_calendar"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.admissionDate)}"
+                            android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
+                            style="@style/bottom_border_edit_text_style"/>
+
+
+                        <TextView
+                            style="@style/input_labels"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/notas_admissao" />
+
+                        <EditText
+                            android:id="@+id/addAdmissionNotes"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.episode.notes}"
+                            android:drawableLeft="@drawable/ic_round_notes_24"
+
+                            android:inputType="textMultiLine" />
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+
+                        <ImageView
+                            android:id="@+id/save_and_continue"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/ic_done"
+                            android:layout_marginTop="@dimen/dimen_22dp"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                            android:layout_margin="@dimen/dimen_18dp"
+                            android:background="@drawable/button_shape"
+                            android:onClick="@{() -> viewModel.save()}"
+                            android:layout_gravity="right"/>
+
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

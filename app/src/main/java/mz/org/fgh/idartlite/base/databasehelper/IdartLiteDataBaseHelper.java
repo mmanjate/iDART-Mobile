@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.clinic.IClinicDao;
+import mz.org.fgh.idartlite.dao.clinic.IClinicSectorDao;
 import mz.org.fgh.idartlite.dao.clinic.IPharmacyTypeDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispenseDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispenseTypeDao;
@@ -31,13 +32,20 @@ import mz.org.fgh.idartlite.dao.stock.IDestroyedDrugDao;
 import mz.org.fgh.idartlite.dao.stock.IIventoryDao;
 import mz.org.fgh.idartlite.dao.stock.IStockAjustmentDao;
 import mz.org.fgh.idartlite.dao.stock.IStockDao;
+import mz.org.fgh.idartlite.dao.territory.ICountryDao;
+import mz.org.fgh.idartlite.dao.territory.IDistrictDao;
+import mz.org.fgh.idartlite.dao.territory.IProvinceDao;
+import mz.org.fgh.idartlite.dao.territory.ISubdistrictDao;
 import mz.org.fgh.idartlite.dao.user.IUserDao;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
+import mz.org.fgh.idartlite.model.ClinicSector;
+import mz.org.fgh.idartlite.model.Country;
 import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.DispensedDrug;
+import mz.org.fgh.idartlite.model.District;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Form;
@@ -46,9 +54,11 @@ import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.model.RegimenDrug;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.StockAjustment;
+import mz.org.fgh.idartlite.model.Subdistrict;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
@@ -57,7 +67,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
     private static final String DATABASE_NAME    = "idartlite.db";
-    private static final int    DATABASE_VERSION = 3;
+    private static final int    DATABASE_VERSION = 1;
 
 
     private IUserDao userDao;
@@ -83,6 +93,15 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private IDestroyedDrugDao destroyedDrugDao;
     private IIventoryDao iventoryDao;
     private IStockAjustmentDao stockAjustmentDao;
+
+    private ICountryDao countryDao;
+    private IProvinceDao provinceDao;
+    private IDistrictDao districtDao;
+    private ISubdistrictDao subdistrictDao;
+
+    private IClinicSectorDao clinicSectorDao;
+ //   private IPatientSectorDao patientSectorDao;
+
 
     public IClinicDao getIClinicDao() throws SQLException {
         if(IClinicDao == null){
@@ -231,6 +250,47 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         return stockAjustmentDao;
     }
 
+    public ICountryDao getCountryDao() throws SQLException {
+        if(countryDao == null){
+            countryDao = getDao(Country.class);
+        }
+        return countryDao;
+    }
+
+    public IProvinceDao getProvinceDao() throws SQLException {
+        if(provinceDao == null){
+            provinceDao = getDao(Province.class);
+        }
+        return provinceDao;
+    }
+
+    public IDistrictDao getDistrictDao() throws SQLException {
+        if(districtDao == null){
+            districtDao = getDao(District.class);
+        }
+        return districtDao;
+    }
+
+    public ISubdistrictDao getSubdistrictDao() throws SQLException {
+        if(subdistrictDao == null){
+            subdistrictDao = getDao(Subdistrict.class);
+        }
+        return subdistrictDao;
+    }
+
+   /* public IPatientSectorDao getPatientSectorDao() throws SQLException {
+        if(patientSectorDao == null){
+            patientSectorDao = getDao(PatientSector.class);
+        }
+        return patientSectorDao;
+    }*/
+
+    public IClinicSectorDao getClinicSectorDao() throws SQLException {
+        if(clinicSectorDao == null){
+            clinicSectorDao = getDao(ClinicSector.class);
+        }
+        return clinicSectorDao;
+    }
     private static IdartLiteDataBaseHelper dataBaseHelper;
 
     private IdartLiteDataBaseHelper(Context context) {
@@ -267,11 +327,18 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Stock.class);
             TableUtils.createTable(connectionSource, DispensedDrug.class);
             TableUtils.createTable(connectionSource, Episode.class);
-            TableUtils.createTable(connectionSource, PrescribedDrug.class);
             TableUtils.createTable(connectionSource, RegimenDrug.class);
             TableUtils.createTable(connectionSource, DestroyedDrug.class);
             TableUtils.createTable(connectionSource, StockAjustment.class);
             TableUtils.createTable(connectionSource, Iventory.class);
+            TableUtils.createTable(connectionSource, PrescribedDrug.class);
+            TableUtils.createTable(connectionSource, Country.class);
+            TableUtils.createTable(connectionSource, Province.class);
+            TableUtils.createTable(connectionSource, District.class);
+            TableUtils.createTable(connectionSource, Subdistrict.class);
+            TableUtils.createTable(connectionSource, ClinicSector.class);
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

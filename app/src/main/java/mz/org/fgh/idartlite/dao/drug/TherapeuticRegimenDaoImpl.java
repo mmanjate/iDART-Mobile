@@ -10,7 +10,7 @@ import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import java.sql.SQLException;
 import java.util.List;
 
-public class TherapeuticRegimenDaoImpl extends GenericDaoImpl<TherapeuticRegimen, Integer> implements ITherapeuticRegimenDao {
+public class  TherapeuticRegimenDaoImpl extends GenericDaoImpl<TherapeuticRegimen, Integer> implements ITherapeuticRegimenDao {
 
     public TherapeuticRegimenDaoImpl(Class dataClass) throws SQLException {
         super(dataClass);

@@ -525,7 +525,7 @@ public class PrescriptionVM extends BaseViewModel {
         return durations;
     }
 
-    public List<SimpleValue> getMotives() {
+    public List<SimpleValue>  getMotives() {
         return motives;
     }
 

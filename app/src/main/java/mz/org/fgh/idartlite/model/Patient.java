@@ -8,6 +8,12 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.patient.PatientDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.Utilities;
+
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +24,8 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.patient.PatientDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
+
+import static mz.org.fgh.idartlite.model.Subdistrict.COLUMN_DISTRICT;
 
 @DatabaseTable(tableName = "patient", daoClass = PatientDaoImpl.class)
 public class Patient extends BaseModel {
@@ -33,6 +41,10 @@ public class Patient extends BaseModel {
 	public static final String COLUMN_ADDRESS = "address";
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_CLINIC_ID = "clinic_id";
+	public static final String COLUMN_IDENTIFIER_TYPE = "identifier_type";
+	public static final String COLUMN_DISTRICT = "district_id";
+	public static final String COLUMN_PROVINCE = "province_id";
+	public static final String COLUMN_BIRTH_DATE_ESTIMATED = "birth_date_estimated";
 
 	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
@@ -66,6 +78,18 @@ public class Patient extends BaseModel {
 
 	@DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
 	private Clinic clinic;
+
+	@DatabaseField(columnName = COLUMN_IDENTIFIER_TYPE)
+	private String identifierType;
+
+	@DatabaseField(columnName = COLUMN_BIRTH_DATE_ESTIMATED)
+	private boolean birthDateEstimated;
+
+	@DatabaseField(columnName = COLUMN_DISTRICT , foreign = true, foreignAutoRefresh = true)
+	private District district;
+
+	@DatabaseField(columnName = COLUMN_PROVINCE , foreign = true, foreignAutoRefresh = true)
+	private Province province;
 
 	private List<Episode> episodes;
 
@@ -169,6 +193,39 @@ public class Patient extends BaseModel {
 		this.episodes = episodes;
 	}
 
+
+	public String getIdentifierType() {
+		return identifierType;
+	}
+
+	public void setIdentifierType(String identifierType) {
+		this.identifierType = identifierType;
+	}
+
+	public boolean isBirthDateEstimated() {
+		return birthDateEstimated;
+	}
+
+	public void setBirthDateEstimated(boolean birthDateEstimated) {
+		this.birthDateEstimated = birthDateEstimated;
+	}
+
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+
+	public Province getProvince() {
+		return province;
+	}
+
+	public void setProvince(Province province) {
+		this.province = province;
+	}
+
 	public Episode getReferenceEpisode(){
 		if (!Utilities.listHasElements(this.episodes)) return null;
 		return this.episodes.get(0);
@@ -240,6 +297,23 @@ public class Patient extends BaseModel {
 				", address='" + address + '\'' +
 				", uuid='" + uuid + '\'' +
 				'}';
+	}
+
+	public String validate(Context context) {
+		if (this.nid.isEmpty()) return context.getString(R.string.nid_mandatory);
+		if (this.firstName.isEmpty()) return context.getString(R.string.nome_mandatory);
+		if (this.lastName.isEmpty()) return context.getString(R.string.apelido_mandatory);
+		if(DateUtilities.dateDiff(this.birthDate, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT) > 0) {
+			return context.getString(R.string.birth_date_not_correct );
+		}
+
+		if(this.gender.isEmpty()) return context.getString(R.string.sexo_mandatory);
+		if(this.address.isEmpty()) return context.getString(R.string.regimen_mandatory);
+		if(this.startARVDate == null) return context.getString(R.string.tarv_inital_mandatory);
+		if(DateUtilities.dateDiff(this.startARVDate, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT) > 0) {
+			return context.getString(R.string.tarv_inital_date_not_correct );
+		}
+		return "";
 	}
 
 	@Override

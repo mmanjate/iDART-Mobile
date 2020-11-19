@@ -199,4 +199,48 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    <string name="novo_paciente">Novo Paciente</string>
+
+    <string name="procurar_paciente">Procurar Paciente</string>
+
+    <string name="tipo_identificador">Tipo de Identificador</string>
+    <string name="provincia">Provincia</string>
+    <string name="distrito">Distrito</string>
+    <string name="bairro">Bairro</string>
+    <string name="local">Local</string>
+    <string name="casa_numero">Casa N.</string>
+    <string name="quarteirao">Quarteirao</string>
+    <string name="data_nascimento">Data de Nascimento</string>
+    <string name="data_admissao_na_paragem">Data de Admissão na Paragem Unica</string>
+    <string name="notas_admissao">Notas de Admissao</string>
+
+    <string name="adicionar_paciente">Adicionar Paciente</string>
+    <string name="actualizar_paciente">Actualizar Paciente</string>
+
+
+    <string name="adicionar_paciente_dados_demograficos">Adicionar Paciente - Dados Demograficos</string>
+    <string name="adicionar_paciente_endereco_contacto">Adicionar Paciente - Endereco e Contacto</string>
+    <string name="adicionar_paciente_information_clinic">Adicionar Paciente - Informacao Clinica</string>
+
+    <string name="actualizar_paciente_dados_demograficos">Actualizar Paciente - Dados Demograficos</string>
+    <string name="actualizar_paciente_endereco_contacto">Actualizar Paciente - Endereco e Contacto</string>
+    <string name="actualizar_paciente_information_clinic">Actualizar Paciente - Informacao Clinica</string>
+
+    <string name="nid_mandatory">O Campo NID é obrigatório</string>
+    <string name="nome_mandatory">O Campo Nome é obrigatório</string>
+    <string name="apelido_mandatory">O Campo Apelido é obrigatório</string>
+    <string name="sexo_mandatory">O Genero é obrigatório</string>
+
+    <string name="birth_date_not_correct">A data da nascimento não pode ser maior que a data corrente.</string>
+
+
+    <string name="tarv_inital_date_not_correct">A data de Inicio Tarv não pode ser maior que a data corrente.</string>
+    <string name="admission_date_not_correct">A data da Admissão não pode ser maior que a data corrente.</string>
+
+    <string name="tarv_inital_mandatory">A data de Inicio Tarv é um campo obrigatório.</string>
+    <string name="admission_date_mandatory">A data da Admissão é um campo obrigatório.</string>
+    <string name="patient_created_sucessfuly">Paciente Criado Com Sucesso</string>
+
+    <string name="patient_updated_sucessfuly">Paciente Actualizado Com Sucesso</string>
 </resources>

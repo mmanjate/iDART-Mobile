@@ -6,12 +6,23 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patientPanel.PatientDemographicFragment;
+import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
+import mz.org.fgh.idartlite.view.patientPanel.PrescriptionFragment;
+import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;
+import mz.org.fgh.idartlite.viewmodel.prescription.PrescriptionVM;
 
 public class PatientDemographicsVM extends BaseViewModel {
 
@@ -41,6 +52,23 @@ public class PatientDemographicsVM extends BaseViewModel {
     protected void initFormData() {
 
     }
+
+
+    public void editPatient(){
+
+
+            if (getPatientDemographicFragment().getMyActivity().getPatient().hasEndEpisode()) {
+                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.cant_edit_patient_data)).show();
+            } else {
+                getCurrentStep().changeToEdit();
+                getPatientDemographicFragment().startPatientActivity();
+            }
+
+
+
+    }
+
+
 
     @Bindable
     public boolean isInitialDataVisible() {
@@ -91,4 +119,6 @@ public class PatientDemographicsVM extends BaseViewModel {
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
+
+
 }
