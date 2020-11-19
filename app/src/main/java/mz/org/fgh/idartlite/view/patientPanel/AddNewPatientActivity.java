@@ -24,10 +24,11 @@ import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
-import mz.org.fgh.idartlite.common.ListableSpinnerAdapter;
+
 import mz.org.fgh.idartlite.databinding.ActivityAddNewPatientBinding;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;

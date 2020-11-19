@@ -8,10 +8,10 @@
 
     <data>
         <variable name="viewModel"              type="mz.org.fgh.idartlite.viewmodel.patient.AddPatientVM" />
-        <variable name="identifierTypeAdapter"    type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="genderAdapter"            type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="provinceAdapter"         type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="districtAdapter"          type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
+        <variable name="identifierTypeAdapter"    type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="genderAdapter"            type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="provinceAdapter"         type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="districtAdapter"          type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
 
         <import type="mz.org.fgh.idartlite.model.Patient"/>
         <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
