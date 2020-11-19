@@ -7,13 +7,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.drug.DrugService;
-import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
-import mz.org.fgh.idartlite.service.drug.IDrugService;
-import mz.org.fgh.idartlite.service.drug.IFormService;
 import mz.org.fgh.idartlite.service.territory.CountryService;
 import mz.org.fgh.idartlite.service.territory.DistrictService;
 import mz.org.fgh.idartlite.service.territory.ICountryService;
@@ -21,7 +17,7 @@ import mz.org.fgh.idartlite.service.territory.IDistrictService;
 import mz.org.fgh.idartlite.service.territory.IProvinceService;
 import mz.org.fgh.idartlite.service.territory.ProvinceService;
 
-public class RestTerritoryService extends BaseService {
+public class RestTerritoryService extends BaseRestService {
 
     private static final String TAG = "RestDrugService";
     private static ICountryService countryService;
@@ -36,7 +32,7 @@ public class RestTerritoryService extends BaseService {
 
     public static void restGetAllCountries() {
 
-        String url = BaseService.baseUrl + "/country?code=eq.01";
+        String url = BaseRestService.baseUrl + "/country?code=eq.01";
         countryService = new CountryService(getApp(),null);
 
 
@@ -78,7 +74,7 @@ public class RestTerritoryService extends BaseService {
 
     public static void restGetAllProvinces() {
 
-        String url = BaseService.baseUrl + "/province";
+        String url = BaseRestService.baseUrl + "/province";
 
         provinceService = new ProvinceService(getApp(),null);
 
@@ -120,7 +116,7 @@ public class RestTerritoryService extends BaseService {
 
     public static void restGetAllDistricts() {
 
-        String url = BaseService.baseUrl + "/district";
+        String url = BaseRestService.baseUrl + "/district";
 
         districtService = new DistrictService(getApp(),null);
 

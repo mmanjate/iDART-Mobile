@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.model;
 
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -10,7 +11,6 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.dao.drug.RegimenDrugDaoImpl;
 import mz.org.fgh.idartlite.dao.territory.SubdistrictDaoImpl;
 
 @DatabaseTable(tableName = "subdistrict", daoClass = SubdistrictDaoImpl.class)
@@ -87,5 +87,20 @@ public class Subdistrict extends BaseModel {
                 "name=" + name +
                 ", code=" + code +
                 '}';
+    }
+
+    @Override
+    public String isValid(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
     }
 }

@@ -38,9 +38,9 @@ import mz.org.fgh.idartlite.dao.territory.IProvinceDao;
 import mz.org.fgh.idartlite.dao.territory.ISubdistrictDao;
 import mz.org.fgh.idartlite.dao.user.IUserDao;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Country;
+import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispenseType;
@@ -67,7 +67,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
     private static final String DATABASE_NAME    = "idartlite.db";
-    private static final int    DATABASE_VERSION = 1;
+    private static final int    DATABASE_VERSION = 4;
 
 
     private IUserDao userDao;
@@ -312,31 +312,31 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
 
-            TableUtils.createTable(connectionSource, DispenseType.class);
-            TableUtils.createTable(connectionSource, DiseaseType.class);
-            TableUtils.createTable(connectionSource, PharmacyType.class);
-            TableUtils.createTable(connectionSource, Clinic.class);
-            TableUtils.createTable(connectionSource, User.class);
-            TableUtils.createTable(connectionSource, TherapeuticRegimen.class);
-            TableUtils.createTable(connectionSource, TherapeuticLine.class);
-            TableUtils.createTable(connectionSource, Patient.class);
-            TableUtils.createTable(connectionSource, Prescription.class);
-            TableUtils.createTable(connectionSource, Dispense.class);
-            TableUtils.createTable(connectionSource, Form.class);
-            TableUtils.createTable(connectionSource, Drug.class);
-            TableUtils.createTable(connectionSource, Stock.class);
-            TableUtils.createTable(connectionSource, DispensedDrug.class);
-            TableUtils.createTable(connectionSource, Episode.class);
-            TableUtils.createTable(connectionSource, RegimenDrug.class);
-            TableUtils.createTable(connectionSource, DestroyedDrug.class);
-            TableUtils.createTable(connectionSource, StockAjustment.class);
-            TableUtils.createTable(connectionSource, Iventory.class);
-            TableUtils.createTable(connectionSource, PrescribedDrug.class);
-            TableUtils.createTable(connectionSource, Country.class);
-            TableUtils.createTable(connectionSource, Province.class);
-            TableUtils.createTable(connectionSource, District.class);
-            TableUtils.createTable(connectionSource, Subdistrict.class);
-            TableUtils.createTable(connectionSource, ClinicSector.class);
+            TableUtils.createTableIfNotExists(connectionSource, DispenseType.class);
+            TableUtils.createTableIfNotExists(connectionSource, DiseaseType.class);
+            TableUtils.createTableIfNotExists(connectionSource, PharmacyType.class);
+            TableUtils.createTableIfNotExists(connectionSource, Clinic.class);
+            TableUtils.createTableIfNotExists(connectionSource, User.class);
+            TableUtils.createTableIfNotExists(connectionSource, TherapeuticRegimen.class);
+            TableUtils.createTableIfNotExists(connectionSource, TherapeuticLine.class);
+            TableUtils.createTableIfNotExists(connectionSource, Patient.class);
+            TableUtils.createTableIfNotExists(connectionSource, Prescription.class);
+            TableUtils.createTableIfNotExists(connectionSource, Dispense.class);
+            TableUtils.createTableIfNotExists(connectionSource, Form.class);
+            TableUtils.createTableIfNotExists(connectionSource, Drug.class);
+            TableUtils.createTableIfNotExists(connectionSource, Stock.class);
+            TableUtils.createTableIfNotExists(connectionSource, DispensedDrug.class);
+            TableUtils.createTableIfNotExists(connectionSource, Episode.class);
+            TableUtils.createTableIfNotExists(connectionSource, RegimenDrug.class);
+            TableUtils.createTableIfNotExists(connectionSource, DestroyedDrug.class);
+            TableUtils.createTableIfNotExists(connectionSource, StockAjustment.class);
+            TableUtils.createTableIfNotExists(connectionSource, Iventory.class);
+            TableUtils.createTableIfNotExists(connectionSource, PrescribedDrug.class);
+            TableUtils.createTableIfNotExists(connectionSource, Country.class);
+            TableUtils.createTableIfNotExists(connectionSource, Province.class);
+            TableUtils.createTableIfNotExists(connectionSource, District.class);
+            TableUtils.createTableIfNotExists(connectionSource, Subdistrict.class);
+            TableUtils.createTableIfNotExists(connectionSource, ClinicSector.class);
 
 
         } catch (SQLException e) {
@@ -346,6 +346,46 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+        //dropTables();
+        onCreate(database,connectionSource);
+    }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //dropTables();
+        onCreate(db,connectionSource);
+    }
+
+    private void dropTables() {
+        try {
+            TableUtils.dropTable(connectionSource, DispenseType.class, true);
+
+            TableUtils.dropTable(connectionSource, DiseaseType.class, true);
+            TableUtils.dropTable(connectionSource, PharmacyType.class, true);
+            TableUtils.dropTable(connectionSource, Clinic.class, true);
+            TableUtils.dropTable(connectionSource, User.class, true);
+            TableUtils.dropTable(connectionSource, TherapeuticRegimen.class, true);
+            TableUtils.dropTable(connectionSource, TherapeuticLine.class, true);
+            TableUtils.dropTable(connectionSource, Patient.class, true);
+            TableUtils.dropTable(connectionSource, Prescription.class, true);
+            TableUtils.dropTable(connectionSource, Dispense.class, true);
+            TableUtils.dropTable(connectionSource, Form.class, true);
+            TableUtils.dropTable(connectionSource, Drug.class, true);
+            TableUtils.dropTable(connectionSource, Stock.class, true);
+            TableUtils.dropTable(connectionSource, DispensedDrug.class, true);
+            TableUtils.dropTable(connectionSource, Episode.class, true);
+            TableUtils.dropTable(connectionSource, RegimenDrug.class, true);
+            TableUtils.dropTable(connectionSource, DestroyedDrug.class, true);
+            TableUtils.dropTable(connectionSource, StockAjustment.class, true);
+            TableUtils.dropTable(connectionSource, Iventory.class, true);
+            TableUtils.dropTable(connectionSource, PrescribedDrug.class, true);
+            TableUtils.dropTable(connectionSource, Country.class, true);
+            TableUtils.dropTable(connectionSource, Province.class, true);
+            TableUtils.dropTable(connectionSource, District.class, true);
+            TableUtils.dropTable(connectionSource, Subdistrict.class, true);
+            TableUtils.dropTable(connectionSource, ClinicSector.class, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

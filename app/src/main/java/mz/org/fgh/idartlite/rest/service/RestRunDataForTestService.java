@@ -6,9 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
-import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
@@ -30,8 +29,6 @@ import mz.org.fgh.idartlite.service.territory.CountryService;
 import mz.org.fgh.idartlite.service.territory.ICountryService;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class RestRunDataForTestService extends BaseService {
-    public RestRunDataForTestService(Application application, User currentUser) throws SQLException {
 public class RestRunDataForTestService extends BaseRestService {
     public RestRunDataForTestService(Application application, User currentUser) {
         super(application, currentUser);
@@ -136,17 +133,21 @@ public class RestRunDataForTestService extends BaseRestService {
             e.printStackTrace();
         }
 
-      List<ClinicSector>  clinicSectors= clinicSectorService.getClinicSectorsByClinic(clinicService.getAllClinics().get(0));
+        try{
+          List<ClinicSector>  clinicSectors= clinicSectorService.getClinicSectorsByClinic(clinicService.getAllClinics().get(0));
 
-        if(clinicSectors.isEmpty()){
-            ClinicSector clinicSector=new ClinicSector();
-            clinicSector.setClinicId(clinicService.getAllClinics().get(0).getId());
-            clinicSector.setCode("001");
-            clinicSector.setPhone("84464422");
-            clinicSector.setSectorName("Paragem Unic HIV");
-            clinicSector.setUuid(Utilities.getNewUUID().toString());
+            if(clinicSectors.isEmpty()){
+                ClinicSector clinicSector=new ClinicSector();
+                clinicSector.setClinicId(clinicService.getAllClinics().get(0).getId());
+                clinicSector.setCode("001");
+                clinicSector.setPhone("84464422");
+                clinicSector.setSectorName("Paragem Unic HIV");
+                clinicSector.setUuid(Utilities.getNewUUID().toString());
 
-            clinicSectorService.saveClinicSector(clinicSector);
+                clinicSectorService.saveClinicSector(clinicSector);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
