@@ -69,7 +69,8 @@ public class DestroiedStockListingVM extends SearchVM<DestroyedDrug> {
         getRecordService().deleteRecord(selectedRecord);
     }
 
-    public void requestForNewRecord(){
 
+    public void requestForNewRecord(){
+        getRelatedFragment().startDestroyStockActivity();
     }
 }

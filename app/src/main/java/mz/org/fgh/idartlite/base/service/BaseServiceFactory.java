@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.service.stock.IIventoryService;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public class BaseServiceFactory<T extends BaseService> {
@@ -20,6 +21,8 @@ public class BaseServiceFactory<T extends BaseService> {
     private User mCurrentUser;
 
     private static BaseServiceFactory instance;
+
+    private IIventoryService iventoryService;
 
     private BaseServiceFactory(@NonNull Application application) {
         mApplication = application;
@@ -86,4 +89,5 @@ public class BaseServiceFactory<T extends BaseService> {
 
         return service;
     }
+
 }

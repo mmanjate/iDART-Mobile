@@ -38,13 +38,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.8"
                     android:text="@string/codigo"
-                    android:visibility="@{!listble.stockDestroyListing || !listble.iventoryListing ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
                     style="@style/listble_header" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.8"
                     style="@style/listble_header"
                     android:visibility="@{(listble.stockListing || listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
                     android:text="Lote" />
@@ -53,24 +53,24 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2.6"
-                    android:visibility="@{!listble.stockDestroyListing || !listble.iventoryListing ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
                     style="@style/listble_header"
                     android:text="@string/descricao" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
+                    android:layout_weight="0.8"
                     style="@style/listble_header"
-                    android:visibility="@{listble.stockDestroyListing || listble.iventoryListing ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
                     android:text="Validade" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.2"
+                    android:layout_weight="0.8"
                     style="@style/listble_header"
-                    android:visibility="@{listble.stockDestroyListing || listble.iventoryListing ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
                     android:text="Saldo Actual" />
 
                 <TextView
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2"
                     style="@style/listble_header"
-                    android:visibility="@{listble.stockDestroyListing || listble.iventoryListing ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
                     android:text='@{listble.stockDestroyListing ? "Qtd. a Destruir" : "Qtd. a Ajustar"}' />
 
                 <TextView
