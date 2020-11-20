@@ -29,7 +29,7 @@ import mz.org.fgh.idartlite.databinding.FragmentStockInventoryBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.stock.destroy.DestroyStockActivity;
+import mz.org.fgh.idartlite.view.stock.inventory.IventoryActivity;
 import mz.org.fgh.idartlite.viewmodel.stock.IventoryListingVM;
 
 /**
@@ -160,7 +160,7 @@ public class StockInventoryListingFragment extends GenericFragment {
                     params.put("user", getRelatedViewModel().getCurrentUser());
                     params.put("clinic", getMyActivity().getCurrentClinic());
                     params.put("step", ApplicationStep.STEP_EDIT);
-                    nextActivity(DestroyStockActivity.class, params);
+                    nextActivity(IventoryActivity.class, params);
                 }
 
                 return true;
@@ -174,7 +174,7 @@ public class StockInventoryListingFragment extends GenericFragment {
                 params.put("user", getRelatedViewModel().getCurrentUser());
                 params.put("clinic", getMyActivity().getCurrentClinic());
                 params.put("step", ApplicationStep.STEP_DISPLAY);
-                nextActivity(DestroyStockActivity.class, params);
+                nextActivity(IventoryActivity.class, params);
             default:
                 return false;
         }
@@ -202,5 +202,13 @@ public class StockInventoryListingFragment extends GenericFragment {
         rcvIventory.getAdapter().notifyItemRemoved(position);
         rcvIventory.removeViewAt(position);
         rcvIventory.getAdapter().notifyItemRangeChanged(position, rcvIventory.getAdapter().getItemCount());
+    }
+
+    public void startInventoryActivity() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("user", getRelatedViewModel().getCurrentUser());
+        params.put("clinic", getMyActivity().getCurrentClinic());
+        params.put("step", ApplicationStep.STEP_CREATE);
+        nextActivity(IventoryActivity.class, params);
     }
 }

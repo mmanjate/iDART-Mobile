@@ -38,6 +38,8 @@ public class IventoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         iventoryBinding = DataBindingUtil.setContentView(this, R.layout.activity_iventory);
 
+        populateDrugs(getRelatedViewModel().getDrugs());
+
         iventoryBinding.setViewModel(getRelatedViewModel());
 
         iventoryBinding.autCmpDrugs.setOnItemClickListener(new AdapterView.OnItemClickListener() {

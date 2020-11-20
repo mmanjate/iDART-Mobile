@@ -205,4 +205,11 @@ public class DestroiedStockListFragment extends GenericFragment {
         destroyedStockRV.getAdapter().notifyItemRangeChanged(position, destroyedStockRV.getAdapter().getItemCount());
     }
 
+    public void startDestroyStockActivity() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("user", getRelatedViewModel().getCurrentUser());
+        params.put("clinic", getMyActivity().getCurrentClinic());
+        params.put("step", ApplicationStep.STEP_CREATE);
+        nextActivity(DestroyStockActivity.class, params);
+    }
 }

@@ -11,6 +11,7 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Iventory;
 import mz.org.fgh.idartlite.service.stock.IventoryService;
+import mz.org.fgh.idartlite.view.stock.panel.StockInventoryListingFragment;
 
 public class IventoryListingVM extends SearchVM<Iventory> {
 
@@ -53,11 +54,17 @@ public class IventoryListingVM extends SearchVM<Iventory> {
 
     }
 
+    @Override
+    public StockInventoryListingFragment getRelatedFragment() {
+        return (StockInventoryListingFragment) super.getRelatedFragment();
+    }
+
     public void deleteRecord(Iventory selectedRecord) throws SQLException {
         getRecordService().deleteRecord(selectedRecord);
     }
 
     public void requestForNewRecord(){
+        getRelatedFragment().startInventoryActivity();
 
     }
 }

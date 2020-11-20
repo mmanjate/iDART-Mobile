@@ -389,14 +389,6 @@ public class PrescriptionVM extends BaseViewModel {
         return "";
     }
 
-    public PrescriptionFragment getRelatedListingFragment() {
-        return relatedListingFragment;
-    }
-
-    public void setRelatedListingFragment(PrescriptionFragment relatedListingFragment) {
-        this.relatedListingFragment = relatedListingFragment;
-    }
-
     @Override
     public void doOnConfirmed() {
         if (getCurrentStep().isApplicationStepInit()) {
@@ -414,7 +406,7 @@ public class PrescriptionVM extends BaseViewModel {
         initNewPrescription();
         this.prescription.setPatient(((PatientPanelActivity) getRelatedActivity()).getPatient());
 
-        getRelatedListingFragment().startPrescriptionActivity();
+        getRelatedFragment().startPrescriptionActivity();
     }
 
     @Override
