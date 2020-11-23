@@ -109,7 +109,18 @@
                             android:paddingRight="@dimen/dimen_4dp"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:visibility="@{(viewModel.currentStep.applicationstepCreate &amp;&amp; !viewModel.relatedRecord.open) ? View.VISIBLE : View.GONE}"
+
                             android:textColor="@color/white"/>
+
+                        <LinearLayout
+                            android:id="@+id/inventory_data_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="@{(viewModel.currentStep.applicationStepDisplay || viewModel.relatedRecord.open) ? View.VISIBLE : View.GONE}"
+                            >
+
 
 
                         <TextView
@@ -127,20 +138,32 @@
                             android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:drawableRight="@drawable/ic_patient_search"
                             android:padding="@dimen/dimen_4dp"
+                            android:text="@{viewModel.selectedDrug.description}"
                             style="@style/bottom_border_edit_text_style"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_20dp"
+                            android:gravity="center"
+                            android:text="@{viewModel.drugAutocompleteLabel}"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                            style="@style/inventory_labels"
                             />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/dimen_10dp"
-                            android:layout_marginTop="@dimen/dimen_20dp"
+                            android:padding="@dimen/dimen_5dp"
+                            android:layout_marginTop="@dimen/dimen_10dp"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="@dimen/dimen_0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
+                                android:gravity="right"
                                 android:layout_gravity="center_vertical"
                                 android:text="Medicamento Anterior"/>
 
@@ -196,6 +219,7 @@
                             android:layout_marginBottom="@dimen/dimen_10dp"
                             android:textColor="@color/white"/>
 
+                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
-import mz.org.fgh.idartlite.base.service.BaseServiceFactory;
+import mz.org.fgh.idartlite.base.service.ServiceProvider;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.model.User;
 
@@ -30,7 +30,7 @@ public class DestroyedStockDrugService extends BaseService<DestroyedDrug> implem
 
         record.getStock().setStockMoviment(record.getStock().getStockMoviment() - record.getQtyToModify());
 
-        ((StockService) BaseServiceFactory.getInstance(getApplication()).get(StockService.class)).updateStock(record.getStock());
+        ((StockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(record.getStock());
     }
 
     @Override

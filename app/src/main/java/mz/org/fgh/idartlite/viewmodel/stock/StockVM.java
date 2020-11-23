@@ -5,7 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
@@ -21,12 +21,12 @@ public class StockVM extends BaseViewModel {
     }
 
     @Override
-    protected BaseModel initRecord() {
+    protected IBaseService initRelatedService() {
         return null;
     }
 
     @Override
-    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+    protected BaseModel initRecord() {
         return null;
     }
 

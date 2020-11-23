@@ -3,10 +3,12 @@ package mz.org.fgh.idartlite.service.stock;
 import android.app.Application;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.StockAjustment;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 
 public class StockAjustementService extends BaseService<StockAjustment> implements IStockAjustmentService {
 
@@ -36,4 +38,10 @@ public class StockAjustementService extends BaseService<StockAjustment> implemen
 
         getDataBaseHelper().getStockAjustmentDao().delete(selectedRecord);
     }
+
+    @Override
+    public List<StockAjustment> getAllOfInventory(Iventory iventory) throws SQLException {
+        return getDataBaseHelper().getStockAjustmentDao().getAllOfInventory(iventory);
+    }
+
 }

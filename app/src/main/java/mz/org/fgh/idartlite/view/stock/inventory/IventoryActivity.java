@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
@@ -38,7 +39,10 @@ public class IventoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         iventoryBinding = DataBindingUtil.setContentView(this, R.layout.activity_iventory);
 
-        populateDrugs(getRelatedViewModel().getDrugs());
+        List<Drug> drugs = new ArrayList<>();
+        drugs.addAll(getRelatedViewModel().getDrugs());
+
+        populateDrugs(drugs);
 
         iventoryBinding.setViewModel(getRelatedViewModel());
 
@@ -49,6 +53,13 @@ public class IventoryActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Utilities.listHasElements(getRelatedViewModel().getAdjustmentList())) displaySelectedDrugStockAjustmentInfo();
+    }
+
 
     public void populateDrugs(List<Drug> drugs){
         drugArrayAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, drugs);
@@ -68,7 +79,7 @@ public class IventoryActivity extends BaseActivity {
         }
     }
 
-    public void displaySelectedDrugs(){
+    public void displaySelectedDrugStockAjustmentInfo(){
         if (listbleRecycleViewAdapter != null) {
             listbleRecycleViewAdapter.notifyDataSetChanged();
         }else {
@@ -82,6 +93,9 @@ public class IventoryActivity extends BaseActivity {
             listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvSelectedDrugs, getRelatedViewModel().getAdjustmentList(), this);
             rcvSelectedDrugs.setAdapter(listbleRecycleViewAdapter);
         }
+
+        Utilities.hideSoftKeyboard(this);
+        iventoryBinding.autCmpDrugs.dismissDropDown();
     }
 
     @Override

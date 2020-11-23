@@ -4,9 +4,11 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.StockAjustment;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 
 public class StockAjustmentDaoImpl extends GenericDaoImpl<StockAjustment, Integer> implements IStockAjustmentDao {
 
@@ -20,5 +22,10 @@ public class StockAjustmentDaoImpl extends GenericDaoImpl<StockAjustment, Intege
 
     public StockAjustmentDaoImpl(ConnectionSource connectionSource, DatabaseTableConfig tableConfig) throws SQLException {
         super(connectionSource, tableConfig);
+    }
+
+    @Override
+    public List<StockAjustment> getAllOfInventory(Iventory iventory) throws SQLException {
+        return queryBuilder().where().eq(StockAjustment.COLUMN_IVENTORY_ID, iventory.getId()).query();
     }
 }

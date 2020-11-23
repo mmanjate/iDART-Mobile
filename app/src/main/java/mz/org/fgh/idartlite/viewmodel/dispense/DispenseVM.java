@@ -16,8 +16,8 @@ import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
@@ -47,7 +47,7 @@ import mz.org.fgh.idartlite.view.dispense.CreateDispenseActivity;
 import mz.org.fgh.idartlite.view.patientPanel.DispenseFragment;
 import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 
-public class DispenseVM extends BaseViewModel implements IDialogListener {
+public class DispenseVM extends BaseViewModel {
 
     private IDispenseService dispenseService;
 
@@ -85,13 +85,13 @@ public class DispenseVM extends BaseViewModel implements IDialogListener {
     }
 
     @Override
-    protected BaseModel initRecord() {
-        return null;
+    protected IBaseService initRelatedService() {
+        return getServiceProvider().get(DispenseService.class);
     }
 
     @Override
-    protected  Class<DispenseService> getRecordServiceClass() {
-        return DispenseService.class;
+    protected BaseModel initRecord() {
+        return null;
     }
 
     @Override

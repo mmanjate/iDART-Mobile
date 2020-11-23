@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.dao.drug;
 
 import android.app.Application;
 
+import com.j256.ormlite.stmt.ColumnArg;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
@@ -13,6 +14,7 @@ import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.RegimenDrug;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 
 public class DrugDaoImpl extends GenericDaoImpl<Drug, Integer> implements IDrugDao {
@@ -56,5 +58,17 @@ public class DrugDaoImpl extends GenericDaoImpl<Drug, Integer> implements IDrugD
     @Override
     public Drug getDrugByRestID(int restId) throws SQLException {
         return queryBuilder().where().eq(Drug.COLUMN_REST_ID, restId).queryForFirst();
+    }
+
+    @Override
+    public List<Drug> getAllWithLote(Application application) throws SQLException {
+
+        QueryBuilder<Stock, Integer> stockQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getStockDao().queryBuilder();
+        stockQb.where().eq(Stock.COLUMN_DRUG, new ColumnArg(Drug.TABLE_NAME, Drug.COLUMN_ID)).and().gt(Stock.COLUMN_UNITS_RECEIVED, 0);
+
+        QueryBuilder<Drug, Integer> drugQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDrugDao().queryBuilder();
+        drugQb.where().exists(stockQb);
+        drugQb.orderBy(Drug.COLUMN_DESCRIPTION, true);
+        return drugQb.query();
     }
 }

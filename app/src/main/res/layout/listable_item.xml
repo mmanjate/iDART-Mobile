@@ -111,7 +111,9 @@
                 android:background="@drawable/listable_edit_text_border"
                 android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
                 android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
-                android:text='@{listble.qtyToModify > 0 ? Utilities.parseIntToString(listble.qtyToModify) : ""}'/>
+                android:text='@{listble.qtyToModify > 0 ? Utilities.parseIntToString(listble.qtyToModify) : ""}'>
+                <requestFocus />
+            </EditText>
 
             <View
                 android:layout_width="0dp"

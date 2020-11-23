@@ -14,12 +14,14 @@ import java.util.List;
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.service.drug.DrugService;
 import mz.org.fgh.idartlite.service.stock.DestroyedStockDrugService;
+import mz.org.fgh.idartlite.service.stock.IDestroyedStockDrug;
 import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.stock.destroy.DestroyStockActivity;
@@ -37,14 +39,15 @@ public class DestroyStockVM extends BaseViewModel {
     }
 
     @Override
+    protected IBaseService initRelatedService() {
+        return getServiceProvider().get(DestroyedStockDrugService.class);
+    }
+
+    @Override
     protected BaseModel initRecord() {
         return new DestroyedDrug();
     }
 
-    @Override
-    protected Class<DestroyedStockDrugService> getRecordServiceClass() {
-        return DestroyedStockDrugService.class;
-    }
 
 
     @Override
@@ -57,7 +60,7 @@ public class DestroyStockVM extends BaseViewModel {
     }
 
     protected List<Drug> getAllDrugs() throws SQLException {
-        return ((DrugService)baseServiceFactory.get(DrugService.class)).getAll();
+        return ((DrugService) serviceProvider.get(DrugService.class)).getAll();
     }
 
     @Override
@@ -82,7 +85,7 @@ public class DestroyStockVM extends BaseViewModel {
                 if (!Utilities.listHasElements(stocksToDestroy)) {
                     Utilities.displayAlertDialog(getRelatedActivity(), "Não indicou nenhuma quantidade de stock para destruir.").show();
                 }else {
-                    getRecordService().saveAll(stocksToDestroy);
+                    getRelatedService().saveAll(stocksToDestroy);
                 }
 
             }
@@ -92,8 +95,8 @@ public class DestroyStockVM extends BaseViewModel {
     }
 
     @Override
-    public DestroyedStockDrugService getRecordService() {
-        return (DestroyedStockDrugService) super.getRecordService();
+    public IDestroyedStockDrug getRelatedService() {
+        return (DestroyedStockDrugService) super.getRelatedService();
     }
 
     @Override
@@ -138,7 +141,7 @@ public class DestroyStockVM extends BaseViewModel {
         if (stockList == null) stockList = new ArrayList<>();
 
         try {
-            List<Stock> drugStocks = ((StockService)baseServiceFactory.get(StockService.class)).getAll(selectedDrug);
+            List<Stock> drugStocks = ((StockService) serviceProvider.get(StockService.class)).getAll(selectedDrug);
 
             if (Utilities.listHasElements(drugStocks)) {
                 for (Stock stock : drugStocks) {

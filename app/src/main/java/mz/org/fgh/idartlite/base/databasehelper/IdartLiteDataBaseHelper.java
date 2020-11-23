@@ -49,7 +49,6 @@ import mz.org.fgh.idartlite.model.District;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Form;
-import mz.org.fgh.idartlite.model.Iventory;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
@@ -62,6 +61,7 @@ import mz.org.fgh.idartlite.model.Subdistrict;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 
 public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 

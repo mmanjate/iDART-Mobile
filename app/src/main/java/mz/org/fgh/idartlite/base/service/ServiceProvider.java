@@ -10,9 +10,10 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.stock.IIventoryService;
+import mz.org.fgh.idartlite.service.stock.IventoryService;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class BaseServiceFactory<T extends BaseService> {
+public class ServiceProvider<T extends IBaseService> {
 
     private List<T> services;
 
@@ -20,29 +21,29 @@ public class BaseServiceFactory<T extends BaseService> {
 
     private User mCurrentUser;
 
-    private static BaseServiceFactory instance;
+    private static ServiceProvider instance;
 
     private IIventoryService iventoryService;
 
-    private BaseServiceFactory(@NonNull Application application) {
+    private ServiceProvider(@NonNull Application application) {
         mApplication = application;
     }
 
-    private BaseServiceFactory(@NonNull Application application, User currentUser) {
+    private ServiceProvider(@NonNull Application application, User currentUser) {
         mApplication = application;
         mCurrentUser = currentUser;
     }
 
-    public static BaseServiceFactory getInstance(Application application, User user){
+    public static ServiceProvider getInstance(Application application, User user){
         if (instance == null){
-            instance = new BaseServiceFactory(application, user);
+            instance = new ServiceProvider(application, user);
         }
         return instance;
     }
 
-    public static BaseServiceFactory getInstance(Application application){
+    public static ServiceProvider getInstance(Application application){
         if (instance == null){
-            instance = new BaseServiceFactory(application);
+            instance = new ServiceProvider(application);
         }
         return instance;
     }
@@ -90,4 +91,10 @@ public class BaseServiceFactory<T extends BaseService> {
         return service;
     }
 
+    public IIventoryService getIventoryService() {
+        if (iventoryService == null){
+            iventoryService = (IIventoryService) get((Class<T>) IventoryService.class);
+        }
+        return iventoryService;
+    }
 }
