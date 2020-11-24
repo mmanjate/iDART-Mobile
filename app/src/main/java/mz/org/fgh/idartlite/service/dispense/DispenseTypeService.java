@@ -39,9 +39,9 @@ public class DispenseTypeService extends BaseService<DispenseType>  implements  
         return getDataBaseHelper().getDispenseTypeDao().getAll();
     }
 
-    public DispenseType getDispenseTypeByCode(String code) throws SQLException {
+    public DispenseType getDispenseTypeByDescription(String description) throws SQLException {
 
-        return getDataBaseHelper().getDispenseTypeDao().getDispenseTypeByCode(code);
+        return getDataBaseHelper().getDispenseTypeDao().getDispenseTypeByDescription(description);
     }
 
     public boolean checkDipsenseType(Object dispenseType) {
@@ -52,7 +52,7 @@ public class DispenseTypeService extends BaseService<DispenseType>  implements  
 
         try {
 
-            DispenseType localDispenseType = getDispenseTypeByCode(itemresult.get("value").toString());
+            DispenseType localDispenseType = getDispenseTypeByDescription(itemresult.get("value").toString());
 
             if(localDispenseType != null)
                 result = true;

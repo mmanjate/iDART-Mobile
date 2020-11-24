@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.patientPanel.AddNewPatientActivity"/>
+        <activity android:name=".view.dispense.ReturnDispenseActivity"></activity>
+        <activity android:name=".view.patientPanel.AddNewPatientActivity" />
         <activity android:name=".view.home.PatientHomeActivity" />
         <activity android:name=".view.reports.ReportTypeActivity" />
         <activity android:name=".view.reports.ReportsListingActivity" />

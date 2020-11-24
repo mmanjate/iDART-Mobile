@@ -11,6 +11,7 @@ public interface Listble<T extends BaseModel> extends Comparable<T>{
     public static final String PRESCRIPTION_DRUG_LISTING = "prescription_drug_listing";
     public static final String DISPENSE_DRUG_LISTING = "dispense_drug_listing";
     public static final String INVENTORY_LISTING = "inventory_listing";
+    public static final String RETURN_DRUG_LISTING = "return_dispense_listing";
 
     int getId();
 
@@ -70,6 +71,11 @@ public interface Listble<T extends BaseModel> extends Comparable<T>{
     default boolean isIventoryListing() {
         return false;
     }
+
+    default boolean isReturnDispenseListing() {
+        return false;
+    }
+
 
     int getDrawable();
 

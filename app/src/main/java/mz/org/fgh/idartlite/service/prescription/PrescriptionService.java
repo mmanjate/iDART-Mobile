@@ -121,11 +121,11 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
             prescription.setUuid(UUID.randomUUID().toString());
 
             if ((int) Float.parseFloat(requireNonNull(patient.get("dispensasemestral")).toString()) > 0)
-                prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Semestral (DS)"));
+                prescription.setDispenseType(dispenseTypeService.getDispenseTypeByDescription("Dispensa Semestral (DS)"));
             else if ((int) Float.parseFloat(requireNonNull(patient.get("dispensatrimestral")).toString()) > 0)
-                prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Trimestral (DT)"));
+                prescription.setDispenseType(dispenseTypeService.getDispenseTypeByDescription("Dispensa Trimestral (DT)"));
             else
-                prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Mensal (DM)"));
+                prescription.setDispenseType(dispenseTypeService.getDispenseTypeByDescription("Dispensa Mensal (DM)"));
             createPrescription(prescription);
 
                 prescribedDrugService.savePrescribedDrug(prescription,requireNonNull(patient.get("jsonprescribeddrugs")).toString());
@@ -133,6 +133,11 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean checkIfPatientHasPrescriptions(Patient patient) throws SQLException {
+        return getDataBaseHelper().getPrescriptionDao().checkIfPatientHasPrescriptions(patient);
     }
 
 }

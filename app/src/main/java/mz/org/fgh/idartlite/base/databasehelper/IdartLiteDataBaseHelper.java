@@ -17,6 +17,7 @@ import mz.org.fgh.idartlite.dao.clinic.IPharmacyTypeDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispenseDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispenseTypeDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispensedDrugDao;
+import mz.org.fgh.idartlite.dao.dispense.IReturnedDrugDao;
 import mz.org.fgh.idartlite.dao.drug.IDiseaseTypeDao;
 import mz.org.fgh.idartlite.dao.drug.IDrugDao;
 import mz.org.fgh.idartlite.dao.drug.IFormDao;
@@ -55,6 +56,7 @@ import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.model.RegimenDrug;
+import mz.org.fgh.idartlite.model.ReturnedDrug;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.StockAjustment;
 import mz.org.fgh.idartlite.model.Subdistrict;
@@ -100,6 +102,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private ISubdistrictDao subdistrictDao;
 
     private IClinicSectorDao clinicSectorDao;
+    private IReturnedDrugDao returnedDrugDao;
+
  //   private IPatientSectorDao patientSectorDao;
 
 
@@ -285,11 +289,20 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         return patientSectorDao;
     }*/
 
+
+
     public IClinicSectorDao getClinicSectorDao() throws SQLException {
         if(clinicSectorDao == null){
             clinicSectorDao = getDao(ClinicSector.class);
         }
         return clinicSectorDao;
+    }
+
+    public IReturnedDrugDao getReturnedDrugDao() throws SQLException {
+        if(returnedDrugDao == null){
+            returnedDrugDao = getDao(ReturnedDrug.class);
+        }
+        return returnedDrugDao;
     }
     private static IdartLiteDataBaseHelper dataBaseHelper;
 
@@ -337,6 +350,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, District.class);
             TableUtils.createTableIfNotExists(connectionSource, Subdistrict.class);
             TableUtils.createTableIfNotExists(connectionSource, ClinicSector.class);
+            TableUtils.createTableIfNotExists(connectionSource, ReturnedDrug.class);
 
 
         } catch (SQLException e) {
@@ -372,6 +386,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Form.class, true);
             TableUtils.dropTable(connectionSource, Drug.class, true);
             TableUtils.dropTable(connectionSource, Stock.class, true);
+            TableUtils.dropTable(connectionSource, ReturnedDrug.class, true);
             TableUtils.dropTable(connectionSource, DispensedDrug.class, true);
             TableUtils.dropTable(connectionSource, Episode.class, true);
             TableUtils.dropTable(connectionSource, RegimenDrug.class, true);
@@ -384,6 +399,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, District.class, true);
             TableUtils.dropTable(connectionSource, Subdistrict.class, true);
             TableUtils.dropTable(connectionSource, ClinicSector.class, true);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

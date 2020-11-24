@@ -60,7 +60,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2.6"
-                android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing|| listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
                 style="@style/listble_content"
                 android:text="@{listble.description}"/>
 
@@ -68,7 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
-                android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing || listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
                 android:background="@color/white"/>
 
 
@@ -127,8 +127,31 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
                 style="@style/listble_content"
-                android:visibility='@{(listble.stockListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}'
+                android:textAlignment="center"
+                android:visibility='@{(listble.stockListing || listble.dispenseDrugListing || listble.returnDispenseListing) ? View.VISIBLE : View.GONE}'
                 android:text='@{listble.quantity > 0 ? Utilities.parseIntToString(listble.quantity) : ""}' />
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.030"
+                android:visibility="@{listble.returnDispenseListing ? View.VISIBLE : View.GONE}"
+                android:background="@color/white"/>
+
+            <EditText
+                android:id="@+id/edt_qty_returned"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:gravity="center"
+                android:padding="@dimen/dimen_1dp"
+                android:background="@drawable/listable_edit_text_border"
+                android:visibility="@{listble.returnDispenseListing ? View.VISIBLE : View.GONE}"
+                android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
+                android:inputType="number"
+                android:text='@{listble.qtyToModify > 0 ? Utilities.parseIntToString(listble.qtyToModify) : ""}'/>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

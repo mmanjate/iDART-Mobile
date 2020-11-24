@@ -28,7 +28,7 @@ public class DispenseTypeDaoImpl extends GenericDaoImpl<DispenseType, Integer> i
     }
 
     @Override
-    public DispenseType getDispenseTypeByCode(String code) throws SQLException {
-        return queryBuilder().where().eq(DispenseType.COLUMN_CODE, code).queryForFirst();
+    public DispenseType getDispenseTypeByDescription(String description) throws SQLException {
+        return queryBuilder().where().eq(DispenseType.COLUMN_DESCRIPTION, description).queryForFirst();
     }
 }

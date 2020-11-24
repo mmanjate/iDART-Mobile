@@ -14,4 +14,6 @@ public interface IPrescriptionDao extends IGenericDao<Prescription, Integer> {
     public Prescription getLastPatientPrescription(Patient patient) throws SQLException;
 
     public void closePrescription(Prescription prescription) throws SQLException;
+
+    public boolean checkIfPatientHasPrescriptions(Patient patient) throws SQLException ;
 }

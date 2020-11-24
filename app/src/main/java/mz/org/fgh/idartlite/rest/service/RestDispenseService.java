@@ -209,11 +209,11 @@ public class RestDispenseService extends BaseRestService {
         Prescription prescription = new Prescription();
 
         if (itemresult.get("dispensatrimestral").toString().contains("1"))
-            prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Trimestral (DT)"));
+            prescription.setDispenseType(dispenseTypeService.getDispenseTypeByDescription("Dispensa Trimestral (DT)"));
         else if (itemresult.get("dispensasemestral").toString().contains("1"))
-            prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Semestral (DS)"));
+            prescription.setDispenseType(dispenseTypeService.getDispenseTypeByDescription("Dispensa Semestral (DS)"));
         else
-            prescription.setDispenseType(dispenseTypeService.getDispenseTypeByCode("Dispensa Mensal (DM)"));
+            prescription.setDispenseType(dispenseTypeService.getDispenseTypeByDescription("Dispensa Mensal (DM)"));
         prescription.setUuid(UUID.randomUUID().toString());
         if (itemresult.get("prescricaoespecial").toString().contains("F") || itemresult.get("prescricaoespecial").toString().contains("f")) {
             prescription.setUrgentPrescription(Prescription.URGENT_PRESCRIPTION);
@@ -371,7 +371,7 @@ public class RestDispenseService extends BaseRestService {
             syncDispense.setPrep(Character.toUpperCase('f'));
             syncDispense.setCe(Character.toUpperCase('f'));
             syncDispense.setCpn(Character.toUpperCase('f'));
-            if (!dispense.getPrescription().getUrgentPrescription().equalsIgnoreCase(Prescription.URGENT_PRESCRIPTION)) {
+            if (!Prescription.URGENT_PRESCRIPTION.equalsIgnoreCase(dispense.getPrescription().getUrgentPrescription())) {
                 syncDispense.setPrescricaoespecial(Character.toUpperCase('f'));
                 syncDispense.setMotivocriacaoespecial("");
             } else {

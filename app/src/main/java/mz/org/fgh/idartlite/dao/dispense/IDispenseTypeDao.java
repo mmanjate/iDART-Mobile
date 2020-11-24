@@ -11,5 +11,5 @@ public interface IDispenseTypeDao extends IGenericDao<DispenseType, Integer> {
 
     public List<DispenseType> getAll() throws SQLException;
 
-    public DispenseType getDispenseTypeByCode(String code) throws SQLException;
+    public DispenseType getDispenseTypeByDescription(String description) throws SQLException;
 }

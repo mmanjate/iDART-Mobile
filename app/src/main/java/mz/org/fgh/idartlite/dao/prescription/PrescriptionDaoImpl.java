@@ -39,7 +39,7 @@ public class PrescriptionDaoImpl extends GenericDaoImpl<Prescription, Integer> i
 
         prescriptionQb.where().eq(Prescription.COLUMN_PATIENT_ID, patient.getId());
 
-        return prescriptionQb.orderBy("id", false).limit(1L).query().get(0);
+        return prescriptionQb.orderBy("id", false).queryForFirst();
 
     }
 
@@ -47,5 +47,10 @@ public class PrescriptionDaoImpl extends GenericDaoImpl<Prescription, Integer> i
     public void closePrescription(Prescription prescription) throws SQLException {
         prescription.setExpiryDate(DateUtilities.getCurrentDate());
         update(prescription);
+    }
+
+    @Override
+    public boolean checkIfPatientHasPrescriptions(Patient patient) throws SQLException  {
+        return queryBuilder().where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).query().isEmpty();
     }
 }
