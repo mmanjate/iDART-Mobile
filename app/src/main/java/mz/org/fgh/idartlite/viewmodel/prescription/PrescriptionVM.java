@@ -17,7 +17,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.DispenseType;
 import mz.org.fgh.idartlite.model.Drug;
@@ -101,13 +101,13 @@ public class PrescriptionVM extends BaseViewModel {
     }
 
     @Override
-    protected BaseModel initRecord() {
-        return null;
+    protected IBaseService initRelatedService() {
+        return getServiceProvider().get(PrescriptionService.class);
     }
 
     @Override
-    protected <T extends BaseService> Class<T> getRecordServiceClass() {
-        return (Class<T>) PrescriptionService.class;
+    protected BaseModel initRecord() {
+        return null;
     }
 
     @Override

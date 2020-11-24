@@ -8,9 +8,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
-import mz.org.fgh.idartlite.model.Iventory;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
+import mz.org.fgh.idartlite.service.stock.IIventoryService;
 import mz.org.fgh.idartlite.service.stock.IventoryService;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.stock.panel.StockInventoryListingFragment;
 
 public class IventoryListingVM extends SearchVM<Iventory> {
@@ -20,13 +23,17 @@ public class IventoryListingVM extends SearchVM<Iventory> {
     }
 
     @Override
-    protected BaseModel initRecord() {
-        return null;
+    protected void doOnNoRecordFound() {
     }
 
     @Override
-    protected Class<IventoryService> getRecordServiceClass() {
-        return IventoryService.class;
+    protected IBaseService initRelatedService() {
+        return getServiceProvider().get(IventoryService.class);
+    }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
     }
 
     @Override
@@ -40,18 +47,18 @@ public class IventoryListingVM extends SearchVM<Iventory> {
     }
 
     @Override
-    public IventoryService getRecordService() {
-        return (IventoryService) super.getRecordService();
+    public IIventoryService getRelatedService() {
+        return (IventoryService) super.getRelatedService();
     }
 
     @Override
     public List<Iventory> doSearch(long offset, long limit) throws SQLException {
-        return getRecordService().getAllWithPagination(offset, limit);
+        return getRelatedService().getAllWithPagination(offset, limit);
     }
 
     @Override
     public void displaySearchResults() {
-
+        getRelatedFragment().displaySearchResult();
     }
 
     @Override
@@ -60,11 +67,18 @@ public class IventoryListingVM extends SearchVM<Iventory> {
     }
 
     public void deleteRecord(Iventory selectedRecord) throws SQLException {
-        getRecordService().deleteRecord(selectedRecord);
+        getRelatedService().deleteRecord(selectedRecord);
     }
 
     public void requestForNewRecord(){
-        getRelatedFragment().startInventoryActivity();
-
+        try {
+            if (getRelatedService().isLastInventoryOpen()){
+                Utilities.displayAlertDialog(getRelatedFragment().getContext(), "O último inventário iniciado ainda não foi terminado, por favor terminar para iniciar novo.").show();
+            }else {
+                getRelatedFragment().startInventoryActivity();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

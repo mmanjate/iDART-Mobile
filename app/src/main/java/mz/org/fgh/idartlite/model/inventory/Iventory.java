@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.model;
+package mz.org.fgh.idartlite.model.inventory;
 
 import android.content.Context;
 

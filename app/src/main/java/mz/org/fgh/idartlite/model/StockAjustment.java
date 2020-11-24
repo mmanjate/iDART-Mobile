@@ -11,6 +11,7 @@ import java.util.Objects;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.StockAjustmentDaoImpl;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 
 @DatabaseTable(tableName = "stock_ajustment", daoClass = StockAjustmentDaoImpl.class)
 public class StockAjustment extends BaseModel implements Listble {

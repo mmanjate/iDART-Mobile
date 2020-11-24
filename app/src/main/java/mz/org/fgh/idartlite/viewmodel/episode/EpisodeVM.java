@@ -10,7 +10,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
@@ -39,12 +39,12 @@ public class EpisodeVM extends BaseViewModel {
     }
 
     @Override
-    protected BaseModel initRecord() {
+    protected IBaseService initRelatedService() {
         return null;
     }
 
     @Override
-    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+    protected BaseModel initRecord() {
         return null;
     }
 

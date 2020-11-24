@@ -16,7 +16,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
@@ -53,12 +53,12 @@ public class LoginVM extends BaseViewModel {
     }
 
     @Override
-    protected BaseModel initRecord() {
+    protected IBaseService initRelatedService() {
         return null;
     }
 
     @Override
-    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+    protected BaseModel initRecord() {
         return null;
     }
 

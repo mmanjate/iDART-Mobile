@@ -61,7 +61,9 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
                 if (this.relatedViewModel != null) {
                     this.relatedViewModel.setCurrentUser((User) bundle.getSerializable("user"));
                     this.relatedViewModel.setCurrentClinic((Clinic) bundle.getSerializable("clinic"));
-                    this.relatedViewModel.setSelectedRecord(bundle.getSerializable("relatedRecord"));
+                    if (bundle.getSerializable("relatedRecord") != null) {
+                        this.relatedViewModel.setSelectedRecord(bundle.getSerializable("relatedRecord"));
+                    }
                 }
                 if (Utilities.stringHasValue((String) bundle.getSerializable("step"))) {
                     applicationStep = ApplicationStep.fastCreate((String) bundle.getSerializable("step"));

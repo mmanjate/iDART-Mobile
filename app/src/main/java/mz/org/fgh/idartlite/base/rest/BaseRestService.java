@@ -13,7 +13,7 @@ import com.android.volley.VolleyError;
 import java.util.concurrent.ExecutorService;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.service.BaseServiceFactory;
+import mz.org.fgh.idartlite.base.service.ServiceProvider;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.ExecutorThreadProvider;
@@ -27,7 +27,7 @@ public abstract class BaseRestService {
 
     public static Application app;
 
-    protected static BaseServiceFactory serviceFactory;
+    protected static ServiceProvider serviceFactory;
 
     protected static ExecutorService restServiceExecutor;
     public static final String baseUrl = "http://dev.fgh.org.mz:3110";
@@ -51,7 +51,7 @@ public abstract class BaseRestService {
     private void init(Application application, User currentUser, Clinic currentClinic){
         restServiceExecutor = ExecutorThreadProvider.getInstance().getExecutorService();
 
-        serviceFactory = BaseServiceFactory.getInstance(application);
+        serviceFactory = ServiceProvider.getInstance(application);
 
         this.currentClinic = currentClinic;
         this.currentUser = currentUser;
@@ -59,7 +59,7 @@ public abstract class BaseRestService {
         app = application;
     }
 
-    public static BaseServiceFactory getServiceFactory() {
+    public static ServiceProvider getServiceFactory() {
         return serviceFactory;
     }
 

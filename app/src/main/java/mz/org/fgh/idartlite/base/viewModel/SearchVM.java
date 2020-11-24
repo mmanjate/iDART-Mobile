@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -44,9 +43,11 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
             displaySearchResults();
         }else {
-            Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.no_search_results)).show();
+            doOnNoRecordFound();
         }
     }
+
+    protected abstract void doOnNoRecordFound();
 
     private void loadFirstPage() {
         if (getSearchResults().size() < pageSize){

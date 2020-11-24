@@ -14,6 +14,9 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
@@ -78,6 +81,10 @@ public class StockInventoryListingFragment extends GenericFragment {
         iventoryBinding.setViewModel(getRelatedViewModel());
 
         this.rcvIventory = iventoryBinding.rcvIventories;
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        rcvIventory.setLayoutManager(mLayoutManager);
+        rcvIventory.setItemAnimator(new DefaultItemAnimator());
+        rcvIventory.addItemDecoration(new DividerItemDecoration(getContext(), 0));
 
         rcvIventory.addOnItemTouchListener(
                 new ClickListener(getContext(), rcvIventory, new ClickListener.OnItemClickListener() {
@@ -120,13 +127,16 @@ public class StockInventoryListingFragment extends GenericFragment {
     }
 
     public void displaySearchResult() {
-        if (adapter == null) {
-            adapter = new IventoryAdapter(rcvIventory, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
-            rcvIventory.setAdapter(adapter);
+
+        if (this.adapter == null) {
+            this.adapter = new IventoryAdapter(rcvIventory, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
+            rcvIventory.setAdapter(this.adapter);
+        }else {
+            this.adapter.notifyDataSetChanged();
         }
 
-        if (adapter.getOnLoadMoreListener() == null) {
-            adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
+        if (this.adapter.getOnLoadMoreListener() == null) {
+            this.adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
                     getRelatedViewModel().loadMoreRecords(rcvIventory, adapter);

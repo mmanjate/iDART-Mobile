@@ -11,7 +11,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
@@ -35,18 +35,18 @@ public class PatientVM extends SearchVM<Patient> {
     public PatientVM(@NonNull Application application) {
         super(application);
 
-        patientService = (PatientService) getBaseServiceFactory().get(PatientService.class);
+        patientService = (PatientService) getServiceProvider().get(PatientService.class);
         episodeService = new EpisodeService(application,getCurrentUser());
 
     }
 
     @Override
-    protected BaseModel initRecord() {
+    protected IBaseService initRelatedService() {
         return null;
     }
 
     @Override
-    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+    protected BaseModel initRecord() {
         return null;
     }
 
@@ -78,6 +78,11 @@ public class PatientVM extends SearchVM<Patient> {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void doOnNoRecordFound() {
+        Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.no_search_results)).show();
     }
 
     @Override

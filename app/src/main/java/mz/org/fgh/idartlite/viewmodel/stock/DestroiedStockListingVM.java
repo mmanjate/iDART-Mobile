@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.service.stock.DestroyedStockDrugService;
@@ -21,13 +22,18 @@ public class DestroiedStockListingVM extends SearchVM<DestroyedDrug> {
     }
 
     @Override
-    protected BaseModel initRecord() {
-        return null;
+    protected IBaseService initRelatedService() {
+        return getServiceProvider().get(DestroyedStockDrugService.class);
     }
 
     @Override
-    protected Class<DestroyedStockDrugService> getRecordServiceClass() {
-        return DestroyedStockDrugService.class;
+    protected void doOnNoRecordFound() {
+
+    }
+
+    @Override
+    protected BaseModel initRecord() {
+        return null;
     }
 
     @Override
@@ -41,13 +47,13 @@ public class DestroiedStockListingVM extends SearchVM<DestroyedDrug> {
     }
 
     @Override
-    public DestroyedStockDrugService getRecordService() {
-        return (DestroyedStockDrugService) super.getRecordService();
+    public DestroyedStockDrugService getRelatedService() {
+        return (DestroyedStockDrugService) super.getRelatedService();
     }
 
     @Override
     public List<DestroyedDrug> doSearch(long offset, long limit) throws SQLException {
-        return getRecordService().getRecords(offset, limit);
+        return getRelatedService().getRecords(offset, limit);
     }
 
     @Override
@@ -66,7 +72,7 @@ public class DestroiedStockListingVM extends SearchVM<DestroyedDrug> {
     }
 
     public void deleteRecord(DestroyedDrug selectedRecord) throws SQLException {
-        getRecordService().deleteRecord(selectedRecord);
+        getRelatedService().deleteRecord(selectedRecord);
     }
 
 

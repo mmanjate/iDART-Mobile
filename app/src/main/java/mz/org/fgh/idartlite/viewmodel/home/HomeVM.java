@@ -7,11 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.view.home.HomeActivity;
 import mz.org.fgh.idartlite.view.home.PatientHomeActivity;
-import mz.org.fgh.idartlite.view.patientSearch.SearchPatientActivity;
 import mz.org.fgh.idartlite.view.reports.ReportTypeActivity;
 import mz.org.fgh.idartlite.view.stock.panel.StockActivity;
 
@@ -22,12 +21,12 @@ public class HomeVM extends BaseViewModel {
     }
 
     @Override
-    protected BaseModel initRecord() {
+    protected IBaseService initRelatedService() {
         return null;
     }
 
     @Override
-    protected <T extends BaseService> Class<T> getRecordServiceClass() {
+    protected BaseModel initRecord() {
         return null;
     }
 

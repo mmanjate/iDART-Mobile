@@ -138,4 +138,7 @@ public class DrugService extends BaseService<Drug> implements IDrugService {
 
     }
 
+    public List<Drug> getAllWithLote() throws SQLException{
+        return getDataBaseHelper().getDrugDao().getAllWithLote(getApplication());
+    }
 }

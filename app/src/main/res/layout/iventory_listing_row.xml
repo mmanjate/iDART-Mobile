@@ -5,7 +5,7 @@
     <data>
         <variable
             name="iventory"
-            type="mz.org.fgh.idartlite.model.Iventory" />
+            type="mz.org.fgh.idartlite.model.inventory.Iventory" />
 
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
@@ -59,10 +59,9 @@
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/prescriptionId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{iventory.sequence}"
+                        android:text="@{Utilities.parseIntToString(iventory.sequence)}"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:textSize="@dimen/dimen_12dp"
                         android:textStyle="bold"/>
@@ -116,19 +115,16 @@
                     android:layout_weight="2">
 
                     <TextView
-                        android:id="@+id/dataPrescricao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"
                         android:text="@{DateUtilities.formatToDDMMYYYY(iventory.startDate)}"/>
                     <TextView
-                        android:id="@+id/regime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"
                         android:text="@{DateUtilities.formatToDDMMYYYY(iventory.endDate)}" />
                     <TextView
-                        android:id="@+id/linha"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"

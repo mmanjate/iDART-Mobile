@@ -17,9 +17,8 @@ import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
-import mz.org.fgh.idartlite.base.service.BaseServiceFactory;
 import mz.org.fgh.idartlite.base.service.IBaseService;
+import mz.org.fgh.idartlite.base.service.ServiceProvider;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
@@ -33,7 +32,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     protected BaseModel relatedRecord;
 
-    protected IBaseService recordService;
+    protected IBaseService relatedService;
 
     protected GenericFragment relatedFragment;
 
@@ -44,38 +43,34 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     protected User currentUser;
     protected Clinic currentClinic;
 
-    protected BaseServiceFactory baseServiceFactory;
+    protected ServiceProvider serviceProvider;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
         callbacks = new PropertyChangeRegistry();
 
-        baseServiceFactory = BaseServiceFactory.getInstance(application);
+        serviceProvider = ServiceProvider.getInstance(application);
 
         this.relatedRecord = initRecord();
 
-        recordService = initRecordService();
+        relatedService = initRelatedService();
 
         initFormData();
 
     }
 
+    protected abstract IBaseService initRelatedService();
+
     protected abstract BaseModel initRecord();
-
-    protected abstract <T extends BaseService>  Class<T> getRecordServiceClass();
-
-    private  <T extends BaseService> T initRecordService(){
-        return (T) baseServiceFactory.get(getRecordServiceClass());
-    }
 
     protected abstract void initFormData();
 
     public void save(){
         try {
             if (getCurrentStep().isApplicationstepCreate()){
-                recordService.save(relatedRecord);
+                relatedService.save(relatedRecord);
             }else if (getCurrentStep().isApplicationStepEdit()){
-                recordService.update(relatedRecord);
+                relatedService.update(relatedRecord);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -200,8 +195,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         notifyPropertyChanged(BR.currentClinic);
     }
 
-    public BaseServiceFactory getBaseServiceFactory() {
-        return baseServiceFactory;
+    public ServiceProvider getServiceProvider() {
+        return serviceProvider;
     }
 
     public BaseModel getRelatedRecord() {
@@ -226,8 +221,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         this.relatedFragment = relatedFragment;
     }
 
-    public IBaseService getRecordService() {
-        return recordService;
+    public IBaseService getRelatedService() {
+        return relatedService;
     }
 
     public BaseModel getSelectedRecord() {

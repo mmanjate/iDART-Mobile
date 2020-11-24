@@ -15,7 +15,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
 import mz.org.fgh.idartlite.databinding.IventoryListingRowBinding;
-import mz.org.fgh.idartlite.model.Iventory;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 
 public class IventoryAdapter extends AbstractRecycleViewAdapter<Iventory> {
 

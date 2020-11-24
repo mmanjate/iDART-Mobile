@@ -8,16 +8,21 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.drug.DrugDaoImpl;
+import mz.org.fgh.idartlite.model.inventory.InventoryRelatedObject;
 
-@DatabaseTable(tableName = "drug", daoClass = DrugDaoImpl.class)
-public class Drug extends BaseModel implements Listble {
+@DatabaseTable(tableName = Drug.TABLE_NAME, daoClass = DrugDaoImpl.class)
+public class Drug extends BaseModel implements Listble, InventoryRelatedObject {
 
+    public static final String TABLE_NAME = "drug";
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_FNMCODE = "fnm_code";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_PACK_SIZE = "packSize";
@@ -51,6 +56,8 @@ public class Drug extends BaseModel implements Listble {
     private int restid;
 
     private int quantity;
+
+    private List<StockAjustment> ajustmentInfo;
 
     public int getId() {
         return id;
@@ -198,5 +205,22 @@ public class Drug extends BaseModel implements Listble {
     @Override
     public boolean isPrescriptionDrugListing() {
         return listType.equals(Listble.PRESCRIPTION_DRUG_LISTING);
+    }
+
+    @Override
+    public List<StockAjustment> getAjustmentInfo() {
+        return ajustmentInfo;
+    }
+
+    @Override
+    public void setAjustmentInfo(List<StockAjustment> ajustmentInfo) {
+        this.ajustmentInfo = ajustmentInfo;
+    }
+
+    @Override
+    public void addAjustmentInfo(StockAjustment ajustment) {
+        if (this.ajustmentInfo == null) this.ajustmentInfo = new ArrayList<>();
+
+        this.ajustmentInfo.add(ajustment);
     }
 }
