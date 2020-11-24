@@ -44,7 +44,7 @@ public class TherapeuthicLineService extends BaseService<TherapeuticLine> implem
 
         TherapeuticLine typeList = getDataBaseHelper().getTherapeuticLineDao().getTherapeuticLineByCode(code);
 
-        if (typeList == null) return typeList;
+        if (typeList != null) return typeList;
 
         return null;
     }

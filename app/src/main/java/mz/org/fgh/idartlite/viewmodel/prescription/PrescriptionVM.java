@@ -156,18 +156,23 @@ public class PrescriptionVM extends BaseViewModel {
                 this.prescription = prescriptionService.getLastPatientPrescription(((PatientPanelActivity) getRelatedActivity()).getPatient());
 
 
-                this.prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
+                if (prescription != null) {
+                    this.prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
 
-                if (!this.prescription.isClosed()) {
+                    if (!this.prescription.isClosed()) {
 
-                    this.prescription.setPrescribedDrugs(prescribedDrugService.getAllByPrescription(this.prescription));
+                        this.prescription.setPrescribedDrugs(prescribedDrugService.getAllByPrescription(this.prescription));
 
-                    newPrescriptionMustBeEspetial = true;
+                        newPrescriptionMustBeEspetial = true;
 
-                    //Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.new_prescription_creation), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
-                    Utilities.displayConfirmationDialog(getRelatedActivity(), this.prescription.getPrescriptionAsString(), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
-                } else {
-                    doOnConfirmed();
+                        //Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.new_prescription_creation), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
+                        Utilities.displayConfirmationDialog(getRelatedActivity(), this.prescription.getPrescriptionAsString(), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
+                    } else {
+                        doOnConfirmed();
+                    }
+                }
+                else {
+                    initNewRecord();
                 }
             }
 
@@ -345,6 +350,15 @@ public class PrescriptionVM extends BaseViewModel {
         this.prescription = prescriptionService.getLastPatientPrescription(this.prescription.getPatient());
         this.prescription.setPrescribedDrugs(prescribedDrugService.getAllByPrescription(this.prescription));
         this.prescription.setId(0);
+    }
+
+    public boolean checkIfPatientHasPrescriptions(){
+        try {
+            return prescriptionService.checkIfPatientHasPrescriptions(this.prescription.getPatient());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Bindable

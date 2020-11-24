@@ -3,10 +3,13 @@ package mz.org.fgh.idartlite.service.dispense;
 import android.app.Application;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
+import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 
@@ -38,6 +41,22 @@ public class DispenseDrugService extends BaseService<DispensedDrug> implements I
 
         return getDataBaseHelper().getDispensedDrugDao().findDispensedDrugByDispenseId(id);
     }
+
+    @Override
+    public List<Drug> findDrugsOnDispensedDrugsByDispense(Dispense dispense) throws SQLException {
+        List<DispensedDrug> dispenseDrugs= findDispensedDrugByDispenseId(dispense.getId());
+
+        List<Drug> drugs= new ArrayList<>();
+        for (DispensedDrug dispenseDrug:
+                dispenseDrugs)
+        {
+
+            drugs.add(dispenseDrug.getStock().getDrug());
+        }
+        return drugs;
+    }
+
+
 
 
     public boolean checkStockIsDispensedDrug(Stock stock) throws SQLException {

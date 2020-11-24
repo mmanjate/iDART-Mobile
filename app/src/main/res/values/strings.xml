@@ -243,4 +243,25 @@
     <string name="patient_created_sucessfuly">Paciente Criado Com Sucesso</string>
 
     <string name="patient_updated_sucessfuly">Paciente Actualizado Com Sucesso</string>
+
+    <string name="refazer_frascos">Refazer Frascos</string>
+
+    <string name="data_devolucao">Data do Retorno:</string>
+    <string name="notas_devolucao">Notas do Retorno</string>
+
+    <string name="return_date_mandatory">A data de Retorno é um campo obrigatório.</string>
+    <string name="return_date_date_not_correct">A data de Retorno não pode ser maior que a data corrente.</string>
+
+    <string name="quantity_return_cant_be_lower_zero">A quantidade Retornada não pode ser menor que zero</string>
+
+    <string name="returned_drug_sucessfuly">Medicamento Retornado Com Sucesso</string>
+
+    <string name="quantity_returned_cant_be_higher_than_taked">A quantidade Retornada não pode ser maior que a Dispensada</string>
+
+    <string name="return_date_date_cant_be_lower_than_dispense_date">A data de Retorno não pode ser menor que a data da dispensa.</string>
+    <string name="confirm_return_drugs_save">Confirma o Retorno destes Medicamentos?</string>
+
+    <string name="would_like_to_create_new_prescription">O Retorno foi efectuado com Sucesso. Pretende Criar uma nova Prescrição ?</string>
+
+    <string name="cant_return_dispense">Ja Foi Efectuado o retorno uma vez, não pode voltar a refazer.</string>
 </resources>

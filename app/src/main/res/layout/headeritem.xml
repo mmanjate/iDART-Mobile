@@ -53,7 +53,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2.6"
-                    android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing ||  listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
                     style="@style/listble_header"
                     android:text="@string/descricao" />
 
@@ -81,14 +81,22 @@
                     android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
                     android:text='@{listble.stockDestroyListing ? "Qtd. a Destruir" : "Qtd. Existente"}' />
 
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.2"
                     style="@style/listble_header"
                     android:text="@string/quantidade"
-                    android:visibility='@{(listble.stockListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}' />
+                    android:visibility='@{(listble.stockListing || listble.dispenseDrugListing||listble.isReturnDispenseListing ) ? View.VISIBLE : View.GONE}' />
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    style="@style/listble_header"
+                    android:visibility="@{listble.isReturnDispenseListing  ? View.VISIBLE : View.GONE}"
+                    android:text='@{listble.isReturnDispenseListing ? "Qtd. a devolver" : " "}' />
 
                 <TextView
                     android:layout_width="0dp"

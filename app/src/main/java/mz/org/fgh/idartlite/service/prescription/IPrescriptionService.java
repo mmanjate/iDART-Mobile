@@ -31,4 +31,6 @@ public interface IPrescriptionService extends IBaseService<Prescription> {
 
     public void saveLastPrescriptionFromRest(LinkedTreeMap<String, Object> patient, Patient localPatient) ;
 
+    public boolean checkIfPatientHasPrescriptions(Patient patient) throws SQLException;
+
 }

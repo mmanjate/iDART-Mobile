@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.adapter.recyclerview.listable;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +65,7 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListEditButton(activity.isViewListEditButton());
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
 
-            ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyDestroy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+           /* ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyDestroy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
 
@@ -72,6 +74,43 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                             getItemAtPosition(position).setQtyToModify(Integer.valueOf(((EditText) v).getText().toString()));
                         }
                     }
+                }
+            });*/
+
+            ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyDestroy.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    getItemAtPosition(position).setQtyToModify(Integer.valueOf(((EditText) s).getText().toString()));
+                }
+            });
+
+            ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyReturned.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(s.length()>0){
+                        getItemAtPosition(position).setQtyToModify(Integer.valueOf(( s).toString()));
+                    }
+
                 }
             });
 
