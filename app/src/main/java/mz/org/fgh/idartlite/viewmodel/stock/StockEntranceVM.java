@@ -90,6 +90,11 @@ public class StockEntranceVM extends SearchVM<Stock> {
         return super.getRelatedActivity();
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     @Bindable
     public boolean isInitialDataVisible() {
         return initialDataVisible;

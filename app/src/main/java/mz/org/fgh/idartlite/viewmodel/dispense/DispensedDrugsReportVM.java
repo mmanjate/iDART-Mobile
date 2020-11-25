@@ -43,6 +43,11 @@ public class DispensedDrugsReportVM extends BaseViewModel {
 
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     public Map<String, Double> search(Date start, Date end) throws SQLException {
         Map<String, Integer> map = new HashMap<>();
 

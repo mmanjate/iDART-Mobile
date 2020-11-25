@@ -173,6 +173,11 @@ public class AddPatientVM extends BaseViewModel {
         return (AddNewPatientActivity) super.getRelatedActivity();
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     @Bindable
     public boolean isInitialDataVisible() {
         return initialDataVisible;

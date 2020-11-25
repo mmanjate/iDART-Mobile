@@ -53,7 +53,7 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
 
     @Override
     public List<StockAjustment> getAllStockAjustmentsOfInventory(Iventory selectedRecord) throws SQLException {
-        return ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(IStockAjustmentService.class)).getAllOfInventory(selectedRecord);
+        return ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).getAllOfInventory(selectedRecord);
     }
 
     @Override
@@ -63,6 +63,15 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
 
     public List<Drug> getAllDrugsWithExistingLote() throws SQLException{
         return ((DrugService) ServiceProvider.getInstance(getApplication()).get(DrugService.class)).getAllWithLote();
+    }
+
+    @Override
+    public void saveAjustment(StockAjustment ajustment) throws SQLException {
+        if (ajustment.getId() > 0){
+            ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class).update(ajustment);
+        }else {
+            ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class).save(ajustment);
+        }
     }
 
     @Override
@@ -91,9 +100,22 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
 
     @Override
     public void closeInventory(Iventory record) throws SQLException {
+        ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).saveOrUpdateMany(record.getAjustmentList());
+
+        processAjustments(record.getAjustmentList());
+
         record.setEndDate(DateUtilities.getCurrentDate());
         record.setOpen(false);
         update(record);
+    }
+
+    private void processAjustments(List<StockAjustment> ajustmentList) throws SQLException {
+        for (StockAjustment ajustment : ajustmentList){
+            if (ajustment.getStock().getStockMoviment() != ajustment.getStockCount()) {
+                ajustment.getStock().setStockMoviment(ajustment.getStockCount());
+                ((IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(ajustment.getStock());
+            }
+        }
     }
 
     @Override

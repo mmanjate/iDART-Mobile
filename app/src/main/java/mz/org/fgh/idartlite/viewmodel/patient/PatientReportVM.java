@@ -48,6 +48,11 @@ public class PatientReportVM extends BaseViewModel {
 
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     public int countNewPatientByPeriod(Date start, Date end){
 
         int p = 0;

@@ -24,4 +24,6 @@ public interface IIventoryService extends IBaseService<Iventory> {
     List<Stock> getAllOfDrug(Drug selectedDrug) throws SQLException;
 
     List<Drug> getAllDrugsWithExistingLote() throws SQLException;
+
+    void saveAjustment(StockAjustment listble) throws SQLException;
 }

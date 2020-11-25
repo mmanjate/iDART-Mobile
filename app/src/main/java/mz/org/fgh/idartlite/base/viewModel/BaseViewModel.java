@@ -236,4 +236,6 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     public void backToPreviusActivity(){
         getRelatedActivity().finish();
     }
+
+    public abstract void preInit();
 }

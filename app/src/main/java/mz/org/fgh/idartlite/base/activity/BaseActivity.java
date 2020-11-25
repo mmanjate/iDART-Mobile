@@ -95,6 +95,15 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (this.relatedViewModel != null) {
+            this.relatedViewModel.preInit();
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
     }
@@ -181,6 +190,15 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         params.put("clinic", getCurrentClinic());
         nextActivity(clazz,params);
     }
+
+    public <T extends BaseActivity> void nextActivityFinishingCurrentWithGenericParams(Class<T> clazz){
+        Map<String, Object> params = new HashMap<>();
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        nextActivity(clazz,params);
+        finish();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_items, menu);

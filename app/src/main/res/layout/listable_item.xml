@@ -108,10 +108,11 @@
                 android:layout_weight="1.1"
                 android:gravity="center"
                 android:padding="@dimen/dimen_1dp"
+                android:inputType="number"
                 android:background="@drawable/listable_edit_text_border"
                 android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
                 android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
-                android:text='@{listble.qtyToModify > 0 ? Utilities.parseIntToString(listble.qtyToModify) : ""}'>
+                android:text='@{(listble.qtyToModify > 0 || viewModel.currentStep.applicationStepList) ? Utilities.parseIntToString(listble.qtyToModify) : ""}'>
                 <requestFocus />
             </EditText>
 

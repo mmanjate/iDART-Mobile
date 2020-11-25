@@ -82,6 +82,7 @@ public class IventoryActivity extends BaseActivity {
     public void displaySelectedDrugStockAjustmentInfo(){
         if (listbleRecycleViewAdapter != null) {
             listbleRecycleViewAdapter.notifyDataSetChanged();
+
         }else {
             rcvSelectedDrugs = iventoryBinding.rcvSelectedDrugs;
 
@@ -98,6 +99,19 @@ public class IventoryActivity extends BaseActivity {
         iventoryBinding.autCmpDrugs.dismissDropDown();
     }
 
+    public void displayResumeStockAjustmentInfo(){
+
+
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(IventoryActivity.this);
+            rcvSelectedDrugs.setLayoutManager(mLayoutManager);
+            rcvSelectedDrugs.setItemAnimator(new DefaultItemAnimator());
+            rcvSelectedDrugs.addItemDecoration(new DividerItemDecoration(IventoryActivity.this, 0));
+
+            listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvSelectedDrugs, getRelatedViewModel().getAdjustmentList(), this);
+            rcvSelectedDrugs.setAdapter(listbleRecycleViewAdapter);
+
+    }
+
     @Override
     public InventoryVM getRelatedViewModel() {
         return (InventoryVM) super.getRelatedViewModel();
@@ -106,5 +120,14 @@ public class IventoryActivity extends BaseActivity {
     @Override
     public BaseViewModel initViewModel() {
         return new ViewModelProvider(this).get(InventoryVM.class);
+    }
+
+    public void summarizeView(int visibility) {
+        iventoryBinding.lblDrugs.setVisibility(visibility);
+        iventoryBinding.autCmpDrugs.setVisibility(visibility);
+        iventoryBinding.lblCount.setVisibility(visibility);
+        iventoryBinding.navigation.setVisibility(visibility);
+        iventoryBinding.btnCloseInventory.setVisibility(visibility);
+        iventoryBinding.save.setVisibility(visibility == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 }

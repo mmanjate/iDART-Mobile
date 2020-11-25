@@ -52,6 +52,11 @@ public class SplashVM extends BaseViewModel {
 
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     public boolean appHasNoUsersOnDB(){
         boolean usersOnDB = false;
         try {

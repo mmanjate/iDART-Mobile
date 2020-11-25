@@ -38,4 +38,9 @@ public class StockVM extends BaseViewModel {
     public StockActivity getRelatedActivity() {
         return (StockActivity) super.getRelatedActivity();
     }
+
+    @Override
+    public void preInit() {
+
+    }
 }

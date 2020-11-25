@@ -47,6 +47,11 @@ public class DestroiedStockListingVM extends SearchVM<DestroyedDrug> {
     }
 
     @Override
+    public void preInit() {
+
+    }
+
+    @Override
     public DestroyedStockDrugService getRelatedService() {
         return (DestroyedStockDrugService) super.getRelatedService();
     }

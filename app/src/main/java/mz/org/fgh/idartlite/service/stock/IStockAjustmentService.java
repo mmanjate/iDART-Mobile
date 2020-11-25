@@ -10,4 +10,5 @@ import mz.org.fgh.idartlite.model.inventory.Iventory;
 public interface IStockAjustmentService extends IBaseService<StockAjustment> {
     List<StockAjustment> getAllOfInventory(Iventory iventory) throws SQLException;
 
+    void saveOrUpdateMany(List<StockAjustment> ajustmentList) throws SQLException;
 }

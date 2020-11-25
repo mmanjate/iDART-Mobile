@@ -145,6 +145,11 @@ public class PrescriptionVM extends BaseViewModel {
         return (PrescriptionFragment) super.getRelatedFragment();
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     public void requestForNewRecord(){
         try {
 

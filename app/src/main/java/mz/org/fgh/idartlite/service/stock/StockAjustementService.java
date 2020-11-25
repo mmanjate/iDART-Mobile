@@ -44,4 +44,16 @@ public class StockAjustementService extends BaseService<StockAjustment> implemen
         return getDataBaseHelper().getStockAjustmentDao().getAllOfInventory(iventory);
     }
 
+    @Override
+    public void saveOrUpdateMany(List<StockAjustment> ajustmentList) throws SQLException {
+
+        for (StockAjustment ajustment : ajustmentList){
+            if (ajustment.getId() > 0){
+                update(ajustment);
+            }else {
+                save(ajustment);
+            }
+        }
+    }
+
 }

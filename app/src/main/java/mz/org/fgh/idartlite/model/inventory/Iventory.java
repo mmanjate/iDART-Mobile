@@ -5,11 +5,14 @@ import android.content.Context;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.IventoryDaoImpl;
+import mz.org.fgh.idartlite.model.StockAjustment;
 
 @DatabaseTable(tableName = "inventory", daoClass = IventoryDaoImpl.class)
 public class Iventory extends BaseModel {
@@ -37,6 +40,8 @@ public class Iventory extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
+
+    private List<StockAjustment> ajustmentList;
 
     public int getId() {
         return id;
@@ -116,5 +121,19 @@ public class Iventory extends BaseModel {
     @Override
     public int hashCode() {
         return Objects.hash(id, startDate, endDate, sequence, open);
+    }
+
+    public List<StockAjustment> getAjustmentList() {
+        return ajustmentList;
+    }
+
+    public void setAjustmentList(List<StockAjustment> ajustmentList) {
+        this.ajustmentList = ajustmentList;
+    }
+
+    public void addAjustment(StockAjustment ajustment){
+        if (this.ajustmentList == null) this.ajustmentList = new ArrayList<>();
+
+        this.ajustmentList.add(ajustment);
     }
 }

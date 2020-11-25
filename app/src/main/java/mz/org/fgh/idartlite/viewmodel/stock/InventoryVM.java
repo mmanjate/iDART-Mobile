@@ -23,6 +23,7 @@ import mz.org.fgh.idartlite.service.stock.IIventoryService;
 import mz.org.fgh.idartlite.service.stock.IventoryService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.stock.inventory.IventoryActivity;
+import mz.org.fgh.idartlite.view.stock.panel.StockActivity;
 
 public class InventoryVM extends BaseViewModel {
 
@@ -36,7 +37,10 @@ public class InventoryVM extends BaseViewModel {
 
     public InventoryVM(@NonNull Application application) {
         super(application);
+    }
 
+    @Override
+    public void preInit() {
         determineSelectedDrug();
     }
 
@@ -46,22 +50,41 @@ public class InventoryVM extends BaseViewModel {
     }
 
     private void determineSelectedDrug() {
-        if (getSelectedRecord().getId() > 0){
-            try {
-                List<StockAjustment> stockAjustments = getRelatedService().getAllStockAjustmentsOfInventory(getSelectedRecord());
+        try {
+            List<StockAjustment> stockAjustments = getRelatedService().getAllStockAjustmentsOfInventory(getSelectedRecord());
 
-                for (Drug drug : this.drugs){
-                    for (StockAjustment ajustment : stockAjustments){
-                        if (ajustment.getStock().getDrug().equals(drug)){
-                            drug.addAjustmentInfo(ajustment);
+            for (Drug drug : this.drugs){
+                for (StockAjustment ajustment : stockAjustments){
+                    if (ajustment.getStock().getDrug().equals(drug)){
+                        drug.addAjustmentInfo(ajustment);
+                    }
+                }
+            }
+
+            if (Utilities.listHasElements(drugs)) {
+                for (Drug drug : drugs) {
+                    if (!Utilities.listHasElements(drug.getAjustmentInfo())) {
+                        List<Stock> drugStocks = getRelatedService().getAllOfDrug(drug);
+
+                        if (Utilities.listHasElements(drugStocks)) {
+                            for (Stock stock : drugStocks) {
+
+                                drug.setAjustmentInfo(new ArrayList<>());
+                                drug.getAjustmentInfo().add(initNewStockAjustment(stock));
+                            }
                         }
                     }
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (getSelectedRecord().getId() > 0){
+
             for (Drug drug : this.drugs){
-                if (drug.getAjustmentInfo() == null){
+                if (drug.getAjustmentInfo().get(0).getId() <= 0){
                     setSelectedDrug(drug);
                     break;
                 }
@@ -86,10 +109,14 @@ public class InventoryVM extends BaseViewModel {
         return (Iventory) super.getSelectedRecord();
     }
 
+
+
     @Override
     protected void initFormData() {
         try {
             this.drugs = getRelatedService().getAllDrugsWithExistingLote();
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,37 +141,12 @@ public class InventoryVM extends BaseViewModel {
 
         this.adjustmentList.clear();
 
-        try {
-            if (Utilities.listHasElements(selectedDrug.getAjustmentInfo())){
-                adjustmentList.addAll(selectedDrug.getAjustmentInfo());
-            }else {
-                List<Stock> drugStocks = getRelatedService().getAllOfDrug(selectedDrug);
+        adjustmentList.addAll(selectedDrug.getAjustmentInfo());
+        notifyPropertyChanged(BR.selectedDrug);
+        notifyPropertyChanged(BR.drugAutocompleteLabel);
 
-                if (Utilities.listHasElements(drugStocks)) {
-                    for (Stock stock : drugStocks) {
-                        StockAjustment stockAjustment = initNewStockAjustment(stock);
+        if (getRelatedActivity() != null) getRelatedActivity().displaySelectedDrugStockAjustmentInfo();
 
-                        if (!adjustmentList.contains(stockAjustment)) {
-
-                            stockAjustment.setListType(Listble.INVENTORY_LISTING);
-                            adjustmentList.add(stockAjustment);
-
-                        } else {
-                            Utilities.displayAlertDialog(getRelatedActivity(), "Ja se encontra a visualizar todos os lotes do medicamento seleccionado").show();
-                        }
-                    }
-
-                } else {
-                    Utilities.displayAlertDialog(getRelatedActivity(), "Medicamento seleccionado não possui stock registado.").show();
-                }
-            }
-            notifyPropertyChanged(BR.selectedDrug);
-            notifyPropertyChanged(BR.drugAutocompleteLabel);
-
-            if (getRelatedActivity() != null) getRelatedActivity().displaySelectedDrugStockAjustmentInfo();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     private StockAjustment initNewStockAjustment(Stock stock) {
@@ -171,9 +173,52 @@ public class InventoryVM extends BaseViewModel {
         }
     }
 
+
+    public void summarizeInventory(){
+        getCurrentStep().changeToList();
+        this.adjustmentList = new ArrayList<>();
+        for (Drug drug : drugs){
+            if (Utilities.listHasElements(drug.getAjustmentInfo())) adjustmentList.addAll(drug.getAjustmentInfo());
+        }
+        getRelatedActivity().summarizeView(View.GONE);
+        getRelatedActivity().displayResumeStockAjustmentInfo();
+    }
+
     public void finalizeInventory(){
+        if (mustConfirmSubmid()){
+            Utilities.displayConfirmationDialog(getRelatedActivity(), "Existem campos com qauntidade zero (0) o stock actual existente para os respectivos lotes será reduzido a zero (0), prosseguir?", "SIM", "NÃO", InventoryVM.this).show();
+        }else {
+            doOnConfirmed();
+        }
+    }
+
+    private boolean mustConfirmSubmid() {
+        for (Drug drug : drugs){
+            for (StockAjustment ajustment : drug.getAjustmentInfo()){
+                if (ajustment.getStockCount() == 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    public void doOnConfirmed() {
+        super.doOnConfirmed();
+
         try {
+            for (Drug drug : drugs){
+                for (StockAjustment ajustment : drug.getAjustmentInfo()){
+                   getSelectedRecord().addAjustment(ajustment);
+                }
+            }
+
             getRelatedService().closeInventory(getRelatedRecord());
+
+            getRelatedActivity().nextActivityFinishingCurrentWithGenericParams(StockActivity.class);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -188,6 +233,8 @@ public class InventoryVM extends BaseViewModel {
         if (currentSelectedDrugPosition-1 < 0) {
             Utilities.displayAlertDialog(getRelatedActivity(), "Não há mais medicamentos por visualizar, o corrente é o primeiro da lista.").show();
         }else {
+            updateAjustmentInfo();
+
             setSelectedDrug(this.drugs.get(currentSelectedDrugPosition - 1));
         }
     }
@@ -197,7 +244,26 @@ public class InventoryVM extends BaseViewModel {
             Utilities.displayAlertDialog(getRelatedActivity(), "Não há mais medicamentos por visualizar, o corrente é o último da lista").show();
             
         }else {
+            updateAjustmentInfo();
             setSelectedDrug(this.drugs.get(currentSelectedDrugPosition + 1));
+        }
+    }
+
+    private void updateAjustmentInfo() {
+        try {
+        if (this.drugs.get(currentSelectedDrugPosition).getAjustmentInfo() == null){
+            this.drugs.get(currentSelectedDrugPosition).setAjustmentInfo(new ArrayList<>());
+            for (Listble listble : this.adjustmentList) {
+                this.drugs.get(currentSelectedDrugPosition).getAjustmentInfo().add((StockAjustment) listble);
+                getRelatedService().saveAjustment((StockAjustment) listble);
+            }
+        }else {
+            for (Listble listble : this.adjustmentList) {
+                getRelatedService().saveAjustment((StockAjustment) listble);
+            }
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

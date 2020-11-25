@@ -100,6 +100,11 @@ public class DestroyStockVM extends BaseViewModel {
     }
 
     @Override
+    public void preInit() {
+
+    }
+
+    @Override
     public DestroyedDrug getRelatedRecord() {
         return (DestroyedDrug) super.getRelatedRecord();
     }
