@@ -104,8 +104,10 @@ public class PrescriptionActivity extends BaseActivity implements IDialogListene
             getRelatedViewModel().setViewListRemoveButton(true);
         }
 
-        if (getApplicationStep().isApplicationstepCreate()){
+        if (getApplicationStep().isApplicationstepCreate() && !getRelatedViewModel().checkIfPatientHasPrescriptions()){
             try {
+
+
                 getRelatedViewModel().checkIfMustBeUrgentPrescription();
 
                 getRelatedViewModel().loadLastPatientPrescription();
@@ -123,9 +125,13 @@ public class PrescriptionActivity extends BaseActivity implements IDialogListene
 
         populateForm();
 
-        loadSelectedPrescriptionToForm();
+        if(!getRelatedViewModel().checkIfPatientHasPrescriptions()){
+            loadSelectedPrescriptionToForm();
 
+
+        }
         changeMotiveSpinnerStatus(getRelatedViewModel().getPrescription().isUrgent());
+
 
         prescriptionBinding.prescriptionDate.setOnClickListener(new View.OnClickListener() {
             @Override

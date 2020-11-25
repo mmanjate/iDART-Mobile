@@ -210,7 +210,7 @@ public class DispenseVM extends BaseViewModel {
 
                                 if (!Utilities.stringHasValue(secondValidationErrors)) {
                                     String patientNid = this.dispense.getPrescription().getPatient().getNid();
-                                    this.dispenseService.saveOrUpdateDispense(dispense);
+                                     this.dispenseService.saveOrUpdateDispense(dispense);
                                     Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
                                 } else {
                                     Utilities.displayAlertDialog(getRelatedActivity(), secondValidationErrors).show();
@@ -305,6 +305,13 @@ public class DispenseVM extends BaseViewModel {
     public boolean patientHasEpisodioFim(Patient patient) {
         return this.episodeService.patientHasEndingEpisode(patient);
     }
+
+        public String dispenseCanBeReturned()  {
+        if (this.dispense.isReturned())
+            return getRelatedActivity().getString(R.string.cant_return_dispense);
+        return "";
+    }
+
 
     @Override
     public void doOnConfirmed() {

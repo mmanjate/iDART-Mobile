@@ -31,6 +31,8 @@ public class Dispense extends BaseModel {
     public static final String COLUMN_PRESCRIPTION = "prescription_id";
     public static final String COLUMN_UUID = "uuid";
     public static final String COLUMN_SYNC_STATUS = "sync_status";
+    public static final String COLUMN_RETURNED = "returned";
+
 
     public static final int DURATION_TWO_WEEKS = 15;
     public static final int DURATION_ONE_MONTH = 30;
@@ -60,6 +62,9 @@ public class Dispense extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
+
+    @DatabaseField(columnName = COLUMN_RETURNED)
+    private boolean returned=false;
 
     private List<DispensedDrug> dispensedDrugs = new ArrayList<>();
 
@@ -173,6 +178,15 @@ public class Dispense extends BaseModel {
 
        return (int) noOfDaysBetween;
 
+    }
+
+
+    public boolean isReturned() {
+        return returned;
+    }
+
+    public void setReturned(boolean returned) {
+        this.returned = returned;
     }
 
     public String validate() {

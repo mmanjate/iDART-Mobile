@@ -13,7 +13,7 @@ public interface IDispenseTypeService extends IBaseService<DispenseType> {
 
     public List<DispenseType> getAll() throws SQLException;
 
-    public DispenseType getDispenseTypeByCode(String code) throws SQLException;
+    public DispenseType getDispenseTypeByDescription(String description) throws SQLException;
 
     public boolean checkDipsenseType(Object dispenseType);
 

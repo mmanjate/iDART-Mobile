@@ -5,6 +5,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -78,6 +79,26 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                    if (s != null && Utilities.stringHasValue(s.toString())){
                        getItemAtPosition(position).setQtyToModify(Integer.valueOf(s.toString()));
                    }
+                }
+            });
+
+            ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyReturned.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(s.length()>0){
+                        getItemAtPosition(position).setQtyToModify(Integer.valueOf(( s).toString()));
+                    }
+
                 }
             });
 

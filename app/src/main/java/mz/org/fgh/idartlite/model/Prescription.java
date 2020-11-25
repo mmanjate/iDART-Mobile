@@ -255,7 +255,7 @@ public class Prescription extends BaseModel {
 	}
 
 	public boolean isUrgent(){
-		return  this.urgentPrescription.equalsIgnoreCase(URGENT_PRESCRIPTION);
+		return  URGENT_PRESCRIPTION.equalsIgnoreCase(this.urgentPrescription);
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.O)

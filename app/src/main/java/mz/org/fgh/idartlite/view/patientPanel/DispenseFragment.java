@@ -38,6 +38,7 @@ import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.dispense.CreateDispenseActivity;
+import mz.org.fgh.idartlite.view.dispense.ReturnDispenseActivity;
 import mz.org.fgh.idartlite.viewmodel.dispense.DispenseVM;
 
 public class DispenseFragment extends GenericFragment implements IListbleDialogListener {
@@ -130,6 +131,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
         MenuInflater inflater = popup.getMenuInflater();
         popup.setOnMenuItemClickListener(DispenseFragment.this::onMenuItemClick);
         inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
+        popup.getMenu().getItem(0).setVisible(true);
         popup.show();
     }
 
@@ -174,6 +176,20 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                 params.put("step", ApplicationStep.STEP_DISPLAY);
                 nextActivity(CreateDispenseActivity.class, params);
                 return true;
+
+            case R.id.refazerFrascos:
+                String returnedErrors = getRelatedViewModel().dispenseCanBeReturned();
+                if (Utilities.stringHasValue(returnedErrors)) {
+                    Utilities.displayAlertDialog(DispenseFragment.this.getContext(), returnedErrors).show();
+                } else {
+                    Map<String, Object> params1 = new HashMap<>();
+                    params1.put("patient", getMyActivity().getPatient());
+                    params1.put("user", getCurrentUser());
+                    params1.put("clinic", getMyActivity().getCurrentClinic());
+                    params1.put("dispense", getRelatedViewModel().getDispense());
+                    nextActivity(ReturnDispenseActivity.class, params1);
+                    return true;
+                }
             default:
                 return false;
         }

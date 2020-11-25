@@ -17,12 +17,6 @@ public class ClinicSectorService extends BaseService implements IClinicSectorSer
 
 
 
-
-    public Clinic getClinicByUuid(String uuid) throws SQLException {
-
-        return getDataBaseHelper().getIClinicDao().getClinicByUuid(uuid);
-    }
-
     @Override
     public List<ClinicSector> getClinicSectorsByClinic(Clinic clinic) throws SQLException {
         return getDataBaseHelper().getClinicSectorDao().getClinicSectorsByClinic(clinic);
