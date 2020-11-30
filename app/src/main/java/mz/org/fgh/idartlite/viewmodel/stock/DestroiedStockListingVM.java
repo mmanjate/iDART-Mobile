@@ -23,6 +23,7 @@ public class DestroiedStockListingVM extends SearchVM<DestroyedDrug> {
 
     @Override
     protected IBaseService initRelatedService() {
+
         return getServiceProvider().get(DestroyedStockDrugService.class);
     }
 
@@ -79,7 +80,6 @@ public class DestroiedStockListingVM extends SearchVM<DestroyedDrug> {
     public void deleteRecord(DestroyedDrug selectedRecord) throws SQLException {
         getRelatedService().deleteRecord(selectedRecord);
     }
-
 
     public void requestForNewRecord(){
         getRelatedFragment().startDestroyStockActivity();

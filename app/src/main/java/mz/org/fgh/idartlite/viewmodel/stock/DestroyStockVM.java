@@ -53,7 +53,7 @@ public class DestroyStockVM extends BaseViewModel {
     @Override
     protected void initFormData() {
         try {
-            this.drugs = getAllDrugs();
+            this.drugs = getRelatedService().getAllDrugsWithExistingLote();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,31 +66,66 @@ public class DestroyStockVM extends BaseViewModel {
     @Override
     public void save() {
         try {
-            List<DestroyedDrug> stocksToDestroy = new ArrayList<>();
 
-            String errorMsg = getRelatedRecord().isValid(getRelatedActivity());
+                List<DestroyedDrug> stocksToDestroy = new ArrayList<>();
 
-            if (Utilities.stringHasValue(errorMsg)){
-                Utilities.displayAlertDialog(getRelatedActivity(), errorMsg).show();
-            }
-            else {
-                for (Listble listble : getRelatedActivity().getStockToDestroy()) {
-                    if (((DestroyedDrug) listble).getQtyToModify() > 0) {
-                        stocksToDestroy.add(((DestroyedDrug) listble));
-                        stocksToDestroy.get(stocksToDestroy.size() - 1).setNotes(getRelatedRecord().getNotes());
-                        stocksToDestroy.get(stocksToDestroy.size() - 1).setDate(getRelatedRecord().getDate());
+                String errorMsg = getRelatedRecord().isValid(getRelatedActivity());
+
+                if (Utilities.stringHasValue(errorMsg)) {
+                    Utilities.displayAlertDialog(getRelatedActivity(), errorMsg).show();
+                } else {
+                    for (Listble listble : getRelatedActivity().getStockToDestroy()) {
+                        if (listble.getQtyToModify() > 0) {
+                            stocksToDestroy.add(((DestroyedDrug) listble));
+                            stocksToDestroy.get(stocksToDestroy.size() - 1).setNotes(getRelatedRecord().getNotes());
+                            stocksToDestroy.get(stocksToDestroy.size() - 1).setDate(getRelatedRecord().getDate());
+                            stocksToDestroy.get(stocksToDestroy.size() - 1).setSyncStatus(BaseModel.SYNC_SATUS_READY);
+
+                            if (getRelatedRecord().getStock() == null) getRelatedRecord().setStock(((DestroyedDrug) listble).getStock());
+                        }
                     }
+
+                    if (!Utilities.listHasElements(stocksToDestroy)) {
+                        Utilities.displayAlertDialog(getRelatedActivity(), "Não indicou nenhuma quantidade de stock para destruir.").show();
+                    } else {
+
+                        List<DestroyedDrug> destroyedDrugs = getRelatedService().getAllRelatedDestroyedStocks(stocksToDestroy.get(0));
+                        if (getCurrentStep().isApplicationstepCreate() && Utilities.listHasElements(destroyedDrugs)) {
+                            Utilities.displayConfirmationDialog(getRelatedActivity(), "Ja existe um registo de destruição de stock para este medicamento nesta data, gostaria de editar o mesmo?", "SIM", "NÃO", DestroyStockVM.this).show();
+                        }else {
+                            getRelatedService().saveAll(stocksToDestroy);
+                            getCurrentStep().changeToList();
+                            Utilities.displayAlertDialog(getRelatedActivity(), "Operação efectuada com sucesso.", DestroyStockVM.this).show();
+                        }
+                    }
+
                 }
 
-                if (!Utilities.listHasElements(stocksToDestroy)) {
-                    Utilities.displayAlertDialog(getRelatedActivity(), "Não indicou nenhuma quantidade de stock para destruir.").show();
-                }else {
-                    getRelatedService().saveAll(stocksToDestroy);
-                }
-
+            } catch(SQLException e){
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+    }
+
+    @Override
+    public void doOnConfirmed() {
+
+        if (getCurrentStep().isApplicationStepEdit()){
+            getRelatedActivity().finish();
+        }else  if (getCurrentStep().isApplicationstepCreate()){
+            try {
+                setSelectedRecord(getRelatedService().getAllRelatedDestroyedStocks(getRelatedRecord()).get(0));
+                getCurrentStep().changeToEdit();
+                loadRelatedData();
+
+                getRelatedActivity().recreate();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }else  if (getCurrentStep().isApplicationStepList()){
+            getRelatedActivity().finish();
         }
     }
 
@@ -143,7 +178,7 @@ public class DestroyStockVM extends BaseViewModel {
 
 
     public void addSelectedDrug(){
-        if (stockList == null) stockList = new ArrayList<>();
+        stockList = new ArrayList<>();
 
         try {
             List<Stock> drugStocks = ((StockService) serviceProvider.get(StockService.class)).getAll(selectedDrug);
@@ -152,15 +187,10 @@ public class DestroyStockVM extends BaseViewModel {
                 for (Stock stock : drugStocks) {
                     DestroyedDrug destroyedDrug = initNewDestroiedDrug(stock);
 
-                    if (!stockList.contains(destroyedDrug)) {
+                    destroyedDrug.setListType(Listble.STOCK_DESTROY_LISTING);
+                    stockList.add(destroyedDrug);
 
-                        destroyedDrug.setListType(Listble.STOCK_DESTROY_LISTING);
-                        stockList.add(destroyedDrug);
-
-                        notifyPropertyChanged(BR.selectedDrug);
-                    } else {
-                        Utilities.displayAlertDialog(getRelatedActivity(), "Ja se encontra a visualizar todo o stock do medicamento seleccionado").show();
-                    }
+                    notifyPropertyChanged(BR.selectedDrug);
                 }
                 getRelatedActivity().displaySelectedDrugs();
             }else {
@@ -187,5 +217,24 @@ public class DestroyStockVM extends BaseViewModel {
 
     public List<Listble> getStockList() {
         return stockList;
+    }
+
+    public void loadRelatedData() {
+        this.stockList = new ArrayList<>();
+
+        try {
+            List<DestroyedDrug> destroyedDrugs = getRelatedService().getAllRelatedDestroyedStocks(getRelatedRecord());
+
+            if (Utilities.listHasElements(destroyedDrugs)) {
+                for (DestroyedDrug destroyedDrug : destroyedDrugs) {
+                    stockList.add(destroyedDrug);
+                }
+
+                getRelatedActivity().displaySelectedDrugs();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

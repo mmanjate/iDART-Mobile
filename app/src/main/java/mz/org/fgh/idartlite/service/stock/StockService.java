@@ -28,9 +28,9 @@ public class StockService extends BaseService<Stock> implements IStockService {
     }
 
     @Override
-    public void update(Stock relatedRecord) throws SQLException {
-        super.update(relatedRecord);
-        getDataBaseHelper().getStockDao().update(relatedRecord);
+    public void update(Stock record) throws SQLException {
+        super.update(record);
+        getDataBaseHelper().getStockDao().update(record);
     }
 
     public void saveOrUpdateStock(Stock stock) throws SQLException {

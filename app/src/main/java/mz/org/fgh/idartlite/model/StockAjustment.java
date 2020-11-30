@@ -54,7 +54,6 @@ public class StockAjustment extends BaseModel implements Listble {
         this.iventory = selectedRecord;
         this.listType = Listble.INVENTORY_LISTING;
         this.setSyncStatus(BaseModel.SYNC_SATUS_READY);
-        this.setNotes("Iventario "+selectedRecord.getSequence());
         this.setDate(DateUtilities.getCurrentDate());
     }
 
@@ -96,10 +95,12 @@ public class StockAjustment extends BaseModel implements Listble {
         this.adjustedValue = adjustedValue;
     }
 
+    @Override
     public String getNotes() {
         return notes;
     }
 
+    @Override
     public void setNotes(String notes) {
         this.notes = notes;
     }

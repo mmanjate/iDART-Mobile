@@ -27,7 +27,7 @@ public class DispenseTypeService extends BaseService<DispenseType>  implements  
     }
 
     @Override
-    public void update(DispenseType relatedRecord) throws SQLException {
+    public void update(DispenseType record) throws SQLException {
 
     }
 

@@ -36,7 +36,7 @@ public class DrugService extends BaseService<Drug> implements IDrugService {
     }
 
     @Override
-    public void update(Drug relatedRecord) throws SQLException {
+    public void update(Drug record) throws SQLException {
 
     }
 
@@ -140,5 +140,9 @@ public class DrugService extends BaseService<Drug> implements IDrugService {
 
     public List<Drug> getAllWithLote() throws SQLException{
         return getDataBaseHelper().getDrugDao().getAllWithLote(getApplication());
+    }
+
+    public List<Drug> getAllDestroyedDrugs() throws SQLException{
+        return getDataBaseHelper().getDrugDao().getAllDestroyedDrugs(getApplication());
     }
 }

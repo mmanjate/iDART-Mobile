@@ -310,4 +310,8 @@ public class Stock extends BaseModel implements Listble {
     public boolean isStockDestroyListing() {
         return listType.equals(Listble.STOCK_DESTROY_LISTING);
     }
+
+    public void modifyCurrentQuantity(int qtyToAdd){
+        this.stockMoviment += qtyToAdd;
+    }
 }

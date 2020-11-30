@@ -23,4 +23,6 @@ public interface IDrugDao extends IGenericDao<Drug, Integer> {
     public Drug getDrugByRestID(int restId) throws SQLException;
 
     List<Drug> getAllWithLote(Application application) throws SQLException;
+
+    List<Drug> getAllDestroyedDrugs(Application application) throws SQLException;
 }

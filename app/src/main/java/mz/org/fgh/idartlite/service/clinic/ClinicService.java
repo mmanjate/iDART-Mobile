@@ -25,7 +25,7 @@ public class ClinicService extends BaseService<Clinic> implements IClinicService
     }
 
     @Override
-    public void update(Clinic relatedRecord) throws SQLException {
+    public void update(Clinic record) throws SQLException {
 
     }
 

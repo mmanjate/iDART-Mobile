@@ -45,11 +45,28 @@ public interface Listble<T extends BaseModel> extends Comparable<T>{
         return 0;
     }
 
+    default void setSaldoActual(int saldo) {
+    }
+
     default int getQtyToModify() {
         return 0;
     }
 
     default void setQtyToModify(int qtyToDestroy) {
+    }
+
+    default int getAdjustedValue() {
+        return 0;
+    }
+
+    default void setAdjustedValue(int adjustedValue) {
+    }
+
+    default String getNotes() {
+        return null;
+    }
+
+    default void setNotes(String notes) {
     }
 
     default boolean isStockListing() {

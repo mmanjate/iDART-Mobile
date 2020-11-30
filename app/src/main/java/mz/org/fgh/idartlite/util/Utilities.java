@@ -371,6 +371,16 @@ public class Utilities {
         animation.setDuration((long) (actualHeight/ view.getContext().getResources().getDisplayMetrics().density));
         view.startAnimation(animation);
     }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
     /*public static NotificationCompat.Builder showNotification(String title, String contntText, Context context, String channelId){
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);

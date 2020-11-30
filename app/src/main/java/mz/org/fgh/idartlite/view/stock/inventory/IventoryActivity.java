@@ -44,6 +44,8 @@ public class IventoryActivity extends BaseActivity {
 
         populateDrugs(drugs);
 
+
+
         iventoryBinding.setViewModel(getRelatedViewModel());
 
         iventoryBinding.autCmpDrugs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -52,6 +54,7 @@ public class IventoryActivity extends BaseActivity {
                 getRelatedViewModel().setSelectedDrug((Drug) adapterView.getItemAtPosition(pos));
             }
         });
+
     }
 
     @Override
@@ -129,5 +132,6 @@ public class IventoryActivity extends BaseActivity {
         iventoryBinding.navigation.setVisibility(visibility);
         iventoryBinding.btnCloseInventory.setVisibility(visibility);
         iventoryBinding.save.setVisibility(visibility == View.VISIBLE ? View.GONE : View.VISIBLE);
+        iventoryBinding.confirmation.setVisibility(visibility == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 }

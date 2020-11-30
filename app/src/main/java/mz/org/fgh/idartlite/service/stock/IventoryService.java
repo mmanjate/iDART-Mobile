@@ -33,9 +33,9 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
     }
 
     @Override
-    public void update(Iventory relatedRecord) throws SQLException {
-        super.update(relatedRecord);
-        getDataBaseHelper().getIventoryDao().update(relatedRecord);
+    public void update(Iventory record) throws SQLException {
+        super.update(record);
+        getDataBaseHelper().getIventoryDao().update(record);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
         Iventory lastInventoryRecord = getDataBaseHelper().getIventoryDao().getLastInventory();
 
         if (lastInventoryRecord != null && lastInventoryRecord.isOpen()) {
-            Utilities.displayAlertDialog(getApplication().getApplicationContext(), "O inventário "+lastInventoryRecord.getSequence()+" encontra-se aberto, por favor finalizar antes de iniciar novo.").show();
+            Utilities.displayAlertDialog(getApplication(), "O inventário "+lastInventoryRecord.getSequence()+" encontra-se aberto, por favor finalizar antes de iniciar novo.").show();
         }else {
             record.setStartDate(DateUtilities.getCurrentDate());
             record.setOpen(true);
@@ -100,17 +100,35 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
 
     @Override
     public void closeInventory(Iventory record) throws SQLException {
-        ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).saveOrUpdateMany(record.getAjustmentList());
+        if (record.isOpen()) {
+            updateAndProcessesAjustments(record);
 
-        processAjustments(record.getAjustmentList());
+            record.setEndDate(DateUtilities.getCurrentDate());
+            record.setOpen(false);
+            update(record);
+        }else {
+            rebuildPreviousStock(record);
 
-        record.setEndDate(DateUtilities.getCurrentDate());
-        record.setOpen(false);
-        update(record);
+            updateAndProcessesAjustments(record);
+        }
     }
 
-    private void processAjustments(List<StockAjustment> ajustmentList) throws SQLException {
-        for (StockAjustment ajustment : ajustmentList){
+    private void updateAndProcessesAjustments(Iventory record) throws SQLException {
+        ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).saveOrUpdateMany(record.getAjustmentList());
+        processAjustments(record);
+    }
+
+    private void rebuildPreviousStock(Iventory record) throws SQLException {
+        List<StockAjustment> ajustmentsOnDb =  ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).getAllOfInventory(record);
+
+        for (StockAjustment ajustment : ajustmentsOnDb){
+            ajustment.getStock().setStockMoviment(ajustment.getStock().getStockMoviment() - ajustment.getAdjustedValue());
+            ((IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(ajustment.getStock());
+        }
+    }
+
+    private void processAjustments(Iventory record) throws SQLException {
+        for (StockAjustment ajustment : record.getAjustmentList()) {
             if (ajustment.getStock().getStockMoviment() != ajustment.getStockCount()) {
                 ajustment.getStock().setStockMoviment(ajustment.getStockCount());
                 ((IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(ajustment.getStock());
@@ -119,9 +137,15 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
     }
 
     @Override
-    public void deleteRecord(Iventory selectedRecord) throws SQLException {
-        super.deleteRecord(selectedRecord);
+    public void deleteRecord(Iventory record) throws SQLException {
+        super.deleteRecord(record);
 
-        getDataBaseHelper().getIventoryDao().delete(selectedRecord);
+        List<StockAjustment> ajustmentsOnDb =  ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).getAllOfInventory(record);
+
+        for (StockAjustment ajustment : ajustmentsOnDb){
+            ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class).deleteRecord(ajustment);
+        }
+
+        getDataBaseHelper().getIventoryDao().delete(record);
     }
 }

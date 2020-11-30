@@ -58,7 +58,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
     }
 
     @Override
-    public void update(Patient relatedRecord) throws SQLException {
+    public void update(Patient record) throws SQLException {
 
     }
 

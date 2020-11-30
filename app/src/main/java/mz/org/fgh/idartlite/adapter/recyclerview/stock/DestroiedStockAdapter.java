@@ -13,7 +13,6 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
-import mz.org.fgh.idartlite.adapter.recyclerview.patient.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.databinding.DestroyedStockListingRowBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
@@ -42,7 +41,7 @@ public class DestroiedStockAdapter extends AbstractRecycleViewAdapter<DestroyedD
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        if (viewHolder instanceof ContentListPatientAdapter.PatientViewHolder){
+        if (viewHolder instanceof DestroyedStockViewHolder){
             ((DestroyedStockViewHolder) viewHolder).destroyedStockListingRowBinding.setDestroiedStock(records.get(position));
         }else
         if (viewHolder instanceof LoadingViewHolder){

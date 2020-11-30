@@ -83,12 +83,17 @@ public class InventoryVM extends BaseViewModel {
 
         if (getSelectedRecord().getId() > 0){
 
+            boolean found = false;
+
             for (Drug drug : this.drugs){
                 if (drug.getAjustmentInfo().get(0).getId() <= 0){
                     setSelectedDrug(drug);
+                    found = true;
                     break;
                 }
             }
+
+            if (!found) setSelectedDrug(this.drugs.get(0));
         }else {
             setSelectedDrug(this.drugs.get(0));
         }
@@ -167,7 +172,12 @@ public class InventoryVM extends BaseViewModel {
 
     public void initInventory() {
         try {
+            getCurrentStep().changeToEdit();
+
             getRelatedService().initInventory(getRelatedRecord());
+            getRelatedActivity().summarizeView(View.VISIBLE);
+
+            notifyPropertyChanged(BR.currentStep);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -176,17 +186,21 @@ public class InventoryVM extends BaseViewModel {
 
     public void summarizeInventory(){
         getCurrentStep().changeToList();
+
         this.adjustmentList = new ArrayList<>();
         for (Drug drug : drugs){
             if (Utilities.listHasElements(drug.getAjustmentInfo())) adjustmentList.addAll(drug.getAjustmentInfo());
         }
         getRelatedActivity().summarizeView(View.GONE);
         getRelatedActivity().displayResumeStockAjustmentInfo();
+
+        notifyPropertyChanged(BR.currentStep);
+
     }
 
     public void finalizeInventory(){
         if (mustConfirmSubmid()){
-            Utilities.displayConfirmationDialog(getRelatedActivity(), "Existem campos com qauntidade zero (0) o stock actual existente para os respectivos lotes será reduzido a zero (0), prosseguir?", "SIM", "NÃO", InventoryVM.this).show();
+            Utilities.displayConfirmationDialog(getRelatedActivity(), "Existem campos com quantidade zero (0) o stock actual existente para os respectivos lotes será reduzido a zero (0), prosseguir?", "SIM", "NÃO", InventoryVM.this).show();
         }else {
             doOnConfirmed();
         }
@@ -255,11 +269,13 @@ public class InventoryVM extends BaseViewModel {
             this.drugs.get(currentSelectedDrugPosition).setAjustmentInfo(new ArrayList<>());
             for (Listble listble : this.adjustmentList) {
                 this.drugs.get(currentSelectedDrugPosition).getAjustmentInfo().add((StockAjustment) listble);
-                getRelatedService().saveAjustment((StockAjustment) listble);
+                if (getSelectedRecord().isOpen()) getRelatedService().saveAjustment((StockAjustment) listble);
             }
         }else {
-            for (Listble listble : this.adjustmentList) {
-                getRelatedService().saveAjustment((StockAjustment) listble);
+            if (getSelectedRecord().isOpen()) {
+                for (Listble listble : this.adjustmentList) {
+                    getRelatedService().saveAjustment((StockAjustment) listble);
+                }
             }
         }
         } catch (SQLException e) {
@@ -271,4 +287,5 @@ public class InventoryVM extends BaseViewModel {
     public String getDrugAutocompleteLabel(){
         return "Medicamento "+(currentSelectedDrugPosition+1) +" de "+drugs.size();
     }
+
 }

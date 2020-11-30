@@ -137,6 +137,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         callbacks.notifyCallbacks(this, fieldId, null);
     }
 
+    @Bindable
     public ApplicationStep getCurrentStep(){
         return getRelatedActivity().getApplicationStep();
     }

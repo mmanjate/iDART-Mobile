@@ -117,7 +117,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Medicamentos *"
-                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             style="@style/input_labels"
                             />
                         <AutoCompleteTextView
@@ -125,9 +124,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="0"
-                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                            android:enabled="@{viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepInit}"
                             android:drawableRight="@drawable/ic_patient_search"
                             android:padding="@dimen/dimen_4dp"
+                            android:text="@{viewModel.relatedRecord.stock.drug.description}"
                             style="@style/bottom_border_edit_text_style"
                             />
 
@@ -136,8 +136,8 @@
                             android:layout_width="70dp"
                             android:layout_height="60dp"
                             app:srcCompat="@drawable/ic_save"
-                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
-                            android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
+                            android:visibility="@{viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepInit ? View.VISIBLE : View.GONE}"
+                            android:clickable="@{viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepInit}"
                             android:layout_margin="@dimen/dimen_10dp"
                             android:onClick="@{() -> viewModel.addSelectedDrug()}"
                             android:background="@drawable/button_shape"

@@ -98,6 +98,18 @@ public class DestroyStockActivity extends BaseActivity {
                 getRelatedViewModel().setSelectedDrug((Drug) adapterView.getItemAtPosition(pos));
             }
         });
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getApplicationStep().isApplicationstepCreate() && getRelatedViewModel().getRelatedRecord().getId() > 0) changeApplicationStepToEdit();
+
+        if (getApplicationStep().isApplicationStepEdit() || getApplicationStep().isApplicationStepDisplay()){
+            getRelatedViewModel().loadRelatedData();
+        }
     }
 
     public void populateDrugs(List<Drug> drugs){

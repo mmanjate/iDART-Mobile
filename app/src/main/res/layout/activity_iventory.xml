@@ -118,7 +118,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:visibility="@{(viewModel.currentStep.applicationStepDisplay || viewModel.currentStep.applicationStepList || viewModel.relatedRecord.open) ? View.VISIBLE : View.GONE}"
+                            android:visibility="@{(viewModel.currentStep.applicationStepEdit||viewModel.currentStep.applicationStepDisplay || viewModel.currentStep.applicationStepList || viewModel.relatedRecord.open) ? View.VISIBLE : View.GONE}"
                             >
 
 
@@ -159,7 +159,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/dimen_5dp"
-                            android:visibility="@{viewModel.currentStep.applicationStepList ? View.GONE : View.VISIBLE}"
+                            android:visibility="@{viewModel.currentStep.applicationStepEdit ? View.VISIBLE : View.GONE}"
                             android:layout_marginTop="@dimen/dimen_10dp"
                             android:orientation="horizontal">
 
@@ -218,15 +218,17 @@
                             android:text="Finalizar Inventário"
                             android:layout_marginTop="@dimen/dimen_18dp"
                             android:paddingLeft="@dimen/dimen_4dp"
-                            android:visibility="@{viewModel.currentStep.applicationStepList ? View.GONE : View.VISIBLE}"
+                            android:visibility="@{viewModel.currentStep.applicationStepEdit ? View.VISIBLE : View.GONE}"
                             android:paddingRight="@dimen/dimen_4dp"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginBottom="@dimen/dimen_10dp"
                             android:textColor="@color/white"/>
                             <LinearLayout
+                                android:id="@+id/confirmation"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dimen_18dp"
+                                android:visibility="@{viewModel.currentStep.applicationStepList ?  View.VISIBLE : View.GONE}"
                                 android:padding="@dimen/dimen_18dp"
                                 android:orientation="horizontal">
                                 <TextView

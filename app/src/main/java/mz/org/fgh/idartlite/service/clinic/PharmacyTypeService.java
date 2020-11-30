@@ -29,7 +29,7 @@ public class PharmacyTypeService extends BaseService<PharmacyType> implements IP
     }
 
     @Override
-    public void update(PharmacyType relatedRecord) throws SQLException {
+    public void update(PharmacyType record) throws SQLException {
 
     }
 

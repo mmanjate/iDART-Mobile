@@ -98,11 +98,16 @@ public class Iventory extends BaseModel {
 
     @Override
     public String canBeEdited(Context context) {
+
+        if (!isOpen()) return "Não pode editar este inventário pois ja se encontra fechado";
+
         return null;
     }
 
     @Override
     public String canBeRemoved(Context context) {
+
+        if (isOpen()) return "Não pode remover este inventário pois ainda se encontra em curso";
         return null;
     }
 

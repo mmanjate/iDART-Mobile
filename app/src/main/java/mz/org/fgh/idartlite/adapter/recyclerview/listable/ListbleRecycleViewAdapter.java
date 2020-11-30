@@ -5,7 +5,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -66,6 +65,20 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListEditButton(activity.isViewListEditButton());
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
 
+            ((ListbleViewHolder) viewHolder).listableItemBinding.edtNotes.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s != null && Utilities.stringHasValue(s.toString())){
+                        getItemAtPosition(position).setNotes(s.toString());
+                    }
+                }
+            });
 
             ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyDestroy.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -76,7 +89,8 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                   if (s != null && Utilities.stringHasValue(s.toString())){
+                   if (s != null && Utilities.stringHasValue(s.toString()) && Utilities.isNumeric(s.toString())){
+
                        getItemAtPosition(position).setQtyToModify(Integer.valueOf(s.toString()));
                    }
                 }
