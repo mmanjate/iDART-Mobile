@@ -13,6 +13,17 @@ import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.rest.service.Disease.RestDiseaseTypeService;
+import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseService;
+import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseTypeService;
+import mz.org.fgh.idartlite.rest.service.Drug.RestDrugService;
+import mz.org.fgh.idartlite.rest.service.Episode.RestEpisodeService;
+import mz.org.fgh.idartlite.rest.service.Form.RestFormService;
+import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
+import mz.org.fgh.idartlite.rest.service.Regimen.RestTherapeuticRegimenService;
+import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
+import mz.org.fgh.idartlite.rest.service.TherapeuticLine.RestTherapeuticLineService;
+import mz.org.fgh.idartlite.rest.service.clinic.RestPharmacyTypeService;
 import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
@@ -28,6 +39,7 @@ import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.service.territory.CountryService;
 import mz.org.fgh.idartlite.service.territory.ICountryService;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.workSchedule.work.post.RestPostNewPatientWorkerScheduler;
 
 public class RestRunDataForTestService extends BaseRestService {
     public RestRunDataForTestService(Application application, User currentUser) {
@@ -114,6 +126,7 @@ public class RestRunDataForTestService extends BaseRestService {
             if(episodeList != null && episodeList.size() > 0) {
                 for (Episode episode1 : episodeList) {
                     RestEpisodeService.restPostEpisode(episode1);
+                    RestPatientService.restPostPatientSector(episode1.getPatient());
                 }
             }
         } catch (SQLException e) {

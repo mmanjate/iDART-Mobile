@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.rest.service;
+package mz.org.fgh.idartlite.rest.service.Form;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,28 +10,25 @@ import com.android.volley.VolleyError;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.drug.DrugService;
-import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
-import mz.org.fgh.idartlite.service.drug.IDrugService;
+import mz.org.fgh.idartlite.service.drug.FormService;
 import mz.org.fgh.idartlite.service.drug.IFormService;
 
-public class RestDrugService extends BaseRestService {
+public class RestFormService extends BaseRestService {
 
-    private static final String TAG = "RestDrugService";
-    private static IDrugService drugService;
+    private static final String TAG = "RestFormService";
     private static IFormService formService;
-    private static IDiseaseTypeService diseaseTypeService;
 
-    public RestDrugService(Application application, User currentUser) {
+    public RestFormService(Application application, User currentUser) {
         super(application, currentUser);
 
-        drugService = new DrugService(application,currentUser);
+        formService = new FormService(application,currentUser);
+
     }
 
-    public static void restGetAllDrugs() {
+    public static void restGetAllForms() {
 
-        String url = BaseRestService.baseUrl + "/drug?select=*,form(*)&active=eq."+Boolean.TRUE;
-        drugService = new DrugService(getApp(),null);
+        String url = BaseRestService.baseUrl + "/form";
+        formService = new FormService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {
 
@@ -40,16 +37,16 @@ public class RestDrugService extends BaseRestService {
 
                 handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
                     @Override
-                    public void onResponse(Object[] drugs) {
+                    public void onResponse(Object[] forms) {
 
-                        if (drugs.length > 0) {
-                            for (Object drug : drugs) {
+                        if (forms.length > 0) {
+                            for (Object form : forms) {
+                                Log.i(TAG, "onResponse: " + form);
                                 try {
-                                    Log.i(TAG, "onResponse: " + drug);
-                                    if(!drugService.checkDrug(drug)){
-                                        drugService.saveOnDrug(drug);
+                                    if(!formService.checkForm(form)){
+                                        formService.saveOnForm(form);
                                     }else{
-                                        Log.i(TAG, "onResponse: "+drug+" Ja Existe");
+                                        Log.i(TAG, "onResponse: "+form+" Ja Existe");
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -58,7 +55,7 @@ public class RestDrugService extends BaseRestService {
                                 }
                             }
                         }else
-                            Log.w(TAG, "Response Sem Info." + drugs.length);
+                            Log.w(TAG, "Response Sem Info." + forms.length);
                     }
                 }, new Response.ErrorListener() {
                     @Override

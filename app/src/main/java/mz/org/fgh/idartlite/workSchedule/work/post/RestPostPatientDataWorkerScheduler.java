@@ -14,8 +14,8 @@ import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.rest.service.RestDispenseService;
-import mz.org.fgh.idartlite.rest.service.RestEpisodeService;
+import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseService;
+import mz.org.fgh.idartlite.rest.service.Episode.RestEpisodeService;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 

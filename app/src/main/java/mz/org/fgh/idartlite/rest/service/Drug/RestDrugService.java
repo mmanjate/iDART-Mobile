@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.rest.service;
+package mz.org.fgh.idartlite.rest.service.Drug;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,25 +10,28 @@ import com.android.volley.VolleyError;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.drug.ITherapeuthicLineService;
-import mz.org.fgh.idartlite.service.drug.TherapeuthicLineService;
+import mz.org.fgh.idartlite.service.drug.DrugService;
+import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
+import mz.org.fgh.idartlite.service.drug.IDrugService;
+import mz.org.fgh.idartlite.service.drug.IFormService;
 
-public class RestTherapeuticLineService extends BaseRestService {
+public class RestDrugService extends BaseRestService {
 
-    private static final String TAG = "RestTherapeuticLineServ";
-    private static ITherapeuthicLineService therapeuticLineService;
+    private static final String TAG = "RestDrugService";
+    private static IDrugService drugService;
+    private static IFormService formService;
+    private static IDiseaseTypeService diseaseTypeService;
 
-
-    public RestTherapeuticLineService(Application application, User currentUser) {
+    public RestDrugService(Application application, User currentUser) {
         super(application, currentUser);
 
-        therapeuticLineService = new TherapeuthicLineService(application,currentUser);
+        drugService = new DrugService(application,currentUser);
     }
 
-    public static void restGetAllTherapeuticLine() {
+    public static void restGetAllDrugs() {
 
-        String url = BaseRestService.baseUrl + "/linhat";
-        therapeuticLineService = new TherapeuthicLineService(getApp(),null);
+        String url = BaseRestService.baseUrl + "/drug?select=*,form(*)&active=eq."+Boolean.TRUE;
+        drugService = new DrugService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {
 
@@ -37,16 +40,16 @@ public class RestTherapeuticLineService extends BaseRestService {
 
                 handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
                     @Override
-                    public void onResponse(Object[] linhasTerapeuticas) {
+                    public void onResponse(Object[] drugs) {
 
-                        if (linhasTerapeuticas.length > 0) {
-                            for (Object line : linhasTerapeuticas) {
-                                Log.i(TAG, "onResponse: " + line);
+                        if (drugs.length > 0) {
+                            for (Object drug : drugs) {
                                 try {
-                                    if(!therapeuticLineService.checkLine(line)){
-                                        therapeuticLineService.saveLine(line);
+                                    Log.i(TAG, "onResponse: " + drug);
+                                    if(!drugService.checkDrug(drug)){
+                                        drugService.saveOnDrug(drug);
                                     }else{
-                                        Log.i(TAG, "onResponse: "+line+" Ja Existe");
+                                        Log.i(TAG, "onResponse: "+drug+" Ja Existe");
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -55,7 +58,7 @@ public class RestTherapeuticLineService extends BaseRestService {
                                 }
                             }
                         }else
-                            Log.w(TAG, "Response Sem Info." + linhasTerapeuticas.length);
+                            Log.w(TAG, "Response Sem Info." + drugs.length);
                     }
                 }, new Response.ErrorListener() {
                     @Override

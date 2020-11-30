@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.rest.service;
+package mz.org.fgh.idartlite.rest.service.Disease;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,25 +10,24 @@ import com.android.volley.VolleyError;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.drug.FormService;
-import mz.org.fgh.idartlite.service.drug.IFormService;
+import mz.org.fgh.idartlite.service.drug.DiseaseTypeService;
+import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
 
-public class RestFormService extends BaseRestService {
+public class RestDiseaseTypeService extends BaseRestService {
 
-    private static final String TAG = "RestFormService";
-    private static IFormService formService;
+    private static final String TAG = "RestDiseaseTypeService";
+    private static IDiseaseTypeService diseaseTypeService;
 
-    public RestFormService(Application application, User currentUser) {
+    public RestDiseaseTypeService(Application application, User currentUser) {
         super(application, currentUser);
 
-        formService = new FormService(application,currentUser);
-
+        diseaseTypeService = new DiseaseTypeService(application,currentUser);
     }
 
-    public static void restGetAllForms() {
+    public static void restGetAllDiseaseType()  {
 
-        String url = BaseRestService.baseUrl + "/form";
-        formService = new FormService(getApp(),null);
+        String url = BaseRestService.baseUrl + "/simpledomain?description=eq.disease_type";
+        diseaseTypeService = new DiseaseTypeService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {
 
@@ -37,16 +36,16 @@ public class RestFormService extends BaseRestService {
 
                 handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
                     @Override
-                    public void onResponse(Object[] forms) {
+                    public void onResponse(Object[] diseases) {
 
-                        if (forms.length > 0) {
-                            for (Object form : forms) {
-                                Log.i(TAG, "onResponse: " + form);
+                        if (diseases.length > 0) {
+                            for (Object disease : diseases) {
+                                Log.i(TAG, "onResponse: " + disease);
                                 try {
-                                    if(!formService.checkForm(form)){
-                                        formService.saveOnForm(form);
+                                    if(!diseaseTypeService.checkDisease(disease)){
+                                        diseaseTypeService.saveDisease(disease);
                                     }else{
-                                        Log.i(TAG, "onResponse: "+form+" Ja Existe");
+                                        Log.i(TAG, "onResponse: "+disease+" Ja Existe");
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -55,7 +54,7 @@ public class RestFormService extends BaseRestService {
                                 }
                             }
                         }else
-                            Log.w(TAG, "Response Sem Info." + forms.length);
+                            Log.w(TAG, "Response Sem Info." + diseases.length);
                     }
                 }, new Response.ErrorListener() {
                     @Override

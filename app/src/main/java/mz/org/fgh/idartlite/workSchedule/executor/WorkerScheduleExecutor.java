@@ -15,6 +15,7 @@ import mz.org.fgh.idartlite.workSchedule.work.get.RestGetPatientDataWorkerSchedu
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetPatientDispensationWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetStockWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.patch.RestPatchStockConfigWorkerScheduler;
+import mz.org.fgh.idartlite.workSchedule.work.post.RestPostNewPatientWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostStockWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostPatientDataWorkerScheduler;
 
@@ -91,6 +92,22 @@ public class WorkerScheduleExecutor {
                 .build();
 
         WorkManager.getInstance(context).enqueue(periodicConfigDataWorkRequest);
+    }
+
+    public void initPostNewPatientDataTaskWork() {
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresCharging(true)
+                .build();
+
+        PeriodicWorkRequest periodicPostNewPatienWorkRequest = new PeriodicWorkRequest.Builder(RestPostNewPatientWorkerScheduler.class, 1, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .setInitialDelay(1,TimeUnit.HOURS)
+                .addTag("NEW_PATIENT_ID " + JOB_ID)
+                .build();
+
+        WorkManager.getInstance(context).enqueue(periodicPostNewPatienWorkRequest);
     }
 
     public void initPostPatientDataTaskWork() {

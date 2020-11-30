@@ -9,7 +9,7 @@ import androidx.work.WorkerParameters;
 
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.rest.service.RestEpisodeService;
+import mz.org.fgh.idartlite.rest.service.Episode.RestEpisodeService;
 
 public class RestGetEpisodeWorkerScheduler extends Worker {
     private static final String TAG = "RestGetEpisodeWorker";

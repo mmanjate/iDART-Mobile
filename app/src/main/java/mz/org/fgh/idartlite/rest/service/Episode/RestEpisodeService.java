@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.rest.service;
+package mz.org.fgh.idartlite.rest.service.Episode;
 
 import android.app.Application;
 import android.util.Log;
