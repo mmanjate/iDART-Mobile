@@ -9,7 +9,7 @@ import androidx.work.WorkerParameters;
 
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.rest.service.RestStockService;
+import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 
 public class RestGetStockWorkerScheduler extends Worker {

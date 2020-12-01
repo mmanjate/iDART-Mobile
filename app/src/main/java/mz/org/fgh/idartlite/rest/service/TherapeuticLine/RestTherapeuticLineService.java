@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.rest.service;
+package mz.org.fgh.idartlite.rest.service.TherapeuticLine;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,24 +10,25 @@ import com.android.volley.VolleyError;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.drug.DiseaseTypeService;
-import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
+import mz.org.fgh.idartlite.service.drug.ITherapeuthicLineService;
+import mz.org.fgh.idartlite.service.drug.TherapeuthicLineService;
 
-public class RestDiseaseTypeService extends BaseRestService {
+public class RestTherapeuticLineService extends BaseRestService {
 
-    private static final String TAG = "RestDiseaseTypeService";
-    private static IDiseaseTypeService diseaseTypeService;
+    private static final String TAG = "RestTherapeuticLineServ";
+    private static ITherapeuthicLineService therapeuticLineService;
 
-    public RestDiseaseTypeService(Application application, User currentUser) {
+
+    public RestTherapeuticLineService(Application application, User currentUser) {
         super(application, currentUser);
 
-        diseaseTypeService = new DiseaseTypeService(application,currentUser);
+        therapeuticLineService = new TherapeuthicLineService(application,currentUser);
     }
 
-    public static void restGetAllDiseaseType()  {
+    public static void restGetAllTherapeuticLine() {
 
-        String url = BaseRestService.baseUrl + "/simpledomain?description=eq.disease_type";
-        diseaseTypeService = new DiseaseTypeService(getApp(),null);
+        String url = BaseRestService.baseUrl + "/linhat";
+        therapeuticLineService = new TherapeuthicLineService(getApp(),null);
 
             getRestServiceExecutor().execute(() -> {
 
@@ -36,16 +37,16 @@ public class RestDiseaseTypeService extends BaseRestService {
 
                 handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
                     @Override
-                    public void onResponse(Object[] diseases) {
+                    public void onResponse(Object[] linhasTerapeuticas) {
 
-                        if (diseases.length > 0) {
-                            for (Object disease : diseases) {
-                                Log.i(TAG, "onResponse: " + disease);
+                        if (linhasTerapeuticas.length > 0) {
+                            for (Object line : linhasTerapeuticas) {
+                                Log.i(TAG, "onResponse: " + line);
                                 try {
-                                    if(!diseaseTypeService.checkDisease(disease)){
-                                        diseaseTypeService.saveDisease(disease);
+                                    if(!therapeuticLineService.checkLine(line)){
+                                        therapeuticLineService.saveLine(line);
                                     }else{
-                                        Log.i(TAG, "onResponse: "+disease+" Ja Existe");
+                                        Log.i(TAG, "onResponse: "+line+" Ja Existe");
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -54,7 +55,7 @@ public class RestDiseaseTypeService extends BaseRestService {
                                 }
                             }
                         }else
-                            Log.w(TAG, "Response Sem Info." + diseases.length);
+                            Log.w(TAG, "Response Sem Info." + linhasTerapeuticas.length);
                     }
                 }, new Response.ErrorListener() {
                     @Override

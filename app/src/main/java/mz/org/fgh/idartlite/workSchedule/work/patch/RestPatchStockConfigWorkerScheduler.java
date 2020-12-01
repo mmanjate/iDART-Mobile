@@ -13,7 +13,7 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.rest.service.RestStockService;
+import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 
 public class RestPatchStockConfigWorkerScheduler extends Worker {
