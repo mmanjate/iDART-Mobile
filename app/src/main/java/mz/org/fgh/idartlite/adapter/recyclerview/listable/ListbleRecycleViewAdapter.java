@@ -5,7 +5,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -61,36 +60,39 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
             headerViewHolder.headeritemBinding.setViewListEditButton(activity.isViewListEditButton());
             headerViewHolder.headeritemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
         } else if (viewHolder instanceof ListbleViewHolder) {
+            ((ListbleViewHolder) viewHolder).listableItemBinding.setViewModel(activity.getRelatedViewModel());
             ((ListbleViewHolder) viewHolder).listableItemBinding.setListble(listbles.get(position - 1));
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListEditButton(activity.isViewListEditButton());
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
 
-           /* ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyDestroy.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            ((ListbleViewHolder) viewHolder).listableItemBinding.edtNotes.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-
-                    if (!hasFocus){
-                        if (Utilities.stringHasValue(((EditText)v).getText().toString())) {
-                            getItemAtPosition(position).setQtyToModify(Integer.valueOf(((EditText) v).getText().toString()));
-                        }
-                    }
-                }
-            });*/
-
-            ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyDestroy.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    getItemAtPosition(position).setQtyToModify(Integer.valueOf(((EditText) s).getText().toString()));
+                    if (s != null && Utilities.stringHasValue(s.toString())){
+                        getItemAtPosition(position).setNotes(s.toString());
+                    }
+                }
+            });
+
+            ((ListbleViewHolder) viewHolder).listableItemBinding.edtQtyDestroy.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                   if (s != null && Utilities.stringHasValue(s.toString()) && Utilities.isNumeric(s.toString())){
+
+                       getItemAtPosition(position).setQtyToModify(Integer.valueOf(s.toString()));
+                   }
                 }
             });
 
@@ -128,6 +130,10 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 }
             });
         }
+    }
+
+    public List<Listble> getData(){
+        return this.listbles;
     }
 
     public Listble getItemAtPosition(int position){

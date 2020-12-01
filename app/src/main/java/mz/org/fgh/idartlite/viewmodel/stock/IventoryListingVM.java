@@ -47,6 +47,11 @@ public class IventoryListingVM extends SearchVM<Iventory> {
     }
 
     @Override
+    public void preInit() {
+
+    }
+
+    @Override
     public IIventoryService getRelatedService() {
         return (IventoryService) super.getRelatedService();
     }

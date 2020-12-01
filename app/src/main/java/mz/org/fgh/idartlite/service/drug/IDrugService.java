@@ -26,7 +26,9 @@ public interface IDrugService extends IBaseService<Drug> {
 
     public void saveOnDrug(Object drug);
 
-    public List<Drug> getDrugsWithoutRectParanthesis(List<Drug> drugs) throws SQLException ;
+    public List<Drug> getDrugsWithoutRectParanthesis(List<Drug> drugs) throws SQLException;
+
+    List<Drug> getAllDestroyedDrugs() throws SQLException;
 
 
 }

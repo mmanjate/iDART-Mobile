@@ -59,6 +59,8 @@ public class Drug extends BaseModel implements Listble, InventoryRelatedObject {
 
     private List<StockAjustment> ajustmentInfo;
 
+    private List<DestroyedDrug> destroyedDrugsInfo;
+
     public int getId() {
         return id;
     }
@@ -217,10 +219,23 @@ public class Drug extends BaseModel implements Listble, InventoryRelatedObject {
         this.ajustmentInfo = ajustmentInfo;
     }
 
-    @Override
     public void addAjustmentInfo(StockAjustment ajustment) {
         if (this.ajustmentInfo == null) this.ajustmentInfo = new ArrayList<>();
 
         this.ajustmentInfo.add(ajustment);
+    }
+
+    public void addStockDestructionInfo(DestroyedDrug destroyedDrug) {
+        if (this.destroyedDrugsInfo == null) this.destroyedDrugsInfo = new ArrayList<>();
+
+        this.destroyedDrugsInfo.add(destroyedDrug);
+    }
+
+    public List<DestroyedDrug> getDestroyedDrugsInfo() {
+        return destroyedDrugsInfo;
+    }
+
+    public void setDestroyedDrugsInfo(List<DestroyedDrug> destroyedDrugsInfo) {
+        this.destroyedDrugsInfo = destroyedDrugsInfo;
     }
 }

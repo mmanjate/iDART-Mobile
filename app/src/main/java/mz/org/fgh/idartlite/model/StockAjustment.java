@@ -12,6 +12,7 @@ import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.StockAjustmentDaoImpl;
 import mz.org.fgh.idartlite.model.inventory.Iventory;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
 @DatabaseTable(tableName = "stock_ajustment", daoClass = StockAjustmentDaoImpl.class)
 public class StockAjustment extends BaseModel implements Listble {
@@ -51,9 +52,13 @@ public class StockAjustment extends BaseModel implements Listble {
     public StockAjustment(Stock stock, Iventory selectedRecord) {
         this.stock = stock;
         this.iventory = selectedRecord;
+        this.listType = Listble.INVENTORY_LISTING;
+        this.setSyncStatus(BaseModel.SYNC_SATUS_READY);
+        this.setDate(DateUtilities.getCurrentDate());
     }
 
     public StockAjustment() {
+        this.listType = Listble.INVENTORY_LISTING;
     }
 
     public int getId() {
@@ -90,10 +95,12 @@ public class StockAjustment extends BaseModel implements Listble {
         this.adjustedValue = adjustedValue;
     }
 
+    @Override
     public String getNotes() {
         return notes;
     }
 
+    @Override
     public void setNotes(String notes) {
         this.notes = notes;
     }
@@ -169,12 +176,19 @@ public class StockAjustment extends BaseModel implements Listble {
 
     @Override
     public int getQtyToModify() {
-        return this.adjustedValue;
+        return this.stockCount;
     }
 
     @Override
     public void setQtyToModify(int qtyToDestroy) {
-        this.adjustedValue = qtyToDestroy;
+        this.stockCount = qtyToDestroy;
+
+        calculateValueToAjust();
+    }
+
+    private void calculateValueToAjust() {
+        if (this.stock == null) return;
+        this.adjustedValue = this.stockCount - getSaldoActual();
     }
 
     @Override

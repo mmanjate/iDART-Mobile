@@ -28,7 +28,7 @@ public class TherapeuthicLineService extends BaseService<TherapeuticLine> implem
     }
 
     @Override
-    public void update(TherapeuticLine relatedRecord) throws SQLException {
+    public void update(TherapeuticLine record) throws SQLException {
 
     }
 

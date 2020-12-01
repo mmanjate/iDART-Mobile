@@ -93,6 +93,11 @@ public class EpisodeVM extends BaseViewModel {
         return (EpisodeActivity) super.getRelatedActivity();
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     public void save1(){
 
         List<Episode> episodes=new ArrayList<>();

@@ -40,7 +40,7 @@ public class UserService extends BaseService<User> implements IUserService {
     }
 
     @Override
-    public void update(User relatedRecord) throws SQLException {
+    public void update(User record) throws SQLException {
 
     }
 

@@ -29,6 +29,11 @@ public class AboutVM extends BaseViewModel {
 
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     public void close(){
         getRelatedActivity().finish();
     }

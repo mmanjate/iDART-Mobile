@@ -260,6 +260,11 @@ public class DispenseVM extends BaseViewModel {
         getRelatedActivity().nextActivity(PatientPanelActivity.class, params);
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     public String dispenseOnDateBeforePickupDate() {
         try {
             Prescription prescription = this.getLastPatientPrescription(getDispense().getPrescription().getPatient());

@@ -26,7 +26,7 @@ public abstract class BaseService<T extends BaseModel> implements IBaseService<T
     }
 
     public void init(Application application, User currentUser){
-        this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext());
+        this.dataBaseHelper = IdartLiteDataBaseHelper.getInstance(application);
 
         this.currentUser = currentUser;
         this.application=application;
@@ -50,30 +50,30 @@ public abstract class BaseService<T extends BaseModel> implements IBaseService<T
 
     @Override
     public void save(T record) throws SQLException {
-        String errors = record.isValid(getApplication().getApplicationContext());
+        String errors = record.isValid(getApplication());
 
         if (Utilities.stringHasValue(errors)) {
-            Utilities.displayAlertDialog(getApplication().getApplicationContext(), errors).show();
+            Utilities.displayAlertDialog(getApplication(), errors).show();
             return;
         }
     }
 
     @Override
-    public void update(T relatedRecord) throws SQLException {
-        String errors = relatedRecord.isValid(getApplication().getApplicationContext());
+    public void update(T record) throws SQLException {
+        String errors = record.isValid(getApplication());
 
         if (Utilities.stringHasValue(errors)) {
-            Utilities.displayAlertDialog(getApplication().getApplicationContext(), errors).show();
+            Utilities.displayAlertDialog(getApplication(), errors).show();
             return;
         }
     }
 
     @Override
-    public void deleteRecord(T selectedRecord) throws SQLException {
-        String errors = selectedRecord.canBeRemoved(getApplication().getApplicationContext());
+    public void deleteRecord(T record) throws SQLException {
+        String errors = record.canBeRemoved(getApplication());
 
         if (Utilities.stringHasValue(errors)) {
-            Utilities.displayAlertDialog(getApplication().getApplicationContext(), errors).show();
+            Utilities.displayAlertDialog(getApplication(), errors).show();
             return;
         }
     }

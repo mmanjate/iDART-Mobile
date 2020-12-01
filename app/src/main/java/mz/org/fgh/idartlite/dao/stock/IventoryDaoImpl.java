@@ -5,6 +5,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
@@ -29,6 +30,17 @@ public class IventoryDaoImpl extends GenericDaoImpl<Iventory, Integer> implement
         QueryBuilder<Iventory, Integer> queryBuilder = queryBuilder();
 
         List<Iventory> inventories = queryBuilder.orderBy("id", false).limit(1L).query();
+
+        if (Utilities.listHasElements(inventories)) return inventories.get(0);
+
+        return null;
+    }
+
+    @Override
+    public Iventory getInventoryAfterDate(Date date) throws SQLException {
+        QueryBuilder<Iventory, Integer> queryBuilder = queryBuilder();
+
+        List<Iventory> inventories = queryBuilder.where().ge(Iventory.COLUMN_END_DATE, date).query();
 
         if (Utilities.listHasElements(inventories)) return inventories.get(0);
 

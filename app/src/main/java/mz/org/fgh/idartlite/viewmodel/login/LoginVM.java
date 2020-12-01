@@ -184,6 +184,11 @@ public class LoginVM extends BaseViewModel {
         return (LoginActivity) super.getRelatedActivity();
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     public void saveUserSettingsAndProcced() throws SQLException {
         saveUserClinic();
         saveLogingUser();

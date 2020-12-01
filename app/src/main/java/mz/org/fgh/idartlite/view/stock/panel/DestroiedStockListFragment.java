@@ -14,6 +14,9 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
@@ -83,6 +86,11 @@ public class DestroiedStockListFragment extends GenericFragment {
 
         this.destroyedStockRV = destroyStockBinding.rcvDestroiedStock;
 
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        destroyedStockRV.setLayoutManager(mLayoutManager);
+        destroyedStockRV.setItemAnimator(new DefaultItemAnimator());
+        destroyedStockRV.addItemDecoration(new DividerItemDecoration(getContext(), 0));
+
         destroyedStockRV.addOnItemTouchListener(
                 new ClickListener(getContext(), destroyedStockRV, new ClickListener.OnItemClickListener() {
                     @Override
@@ -123,14 +131,18 @@ public class DestroiedStockListFragment extends GenericFragment {
         return new ViewModelProvider(this).get(DestroiedStockListingVM.class);
     }
 
+
     public void displaySearchResult() {
-        if (adapter == null) {
-            adapter = new DestroiedStockAdapter(destroyedStockRV, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
-            destroyedStockRV.setAdapter(adapter);
+
+        if (this.adapter == null) {
+            this.adapter = new DestroiedStockAdapter(destroyedStockRV, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
+            destroyedStockRV.setAdapter(this.adapter);
+        }else {
+            this.adapter.notifyDataSetChanged();
         }
 
-        if (adapter.getOnLoadMoreListener() == null) {
-            adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
+        if (this.adapter.getOnLoadMoreListener() == null) {
+            this.adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
                     getRelatedViewModel().loadMoreRecords(destroyedStockRV, adapter);

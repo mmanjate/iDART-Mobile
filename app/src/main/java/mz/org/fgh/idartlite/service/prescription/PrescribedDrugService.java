@@ -37,7 +37,7 @@ public class PrescribedDrugService extends BaseService<PrescribedDrug> implement
     }
 
     @Override
-    public void update(PrescribedDrug relatedRecord) throws SQLException {
+    public void update(PrescribedDrug record) throws SQLException {
 
     }
 

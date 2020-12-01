@@ -27,7 +27,7 @@ public class DiseaseTypeService extends BaseService<DiseaseType> implements IDis
     }
 
     @Override
-    public void update(DiseaseType relatedRecord) throws SQLException {
+    public void update(DiseaseType record) throws SQLException {
 
     }
 

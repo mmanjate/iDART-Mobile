@@ -39,7 +39,7 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
     }
 
     @Override
-    public void update(Episode relatedRecord) throws SQLException {
+    public void update(Episode record) throws SQLException {
 
     }
 

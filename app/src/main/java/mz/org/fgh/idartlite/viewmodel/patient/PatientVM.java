@@ -113,6 +113,11 @@ public class PatientVM extends SearchVM<Patient> {
         return (SearchPatientActivity) super.getRelatedActivity();
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     @Bindable
     public Clinic getClinic(){
         return getCurrentClinic();

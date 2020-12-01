@@ -27,21 +27,33 @@ public class StockAjustementService extends BaseService<StockAjustment> implemen
     }
 
     @Override
-    public void update(StockAjustment relatedRecord) throws SQLException {
-        super.update(relatedRecord);
-        getDataBaseHelper().getStockAjustmentDao().update(relatedRecord);
+    public void update(StockAjustment record) throws SQLException {
+        super.update(record);
+        getDataBaseHelper().getStockAjustmentDao().update(record);
     }
 
     @Override
-    public void deleteRecord(StockAjustment selectedRecord) throws SQLException {
-        super.deleteRecord(selectedRecord);
+    public void deleteRecord(StockAjustment record) throws SQLException {
+        super.deleteRecord(record);
 
-        getDataBaseHelper().getStockAjustmentDao().delete(selectedRecord);
+        getDataBaseHelper().getStockAjustmentDao().delete(record);
     }
 
     @Override
     public List<StockAjustment> getAllOfInventory(Iventory iventory) throws SQLException {
         return getDataBaseHelper().getStockAjustmentDao().getAllOfInventory(iventory);
+    }
+
+    @Override
+    public void saveOrUpdateMany(List<StockAjustment> ajustmentList) throws SQLException {
+
+        for (StockAjustment ajustment : ajustmentList){
+            if (ajustment.getId() > 0){
+                update(ajustment);
+            }else {
+                save(ajustment);
+            }
+        }
     }
 
 }

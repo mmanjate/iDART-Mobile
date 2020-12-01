@@ -26,7 +26,7 @@ public class FormService extends BaseService<Form> implements IFormService {
     }
 
     @Override
-    public void update(Form relatedRecord) throws SQLException {
+    public void update(Form record) throws SQLException {
 
     }
 

@@ -32,7 +32,7 @@ public class TherapheuticRegimenService extends BaseService<TherapeuticRegimen> 
     }
 
     @Override
-    public void update(TherapeuticRegimen relatedRecord) throws SQLException {
+    public void update(TherapeuticRegimen record) throws SQLException {
 
     }
 

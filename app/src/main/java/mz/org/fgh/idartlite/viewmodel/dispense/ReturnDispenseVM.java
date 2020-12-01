@@ -14,18 +14,12 @@ import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
-import mz.org.fgh.idartlite.model.District;
-import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.model.ReturnedDrug;
 import mz.org.fgh.idartlite.service.dispense.DispenseDrugService;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
@@ -33,12 +27,8 @@ import mz.org.fgh.idartlite.service.dispense.IDispenseDrugService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.service.dispense.IReturnedDrugService;
 import mz.org.fgh.idartlite.service.dispense.ReturnedDrugService;
-import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.dispense.ReturnDispenseActivity;
-import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;
-import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
-import mz.org.fgh.idartlite.viewmodel.prescription.PrescriptionVM;
 
 public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
 
@@ -199,6 +189,11 @@ public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
 
     @Override
     public void doOnDeny() {
+
+    }
+
+    @Override
+    public void preInit() {
 
     }
 }

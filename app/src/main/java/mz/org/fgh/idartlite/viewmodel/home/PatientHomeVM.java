@@ -61,6 +61,11 @@ public class PatientHomeVM extends BaseViewModel {
         return (PatientHomeActivity) super.getRelatedActivity();
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     @Bindable
     public String getClinicName(){
         return getRelatedActivity().getCurrentClinic().getClinicName();

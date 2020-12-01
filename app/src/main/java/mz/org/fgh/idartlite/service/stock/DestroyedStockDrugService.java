@@ -7,8 +7,12 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.service.ServiceProvider;
+import mz.org.fgh.idartlite.dao.stock.IDestroyedDrugDao;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
+import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.service.drug.DrugService;
+import mz.org.fgh.idartlite.service.drug.IDrugService;
 
 public class DestroyedStockDrugService extends BaseService<DestroyedDrug> implements IDestroyedStockDrug {
 
@@ -24,45 +28,86 @@ public class DestroyedStockDrugService extends BaseService<DestroyedDrug> implem
 
     @Override
     public void save(DestroyedDrug record) throws SQLException {
+
         super.save(record);
 
-        getDataBaseHelper().getDestroyedStockDrugDao().create(record);
+        getDestroyedStockDrugDao().create(record);
 
-        record.getStock().setStockMoviment(record.getStock().getStockMoviment() - record.getQtyToModify());
+        processDestruction(record);
+    }
 
-        ((StockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(record.getStock());
+    public List<Drug> getDestroyedDrugs() throws SQLException {
+        return ((IDrugService) ServiceProvider.getInstance(getApplication()).get(DrugService.class)).getAllDestroyedDrugs();
     }
 
     @Override
-    public void update(DestroyedDrug relatedRecord) throws SQLException {
-        super.update(relatedRecord);
+    public List<DestroyedDrug> getAllRelatedDestroyedStocks(DestroyedDrug relatedRecord) throws SQLException {
+        return getDestroyedStockDrugDao().getByDateAndDrug(getApplication(), relatedRecord.getDate(), relatedRecord.getStock().getDrug());
+    }
 
-        getDataBaseHelper().getDestroyedStockDrugDao().update(relatedRecord);
+    @Override
+    public List<Drug> getAllDrugsWithExistingLote() throws SQLException{
+        return ((DrugService) ServiceProvider.getInstance(getApplication()).get(DrugService.class)).getAllWithLote();
+    }
+
+    @Override
+    public void update(DestroyedDrug record) throws SQLException {
+        super.update(record);
+
+        processDestruction(record);
+
+        getDestroyedStockDrugDao().update(record);
+    }
+
+    private void processDestruction(DestroyedDrug record) throws SQLException {
+
+        if (record.getId() > 0) {
+            DestroyedDrug oldDestruction = getDestroyedStockDrugDao().queryForId(record.getId());
+
+            if (oldDestruction.getQtyToModify() != record.getQtyToModify()) {
+                record.getStock().setStockMoviment(record.getStock().getStockMoviment() + oldDestruction.getQtyToModify() - record.getQtyToModify());
+
+                ((IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(record.getStock());
+            }
+        }else {
+            record.getStock().setStockMoviment(record.getStock().getStockMoviment() - record.getQtyToModify());
+
+            ((IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(record.getStock());
+        }
     }
 
     @Override
     public void saveAll(List<DestroyedDrug> stocksToDestroy) throws SQLException {
 
         for (DestroyedDrug destroyedDrug : stocksToDestroy){
-            save(destroyedDrug);
+            if (destroyedDrug.getId() > 0){
+                update(destroyedDrug);
+            }else {
+                save(destroyedDrug);
+            }
         }
     }
 
     public List<DestroyedDrug> getRecords(long offset, long limit) throws SQLException {
-        return getDataBaseHelper().getDestroyedStockDrugDao().searchRecords(offset, limit);
+        return getDestroyedStockDrugDao().searchDestructions(getApplication(),offset, limit);
+    }
+
+    private IDestroyedDrugDao getDestroyedStockDrugDao() throws SQLException {
+        return getDataBaseHelper().getDestroyedStockDrugDao();
     }
 
 
     @Override
-    public void deleteRecord(DestroyedDrug selectedRecord) throws SQLException {
-        super.deleteRecord(selectedRecord);
+    public void deleteRecord(DestroyedDrug record) throws SQLException {
+        super.deleteRecord(record);
 
-        getDataBaseHelper().getDestroyedStockDrugDao().delete(selectedRecord);
+        getDestroyedStockDrugDao().delete(record);
 
-        doAfterDelete(selectedRecord);
+        doAfterDelete(record);
     }
 
-    private void doAfterDelete(DestroyedDrug selectedRecord) {
-        /* TO-DO repor stock */
+    private void doAfterDelete(DestroyedDrug record) throws SQLException {
+        record.getStock().setStockMoviment(record.getStock().getStockMoviment() + record.getQtyToModify());
+        ((IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(record.getStock());
     }
 }

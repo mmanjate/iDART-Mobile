@@ -50,7 +50,7 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
     }
 
     @Override
-    public void update(Prescription relatedRecord) throws SQLException {
+    public void update(Prescription record) throws SQLException {
 
     }
 

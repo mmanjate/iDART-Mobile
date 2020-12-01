@@ -35,7 +35,7 @@ public class RegimenDrugsService extends BaseService<RegimenDrug> implements IRe
     }
 
     @Override
-    public void update(RegimenDrug relatedRecord) throws SQLException {
+    public void update(RegimenDrug record) throws SQLException {
 
     }
 

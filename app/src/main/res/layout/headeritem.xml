@@ -79,7 +79,15 @@
                     android:layout_weight="1.2"
                     style="@style/listble_header"
                     android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
-                    android:text='@{listble.stockDestroyListing ? "Qtd. a Destruir" : "Qtd. Existente"}' />
+                    android:text='@{listble.stockDestroyListing ? "Qtd. a Destruir" : "Frascos Contados"}' />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    style="@style/listble_header"
+                    android:visibility="@{listble.iventoryListing ? View.VISIBLE : View.GONE}"
+                    android:text='Notas' />
 
 
                 <TextView

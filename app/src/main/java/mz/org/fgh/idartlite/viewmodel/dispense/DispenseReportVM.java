@@ -102,6 +102,11 @@ public class DispenseReportVM extends SearchVM<Dispense> {
         return (DispenseReportActivity) super.getRelatedActivity();
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     @Bindable
     public Clinic getClinic(){
         return getCurrentClinic();

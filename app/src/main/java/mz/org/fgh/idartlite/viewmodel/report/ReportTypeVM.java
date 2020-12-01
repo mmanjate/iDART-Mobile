@@ -49,6 +49,11 @@ public class ReportTypeVM extends BaseViewModel {
         return (ReportTypeActivity) super.getRelatedActivity();
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
     @Bindable
     public String getClinicName(){
         return getRelatedActivity().getCurrentClinic().getClinicName();

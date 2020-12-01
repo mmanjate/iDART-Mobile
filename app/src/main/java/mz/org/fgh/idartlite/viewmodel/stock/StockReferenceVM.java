@@ -28,5 +28,10 @@ public class StockReferenceVM extends BaseViewModel {
     protected void initFormData() {
 
     }
+
+    @Override
+    public void preInit() {
+
+    }
     // TODO: Implement the ViewModel
 }

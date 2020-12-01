@@ -14,9 +14,10 @@ import mz.org.fgh.idartlite.dao.stock.DestroyedDrugDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 
-@DatabaseTable(tableName = "destroyed_drug", daoClass = DestroyedDrugDaoImpl.class)
+@DatabaseTable(tableName = DestroyedDrug.TABLE_NAME, daoClass = DestroyedDrugDaoImpl.class)
 public class DestroyedDrug extends BaseModel implements Listble {
 
+    public static final String TABLE_NAME = "destroyed_drug";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_STOCK_ID = "stock_id";
@@ -45,11 +46,16 @@ public class DestroyedDrug extends BaseModel implements Listble {
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
 
+    private int adjustedValue;
+
     public DestroyedDrug() {
+        listType = Listble.STOCK_DESTROY_LISTING;
     }
 
     public DestroyedDrug(Stock stock) {
         this.stock = stock;
+
+        listType = Listble.STOCK_DESTROY_LISTING;
     }
 
     public int getId() {
@@ -177,6 +183,21 @@ public class DestroyedDrug extends BaseModel implements Listble {
     @Override
     public int getSaldoActual() {
         return stock.getQuantity();
+    }
+
+    @Override
+    public void setSaldoActual(int saldo) {
+        this.stock.modifyCurrentQuantity(saldo);
+    }
+
+    @Override
+    public void setAdjustedValue(int adjustedValue) {
+        this.adjustedValue = adjustedValue;
+    }
+
+    @Override
+    public int getAdjustedValue() {
+        return adjustedValue;
     }
 
     @Override

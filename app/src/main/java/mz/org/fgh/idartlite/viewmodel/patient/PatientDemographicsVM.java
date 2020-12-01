@@ -44,6 +44,11 @@ public class PatientDemographicsVM extends BaseViewModel {
 
     }
 
+    @Override
+    public void preInit() {
+
+    }
+
 
     public void editPatient(){
 
