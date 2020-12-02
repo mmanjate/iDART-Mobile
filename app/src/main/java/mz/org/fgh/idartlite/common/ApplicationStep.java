@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.common;
 
+import mz.org.fgh.idartlite.model.Clinic;
+
 public class ApplicationStep {
 
     public static final String STEP_INIT = "INIT";
@@ -9,6 +11,7 @@ public class ApplicationStep {
     public static final String STEP_DISPLAY = "DYSPLAY";
     public static final String STEP_CREATE = "CREATE";
     public static final String STEP_REMOVE= "REMOVE";
+    public static final String SANITARY_UNIT="Unidade Sanitária";
 
     private int id;
     private String descrption;
@@ -107,5 +110,10 @@ public class ApplicationStep {
 
     public void changeTo(String stepCode){
         this.code = stepCode;
+    }
+
+    public boolean checkSanitaryUnit(Clinic currentClinic){
+
+        return currentClinic.getPharmacyType().getDescription().equalsIgnoreCase(SANITARY_UNIT);
     }
 }

@@ -65,6 +65,9 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
     private Dispense dispenseSelectedForEdit;
 
+    private List<Dispense> dispenseList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +97,10 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                     try {
                         this.prescription = getRelatedViewModel().getLastPatientPrescription(this.getPatient());
 
+                        dispenseList= (List<Dispense>) bundle.getSerializable("dispenses");
+                        prescription.setDispenses(dispenseList);
                         getRelatedViewModel().getDispense().setPrescription((this.prescription));
+
 
                     } catch (SQLException e) {
                         e.printStackTrace();

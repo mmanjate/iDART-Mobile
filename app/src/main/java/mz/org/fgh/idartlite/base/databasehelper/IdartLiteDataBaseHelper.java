@@ -151,6 +151,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     public IPatientDao getPatientDao() throws SQLException {
         if(patientDao == null){
+
             patientDao = getDao(Patient.class);
         }
         return patientDao;
@@ -373,7 +374,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private void dropTables() {
         try {
             TableUtils.dropTable(connectionSource, DispenseType.class, true);
-
+            TableUtils.dropTable(connectionSource, ClinicSector.class, true);
             TableUtils.dropTable(connectionSource, DiseaseType.class, true);
             TableUtils.dropTable(connectionSource, PharmacyType.class, true);
             TableUtils.dropTable(connectionSource, Clinic.class, true);
@@ -398,7 +399,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Province.class, true);
             TableUtils.dropTable(connectionSource, District.class, true);
             TableUtils.dropTable(connectionSource, Subdistrict.class, true);
-            TableUtils.dropTable(connectionSource, ClinicSector.class, true);
+
 
         } catch (SQLException e) {
             e.printStackTrace();

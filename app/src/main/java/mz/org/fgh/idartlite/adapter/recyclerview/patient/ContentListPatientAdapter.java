@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.adapter.recyclerview.patient;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseReportAdapter;
 import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ContentPatientBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
@@ -19,9 +21,12 @@ import mz.org.fgh.idartlite.model.Patient;
 
 public class ContentListPatientAdapter extends AbstractRecycleViewAdapter<Patient> {
 
+   private boolean isReport;
 
-    public ContentListPatientAdapter(RecyclerView recyclerView, List<Patient> patientList, Activity activity) {
+    public ContentListPatientAdapter(RecyclerView recyclerView, List<Patient> patientList, Activity activity,boolean isReport) {
+
         super(recyclerView, patientList, activity);
+        this.isReport=isReport;
     }
 
     @NonNull
@@ -32,6 +37,10 @@ public class ContentListPatientAdapter extends AbstractRecycleViewAdapter<Patien
 
         if (viewType == VIEW_TYPE_ITEM) {
             contentPatientBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.content_patient, parent, false);
+
+            if(this.isReport){
+                contentPatientBinding.linearDetails.setVisibility(View.VISIBLE);
+            }
             return new PatientViewHolder(contentPatientBinding);
         }else if (viewType == VIEW_TYPE_LOADING) {
             itemLoadingBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_loading, parent, false);
@@ -43,8 +52,10 @@ public class ContentListPatientAdapter extends AbstractRecycleViewAdapter<Patien
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof PatientViewHolder){
+
             Patient patient = (Patient) records.get(position);
             ((PatientViewHolder) viewHolder).contentPatientBinding.setPatient(patient);
+
         }else
         if (viewHolder instanceof LoadingViewHolder){
             showLoadingView((LoadingViewHolder) viewHolder, position);

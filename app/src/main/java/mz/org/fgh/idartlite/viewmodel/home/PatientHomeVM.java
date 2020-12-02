@@ -13,6 +13,7 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.view.home.PatientHomeActivity;
 import mz.org.fgh.idartlite.view.patientPanel.AddNewPatientActivity;
+import mz.org.fgh.idartlite.view.patientSearch.NewPatientSearchActivity;
 import mz.org.fgh.idartlite.view.patientSearch.SearchPatientActivity;
 import mz.org.fgh.idartlite.view.reports.ReportTypeActivity;
 
@@ -21,6 +22,8 @@ public class PatientHomeVM extends BaseViewModel {
     public PatientHomeVM(@NonNull Application application) {
         super(application);
     }
+
+    private static final String SANITARY_UNIT="Unidade Sanitária";
 
     @Override
     protected IBaseService initRelatedService() {
@@ -38,7 +41,13 @@ public class PatientHomeVM extends BaseViewModel {
     }
 
     public void callSearchPatient(){
-        getRelatedActivity().nextActivityWithGenericParams(SearchPatientActivity.class);
+
+        if(getRelatedActivity().getApplicationStep().checkSanitaryUnit(currentClinic)) {
+            getRelatedActivity().nextActivityWithGenericParams(NewPatientSearchActivity.class);
+        }
+        else {
+            getRelatedActivity().nextActivityWithGenericParams(SearchPatientActivity.class);
+        }
     }
 
     public void callAddNewPatient(){

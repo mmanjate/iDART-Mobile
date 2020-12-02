@@ -9,9 +9,6 @@ import java.util.List;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
-import mz.org.fgh.idartlite.model.Province;
-
-import static mz.org.fgh.idartlite.model.Clinic.COLUMN_UUID;
 
 public class ClinicSectorDaoImpl extends GenericDaoImpl<ClinicSector, Integer> implements IClinicSectorDao {
 
@@ -32,4 +29,11 @@ public class ClinicSectorDaoImpl extends GenericDaoImpl<ClinicSector, Integer> i
     public List<ClinicSector> getClinicSectorsByClinic(Clinic clinic) throws SQLException {
         return queryBuilder().where().eq(ClinicSector.COLUMN_CLINIC_ID, clinic.getId()).query();
     }
+
+    @Override
+    public ClinicSector getClinicSector() throws SQLException {
+       return queryBuilder().queryForFirst();
+    }
+
+
 }

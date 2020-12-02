@@ -8,6 +8,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 
 public interface IPatientDao extends IGenericDao<Patient, Integer> {
@@ -20,5 +21,8 @@ public interface IPatientDao extends IGenericDao<Patient, Integer> {
 
     public Patient checkExistsPatientWithNID(String nid) throws SQLException ;
 
+    public List<Patient> searchPatientByNidOrNameOrSurname(String nid,String name,String surname, long offset, long limit) throws SQLException;
+
+    public List<Patient> getAllPatientsBetweenStartDateAndEndDate(Application application,Date start, Date end, long offset, long limit) throws SQLException;
 
 }

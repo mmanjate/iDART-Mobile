@@ -372,4 +372,12 @@ public class DispenseVM extends BaseViewModel {
     public void changeDataViewStatus(View view){
         ((CreateDispenseActivity) getRelatedActivity()).changeFormSectionVisibility(view);
     }
+
+    public String getPrescriptionDetailsLabel(){
+       return "Prescricao:" +" "+dispense.getPrescription().getUiId();
+    }
+
+    public String getPrescriptionTimeLeft(){
+        return "Mes(es) Restantes de Validade: "+dispense.getPrescription().getTimeLeftInMonths();
+    }
 }

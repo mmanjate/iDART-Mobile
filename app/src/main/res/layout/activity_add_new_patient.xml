@@ -418,7 +418,6 @@
                             android:layout_height="wrap_content"
                             android:text="@={viewModel.episode.notes}"
                             android:drawableLeft="@drawable/ic_round_notes_24"
-
                             android:inputType="textMultiLine" />
                     </LinearLayout>
                     <RelativeLayout

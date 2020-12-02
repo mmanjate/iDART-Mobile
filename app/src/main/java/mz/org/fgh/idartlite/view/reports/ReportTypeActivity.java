@@ -148,6 +148,7 @@ public class ReportTypeActivity extends BaseActivity {
         List<Report> reports= new ArrayList<Report>();
         reports.add(Report.fastCreate("001", "Relatorio de Dispensas Da Farmacia", R.drawable.ic_list, DispenseReportActivity.class));
         reports.add(Report.fastCreate("002", "Alerta de Stock", R.drawable.ic_list, StockAlertReportActivity.class));
+        reports.add(Report.fastCreate("003", "Relatorio de Entradas de pacientes", R.drawable.ic_list, PatientRegisterReportActivity.class));
 
         return reports;
     }

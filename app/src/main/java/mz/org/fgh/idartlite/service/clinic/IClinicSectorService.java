@@ -16,4 +16,6 @@ public interface IClinicSectorService extends IBaseService {
     public void saveClinicSector(ClinicSector clinicSector) throws SQLException;
 
    // public Clinic getClinicByUuid(String uuid) throws SQLException;
+
+    public ClinicSector getClinicSector() throws SQLException ;
 }

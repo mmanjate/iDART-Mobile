@@ -146,7 +146,7 @@ public class RestRunDataForTestService extends BaseRestService {
             e.printStackTrace();
         }
 
-        try{
+      /*  try{
           List<ClinicSector>  clinicSectors= clinicSectorService.getClinicSectorsByClinic(clinicService.getAllClinics().get(0));
 
             if(clinicSectors.isEmpty()){
@@ -161,6 +161,6 @@ public class RestRunDataForTestService extends BaseRestService {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
