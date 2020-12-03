@@ -30,7 +30,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
                 style="@style/listble_content"
                 android:text="@{listble.fnmcode}" />
 
@@ -38,7 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
-                android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
                 android:background="@color/white"/>
 
             <TextView
@@ -60,7 +60,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2.6"
-                android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing|| listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing|| listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
                 style="@style/listble_content"
                 android:text="@{listble.description}"/>
 
@@ -68,7 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
-                android:visibility="@{(listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing || listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing || listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
                 android:background="@color/white"/>
 
 
@@ -131,6 +131,14 @@
 
             </EditText>
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.6"
+                android:visibility="@{listble.referedStockListing  ? View.VISIBLE : View.GONE}"
+                style="@style/listble_content"
+                android:text="@{listble.origin}"/>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -144,7 +152,7 @@
                 android:layout_weight="1.2"
                 style="@style/listble_content"
                 android:textAlignment="center"
-                android:visibility='@{(listble.stockListing || listble.dispenseDrugListing || listble.returnDispenseListing) ? View.VISIBLE : View.GONE}'
+                android:visibility='@{(listble.referedStockListing || listble.stockListing || listble.dispenseDrugListing || listble.returnDispenseListing) ? View.VISIBLE : View.GONE}'
                 android:text='@{listble.quantity > 0 ? Utilities.parseIntToString(listble.quantity) : ""}' />
 
 

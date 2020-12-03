@@ -26,11 +26,13 @@ import mz.org.fgh.idartlite.dao.drug.ITherapeuticLineDao;
 import mz.org.fgh.idartlite.dao.drug.ITherapeuticRegimenDao;
 import mz.org.fgh.idartlite.dao.episode.IEpisodeDao;
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
+import mz.org.fgh.idartlite.dao.param.operationtype.IOperationTypeDao;
 import mz.org.fgh.idartlite.dao.patient.IPatientDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescribedDrugDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescriptionDao;
 import mz.org.fgh.idartlite.dao.stock.IDestroyedDrugDao;
 import mz.org.fgh.idartlite.dao.stock.IIventoryDao;
+import mz.org.fgh.idartlite.dao.stock.IReferedStockMovimentDao;
 import mz.org.fgh.idartlite.dao.stock.IStockAjustmentDao;
 import mz.org.fgh.idartlite.dao.stock.IStockDao;
 import mz.org.fgh.idartlite.dao.territory.ICountryDao;
@@ -50,11 +52,13 @@ import mz.org.fgh.idartlite.model.District;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Form;
+import mz.org.fgh.idartlite.model.OperationType;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Province;
+import mz.org.fgh.idartlite.model.ReferedStockMoviment;
 import mz.org.fgh.idartlite.model.RegimenDrug;
 import mz.org.fgh.idartlite.model.ReturnedDrug;
 import mz.org.fgh.idartlite.model.Stock;
@@ -69,7 +73,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
     private static final String DATABASE_NAME    = "idartlite.db";
-    private static final int    DATABASE_VERSION = 4;
+    private static final int    DATABASE_VERSION = 5;
 
 
     private IUserDao userDao;
@@ -103,6 +107,9 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private IClinicSectorDao clinicSectorDao;
     private IReturnedDrugDao returnedDrugDao;
+
+    private IReferedStockMovimentDao referedStockMovimentDao;
+    private IOperationTypeDao operationTypeDao;
 
  //   private IPatientSectorDao patientSectorDao;
 
@@ -282,7 +289,21 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         return subdistrictDao;
     }
 
-   /* public IPatientSectorDao getPatientSectorDao() throws SQLException {
+    public IReferedStockMovimentDao getReferedStockMovimentDao() throws SQLException {
+        if(referedStockMovimentDao == null){
+            referedStockMovimentDao = getDao(ReferedStockMoviment.class);
+        }
+        return referedStockMovimentDao;
+    }
+
+    public IOperationTypeDao getOperationTypeDao() throws SQLException {
+        if(operationTypeDao == null){
+            operationTypeDao = getDao(OperationType.class);
+        }
+        return operationTypeDao;
+    }
+
+    /* public IPatientSectorDao getPatientSectorDao() throws SQLException {
         if(patientSectorDao == null){
             patientSectorDao = getDao(PatientSector.class);
         }
@@ -351,6 +372,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, Subdistrict.class);
             TableUtils.createTableIfNotExists(connectionSource, ClinicSector.class);
             TableUtils.createTableIfNotExists(connectionSource, ReturnedDrug.class);
+            TableUtils.createTableIfNotExists(connectionSource, ReferedStockMoviment.class);
+            TableUtils.createTableIfNotExists(connectionSource, OperationType.class);
 
 
         } catch (SQLException e) {
@@ -360,7 +383,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        //dropTables();
+        dropTables();
         onCreate(database,connectionSource);
     }
 
@@ -399,6 +422,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, District.class, true);
             TableUtils.dropTable(connectionSource, Subdistrict.class, true);
             TableUtils.dropTable(connectionSource, ClinicSector.class, true);
+            TableUtils.dropTable(connectionSource, ReferedStockMoviment.class, true);
+            TableUtils.dropTable(connectionSource, OperationType.class, true);
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -69,7 +69,7 @@ public abstract class BaseService<T extends BaseModel> implements IBaseService<T
     }
 
     @Override
-    public void deleteRecord(T record) throws SQLException {
+    public void delete(T record) throws SQLException {
         String errors = record.canBeRemoved(getApplication());
 
         if (Utilities.stringHasValue(errors)) {

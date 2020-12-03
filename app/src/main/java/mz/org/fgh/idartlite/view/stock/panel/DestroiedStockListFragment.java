@@ -31,6 +31,7 @@ import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.FragmentDestroyStockBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
+import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.stock.destroy.DestroyStockActivity;
 import mz.org.fgh.idartlite.viewmodel.stock.DestroiedStockListingVM;
@@ -167,28 +168,19 @@ public class DestroiedStockListFragment extends GenericFragment {
 
         switch (item.getItemId()){
             case R.id.edit:
-                getRelatedViewModel().initEdition(DestroiedStockListFragment.this.getContext());
+                getRelatedViewModel().initEdition(getContext());
 
-                params.put("relatedRecord", getRelatedViewModel().getSelectedRecord());
-                params.put("user", getRelatedViewModel().getCurrentUser());
-                params.put("clinic", getMyActivity().getCurrentClinic());
-                params.put("step", ApplicationStep.STEP_EDIT);
-                nextActivity(DestroyStockActivity.class, params);
-
+                startDestroyStockActivity(getRelatedViewModel().getSelectedRecord(), ApplicationStep.STEP_EDIT);
 
                 return true;
             case R.id.remove:
-                getRelatedViewModel().initRemotion(DestroiedStockListFragment.this.getContext());
+                getRelatedViewModel().initRemotion(getContext());
 
                 Utilities.displayDeleteConfirmationDialogFromList(DestroiedStockListFragment.this.getContext(), getString(R.string.list_item_delete_msg), getRelatedViewModel().getSelectedRecord().getListPosition(), DestroiedStockListFragment.this).show();
                 return true;
 
             case R.id.viewDetails:
-                params.put("relatedRecord", getRelatedViewModel().getSelectedRecord());
-                params.put("user", getRelatedViewModel().getCurrentUser());
-                params.put("clinic", getMyActivity().getCurrentClinic());
-                params.put("step", ApplicationStep.STEP_DISPLAY);
-                nextActivity(DestroyStockActivity.class, params);
+                startDestroyStockActivity(getRelatedViewModel().getSelectedRecord(), ApplicationStep.STEP_DISPLAY);
             default:
                 return false;
         }
@@ -217,11 +209,12 @@ public class DestroiedStockListFragment extends GenericFragment {
         destroyedStockRV.getAdapter().notifyItemRangeChanged(position, destroyedStockRV.getAdapter().getItemCount());
     }
 
-    public void startDestroyStockActivity() {
+    public void startDestroyStockActivity(DestroyedDrug record, String step) {
         Map<String, Object> params = new HashMap<>();
+        if (record != null) params.put("relatedRecord", record);
         params.put("user", getRelatedViewModel().getCurrentUser());
         params.put("clinic", getMyActivity().getCurrentClinic());
-        params.put("step", ApplicationStep.STEP_CREATE);
+        if (Utilities.stringHasValue(step)) params.put("step", step);
         nextActivity(DestroyStockActivity.class, params);
     }
 }

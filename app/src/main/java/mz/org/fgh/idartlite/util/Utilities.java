@@ -203,7 +203,7 @@ public class Utilities {
         return list;
     }
 
-    public <T extends Object, S extends Object> List<S> parseList(List<T> list, Class<S> classe){
+    public static <T extends Object, S extends Object> List<S> parseList(List<T> list, Class<S> classe){
         if (list == null) return null;
 
         List<S> parsedList = new ArrayList<S>();
@@ -380,6 +380,7 @@ public class Utilities {
             return false;
         }
     }
+
 
     /*public static NotificationCompat.Builder showNotification(String title, String contntText, Context context, String channelId){
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);

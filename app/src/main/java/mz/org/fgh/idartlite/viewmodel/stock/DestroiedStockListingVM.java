@@ -10,6 +10,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
+import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.service.stock.DestroyedStockDrugService;
 import mz.org.fgh.idartlite.view.stock.panel.DestroiedStockListFragment;
@@ -78,10 +79,10 @@ public class DestroiedStockListingVM extends SearchVM<DestroyedDrug> {
     }
 
     public void deleteRecord(DestroyedDrug selectedRecord) throws SQLException {
-        getRelatedService().deleteRecord(selectedRecord);
+        getRelatedService().delete(selectedRecord);
     }
 
     public void requestForNewRecord(){
-        getRelatedFragment().startDestroyStockActivity();
+        getRelatedFragment().startDestroyStockActivity(null, ApplicationStep.STEP_CREATE);
     }
 }
