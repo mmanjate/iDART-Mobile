@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.service.territory;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
@@ -22,4 +23,6 @@ public interface IProvinceService extends IBaseService {
     public Province getProvinceByRestId(int restId) throws SQLException;
 
     public boolean checkProvince(Object province);
+
+    public Map<String,Province> getProvincesInMap() throws SQLException;
 }

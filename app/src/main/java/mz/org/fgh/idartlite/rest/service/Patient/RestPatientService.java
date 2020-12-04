@@ -14,7 +14,9 @@ import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -27,6 +29,7 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.model.SyncMobilePatient;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
@@ -37,6 +40,8 @@ import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
 import mz.org.fgh.idartlite.service.patient.IPatientService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
+import mz.org.fgh.idartlite.service.territory.IProvinceService;
+import mz.org.fgh.idartlite.service.territory.ProvinceService;
 
 import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
 
@@ -47,6 +52,7 @@ public class RestPatientService extends BaseRestService {
     private static ClinicSectorService clinicSectorService;
     private static IEpisodeService episodeService;
     private static IPatientService patientService;
+    private static IProvinceService provinceService;
 
     public RestPatientService(Application application, User currentUser) {
         super(application, currentUser);
@@ -188,11 +194,14 @@ public class RestPatientService extends BaseRestService {
         clinicService = new ClinicService(getApp(), null);
 
         patientService = new PatientService(getApp(), null);
+        provinceService=new ProvinceService(getApp(),null);
 
         List<Patient> newPatients = new ArrayList<>();
         Clinic clinic = null;
+        Map<String, Province> provinceMap=new HashMap<>();
         try {
             clinic = clinicService.getAllClinics().get(0);
+            provinceMap=provinceService.getProvincesInMap();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -200,6 +209,7 @@ public class RestPatientService extends BaseRestService {
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
 
                 Clinic finalClinic = clinic;
+                Map<String, Province> finalProvinceMap = provinceMap;
                 getRestServiceExecutor().execute(() -> {
                     String url = BaseRestService.baseUrl + "/patient?or=(patientid.like.*" + nid + "*" + ",firstnames.like.*" + name + "*" + ",lastname.like.*" + surname + "*)";
 
@@ -223,6 +233,7 @@ public class RestPatientService extends BaseRestService {
                                                 Objects.requireNonNull(patientRest.get("address2")).toString(),
                                                 Objects.requireNonNull(patientRest.get("address3")).toString());
 
+                                        localPatient.setProvince(finalProvinceMap.get(Objects.requireNonNull(patientRest.get("province")).toString()));
                                         localPatient.setAddress(concatAdrees);
                                         localPatient.setBirthDate(getSqlDateFromString(Objects.requireNonNull(patientRest.get("dateofbirth")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
                                         localPatient.setClinic(finalClinic);

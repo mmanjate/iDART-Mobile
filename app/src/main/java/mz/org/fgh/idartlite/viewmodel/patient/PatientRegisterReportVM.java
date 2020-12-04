@@ -5,6 +5,10 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import com.itextpdf.text.DocumentException;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -30,11 +34,9 @@ import mz.org.fgh.idartlite.view.reports.PatientRegisterReportActivity;
 
 public class PatientRegisterReportVM extends SearchVM<Patient> {
 
-    private Patient patient;
+
     private IPatientService patientService;
     private IEpisodeService episodeService;
-
-
 
     private String startDate;
 
@@ -78,10 +80,27 @@ public class PatientRegisterReportVM extends SearchVM<Patient> {
 
             try {
                 super.initSearch();
+                if(getAllDisplyedRecords().size()>0){
+                    getRelatedActivity().generatePdfButton(true);
+                }
+                else {
+                    getRelatedActivity().generatePdfButton(false);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
+        }
+    }
+
+
+    public void generatePDF() {
+        try {
+            this.getRelatedActivity().createPdfDocument();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
         }
     }
 

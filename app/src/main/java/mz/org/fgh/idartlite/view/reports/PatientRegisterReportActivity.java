@@ -1,37 +1,70 @@
 package mz.org.fgh.idartlite.view.reports;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.graphics.pdf.PdfDocument;
-import android.os.Bundle;
-import android.print.pdf.PrintedPdfDocument;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.LinearLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseReportAdapter;
 import mz.org.fgh.idartlite.adapter.recyclerview.patient.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientRegisterReportBinding;
 import mz.org.fgh.idartlite.databinding.ContentDispensesReportBinding;
-import mz.org.fgh.idartlite.databinding.DispenseReportBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
-import mz.org.fgh.idartlite.service.dispense.IDispenseService;
+import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.viewmodel.dispense.DispenseReportVM;
 import mz.org.fgh.idartlite.viewmodel.patient.PatientRegisterReportVM;
 
 public class PatientRegisterReportActivity extends BaseActivity {
@@ -39,8 +72,12 @@ public class PatientRegisterReportActivity extends BaseActivity {
 
     private RecyclerView reyclerPatient;
     private ActivityPatientRegisterReportBinding patientRegisterReportBinding;
-    private ContentDispensesReportBinding contentDispenseReportBinding;
+  //  private ContentDispensesReportBinding contentDispenseReportBinding;
     private ContentListPatientAdapter adapter;
+
+    private static final String TAG = "PatientRegisterReportActivity";
+
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
 
 
     @Override
@@ -173,6 +210,7 @@ public class PatientRegisterReportActivity extends BaseActivity {
 
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -204,9 +242,13 @@ public class PatientRegisterReportActivity extends BaseActivity {
                 }
             });
         }
+    }
 
-
-
+    @SuppressLint("RestrictedApi")
+    public void generatePdfButton(boolean show){
+        FloatingActionButton generatePdf = patientRegisterReportBinding.generatePdf;
+        if(show) generatePdf.setVisibility(View.VISIBLE);
+        else {generatePdf.setVisibility(View.GONE);}
     }
 
     @Override
@@ -218,4 +260,91 @@ public class PatientRegisterReportActivity extends BaseActivity {
     public PatientRegisterReportVM getRelatedViewModel() {
         return (PatientRegisterReportVM) super.getRelatedViewModel();
     }
+
+
+
+
+
+    public void createPdfDocument() throws IOException, DocumentException {
+            createPdf(getRelatedViewModel().getAllDisplyedRecords());
+    }
+
+
+    @SuppressLint("LongLogTag")
+    private void createPdf(List<Patient> patients) throws IOException, DocumentException {
+        File docsFolder = new File(Environment.getExternalStorageDirectory() + "/sdcard");
+        if (!docsFolder.exists()) {
+            docsFolder.mkdir();
+            Log.i(TAG, "Created a new directory for PDF");
+        }
+        String pdfname = "patientReport.pdf";
+        File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
+        OutputStream output = new FileOutputStream(pdfFile);
+        Document document = new Document(PageSize.A4);
+
+        Paragraph p = new Paragraph();
+
+        Drawable d = getResources().getDrawable(R.mipmap.cmam);
+        BitmapDrawable bitDw = ((BitmapDrawable) d);
+        Bitmap bmp = bitDw.getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Image image = Image.getInstance(stream.toByteArray());
+        Chunk c1 = new Chunk(image, 0, -24);
+
+        p.add(c1);
+
+
+        PdfPTable table = new PdfPTable(new float[]{4, 4, 1.8f, 1.5f, 3,3,3});
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.getDefaultCell().setFixedHeight(50);
+        table.setTotalWidth(PageSize.A4.getWidth());
+        table.setWidthPercentage(100);
+        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell("NID");
+        table.addCell("Nome");
+        table.addCell("Genero");
+        table.addCell("Idade");
+        table.addCell("Data de Referencia");
+        table.addCell("Data de Prescricao");
+        table.addCell("Tipo de Dispensa");
+        table.setHeaderRows(1);
+        PdfPCell[] cells = table.getRow(0).getCells();
+        for (int j = 0; j < cells.length; j++) {
+            cells[j].setBackgroundColor(BaseColor.GRAY);
+        }
+
+        for (Patient patient:patients){
+
+            String nid = patient.getNid();
+            String namen = patient.getFullName();
+            String gender = patient.getGender();
+            String age = String.valueOf(patient.getAge());
+            String referenceDate = patient.getEpisodes1().iterator().hasNext() ? patient.getEpisodes1().iterator().next().getStringEpisodeDate() : " ";
+            String prescriptionDate = patient.getPrescriptions().iterator().hasNext() ? DateUtilities.formatToDDMMYYYY(patient.getPrescriptions().iterator().next().getPrescriptionDate()) : " ";
+            String dispenseType = patient.getPrescriptions().iterator().hasNext() ? patient.getPrescriptions().iterator().next().getDispenseType().getDescription() : " ";
+            table.addCell(String.valueOf(nid));
+            table.addCell(String.valueOf(namen));
+            table.addCell(String.valueOf(gender));
+            table.addCell(age);
+            table.addCell(String.valueOf(referenceDate));
+            table.addCell(String.valueOf(prescriptionDate));
+            table.addCell(String.valueOf(dispenseType));
+        }
+
+        PdfWriter.getInstance(document, output);
+        document.open();
+        document.add(p);
+        document.add(image);
+        Font f = new Font(Font.FontFamily.TIMES_ROMAN, 35.0f, Font.UNDERLINE, BaseColor.RED);
+        Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
+        document.add(new Paragraph("Relatorio de Entrada de Pacientes \n\n", f));
+       // document.add(new Paragraph("Relatorio de Entrada de Pacientes", g));
+        document.add(table);
+
+        document.close();
+
+        Utilities.previewPdfFiles(this,pdfFile );
+    }
+
 }
