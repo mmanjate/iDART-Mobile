@@ -58,4 +58,9 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements ISto
         qb.orderBy(Stock.COLUMN_EXPIRY_DATE, true);
         return qb.query();
     }
+
+    @Override
+    public Stock getByBatchNumber(Stock stock) throws SQLException {
+        return queryBuilder().where().eq(Stock.COLUMN_BATCH_NUMBER, stock.getBatchNumber()).queryForFirst();
+    }
 }

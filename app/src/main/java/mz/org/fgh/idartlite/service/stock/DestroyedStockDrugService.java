@@ -98,8 +98,8 @@ public class DestroyedStockDrugService extends BaseService<DestroyedDrug> implem
 
 
     @Override
-    public void deleteRecord(DestroyedDrug record) throws SQLException {
-        super.deleteRecord(record);
+    public void delete(DestroyedDrug record) throws SQLException {
+        super.delete(record);
 
         getDestroyedStockDrugDao().delete(record);
 

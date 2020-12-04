@@ -141,17 +141,30 @@ public class DestroyedDrug extends BaseModel implements Listble {
             return "A data da operação não pode ser maior que a data corrente";
         }
 
+        if (this.quantity <= 0) return "A quantidade deve ser indicada.";
+
         if (!Utilities.stringHasValue(this.notes)) return "As notas da operação devem ser indicadas.";
         return null;
     }
 
     @Override
     public String canBeEdited(Context context) {
+        if((int) (DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) >= 30) {
+            return "Esta operação de destruição de stock não pode ser alterada";
+        }
+
+        if (isSyncStatusSent(this.syncStatus)) return "Não pode efectuar alterações sobre este registo, pois já se encontra sincronizado com a central.";
+
         return null;
     }
 
     @Override
     public String canBeRemoved(Context context) {
+        if((int) (DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) >= 30) {
+            return "Esta operação de destruição de stock não pode ser removida";
+        }
+
+        if (isSyncStatusSent(this.syncStatus)) return "Não pode remover este registo, pois já se encontra sincronizado com a central.";
         return null;
     }
 

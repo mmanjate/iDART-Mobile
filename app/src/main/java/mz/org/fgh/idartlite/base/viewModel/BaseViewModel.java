@@ -200,6 +200,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         return serviceProvider;
     }
 
+    @Bindable
     public BaseModel getRelatedRecord() {
         return relatedRecord;
     }

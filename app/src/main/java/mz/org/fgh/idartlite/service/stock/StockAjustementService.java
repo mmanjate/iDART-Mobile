@@ -33,8 +33,8 @@ public class StockAjustementService extends BaseService<StockAjustment> implemen
     }
 
     @Override
-    public void deleteRecord(StockAjustment record) throws SQLException {
-        super.deleteRecord(record);
+    public void delete(StockAjustment record) throws SQLException {
+        super.delete(record);
 
         getDataBaseHelper().getStockAjustmentDao().delete(record);
     }

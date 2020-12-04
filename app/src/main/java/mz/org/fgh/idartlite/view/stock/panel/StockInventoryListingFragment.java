@@ -31,6 +31,7 @@ import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.FragmentStockInventoryBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.stock.inventory.IventoryActivity;
 import mz.org.fgh.idartlite.viewmodel.stock.IventoryListingVM;
@@ -65,7 +66,6 @@ public class StockInventoryListingFragment extends GenericFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -160,31 +160,29 @@ public class StockInventoryListingFragment extends GenericFragment {
         switch (item.getItemId()){
             case R.id.edit:
 
-                String editErrors = getRelatedViewModel().getSelectedRecord().canBeEdited(StockInventoryListingFragment.this.getContext());
+                String editErrors = getRelatedViewModel().getSelectedRecord().canBeEdited(getContext());
 
                 if (Utilities.stringHasValue(editErrors)) {
-                    Utilities.displayAlertDialog(StockInventoryListingFragment.this.getContext(), editErrors).show();
+                    Utilities.displayAlertDialog(getContext(), editErrors).show();
                 } else {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("relatedRecord", getRelatedViewModel().getSelectedRecord());
-                    params.put("user", getRelatedViewModel().getCurrentUser());
-                    params.put("clinic", getMyActivity().getCurrentClinic());
-                    params.put("step", ApplicationStep.STEP_EDIT);
-                    nextActivity(IventoryActivity.class, params);
+                    startInventoryActivity(getRelatedViewModel().getSelectedRecord(), ApplicationStep.STEP_EDIT);
                 }
 
                 return true;
             case R.id.remove:
-                Utilities.displayDeleteConfirmationDialogFromList(StockInventoryListingFragment.this.getContext(), getString(R.string.list_item_delete_msg), getRelatedViewModel().getSelectedRecord().getListPosition(), StockInventoryListingFragment.this).show();
+
+                String removeErrors = getRelatedViewModel().getSelectedRecord().canBeRemoved(getContext());
+
+                if (Utilities.stringHasValue(removeErrors)) {
+                    Utilities.displayAlertDialog(getContext(), removeErrors).show();
+                } else {
+                    Utilities.displayDeleteConfirmationDialogFromList(getContext(), getString(R.string.list_item_delete_msg), getRelatedViewModel().getSelectedRecord().getListPosition(), StockInventoryListingFragment.this).show();
+                }
                 return true;
 
             case R.id.viewDetails:
-                Map<String, Object> params = new HashMap<>();
-                params.put("relatedRecord", getRelatedViewModel().getSelectedRecord());
-                params.put("user", getRelatedViewModel().getCurrentUser());
-                params.put("clinic", getMyActivity().getCurrentClinic());
-                params.put("step", ApplicationStep.STEP_DISPLAY);
-                nextActivity(IventoryActivity.class, params);
+                startInventoryActivity(getRelatedViewModel().getSelectedRecord(), ApplicationStep.STEP_DISPLAY);
+
             default:
                 return false;
         }
@@ -198,10 +196,10 @@ public class StockInventoryListingFragment extends GenericFragment {
 
             doAfterRemove(position);
 
-            Utilities.displayAlertDialog(StockInventoryListingFragment.this.getContext(), getString(R.string.record_sucessfuly_removed)).show();
+            Utilities.displayAlertDialog(getContext(), getString(R.string.record_sucessfuly_removed)).show();
 
         } catch (SQLException e) {
-            Utilities.displayAlertDialog(StockInventoryListingFragment.this.getContext(), getString(R.string.error_removing_record)+ " "+e.getLocalizedMessage()).show();
+            Utilities.displayAlertDialog(getContext(), getString(R.string.error_removing_record)+ " "+e.getLocalizedMessage()).show();
         }
     }
 
@@ -214,11 +212,12 @@ public class StockInventoryListingFragment extends GenericFragment {
         rcvIventory.getAdapter().notifyItemRangeChanged(position, rcvIventory.getAdapter().getItemCount());
     }
 
-    public void startInventoryActivity() {
+    public void startInventoryActivity(Iventory record, String step) {
         Map<String, Object> params = new HashMap<>();
+        if (record != null) params.put("relatedRecord", record);
         params.put("user", getRelatedViewModel().getCurrentUser());
         params.put("clinic", getMyActivity().getCurrentClinic());
-        params.put("step", ApplicationStep.STEP_CREATE);
+        if (Utilities.stringHasValue(step)) params.put("step", step);
         nextActivity(IventoryActivity.class, params);
     }
 }

@@ -106,10 +106,6 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
             record.setEndDate(DateUtilities.getCurrentDate());
             record.setOpen(false);
             update(record);
-        }else {
-            rebuildPreviousStock(record);
-
-            updateAndProcessesAjustments(record);
         }
     }
 
@@ -137,13 +133,13 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
     }
 
     @Override
-    public void deleteRecord(Iventory record) throws SQLException {
-        super.deleteRecord(record);
+    public void delete(Iventory record) throws SQLException {
+        super.delete(record);
 
         List<StockAjustment> ajustmentsOnDb =  ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).getAllOfInventory(record);
 
         for (StockAjustment ajustment : ajustmentsOnDb){
-            ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class).deleteRecord(ajustment);
+            ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class).delete(ajustment);
         }
 
         getDataBaseHelper().getIventoryDao().delete(record);
