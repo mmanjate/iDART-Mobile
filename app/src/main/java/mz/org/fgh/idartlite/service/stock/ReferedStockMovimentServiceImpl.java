@@ -6,11 +6,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.service.ServiceProvider;
 import mz.org.fgh.idartlite.dao.stock.IReferedStockMovimentDao;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.OperationType;
 import mz.org.fgh.idartlite.model.ReferedStockMoviment;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class ReferedStockMovimentServiceImpl extends BaseService<ReferedStockMoviment> implements IReferedStockService {
 
@@ -30,12 +33,39 @@ public class ReferedStockMovimentServiceImpl extends BaseService<ReferedStockMov
     public void save(ReferedStockMoviment record) throws SQLException {
         super.save(record);
 
+        updateStock(record);
+
         getDao().create(record);
+    }
+
+    private void updateStock(ReferedStockMoviment record) throws SQLException {
+        Stock stock = getDataBaseHelper().getStockDao().getByBatchNumber(record.getStock());
+
+        if (stock != null){
+            stock.setStockMoviment(stock.getStockMoviment()+record.getQuantity());
+            getStockService().update(stock);
+            record.setStock(stock);
+        }else {
+            record.getStock().setUnitsReceived(record.getQuantity());
+            record.getStock().setStockMoviment(record.getQuantity());
+            record.getStock().setUuid(Utilities.getNewUUID().toString());
+            getStockService().save(record.getStock());
+        }
+    }
+
+    private IStockService getStockService() {
+        return (IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class);
     }
 
     @Override
     public void update(ReferedStockMoviment record) throws SQLException {
         super.update(record);
+
+        ReferedStockMoviment r = getDao().queryForId(record.getId());
+
+        r.getStock().setStockMoviment(r.getStock().getStockMoviment()-r.getQuantity()+record.getQuantity());
+        getStockService().updateStock(r.getStock());
+
 
         getDao().update(record);
     }
@@ -43,6 +73,11 @@ public class ReferedStockMovimentServiceImpl extends BaseService<ReferedStockMov
     @Override
     public void delete(ReferedStockMoviment record) throws SQLException {
         super.delete(record);
+
+        ReferedStockMoviment r = getDao().queryForId(record.getId());
+
+        r.getStock().setStockMoviment(r.getStock().getStockMoviment()-r.getQuantity());
+        getStockService().updateStock(r.getStock());
 
         getDao().delete(record);
     }
@@ -53,8 +88,8 @@ public class ReferedStockMovimentServiceImpl extends BaseService<ReferedStockMov
     }
 
     @Override
-    public List<Drug> getAllDrugsWithStock() throws SQLException {
-        return getDataBaseHelper().getDrugDao().getAllWithLote(getApplication());
+    public List<Drug> getallDrugs() throws SQLException {
+        return getDataBaseHelper().getDrugDao().getAll();
     }
 
     @Override
@@ -66,7 +101,26 @@ public class ReferedStockMovimentServiceImpl extends BaseService<ReferedStockMov
     public void saveMany(List<ReferedStockMoviment> referedStockMovimentList) throws SQLException {
 
         for (ReferedStockMoviment referedStockMoviment : referedStockMovimentList){
-            save(referedStockMoviment);
+            if (referedStockMoviment.getId() > 0){
+                update(referedStockMoviment);
+            }else {
+                save(referedStockMoviment);
+            }
         }
+    }
+
+    @Override
+    public void tempCreateOperationTypes() throws SQLException {
+        OperationType o1 = new OperationType("Emprestimo");
+        OperationType o2 = new OperationType("Cedencia");
+
+        getDataBaseHelper().getOperationTypeDao().create(o1);
+        getDataBaseHelper().getOperationTypeDao().create(o2);
+
+    }
+
+    @Override
+    public List<ReferedStockMoviment> getAllRelatedReferedStockMoviments(ReferedStockMoviment relatedRecord) throws SQLException {
+        return getDao().queryBuilder().orderBy(ReferedStockMoviment.COLUMN_ID, true).where().eq(ReferedStockMoviment.COLUMN_ORDER_NUMBER, relatedRecord.getOrderNumber()).query();
     }
 }

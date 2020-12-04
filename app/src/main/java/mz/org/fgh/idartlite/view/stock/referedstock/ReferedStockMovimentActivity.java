@@ -33,7 +33,7 @@ public class ReferedStockMovimentActivity extends BaseActivity {
     private ListableSpinnerAdapter operationTypeArrayAdapter;
 
     private ListbleRecycleViewAdapter listbleRecycleViewAdapter;
-    private RecyclerView rcvSelectedDrugs;
+    private RecyclerView rcvReferedStockMoviment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class ReferedStockMovimentActivity extends BaseActivity {
 
         populateSpinners();
 
-        rcvSelectedDrugs = referedStockMovimentBinding.rcvSelectedDrugs;
+        rcvReferedStockMoviment = referedStockMovimentBinding.rcvSelectedDrugs;
 
         referedStockMovimentBinding.registrationDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +61,29 @@ public class ReferedStockMovimentActivity extends BaseActivity {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        getRelatedViewModel().getRelatedRecord().setDate(DateUtilities.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtilities.DATE_FORMAT));
+                        getRelatedViewModel().setRegistrationDate(DateUtilities.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtilities.DATE_FORMAT));
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
+        referedStockMovimentBinding.expireDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int mYear, mMonth, mDay;
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ReferedStockMovimentActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        getRelatedViewModel().setExpireDate(DateUtilities.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtilities.DATE_FORMAT));
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -74,7 +96,12 @@ public class ReferedStockMovimentActivity extends BaseActivity {
                 getRelatedViewModel().setSelectedDrug((Listble) adapterView.getItemAtPosition(pos));
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Utilities.listHasElements(getRelatedViewModel().getReferedStockMovimentList())) displayReferedStockMoviments();
     }
 
     public void populateSpinners(){
@@ -83,6 +110,7 @@ public class ReferedStockMovimentActivity extends BaseActivity {
         referedStockMovimentBinding.autCmpDrugs.setThreshold(1);
 
         operationTypeArrayAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, getRelatedViewModel().getOperationTypeList());
+        referedStockMovimentBinding.setOperationTypeAdapter(operationTypeArrayAdapter);
         referedStockMovimentBinding.spnOperationType.setAdapter(operationTypeArrayAdapter);
     }
 
@@ -116,18 +144,18 @@ public class ReferedStockMovimentActivity extends BaseActivity {
         }
     }
 
-    public void displaySelectedDrugs(){
+    public void displayReferedStockMoviments(){
         if (listbleRecycleViewAdapter != null) {
             listbleRecycleViewAdapter.notifyDataSetChanged();
         }else {
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-            rcvSelectedDrugs.setLayoutManager(mLayoutManager);
-            rcvSelectedDrugs.setItemAnimator(new DefaultItemAnimator());
-            rcvSelectedDrugs.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 0));
+            rcvReferedStockMoviment.setLayoutManager(mLayoutManager);
+            rcvReferedStockMoviment.setItemAnimator(new DefaultItemAnimator());
+            rcvReferedStockMoviment.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 0));
 
 
-            listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvSelectedDrugs, getRelatedViewModel().getReferedStockMovimentList(), this);
-            rcvSelectedDrugs.setAdapter(listbleRecycleViewAdapter);
+            listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvReferedStockMoviment, getRelatedViewModel().getReferedStockMovimentList(), this);
+            rcvReferedStockMoviment.setAdapter(listbleRecycleViewAdapter);
         }
     }
 }

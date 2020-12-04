@@ -10,6 +10,7 @@ import java.util.Date;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.ReferedStockMovimentDaoDaoImpl;
+import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = ReferedStockMoviment.TABLE_NAME, daoClass = ReferedStockMovimentDaoDaoImpl.class)
 public class ReferedStockMoviment extends BaseModel implements Listble<ReferedStockMoviment> {
@@ -54,6 +55,12 @@ public class ReferedStockMoviment extends BaseModel implements Listble<ReferedSt
     private String syncStatus;
 
     public ReferedStockMoviment() {
+        this.listType = Listble.REFERED_STOCK_LISTING;
+    }
+
+    @Override
+    public String getFnmcode() {
+        return this.stock.getDrug().getFnmcode();
     }
 
     public ReferedStockMoviment(Stock stock) {
@@ -143,12 +150,16 @@ public class ReferedStockMoviment extends BaseModel implements Listble<ReferedSt
 
     @Override
     public String canBeEdited(Context context) {
+        if (!Utilities.stringHasValue(this.syncStatus)) return "";
+
         if (isSyncStatusSent(this.syncStatus)) return "Não pode efectuar alterações sobre este registo, pois já se encontra sincronizado com a central.";
         return null;
     }
 
     @Override
     public String canBeRemoved(Context context) {
+        if (!Utilities.stringHasValue(this.syncStatus)) return "";
+
         if (isSyncStatusSent(this.syncStatus)) return "Não pode remover este registo, pois já se encontra sincronizado com a central.";
         return null;
     }
@@ -165,7 +176,7 @@ public class ReferedStockMoviment extends BaseModel implements Listble<ReferedSt
 
     @Override
     public String getDescription() {
-        return null;
+        return this.stock.getDescription();
     }
 
     @Override

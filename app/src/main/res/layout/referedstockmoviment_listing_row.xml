@@ -9,6 +9,7 @@
 
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="mz.org.fgh.idartlite.base.model.BaseModel"/>
     </data>
 
     <LinearLayout
@@ -63,7 +64,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{Utilities.parseIntToString(referedStock.orderNumber)}"
-                        android:paddingBottom="@dimen/dimen_5dp"
                         android:textSize="@dimen/dimen_12dp"
                         android:textStyle="bold"/>
 
@@ -130,7 +130,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="top"
-                        android:src="@{referedStock.isSyncStatusSent(referedStock.syncStatus) ? @drawable/ic_baseline_cloud_done_24 : @drawable/ic_baseline_cloud_queue_24}"/>
+                        android:src="@{referedStock.isSyncStatusSent(referedStock.syncStatus != null ? referedStock.syncStatus : BaseModel.SYNC_SATUS_READY) ? @drawable/ic_baseline_cloud_done_24 : @drawable/ic_baseline_cloud_queue_24}"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

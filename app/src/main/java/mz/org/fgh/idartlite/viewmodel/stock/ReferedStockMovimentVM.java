@@ -6,8 +6,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
@@ -47,13 +49,14 @@ public class ReferedStockMovimentVM extends BaseViewModel {
     protected BaseModel initRecord() {
         ReferedStockMoviment referedStockMoviment = new ReferedStockMoviment();
         referedStockMoviment.setStock(new Stock());
+
         return referedStockMoviment;
     }
 
     @Override
     protected void initFormData() {
         try {
-            List<Drug> drugs = getRelatedService().getAllDrugsWithStock();
+            List<Drug> drugs = getRelatedService().getallDrugs();
             List<OperationType> operationTypes = getRelatedService().getAllOperationTypes();
 
             this.drugList = Utilities.parseList(drugs, Listble.class);
@@ -79,20 +82,50 @@ public class ReferedStockMovimentVM extends BaseViewModel {
     @Override
     public void preInit() {
 
+        if (getRelatedRecord().getStock() != null) getRelatedRecord().getStock().setClinic(getCurrentClinic());
         referedStockMovimentList = new ArrayList<>();
+
+        if (getRelatedRecord().getId() > 0){
+            try {
+                referedStockMovimentList = getRelatedService().getAllRelatedReferedStockMoviments(getRelatedRecord());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (getCurrentStep().isApplicationstepCreate() || getCurrentStep().isApplicationStepEdit()){
+            setViewListEditButton(true);
+            setViewListRemoveButton(true);
+        }
+    }
+
+    @Override
+    public void setSelectedListble(Listble selectedListble) {
+
+        setSelectedRecord((Serializable) selectedListble);
+
+        setSelectedDrug(getRelatedRecord().getStock().getDrug());
+
+        referedStockMovimentList.remove(selectedListble);
+
+        getRelatedActivity().displayReferedStockMoviments();
+
+        notifyChange();
     }
 
     public void addSelectedDrug(){
         ReferedStockMoviment referedStockMoviment = initNewReferedStockMoviment();
 
         if (!referedStockMovimentList.contains(referedStockMoviment)) {
+            referedStockMoviment.setListType(Listble.REFERED_STOCK_LISTING);
+            referedStockMoviment.setSyncStatus(BaseModel.SYNC_SATUS_READY);
             referedStockMovimentList.add(referedStockMoviment);
 
             setSelectedDrug(null);
 
-            getRelatedActivity().displaySelectedDrugs();
+            getRelatedActivity().displayReferedStockMoviments();
 
-            notifyPropertyChanged(BR.selectedDrug);
+            notifyChange();
         }else {
             Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.drug_data_duplication_msg)).show();
         }
@@ -100,13 +133,17 @@ public class ReferedStockMovimentVM extends BaseViewModel {
 
     private ReferedStockMoviment initNewReferedStockMoviment() {
         getRelatedRecord().getStock().setDrug(selectedDrug);
-        getRelatedRecord().clone();
+        ReferedStockMoviment r = getRelatedRecord().clone();
 
         setSelectedRecord(initRecord());
 
-        notifyPropertyChanged(BR.relatedRecord);
+        getRelatedRecord().setDate(r.getDate());
+        getRelatedRecord().setOperationType(r.getOperationType());
+        getRelatedRecord().setOrderNumber(r.getOrderNumber());
+        getRelatedRecord().setOrigin(r.getOrigin());
+        getRelatedRecord().getStock().setClinic(getCurrentClinic());
 
-        return getRelatedRecord().clone();
+        return r;
     }
 
     @Bindable
@@ -131,11 +168,14 @@ public class ReferedStockMovimentVM extends BaseViewModel {
 
     @Bindable
     public String getUnitsReceived(){
+        if (getRelatedRecord().getStock().getUnitsReceived() == 0) return "";
+
         return Utilities.parseIntToString(getRelatedRecord().getStock().getUnitsReceived());
     }
 
     public void setUnitsReceived(String unitsReceived){
-        getRelatedRecord().getStock().setUnitsReceived(Integer.valueOf(unitsReceived));
+        getRelatedRecord().getStock().setUnitsReceived(Utilities.stringHasValue(unitsReceived) ? Integer.parseInt(unitsReceived) : 0);
+        getRelatedRecord().setQuantity(getRelatedRecord().getStock().getUnitsReceived());
         notifyPropertyChanged(BR.unitsReceived);
     }
 
@@ -150,12 +190,34 @@ public class ReferedStockMovimentVM extends BaseViewModel {
     }
 
     @Bindable
+    public Date getRegistrationDate(){
+        return getRelatedRecord().getDate();
+    }
+
+    public void setRegistrationDate(Date registrationDate){
+        getRelatedRecord().setDate(registrationDate);
+        getRelatedRecord().getStock().setDateReceived(registrationDate);
+        notifyPropertyChanged(BR.registrationDate);
+    }
+
+    @Bindable
+    public Date getExpireDate(){
+        return getRelatedRecord().getStock().getExpiryDate();
+    }
+
+    public void setExpireDate(Date expireDate){
+        getRelatedRecord().getStock().setExpiryDate(expireDate);
+        notifyPropertyChanged(BR.expireDate);
+    }
+
+    @Bindable
     public String getOrderNumber(){
-        return getRelatedRecord().getStock().getOrderNumber();
+        return Utilities.parseIntToString(getRelatedRecord().getOrderNumber());
     }
 
     public void setOrderNumber(String orderNumber){
         getRelatedRecord().getStock().setOrderNumber(orderNumber);
+        getRelatedRecord().setOrderNumber(Utilities.stringHasValue(orderNumber) ? Integer.parseInt(orderNumber) : 0);
         notifyPropertyChanged(BR.orderNumber);
     }
 
@@ -172,8 +234,18 @@ public class ReferedStockMovimentVM extends BaseViewModel {
     public void save() {
         try {
             getRelatedService().saveMany(this.referedStockMovimentList);
+
+            Utilities.displayAlertDialog(getRelatedActivity(), "Operação efectuada com sucesso.", ReferedStockMovimentVM.this).show();
         } catch (SQLException e) {
+            Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao gravar os dados "+e.getLocalizedMessage()).show();
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void doOnConfirmed() {
+        if (getCurrentStep().isApplicationStepEdit() || getCurrentStep().isApplicationstepCreate()){
+            getRelatedActivity().finish();
         }
     }
 
@@ -184,7 +256,7 @@ public class ReferedStockMovimentVM extends BaseViewModel {
 
     public void setSelectedDrug(Listble selectedDrug) {
         this.selectedDrug = (Drug) selectedDrug;
-        notifyPropertyChanged(BR.selectedDrug);
+        notifyChange();
     }
 
     public List<Listble> getDrugList() {

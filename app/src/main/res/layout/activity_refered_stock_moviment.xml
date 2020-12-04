@@ -143,7 +143,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_calendar"
-                        android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.relatedRecord.date)}"
+                        android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.registrationDate)}"
                         android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                         style="@style/bottom_border_edit_text_style"/>
 
@@ -231,7 +231,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_calendar"
-                        android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.relatedRecord.stock.expiryDate)}"
+                        android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.expireDate)}"
                         android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                         style="@style/bottom_border_edit_text_style"/>
 
@@ -247,7 +247,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
-                        android:text="@={viewModel.unitsReceived}"
+                        android:text='@={viewModel.unitsReceived}'
                         android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                         style="@style/bottom_border_edit_text_style"/>
 
