@@ -22,6 +22,7 @@ import mz.org.fgh.idartlite.base.service.ServiceProvider;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.util.Utilities;
 
@@ -42,6 +43,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private Listble selectedListble;
     protected User currentUser;
     protected Clinic currentClinic;
+
+    protected ClinicSector currentClinicSector;
 
     protected ServiceProvider serviceProvider;
 
@@ -194,6 +197,16 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     public void setCurrentClinic(Clinic currentClinic) {
         this.currentClinic = currentClinic;
         notifyPropertyChanged(BR.currentClinic);
+    }
+
+    @Bindable
+    public ClinicSector getCurrentClinicSector() {
+        return currentClinicSector;
+    }
+
+    public void setCurrentClinicSector(ClinicSector currentClinicSector) {
+        this.currentClinicSector = currentClinicSector;
+        notifyPropertyChanged(BR.currentClinicSector);
     }
 
     public ServiceProvider getServiceProvider() {

@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,13 +87,14 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
             public void onClick(View view) {
 
                 Patient patient = getMyActivity().getPatient();
-
+                List<Dispense> dispensesList=getDispenseList();
                 if (!getRelatedViewModel().patientHasEpisodioFim(patient)) {
                     Intent intent = new Intent(getContext(), CreateDispenseActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("user", getCurrentUser());
                     bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
                     bundle.putSerializable("patient", patient);
+                    bundle.putSerializable("dispenses", (Serializable) dispensesList);
                     bundle.putSerializable("step", ApplicationStep.STEP_CREATE);
                     intent.putExtras(bundle);
                     startActivity(intent);
@@ -266,6 +268,14 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
             dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
             displayDataOnRecyclerView(rcvDispences, dispenseAdapter, getContext());
         }
+    }
+
+    public List<Dispense> getDispenseList() {
+        return dispenseList;
+    }
+
+    public void setDispenseList(List<Dispense> dispenseList) {
+        this.dispenseList = dispenseList;
     }
 
     public void removeDispenseConfirmation() {

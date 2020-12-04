@@ -11,4 +11,7 @@ public interface IClinicSectorDao extends IGenericDao<ClinicSector, Integer> {
 
     public List<ClinicSector> getClinicSectorsByClinic(Clinic clinic) throws SQLException;
 
+
+    public ClinicSector getClinicSector() throws SQLException ;
+
 }

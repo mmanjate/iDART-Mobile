@@ -104,4 +104,8 @@ dependencies {
     implementation 'joda-time:joda-time:2.9.6'
     implementation 'org.apache.commons:commons-lang3:3.6'
 
+    //itext
+    compile 'com.itextpdf:itext-pdfa:5.5.10'
+    compile 'com.itextpdf:itextg:5.5.9'
+
 }

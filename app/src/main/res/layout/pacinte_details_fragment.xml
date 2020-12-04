@@ -8,6 +8,7 @@
             name="viewModel"
             type="mz.org.fgh.idartlite.viewmodel.patient.PatientDemographicsVM" />
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="android.view.View"/>
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -328,6 +329,7 @@
                             android:layout_margin="@dimen/fab_margin"
                             android:src="@android:drawable/ic_menu_edit"
                             app:backgroundTint="@color/colorPrimary"
+                            android:visibility="@{viewModel.currentStep.checkSanitaryUnit(viewModel.currentClinic) ? View.VISIBLE: View.GONE}"
                             android:onClick="@{() -> viewModel.editPatient()}"
                             app:elevation="6dp"
                             app:pressedTranslationZ="12dp" />

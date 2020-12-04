@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +20,14 @@ import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.rest.service.RestRunDataForTestService;
+
 import mz.org.fgh.idartlite.rest.service.User.RestUserService;
+import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
+import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.user.IUserService;
 import mz.org.fgh.idartlite.service.user.UserService;
@@ -36,13 +41,21 @@ public class LoginVM extends BaseViewModel {
     private IUserService userService;
     private IClinicService clinicService;
 
+    private IClinicSectorService clinicSectorService;
+
     private Clinic selectedClinic;
 
+    private ClinicSector selectedClinicSector;
+
     private List<Clinic> clinicList;
+
+    private List<ClinicSector> clinicSectorsList=new ArrayList<>();
 
     private boolean authenticating;
 
     private boolean remeberMe;
+
+    private boolean sanitaryUnit;
 
     public LoginVM(@NonNull Application application) {
         super(application);
@@ -50,6 +63,7 @@ public class LoginVM extends BaseViewModel {
         userService = new UserService(getApplication(), getCurrentUser());
         restUserService = new RestUserService(getApplication(), getCurrentUser());
         clinicService = new ClinicService(getApplication(), getCurrentUser());
+        clinicSectorService= new ClinicSectorService(getApplication(),getCurrentUser());
     }
 
     @Override
@@ -109,6 +123,12 @@ public class LoginVM extends BaseViewModel {
         clinicService.saveClinic(getCurrentClinic());
     }
 
+    public void saveUserClinicSector() throws SQLException {
+        ClinicSector clinicSectore= (ClinicSector) getSelectedClinicSector();
+        clinicSectore.setClinic(clinicService.getAllClinics().get(0));
+        clinicSectorService.saveClinicSector(clinicSectore);
+    }
+
     public void login() {
         getRelatedActivity().changeViewToAuthenticatingMode();
         getRelatedActivity().getActivityLoginBinding().executePendingBindings();
@@ -132,12 +152,16 @@ public class LoginVM extends BaseViewModel {
                 } else {
                     // Somente para testes --- estas funcionalidades foram alocadas no WorkManager da app
                     if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
-                        RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
+                      //  RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
                     }
 
                     if (!userService.login(getCurrentUser())) {
                         if (Utilities.listHasElements(clinicService.getAllClinics())) {
                             setCurrentClinic(clinicService.getAllClinics().get(0));
+                            if(currentClinic.getPharmacyType().getDescription().equalsIgnoreCase("Unidade Sanitária")){
+                                setCurrentClinicSector(clinicSectorService.getClinicSector());
+                            }
+
                             getRelatedActivity().changeViewToNormalMode();
                             moveToHome();
                             this.getRelatedActivity().savingSharedPreferences();
@@ -192,13 +216,16 @@ public class LoginVM extends BaseViewModel {
     public void saveUserSettingsAndProcced() throws SQLException {
         saveUserClinic();
         saveLogingUser();
-
+        if(isSanitaryUnit()) {
+            saveUserClinicSector();
+        }
         moveToSecondSplsh();
     }
 
     public void moveToSecondSplsh() {
         Map<String, Object> params = new HashMap<>();
         params.put("user", getCurrentUser());
+        if(getCurrentClinicSector()!=null)params.put("clinicSector", getCurrentClinicSector());
         params.put("clinic", getCurrentClinic());
         getRelatedActivity().nextActivity(SecondSplashActivity.class, params);
     }
@@ -206,6 +233,8 @@ public class LoginVM extends BaseViewModel {
     private void moveToHome() {
         Map<String, Object> params = new HashMap<>();
         params.put("user", getCurrentUser());
+        if(getCurrentClinicSector()!=null)
+        {params.put("clinicSector", getCurrentClinicSector());}
         params.put("clinic", getCurrentClinic());
         getRelatedActivity().nextActivity(HomeActivity.class, params);
     }
@@ -218,7 +247,39 @@ public class LoginVM extends BaseViewModel {
     public void setSelectedClinic(Listble selectedClinic) {
         this.selectedClinic = (Clinic) selectedClinic;
         setCurrentClinic(this.selectedClinic);
+
+        clinicSectorsList.clear();
+        getClinicSectorsList().add(new ClinicSector());
+        if(((Clinic) selectedClinic).getClinicName()!=null && verifySanitaryUnit()) {
+            getClinicSectorsList().addAll(((Clinic) selectedClinic).getClinicSectorList());
+            getRelatedActivity().loadClinicSectorAdapter();
+
+        }
         notifyPropertyChanged(BR.selectedClinic);
+        notifyPropertyChanged(BR.selectedClinicSector);
+        notifyPropertyChanged(BR.sanitaryUnit);
+
+    }
+
+    @Bindable
+    public Listble getSelectedClinicSector() {
+        return selectedClinicSector;
+    }
+
+    public void setSelectedClinicSector(Listble selectedClinicSector) {
+        this.selectedClinicSector = (ClinicSector) selectedClinicSector;
+     //   setCurrentClinic(this.selectedClinic);
+        notifyPropertyChanged(BR.selectedClinicSector);
+    }
+
+    @Bindable
+    public List<ClinicSector> getClinicSectorsList() {
+        return clinicSectorsList;
+    }
+
+    public void setClinicSectorsList(List<ClinicSector> clinicSectorsList) {
+        this.clinicSectorsList = clinicSectorsList;
+        notifyPropertyChanged(BR.clinicSectorsList);
     }
 
     @Bindable
@@ -253,5 +314,27 @@ public class LoginVM extends BaseViewModel {
 
     public void changeRemeberMeStatus(){
         setRemeberMe(!isRemeberMe());
+    }
+
+    @Bindable
+    public boolean isSanitaryUnit() {
+        return sanitaryUnit;
+    }
+
+    public void setSanitaryUnit(boolean sanitaryUnit) {
+        this.sanitaryUnit = sanitaryUnit;
+        notifyPropertyChanged(BR.sanitaryUnit);
+    }
+
+    public boolean verifySanitaryUnit(){
+
+        Clinic clinic= (Clinic) getSelectedClinic();
+        if(clinic!=null) {
+            if (clinic.getPharmacyType().getDescription().equalsIgnoreCase("Unidade Sanitária"))
+                return sanitaryUnit=true;
+        }
+
+            return sanitaryUnit=false;
+
     }
 }

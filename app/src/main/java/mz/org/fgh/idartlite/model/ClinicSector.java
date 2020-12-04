@@ -10,12 +10,13 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.clinic.ClinicSectorDaoImpl;
 import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "clinicSector", daoClass = ClinicSectorDaoImpl.class)
-public class ClinicSector extends BaseModel {
+public class ClinicSector extends BaseModel implements Listble {
 
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_CODE = "code";
@@ -39,8 +40,16 @@ public class ClinicSector extends BaseModel {
 	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
 
-	@DatabaseField(columnName = COLUMN_CLINIC_ID)
-	private int clinicId;
+	@DatabaseField(columnName = COLUMN_CLINIC_ID,canBeNull = false, foreign = true, foreignAutoRefresh = true )
+	private Clinic clinic;
+
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
+	}
 
 	public ClinicSector() {
 	}
@@ -58,6 +67,16 @@ public class ClinicSector extends BaseModel {
 
 	public int getId() {
 		return id;
+	}
+
+	@Override
+	public String getDescription() {
+		return getSectorName();
+	}
+
+	@Override
+	public int getDrawable() {
+		return 0;
 	}
 
 	public void setId(int id) {
@@ -96,13 +115,6 @@ public class ClinicSector extends BaseModel {
 		this.uuid = uuid;
 	}
 
-	public int getClinicId() {
-		return clinicId;
-	}
-
-	public void setClinicId(int clinicId) {
-		this.clinicId = clinicId;
-	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -143,5 +155,10 @@ public class ClinicSector extends BaseModel {
 	@Override
 	public String canBeRemoved(Context context) {
 		return null;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		return 0;
 	}
 }

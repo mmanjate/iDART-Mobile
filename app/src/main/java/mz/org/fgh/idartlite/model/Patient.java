@@ -5,7 +5,9 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import mz.org.fgh.idartlite.R;
@@ -92,6 +94,11 @@ public class Patient extends BaseModel {
 	private Province province;
 
 	private List<Episode> episodes;
+	@ForeignCollectionField(eager = false)
+	private ForeignCollection<Episode> episodes1;
+
+	@ForeignCollectionField(eager = false)
+	private  ForeignCollection<Prescription> prescriptions;
 
 	public int getId() {
 		return id;
@@ -313,6 +320,26 @@ public class Patient extends BaseModel {
 		if(DateUtilities.dateDiff(this.startARVDate, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT) > 0) {
 			return context.getString(R.string.tarv_inital_date_not_correct );
 		}
+		return "";
+	}
+
+	public ForeignCollection<Episode> getEpisodes1() {
+		return episodes1;
+	}
+
+	public void setEpisodes1(ForeignCollection<Episode> episodes1) {
+		this.episodes1 = episodes1;
+	}
+
+	public ForeignCollection<Prescription> getPrescriptions() {
+		return prescriptions;
+	}
+
+	public void setPrescriptions(ForeignCollection<Prescription> prescriptions) {
+		this.prescriptions = prescriptions;
+	}
+
+	public String getEmptyString(){
 		return "";
 	}
 

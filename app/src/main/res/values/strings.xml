@@ -104,11 +104,11 @@
     <string name="see_olny_regimen_grugs">Visualizar apenas medicamentos do regime terapêutico?</string>
     <string name="drugs">Medicamentos *</string>
     <string name="adicionar_prescri_o_dados_iniciais">Adicionar Prescrição - Dados Iniciais</string>
-    <string name="prescription_date">Data da Prescrição</string>
+    <string name="prescription_date">Data da Prescrição:</string>
     <string name="duration">Duração</string>
     <string name="therapeutic_regimen">Regime Terapêutico</string>
     <string name="therapeutic_line">Linha Terapêutica</string>
-    <string name="dispense_type">Tipo de Dispensa</string>
+    <string name="dispense_type">Tipo de Dispensa: </string>
     <string name="adicionar_prescri_o_medicamentos">Adicionar Prescrição - Medicamentos</string>
     <string name="drug_list">Lista de Medicamentos *</string>
     <string name="adicionar_prescri_o_prescri_o_especial">Adicionar Prescrição - Prescrição Especial</string>
@@ -264,4 +264,12 @@
     <string name="would_like_to_create_new_prescription">O Retorno foi efectuado com Sucesso. Pretende Criar uma nova Prescrição ?</string>
 
     <string name="cant_return_dispense">Ja Foi Efectuado o retorno uma vez, não pode voltar a refazer.</string>
+
+    <string name="clinic_sector">Paragem Unica</string>
+
+    <string name="would_like_create_patient">Não foram encontrados resultados para a sua pesquisa, Pesquise denovo melhorando os Filtros. Pretende Cadastrar o Paciente?</string>
+
+    <string name="are_sure_work_this_patient">Tem Certeza que pretende trabalhar com este paciente? Os Seus dados serao baixados</string>
+
+    <string name="dta_levantamento">Data Levan</string>
 </resources>

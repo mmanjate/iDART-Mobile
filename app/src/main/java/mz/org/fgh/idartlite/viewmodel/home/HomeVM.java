@@ -62,6 +62,7 @@ public class HomeVM extends BaseViewModel {
         return getRelatedActivity().getCurrentClinic().getClinicName();
     }
 
+
     @Bindable
     public String getPhone(){
         return  getRelatedActivity().getCurrentClinic().getPhone();

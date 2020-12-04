@@ -6,13 +6,16 @@ import android.util.Log;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.dao.patient.IPatientDao;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
@@ -144,6 +147,37 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
     public Patient checkExistsPatientWithNID(String nid) throws SQLException {
        return getDataBaseHelper().getPatientDao().checkExistsPatientWithNID(nid);
     }
+
+    @Override
+    public List<Patient> getPatientsBetweenStartDateAndEndDate(Application application,Date start, Date end, long offset, long limit) throws SQLException {
+
+      /* episodeService = new EpisodeService(application, currentUser);
+         List<Episode> startEpisodes=episodeService.getAllStartEpisodesBetweenStartDateAndEndDate(start,end,offset,limit);
+
+         List<Patient> patients=new ArrayList<>();
+        for (Episode episode:
+             startEpisodes) {
+            patients.add(episode.getPatient());
+
+        }
+        return  patients;*/
+
+      return patientDao.getAllPatientsBetweenStartDateAndEndDate(application,start,end,offset,limit);
+    }
+
+    @Override
+    public List<Patient> searchPatientByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit, RestResponseListener listener) throws SQLException {
+
+        List<Patient> patients=new ArrayList<>();
+        patients= patientDao.searchPatientByNidOrNameOrSurname(nid,name,surname,offset,limit);
+
+      /*  if(patients.isEmpty()){
+            List<Patient> patients1 = RestPatientService.restGetPatientByNidOrNameOrSurname(nid, name, surname, this);
+*/
+         //   }
+        return patients;
+    }
+
 
     private String getFullAdreess(String address1, String address2, String address3) {
         return address1 + " " + address2 + " " + address3;

@@ -18,6 +18,7 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.rest.service.clinic.RestClinicService;
 import mz.org.fgh.idartlite.rest.service.Disease.RestDiseaseTypeService;
@@ -33,7 +34,7 @@ import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.login.LoginActivity;
 import mz.org.fgh.idartlite.viewmodel.splash.SplashVM;
 
-public class SplashActivity extends BaseActivity implements RestResponseListener, IDialogListener {
+public class SplashActivity extends BaseActivity implements RestResponseListener<Clinic>, IDialogListener {
 
     private static final String TAG = "SplashActivity";
 
@@ -191,6 +192,21 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
             }
         });
     }
+
+    @Override
+    public void doOnRestSucessResponseObject(String flag, Clinic object) {
+
+    }
+
+    @Override
+    public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {
+
+    }
+
+
+
+
+
 
     @Override
     public void doOnConfirmed() {

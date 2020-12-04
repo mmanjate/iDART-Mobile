@@ -7,7 +7,9 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
@@ -93,5 +95,17 @@ public class ProvinceService extends BaseService implements IProvinceService {
         }
 
          return result;
+    }
+
+    @Override
+    public Map<String, Province> getProvincesInMap() throws SQLException {
+       List<Province> provinces= this.getAllProvinces();
+
+        Map<String, Province> provinceMap=new HashMap<>();
+       for (Province province:provinces){
+           provinceMap.put(province.getDescription(),province);
+       }
+
+       return provinceMap;
     }
 }

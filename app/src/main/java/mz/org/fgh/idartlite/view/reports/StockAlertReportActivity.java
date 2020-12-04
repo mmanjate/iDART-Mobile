@@ -1,9 +1,13 @@
 package mz.org.fgh.idartlite.view.reports;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.Toolbar;
@@ -91,5 +95,54 @@ public class StockAlertReportActivity extends BaseActivity {
     @Override
     public BaseViewModel initViewModel() {
         return null;
+    }
+
+    public void showDialog(Activity activity, Bundle savedInstanceState){
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.activity_stock_alert_report_dialog);
+        dispenseService= new DispenseService(activity.getApplication(), getCurrentUser());
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity.getApplication());
+
+
+        RecyclerView reyclerStock = (RecyclerView) dialog.findViewById(R.id.reyclerStock);
+
+        reyclerStock.setLayoutManager(layoutManager);
+        reyclerStock.setHasFixedSize(true);
+        reyclerStock.addItemDecoration(new DividerItemDecoration(activity.getApplication(), LinearLayout.VERTICAL));
+        List<StockReportData> stockReport=new ArrayList<>();
+        try {
+            stockReport= dispenseService.getStockAlertReportLastThreeMonthsPeriod();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        listbleReportRecycleViewAdapter = new ListbleReportRecycleViewAdapter(reyclerStock, stockReport, (BaseActivity) activity);
+        reyclerStock.setAdapter(listbleReportRecycleViewAdapter);
+
+
+
+        LinearLayout dialogButton = (LinearLayout) dialog.findViewById(R.id.layoutId);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button ok = (Button) dialog.findViewById(R.id.buttonId);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        if(!stockReport.isEmpty()) {
+            dialog.show();
+        }
+
     }
 }

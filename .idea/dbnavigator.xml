@@ -27,7 +27,15 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="baff84a6-a0fa-420b-9410-1ffa63f40974">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from patient;]]></console>
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from pharmacy_type;
+
+
+select * from dispense;
+
+
+select * from patient p 
+inner join episode e on e.patient_id=p.id
+inner join prescription pr on pr.patient_id=p.id order by pr.prescription_date desc;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -43,6 +51,11 @@
       </filter>
     </filter-actions>
     <filter-actions connection-id="baff84a6-a0fa-420b-9410-1ffa63f40974" dataset="main.Dispense" active-filter-id="" />
+    <filter-actions connection-id="baff84a6-a0fa-420b-9410-1ffa63f40974" dataset="main.pharmacy_type" active-filter-id="5bd14e50-d53e-4e3e-acd8-860871ed5cc8">
+      <filter id="5bd14e50-d53e-4e3e-acd8-860871ed5cc8" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="id" operator="=" value="" active="true" />
+      </filter>
+    </filter-actions>
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />

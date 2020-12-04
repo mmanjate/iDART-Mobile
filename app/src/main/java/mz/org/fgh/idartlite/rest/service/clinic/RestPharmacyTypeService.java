@@ -8,24 +8,35 @@ import androidx.collection.ArrayMap;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.Map;
 
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
+import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
+import mz.org.fgh.idartlite.service.clinic.ClinicService;
+import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
 import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
+import mz.org.fgh.idartlite.service.episode.EpisodeService;
 
 public class RestPharmacyTypeService extends BaseRestService {
 
     private static final String TAG = "RestPharmacyTypeService";
     private static IPharmacyTypeService pharmacyTypeService;
 
+
+
     public RestPharmacyTypeService(Application application, User currentUser) {
         super(application, currentUser);
 
         pharmacyTypeService = (IPharmacyTypeService) getServiceFactory().get(PharmacyTypeService.class);
+
 
     }
 
@@ -72,4 +83,6 @@ public class RestPharmacyTypeService extends BaseRestService {
             });
         });
     }
+
+
 }

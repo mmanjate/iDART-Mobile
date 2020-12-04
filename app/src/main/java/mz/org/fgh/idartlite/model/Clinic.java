@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
@@ -51,6 +52,10 @@ public class Clinic extends BaseModel implements Listble {
 
 	@DatabaseField(columnName = COLUMN_REST_ID)
 	private int restid;
+
+
+	private List<ClinicSector> clinicSectorList;
+
 
 	public Clinic() {
 	}
@@ -172,7 +177,7 @@ public class Clinic extends BaseModel implements Listble {
 		if(clinicName == null && address == null){
 			return " ";
 		}else{
-			return  clinicName +" - " + address.subSequence(0,address.indexOf(" "));
+			return  clinicName;
 		}
 	}
 
@@ -194,5 +199,13 @@ public class Clinic extends BaseModel implements Listble {
 	@Override
 	public String canBeRemoved(Context context) {
 		return null;
+	}
+
+	public List<ClinicSector> getClinicSectorList() {
+		return clinicSectorList;
+	}
+
+	public void setClinicSectorList(List<ClinicSector> clinicSectorList) {
+		this.clinicSectorList = clinicSectorList;
 	}
 }

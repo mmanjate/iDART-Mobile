@@ -115,7 +115,19 @@
                             style="@style/bottom_border_edit_text_style"/>
 
 
+                        <TextView
+                            style="@style/input_labels"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/notas_admissao" />
 
+                        <EditText
+                            android:id="@+id/addAdmissionNotes"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.notes}"
+                            android:drawableLeft="@drawable/ic_round_notes_24"
+                            android:inputType="textMultiLine" />
 
 
                         <LinearLayout

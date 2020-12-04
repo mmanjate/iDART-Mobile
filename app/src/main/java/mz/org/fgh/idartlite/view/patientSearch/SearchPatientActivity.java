@@ -115,7 +115,7 @@ public class SearchPatientActivity extends BaseActivity {
 
     public void displaySearchResult() {
         if (adapter == null) {
-            adapter = new ContentListPatientAdapter(recyclerPatient, getRelatedViewModel().getAllDisplyedRecords(), this);
+            adapter = new ContentListPatientAdapter(recyclerPatient, getRelatedViewModel().getAllDisplyedRecords(), this,false);
             recyclerPatient.setAdapter(adapter);
         }
 

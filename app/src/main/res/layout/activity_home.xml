@@ -106,9 +106,17 @@
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:layout_marginBottom="@dimen/dimen_8dp"
+                    android:layout_marginBottom="@dimen/dimen_8dp" />
 
-                     />
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.currentClinicSector.sectorName}"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/dimen_8dp" />
 
                 <TextView
                     android:id="@+id/textView"
