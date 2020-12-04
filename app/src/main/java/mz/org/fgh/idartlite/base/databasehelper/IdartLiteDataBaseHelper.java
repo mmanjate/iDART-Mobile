@@ -26,11 +26,13 @@ import mz.org.fgh.idartlite.dao.drug.ITherapeuticLineDao;
 import mz.org.fgh.idartlite.dao.drug.ITherapeuticRegimenDao;
 import mz.org.fgh.idartlite.dao.episode.IEpisodeDao;
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
+import mz.org.fgh.idartlite.dao.param.operationtype.IOperationTypeDao;
 import mz.org.fgh.idartlite.dao.patient.IPatientDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescribedDrugDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescriptionDao;
 import mz.org.fgh.idartlite.dao.stock.IDestroyedDrugDao;
 import mz.org.fgh.idartlite.dao.stock.IIventoryDao;
+import mz.org.fgh.idartlite.dao.stock.IReferedStockMovimentDao;
 import mz.org.fgh.idartlite.dao.stock.IStockAjustmentDao;
 import mz.org.fgh.idartlite.dao.stock.IStockDao;
 import mz.org.fgh.idartlite.dao.territory.ICountryDao;
@@ -50,11 +52,13 @@ import mz.org.fgh.idartlite.model.District;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Form;
+import mz.org.fgh.idartlite.model.OperationType;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Province;
+import mz.org.fgh.idartlite.model.ReferedStockMoviment;
 import mz.org.fgh.idartlite.model.RegimenDrug;
 import mz.org.fgh.idartlite.model.ReturnedDrug;
 import mz.org.fgh.idartlite.model.Stock;
@@ -104,6 +108,9 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private IClinicSectorDao clinicSectorDao;
     private IReturnedDrugDao returnedDrugDao;
 
+    private IReferedStockMovimentDao referedStockMovimentDao;
+    private IOperationTypeDao operationTypeDao;
+
  //   private IPatientSectorDao patientSectorDao;
 
 
@@ -151,7 +158,6 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     public IPatientDao getPatientDao() throws SQLException {
         if(patientDao == null){
-
             patientDao = getDao(Patient.class);
         }
         return patientDao;
@@ -283,7 +289,21 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         return subdistrictDao;
     }
 
-   /* public IPatientSectorDao getPatientSectorDao() throws SQLException {
+    public IReferedStockMovimentDao getReferedStockMovimentDao() throws SQLException {
+        if(referedStockMovimentDao == null){
+            referedStockMovimentDao = getDao(ReferedStockMoviment.class);
+        }
+        return referedStockMovimentDao;
+    }
+
+    public IOperationTypeDao getOperationTypeDao() throws SQLException {
+        if(operationTypeDao == null){
+            operationTypeDao = getDao(OperationType.class);
+        }
+        return operationTypeDao;
+    }
+
+    /* public IPatientSectorDao getPatientSectorDao() throws SQLException {
         if(patientSectorDao == null){
             patientSectorDao = getDao(PatientSector.class);
         }
@@ -352,6 +372,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, Subdistrict.class);
             TableUtils.createTableIfNotExists(connectionSource, ClinicSector.class);
             TableUtils.createTableIfNotExists(connectionSource, ReturnedDrug.class);
+            TableUtils.createTableIfNotExists(connectionSource, ReferedStockMoviment.class);
+            TableUtils.createTableIfNotExists(connectionSource, OperationType.class);
 
 
         } catch (SQLException e) {
@@ -374,7 +396,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private void dropTables() {
         try {
             TableUtils.dropTable(connectionSource, DispenseType.class, true);
-            TableUtils.dropTable(connectionSource, ClinicSector.class, true);
+
             TableUtils.dropTable(connectionSource, DiseaseType.class, true);
             TableUtils.dropTable(connectionSource, PharmacyType.class, true);
             TableUtils.dropTable(connectionSource, Clinic.class, true);
@@ -399,7 +421,9 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Province.class, true);
             TableUtils.dropTable(connectionSource, District.class, true);
             TableUtils.dropTable(connectionSource, Subdistrict.class, true);
-
+            TableUtils.dropTable(connectionSource, ClinicSector.class, true);
+            TableUtils.dropTable(connectionSource, ReferedStockMoviment.class, true);
+            TableUtils.dropTable(connectionSource, OperationType.class, true);
 
         } catch (SQLException e) {
             e.printStackTrace();

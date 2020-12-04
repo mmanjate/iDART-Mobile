@@ -14,10 +14,8 @@ public interface IBaseService<T extends BaseModel> {
 
     void save(T record) throws SQLException;
 
+    void update(T record) throws SQLException;
 
-    void update(T relatedRecord) throws SQLException;
-
-    void deleteRecord(T selectedRecord) throws SQLException;
-
+    void delete(T record) throws SQLException;
 
 }

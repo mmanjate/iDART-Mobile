@@ -10,6 +10,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
+import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.inventory.Iventory;
 import mz.org.fgh.idartlite.service.stock.IIventoryService;
 import mz.org.fgh.idartlite.service.stock.IventoryService;
@@ -72,7 +73,7 @@ public class IventoryListingVM extends SearchVM<Iventory> {
     }
 
     public void deleteRecord(Iventory selectedRecord) throws SQLException {
-        getRelatedService().deleteRecord(selectedRecord);
+        getRelatedService().delete(selectedRecord);
     }
 
     public void requestForNewRecord(){
@@ -80,7 +81,7 @@ public class IventoryListingVM extends SearchVM<Iventory> {
             if (getRelatedService().isLastInventoryOpen()){
                 Utilities.displayAlertDialog(getRelatedFragment().getContext(), "O último inventário iniciado ainda não foi terminado, por favor terminar para iniciar novo.").show();
             }else {
-                getRelatedFragment().startInventoryActivity();
+                getRelatedFragment().startInventoryActivity(null, ApplicationStep.STEP_CREATE);
             }
         } catch (SQLException e) {
             e.printStackTrace();

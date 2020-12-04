@@ -19,6 +19,8 @@
         <activity android:name=".view.patientSearch.NewPatientSearchActivity"></activity>
         <activity android:name=".view.reports.PatientRegisterReportActivity" />
         <activity android:name=".view.dispense.ReturnDispenseActivity" />
+        <activity android:name=".view.stock.referedstock.ReferedStockMovimentActivity"></activity>
+        <activity android:name=".view.dispense.ReturnDispenseActivity" />
         <activity android:name=".view.patientPanel.AddNewPatientActivity" />
         <activity android:name=".view.home.PatientHomeActivity" />
         <activity android:name=".view.reports.ReportTypeActivity" />
@@ -26,7 +28,7 @@
         <activity android:name=".view.reports.DispenseReportActivity" />
         <activity android:name=".view.reports.DispensedDrugsReportActivity" />
         <activity android:name=".view.reports.StockAlertReportActivity" />
-        <activity android:name=".view.stock.inventory.IventoryActivity" />
+        <activity android:name=".view.stock.inventory.IventoryActivity"/>
         <activity android:name=".view.stock.destroy.DestroyStockActivity" />
 
         <provider
