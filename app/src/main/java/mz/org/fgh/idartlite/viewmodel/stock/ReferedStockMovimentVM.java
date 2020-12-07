@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
-import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
@@ -58,7 +57,7 @@ public class ReferedStockMovimentVM extends BaseViewModel {
         try {
 
             getRelatedService().tempCreateOperationTypes();
-            
+
             List<Drug> drugs = getRelatedService().getallDrugs();
             List<OperationType> operationTypes = getRelatedService().getAllOperationTypes();
 
@@ -96,7 +95,7 @@ public class ReferedStockMovimentVM extends BaseViewModel {
             }
         }
 
-        if (getCurrentStep().isApplicationstepCreate() || getCurrentStep().isApplicationStepEdit()){
+        if (getCurrentStep().isApplicationstepCreate() || getCurrentStep().isApplicationStepEdit() || getCurrentStep().isApplicationStepList()){
             setViewListEditButton(true);
             setViewListRemoveButton(true);
         }
@@ -105,14 +104,25 @@ public class ReferedStockMovimentVM extends BaseViewModel {
     @Override
     public void setSelectedListble(Listble selectedListble) {
 
-        setSelectedRecord((Serializable) selectedListble);
+        super.setSelectedListble(selectedListble);
 
-        setSelectedDrug(getRelatedRecord().getStock().getDrug());
+        try {
+            if (getCurrentStep().isApplicationStepRemove()){
+                getRelatedService().delete((ReferedStockMoviment) selectedListble);
+                if (Utilities.listHasElements(referedStockMovimentList)){
+                    getCurrentStep().changeToList();
+                }else getRelatedActivity().finish();
+            }else {
+                setSelectedRecord((Serializable) selectedListble);
 
+                setSelectedDrug(getRelatedRecord().getStock().getDrug());
 
-        //getRelatedActivity().displayReferedStockMoviments();
-
-        notifyChange();
+                notifyPropertyChanged(BR.currentStep);
+                notifyChange();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addSelectedDrug(){
@@ -128,8 +138,17 @@ public class ReferedStockMovimentVM extends BaseViewModel {
             getRelatedActivity().displayReferedStockMoviments();
 
             notifyChange();
-        }else {
-            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.drug_data_duplication_msg)).show();
+        }
+
+        /**
+         * Update header info
+         */
+        if (getCurrentStep().isApplicationStepEdit()){
+            for (ReferedStockMoviment r : referedStockMovimentList){
+                r.setDate(r.getDate());
+                r.setOperationType(r.getOperationType());
+                r.setOrderNumber(r.getOrderNumber());
+            }
         }
     }
 
@@ -234,14 +253,21 @@ public class ReferedStockMovimentVM extends BaseViewModel {
 
     @Override
     public void save() {
+        if (getCurrentStep().isApplicationStepEdit()){
+            addSelectedDrug();
+            getCurrentStep().changeToList();
+            notifyChange();
+        }
+
         try {
             getRelatedService().saveMany(this.referedStockMovimentList);
 
             Utilities.displayAlertDialog(getRelatedActivity(), "Operação efectuada com sucesso.", ReferedStockMovimentVM.this).show();
         } catch (SQLException e) {
-            Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao gravar os dados "+e.getLocalizedMessage()).show();
+            Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao gravar os dados " + e.getLocalizedMessage()).show();
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -271,5 +297,20 @@ public class ReferedStockMovimentVM extends BaseViewModel {
 
     public List<Listble> getReferedStockMovimentList() {
         return Utilities.parseList(referedStockMovimentList, Listble.class);
+    }
+
+    public void cancel(){
+        if (getCurrentStep().isApplicationStepEdit()){
+            preInit();
+            getCurrentStep().changeToList();
+
+            getRelatedActivity().displayReferedStockMoviments();
+            notifyChange();
+        }
+    }
+
+    @Bindable
+    public boolean isHideList(){
+        return getCurrentStep().isApplicationStepEdit();
     }
 }

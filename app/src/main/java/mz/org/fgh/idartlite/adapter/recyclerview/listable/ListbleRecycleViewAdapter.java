@@ -119,6 +119,7 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
             ((ListbleViewHolder) viewHolder).listableItemBinding.imvRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    activity.getRelatedViewModel().getCurrentStep().changeToRemove();
                     Utilities.displayDeleteConfirmationDialogFromList(activity, activity.getString(R.string.list_item_delete_msg), position - 1, ListbleRecycleViewAdapter.this).show();
                 }
             });
@@ -126,7 +127,8 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
             ((ListbleViewHolder) viewHolder).listableItemBinding.imvEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    remove(position-1);
+                    activity.getRelatedViewModel().getCurrentStep().changeToEdit();
+                    activity.getRelatedViewModel().setSelectedListble(listbles.get(position - 1));
 
                 }
             });
@@ -143,9 +145,13 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
         return listbles.get(position-1);
     }
 
+    @Override
     public void remove(int position) {
-        activity.getRelatedViewModel().setSelectedListble(listbles.get(position));
+        Listble listble = listbles.get(position);
+        
         listbles.remove(listbles.get(position));
+
+        activity.getRelatedViewModel().setSelectedListble(listble);
 
         notifyItemRemoved(position);
         recyclerView.removeViewAt(position);
