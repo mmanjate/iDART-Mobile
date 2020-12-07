@@ -145,7 +145,7 @@ public class StockReferenceFragment extends GenericFragment {
                 if (Utilities.stringHasValue(editErrors)) {
                     Utilities.displayAlertDialog(getContext(), editErrors).show();
                 } else {
-                    startReferedStockMovimentActivity(getRelatedViewModel().getRelatedRecord(), ApplicationStep.STEP_EDIT);
+                    startReferedStockMovimentActivity(getRelatedViewModel().getRelatedRecord(), ApplicationStep.STEP_LIST);
                 }
 
                 return true;

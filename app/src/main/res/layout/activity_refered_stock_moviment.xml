@@ -72,7 +72,7 @@
                         android:background="@drawable/shape_normal"
                         android:layout_margin="@dimen/dimen_4dp"
                         android:padding="3dp"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationStepDisplay || viewModel.currentStep.applicationStepList) ? View.GONE : View.VISIBLE}"
                         android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
                         android:orientation="horizontal">
 
@@ -101,7 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                     android:padding="@dimen/dimen_4dp">
 
                     <TextView
@@ -192,7 +192,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Medicamento"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         style="@style/input_labels"
                         />
                     <AutoCompleteTextView
@@ -202,7 +202,7 @@
                         android:layout_weight="40"
                         android:dropDownWidth="wrap_content"
                         android:drawableRight="@drawable/ic_patient_search"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         style="@style/bottom_border_edit_text_style"
                         android:text="@{viewModel.selectedDrug.description}"
                         android:padding="@dimen/dimen_4dp"
@@ -212,7 +212,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Número do Lote *"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         style="@style/input_labels"
                         />
 
@@ -221,7 +221,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@={viewModel.batchNumber}"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                         style="@style/bottom_border_edit_text_style"/>
 
@@ -229,7 +229,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Data de Validade"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         style="@style/input_labels"
                         />
                     <EditText
@@ -237,7 +237,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_calendar"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.expireDate)}"
                         android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                         style="@style/bottom_border_edit_text_style"/>
@@ -246,7 +246,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Quantidade Recebida *"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         style="@style/input_labels"
                         />
 
@@ -256,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:text='@={viewModel.unitsReceived}'
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                         style="@style/bottom_border_edit_text_style"/>
 
@@ -264,14 +264,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Origem"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         style="@style/input_labels"
                         />
                     <EditText
                         android:id="@+id/origin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
                         android:text="@={viewModel.relatedRecord.origin}"
                         android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                         style="@style/bottom_border_edit_text_style"/>
@@ -281,7 +281,7 @@
                         android:layout_width="70dp"
                         android:layout_height="60dp"
                         app:srcCompat="@drawable/ic_save"
-                        android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{! viewModel.currentStep.applicationstepCreate ? View.GONE : View.VISIBLE}"
                         android:clickable="@{!viewModel.currentStep.applicationStepDisplay}"
                         android:onClick="@{() -> viewModel.addSelectedDrug()}"
                         android:layout_margin="@dimen/dimen_10dp"
@@ -292,6 +292,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/drug_list"
+                        android:visibility="@{viewModel.hideList ? View.GONE : View.VISIBLE}"
                         style="@style/input_labels"
                         />
 
@@ -300,6 +301,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_4dp"
+                        android:visibility="@{viewModel.hideList ? View.GONE : View.VISIBLE}"
                         android:background="@drawable/listble_shape"
                         android:scrollbars="vertical"/>
                 </LinearLayout>
@@ -312,17 +314,36 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <ImageView
-                            android:id="@+id/save_and_continue"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_gravity="right"
-                            android:layout_margin="@dimen/dimen_18dp"
-                            android:layout_marginTop="@dimen/dimen_22dp"
-                            android:background="@drawable/button_shape"
-                            android:onClick="@{() -> viewModel.save()}"
-                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
-                            app:srcCompat="@drawable/ic_done" />
+                       <LinearLayout
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_marginTop="@dimen/dimen_4dp"
+                           android:orientation="horizontal">
+
+                           <ImageView
+                               android:id="@+id/cancel_action"
+                               android:layout_width="60dp"
+                               android:layout_height="60dp"
+                               android:layout_gravity="right"
+                               android:layout_margin="@dimen/dimen_18dp"
+                               android:layout_marginTop="@dimen/dimen_22dp"
+                               android:background="@drawable/button_shape"
+                               android:onClick="@{() -> viewModel.cancel()}"
+                               android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
+                               app:srcCompat="@drawable/ic_baseline_clear_24" />
+
+                           <ImageView
+                               android:id="@+id/save_and_continue"
+                               android:layout_width="60dp"
+                               android:layout_height="60dp"
+                               android:layout_gravity="right"
+                               android:layout_margin="@dimen/dimen_18dp"
+                               android:layout_marginTop="@dimen/dimen_22dp"
+                               android:background="@drawable/button_shape"
+                               android:onClick="@{() -> viewModel.save()}"
+                               android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
+                               app:srcCompat="@drawable/ic_done" />
+                       </LinearLayout>
 
                         <ImageView
                             android:id="@+id/back"

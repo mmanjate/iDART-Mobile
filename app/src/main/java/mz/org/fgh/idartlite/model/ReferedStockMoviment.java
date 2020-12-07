@@ -6,6 +6,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
+import java.util.Objects;
 
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
@@ -202,5 +203,23 @@ public class ReferedStockMoviment extends BaseModel implements Listble<ReferedSt
         referedStockMoviment.setUpdatedStatus(this.updatedStatus);
 
         return referedStockMoviment;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReferedStockMoviment)) return false;
+        ReferedStockMoviment that = (ReferedStockMoviment) o;
+        return id == that.id &&
+                quantity == that.quantity &&
+                Objects.equals(stock, that.stock) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(origin, that.origin) &&
+                Objects.equals(operationType, that.operationType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, stock, date, quantity, origin, operationType);
     }
 }
