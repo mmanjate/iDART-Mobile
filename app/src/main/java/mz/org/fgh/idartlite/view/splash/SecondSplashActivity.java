@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
@@ -11,13 +12,14 @@ import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
 import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.view.home.HomeActivity;
 import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 
-public class SecondSplashActivity extends BaseActivity implements RestResponseListener {
+public class SecondSplashActivity extends BaseActivity implements RestResponseListener<Clinic> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,4 +81,16 @@ public class SecondSplashActivity extends BaseActivity implements RestResponseLi
     public void doOnRestErrorResponse(String errormsg) {
 
     }
+
+    @Override
+    public void doOnRestSucessResponseObject(String flag, Clinic object) {
+
+    }
+
+    @Override
+    public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {
+
+    }
+
+
 }

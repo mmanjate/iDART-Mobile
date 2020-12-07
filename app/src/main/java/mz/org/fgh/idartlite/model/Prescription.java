@@ -220,17 +220,36 @@ public class Prescription extends BaseModel {
 		if (expiryDate == null) return  0;
 		return DateUtilities.dateDiff(this.prescriptionDate, this.expiryDate, DateUtilities.MONTH_FORMAT);
 	}
-	
+
+	public int getTimeLeftInMonths(){
+
+		int leftTime = getSupply()-getTotalDispenseSupplied();
+
+       return getDurationMonths(leftTime);
+	}
+
 	public String getDurationToUserUI(){
 		if (this.supply == 2) return DURATION_TWO_WEEKS;
 		if (this.supply == 4) return DURATION_ONE_MONTH;
-		if (this.supply == 8) return DURATION_THREE_MONTHS;
+		if (this.supply == 8) return DURATION_TWO_MONTHS;
 		if (this.supply == 12) return DURATION_THREE_MONTHS;
 		if (this.supply == 16) return DURATION_FOUR_MONTHS;
 		if (this.supply == 20) return DURATION_FIVE_MONTHS;
 		if (this.supply == 24) return DURATION_SIX_MONTHS;
 
 		return "Não definido";
+	}
+
+	public int getDurationMonths(int supplyLeft){
+		if (supplyLeft == 2) return 0;
+		if (supplyLeft == 4) return 1;
+		if (supplyLeft == 8) return 2;
+		if (supplyLeft == 12) return 3;
+		if (supplyLeft== 16) return 4;
+		if (supplyLeft== 20) return 5;
+		if (supplyLeft == 24) return 6;
+
+		return 0;
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.KITKAT)

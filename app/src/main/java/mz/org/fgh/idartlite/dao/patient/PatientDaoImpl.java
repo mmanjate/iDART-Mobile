@@ -13,8 +13,12 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.DestroyedDrug;
+import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.Stock;
 
 public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements IPatientDao {
 
@@ -65,6 +69,36 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
     @Override
     public Patient checkExistsPatientWithNID(String nid) throws SQLException {
         return queryBuilder().where().eq(Patient.COLUMN_NID,nid).queryForFirst();
+    }
+
+    @Override
+    public List<Patient> searchPatientByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit) throws SQLException {
+        List<Patient> recs = queryBuilder().limit(limit)
+                .offset(offset)
+                .where()
+                .like(Patient.COLUMN_NID, "%" + nid + "%")
+                .or().like(Patient.COLUMN_FIRST_NAME, "%" + name + "%")
+                .or().like(Patient.COLUMN_LAST_NAME, "%" + surname+ "%").query();
+        return recs;
+    }
+
+    @Override
+    public List<Patient> getAllPatientsBetweenStartDateAndEndDate(Application application,Date start, Date end, long offset, long limit) throws SQLException {
+        QueryBuilder<Episode, Integer> episodeQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
+        episodeQb.limit(limit)
+                .offset(offset)
+                .where().isNotNull(Episode.COLUMN_START_REASON).and().isNull(Episode.COLUMN_STOP_REASON).and().ge(Episode.COLUMN_EPISODE_DATE, start)
+                .and()
+                .le(Episode.COLUMN_EPISODE_DATE, end);
+
+        QueryBuilder<Patient, Integer> patientQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
+
+        patientQb.join(episodeQb);
+
+        return patientQb.query();
+
+
+
     }
 
     public boolean checkIsEmpty(String param, Clinic clinic) throws SQLException {

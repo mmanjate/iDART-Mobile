@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.viewmodel.dispense;
+package mz.org.fgh.idartlite.viewmodel.patient;
 
 import android.app.Application;
 
@@ -7,6 +7,7 @@ import androidx.databinding.Bindable;
 
 import com.itextpdf.text.DocumentException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -19,26 +20,34 @@ import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.service.dispense.DispenseService;
+import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
+import mz.org.fgh.idartlite.service.episode.EpisodeService;
+import mz.org.fgh.idartlite.service.episode.IEpisodeService;
+import mz.org.fgh.idartlite.service.patient.IPatientService;
+import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.patientSearch.SearchPatientActivity;
 import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
+import mz.org.fgh.idartlite.view.reports.PatientRegisterReportActivity;
 
-public class DispenseReportVM extends SearchVM<Dispense> {
+public class PatientRegisterReportVM extends SearchVM<Patient> {
 
 
-    private IDispenseService dispenseService;
+    private IPatientService patientService;
+    private IEpisodeService episodeService;
 
     private String startDate;
 
     private String endDate;
 
 
-    public DispenseReportVM(@NonNull Application application) {
+    public PatientRegisterReportVM(@NonNull Application application) {
         super(application);
-        dispenseService = new DispenseService(application, getCurrentUser());
 
+        patientService = (PatientService) getServiceProvider().get(PatientService.class);
+        episodeService = new EpisodeService(application,getCurrentUser());
 
     }
 
@@ -57,8 +66,8 @@ public class DispenseReportVM extends SearchVM<Dispense> {
 
     }
 
-    public List<Dispense> getDispensesByDates(Date startDate,Date endDate, long offset, long limit) throws SQLException {
-        return dispenseService.getDispensesBetweenStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
+    public List<Patient> getPatientsByDates(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return patientService.getPatientsBetweenStartDateAndEndDate(getApplication(),startDate,endDate,offset,limit);
     }
 
 
@@ -77,13 +86,13 @@ public class DispenseReportVM extends SearchVM<Dispense> {
                 else {
                     getRelatedActivity().generatePdfButton(false);
                 }
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
         }
     }
+
 
     public void generatePDF() {
         try {
@@ -97,16 +106,8 @@ public class DispenseReportVM extends SearchVM<Dispense> {
 
     @Override
     protected void doOnNoRecordFound() {
-
+        Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.no_search_results)).show();
     }
-
-
-    public List<Dispense> doSearch(long offset, long limit) throws SQLException {
-
-        return getDispensesByDates(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT),offset,limit);
-    }
-
-
 
     @Override
     public void displaySearchResults() {
@@ -115,11 +116,14 @@ public class DispenseReportVM extends SearchVM<Dispense> {
         getRelatedActivity().displaySearchResult();
     }
 
+    public List<Patient> doSearch(long offset, long limit) throws SQLException {
+
+        return getPatientsByDates(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT),offset,limit);
+    }
 
 
-
-    public DispenseReportActivity getRelatedActivity() {
-        return (DispenseReportActivity) super.getRelatedActivity();
+    public PatientRegisterReportActivity getRelatedActivity() {
+        return (PatientRegisterReportActivity) super.getRelatedActivity();
     }
 
     @Override
@@ -133,23 +137,23 @@ public class DispenseReportVM extends SearchVM<Dispense> {
     }
 
     @Bindable
-    public String getSearchParam() {
+    public String getStart() {
         return startDate;
     }
 
-    public void setSearchParam(String searchParam) {
+    public void setStart(String searchParam) {
         this.startDate = searchParam;
-        notifyPropertyChanged(BR.searchParam);
+        notifyPropertyChanged(BR.start);
     }
 
     @Bindable
-    public String getSearchParam2() {
+    public String getEnd() {
         return endDate;
     }
 
-    public void setSearchParam2(String searchParam) {
+    public void setEnd(String searchParam) {
         this.endDate = searchParam;
-        notifyPropertyChanged(BR.searchParam);
+        notifyPropertyChanged(BR.end);
     }
 
 }

@@ -73,7 +73,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
     private static final String DATABASE_NAME    = "idartlite.db";
-    private static final int    DATABASE_VERSION = 6;
+    private static final int    DATABASE_VERSION = 5;
 
 
     private IUserDao userDao;
@@ -383,7 +383,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        dropTables();
+        //dropTables();
         onCreate(database,connectionSource);
     }
 

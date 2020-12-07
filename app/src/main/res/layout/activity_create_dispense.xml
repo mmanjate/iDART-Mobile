@@ -32,7 +32,6 @@
 
             <include layout="@layout/pacient_info" bind:patient="@{viewModel.dispense.prescription.patient}"/>
 
-
         </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -51,16 +50,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
 
+
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/dimen_4dp"
             >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text='@{viewModel.prescriptionDetailsLabel}'
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="13sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text='@{viewModel.getPrescriptionTimeLeft()}'
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="13sp" />
 
             <LinearLayout
                 android:id="@+id/initial_data"
@@ -91,6 +108,7 @@
                     android:layout_marginRight="@dimen/dimen_2dp"
                     android:layout_weight="1"/>
             </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/initial_data_lyt"
@@ -263,6 +281,8 @@
 
 
         </LinearLayout>
+
+
 
 
         </LinearLayout>

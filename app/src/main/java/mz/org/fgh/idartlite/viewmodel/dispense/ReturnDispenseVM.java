@@ -45,6 +45,8 @@ public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
 
     private Date returnDate;
 
+    private String notes;
+
 
     public ReturnDispenseVM(@NonNull Application application) {
         super(application);
@@ -105,6 +107,7 @@ public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
 
             if (((ReturnedDrug) returnDrug).getQtyToModify() > 0) {
                 ((ReturnedDrug) returnDrug).setDateReturned(returnDate);
+                ((ReturnedDrug) returnDrug).setNotes(notes);
                 drugsToReturn.add((ReturnedDrug) returnDrug);
             }
 
@@ -161,6 +164,20 @@ public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
     public void setDispense(Dispense dispense) {
         this.dispense = dispense;
     }
+
+
+
+    @Bindable
+    public String getNotes() {
+        return notes;
+
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+        notifyPropertyChanged(BR.notes);
+    }
+
 
     @Bindable
     public Date getReturnDate() {

@@ -27,4 +27,9 @@ public class ClinicSectorService extends BaseService implements IClinicSectorSer
 
         getDataBaseHelper().getClinicSectorDao().create(clinicSector);
     }
+
+    @Override
+    public ClinicSector getClinicSector() throws SQLException {
+        return getDataBaseHelper().getClinicSectorDao().getClinicSector();
+    }
 }

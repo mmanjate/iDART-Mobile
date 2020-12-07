@@ -5,6 +5,7 @@ import android.app.Application;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -149,5 +150,10 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
     }
      return patientHasEndingEpisode(localPatient);
 
+    }
+
+    @Override
+    public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end,long limit,long offset) throws SQLException {
+        return getDataBaseHelper().getEpisodeDao().getAllStartEpisodesBetweenStartDateAndEndDate(start,end,limit,offset);
     }
 }

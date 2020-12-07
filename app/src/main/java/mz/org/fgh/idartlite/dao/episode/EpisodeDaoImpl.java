@@ -5,10 +5,12 @@ import com.j256.ormlite.table.DatabaseTableConfig;
 
 
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
+import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
@@ -53,5 +55,15 @@ public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements 
                 return typeList;
 
         return null;
+    }
+
+    @Override
+    public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end, long offset, long limit) throws SQLException {
+        return queryBuilder()
+                .limit(limit)
+                .offset(offset)
+                .where().isNotNull(Episode.COLUMN_START_REASON).and().isNull(Episode.COLUMN_STOP_REASON).and().ge(Episode.COLUMN_EPISODE_DATE, start)
+                .and()
+                .le(Episode.COLUMN_EPISODE_DATE, end).query();
     }
 }

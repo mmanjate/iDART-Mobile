@@ -13,17 +13,21 @@ import java.util.List;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
+
+import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.rest.service.User.RestUserService;
 import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.login.LoginVM;
-public class LoginActivity extends BaseActivity implements RestResponseListener {
+public class LoginActivity extends BaseActivity implements RestResponseListener<Clinic> {
     private ActivityLoginBinding activityLoginBinding;
     private List<Clinic> clinicList;
+    private ListableSpinnerAdapter clinicSectorAdapter;
 
     private static final String LOG_USR_NAME = "log_name";
 
@@ -87,6 +91,12 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
         }
     }
 
+    public void loadClinicSectorAdapter(){
+
+        clinicSectorAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, getRelatedViewModel().getClinicSectorsList());
+        activityLoginBinding.setClinicSectorAdapter(clinicSectorAdapter);
+    }
+
     public void changeViewToAuthenticatingMode(){
         getRelatedViewModel().setAuthenticating(true);
     }
@@ -136,4 +146,16 @@ public class LoginActivity extends BaseActivity implements RestResponseListener 
 
     @Override
     public void doOnRestErrorResponse(String errormsg) {}
+
+    @Override
+    public void doOnRestSucessResponseObject(String flag, Clinic object) {
+
+    }
+
+    @Override
+    public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {
+
+    }
+
+
 }

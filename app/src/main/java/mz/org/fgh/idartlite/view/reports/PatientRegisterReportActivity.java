@@ -1,20 +1,30 @@
 package mz.org.fgh.idartlite.view.reports;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -37,6 +47,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -44,49 +55,53 @@ import java.util.Calendar;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseReportAdapter;
+import mz.org.fgh.idartlite.adapter.recyclerview.patient.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.databinding.ActivityPatientRegisterReportBinding;
 import mz.org.fgh.idartlite.databinding.ContentDispensesReportBinding;
-import mz.org.fgh.idartlite.databinding.DispenseReportBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
-import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.service.dispense.DispenseService;
-import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.viewmodel.dispense.DispenseReportVM;
+import mz.org.fgh.idartlite.viewmodel.patient.PatientRegisterReportVM;
 
-public class DispenseReportActivity extends BaseActivity {
+public class PatientRegisterReportActivity extends BaseActivity {
 
-    private RecyclerView recyclerDispenses;
-    private DispenseReportBinding dispenseReportBinding;
-    private ContentDispensesReportBinding contentDispenseReportBinding;
-    private DispenseReportAdapter adapter;
-    private IDispenseService dispenseService;
 
-    private static final String TAG = "DispenseReportActivity";
+    private RecyclerView reyclerPatient;
+    private ActivityPatientRegisterReportBinding patientRegisterReportBinding;
+  //  private ContentDispensesReportBinding contentDispenseReportBinding;
+    private ContentListPatientAdapter adapter;
+
+    private static final String TAG = "PatientRegisterReportActivity";
+
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        patientRegisterReportBinding=   DataBindingUtil.setContentView(this, R.layout.activity_patient_register_report);
 
-        dispenseReportBinding=   DataBindingUtil.setContentView(this, R.layout.dispense_report);
-        //   contentDispenseReportBinding=DataBindingUtil.setContentView(this, R.layout.content_dispenses_report);
-        dispenseService= new DispenseService(getApplication(), getCurrentUser());
-        recyclerDispenses = dispenseReportBinding.reyclerPatient;
+        reyclerPatient = patientRegisterReportBinding.reyclerPatient;
 
-        dispenseReportBinding.setViewModel(getRelatedViewModel());
+        patientRegisterReportBinding.setViewModel(getRelatedViewModel());
 
-        dispenseReportBinding.executePendingBindings();
+        patientRegisterReportBinding.executePendingBindings();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        reyclerPatient.setLayoutManager(layoutManager);
+        reyclerPatient.setHasFixedSize(true);
+        reyclerPatient.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
+
+        getApplicationStep().changeToDisplay();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,22 +109,7 @@ public class DispenseReportActivity extends BaseActivity {
             }
         });
 
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerDispenses.setLayoutManager(layoutManager);
-        recyclerDispenses.setHasFixedSize(true);
-        recyclerDispenses.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
-
-        if (adapter == null) {
-            // try {
-            //  adapter = new ContentListDispenseAdapter(recyclerDispenses, dispenseService.getAllDispenses(), this);
-            // } catch (SQLException e) {
-            //    e.printStackTrace();
-            // }
-            recyclerDispenses.setAdapter(adapter);
-        }
-
-        dispenseReportBinding.edtSearchParam.setOnClickListener(new View.OnClickListener() {
+        patientRegisterReportBinding.start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int mYear, mMonth, mDay;
@@ -120,12 +120,12 @@ public class DispenseReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientRegisterReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                        dispenseReportBinding.edtSearchParam.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        patientRegisterReportBinding.start.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -133,7 +133,7 @@ public class DispenseReportActivity extends BaseActivity {
             }
         });
 
-        dispenseReportBinding.edtSearchParam.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        patientRegisterReportBinding.start.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
@@ -144,12 +144,12 @@ public class DispenseReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientRegisterReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                            dispenseReportBinding.edtSearchParam.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            patientRegisterReportBinding.start.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                         }
                     }, mYear, mMonth, mDay);
@@ -158,7 +158,7 @@ public class DispenseReportActivity extends BaseActivity {
             }
         });
 
-        dispenseReportBinding.edtSearchParam2.setOnClickListener(new View.OnClickListener() {
+        patientRegisterReportBinding.end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int mYear, mMonth, mDay;
@@ -169,12 +169,12 @@ public class DispenseReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientRegisterReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                        dispenseReportBinding.edtSearchParam.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        patientRegisterReportBinding.end.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -182,7 +182,7 @@ public class DispenseReportActivity extends BaseActivity {
             }
         });
 
-        dispenseReportBinding.edtSearchParam2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        patientRegisterReportBinding.end.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
@@ -193,12 +193,12 @@ public class DispenseReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientRegisterReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                            dispenseReportBinding.edtSearchParam2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            patientRegisterReportBinding.end.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                         }
                     }, mYear, mMonth, mDay);
@@ -207,14 +207,9 @@ public class DispenseReportActivity extends BaseActivity {
             }
         });
 
+
     }
 
-    @SuppressLint("RestrictedApi")
-    public void generatePdfButton(boolean show){
-        FloatingActionButton generatePdf = dispenseReportBinding.generatePdf;
-        if(show) generatePdf.setVisibility(View.VISIBLE);
-        else {generatePdf.setVisibility(View.GONE);}
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -234,35 +229,55 @@ public class DispenseReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new DispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this);
+            adapter = new ContentListPatientAdapter(reyclerPatient, getRelatedViewModel().getAllDisplyedRecords(), this,true);
 
-            recyclerDispenses.setAdapter(adapter);
+            reyclerPatient.setAdapter(adapter);
         }
 
         if (adapter.getOnLoadMoreListener() == null) {
             adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
-                    getRelatedViewModel().loadMoreRecords(recyclerDispenses, adapter);
+                    getRelatedViewModel().loadMoreRecords(reyclerPatient, adapter);
                 }
             });
         }
-
     }
 
+    @SuppressLint("RestrictedApi")
+    public void generatePdfButton(boolean show){
+        FloatingActionButton generatePdf = patientRegisterReportBinding.generatePdf;
+        if(show) generatePdf.setVisibility(View.VISIBLE);
+        else {generatePdf.setVisibility(View.GONE);}
+    }
+
+    @Override
+    public BaseViewModel initViewModel() {
+        return new ViewModelProvider(this).get(PatientRegisterReportVM.class);
+    }
+
+    @Override
+    public PatientRegisterReportVM getRelatedViewModel() {
+        return (PatientRegisterReportVM) super.getRelatedViewModel();
+    }
+
+
+
+
+
     public void createPdfDocument() throws IOException, DocumentException {
-        createPdf(getRelatedViewModel().getAllDisplyedRecords());
+            createPdf(getRelatedViewModel().getAllDisplyedRecords());
     }
 
 
     @SuppressLint("LongLogTag")
-    private void createPdf(List<Dispense> dispenses) throws IOException, DocumentException {
+    private void createPdf(List<Patient> patients) throws IOException, DocumentException {
         File docsFolder = new File(Environment.getExternalStorageDirectory() + "/sdcard");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
             Log.i(TAG, "Created a new directory for PDF");
         }
-        String pdfname = "dispenseReport.pdf";
+        String pdfname = "patientReport.pdf";
         File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);
@@ -280,7 +295,7 @@ public class DispenseReportActivity extends BaseActivity {
         p.add(c1);
 
 
-        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3, 3,3});
+        PdfPTable table = new PdfPTable(new float[]{4, 4, 1.8f, 1.5f, 3,3,3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
@@ -288,9 +303,10 @@ public class DispenseReportActivity extends BaseActivity {
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell("NID");
         table.addCell("Nome");
-        table.addCell("Data de Levantamento");
-        table.addCell("Próx. levantamento");
-        table.addCell("Regime Terapêutico");
+        table.addCell("Genero");
+        table.addCell("Idade");
+        table.addCell("Data de Referencia");
+        table.addCell("Data de Prescricao");
         table.addCell("Tipo de Dispensa");
         table.setHeaderRows(1);
         PdfPCell[] cells = table.getRow(0).getCells();
@@ -298,14 +314,22 @@ public class DispenseReportActivity extends BaseActivity {
             cells[j].setBackgroundColor(BaseColor.GRAY);
         }
 
-        for (Dispense dispense:dispenses){
+        for (Patient patient:patients){
 
-            table.addCell(String.valueOf(dispense.getPrescription().getPatient().getNid()));
-            table.addCell(String.valueOf(dispense.getPrescription().getPatient().getFullName()));
-            table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getPickupDate())));
-            table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getNextPickupDate())));
-            table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticRegimen().getDescription()));
-            table.addCell(String.valueOf(dispense.getPrescription().getDispenseType().getDescription()));
+            String nid = patient.getNid();
+            String namen = patient.getFullName();
+            String gender = patient.getGender();
+            String age = String.valueOf(patient.getAge());
+            String referenceDate = patient.getEpisodes1().iterator().hasNext() ? patient.getEpisodes1().iterator().next().getStringEpisodeDate() : " ";
+            String prescriptionDate = patient.getPrescriptions().iterator().hasNext() ? DateUtilities.formatToDDMMYYYY(patient.getPrescriptions().iterator().next().getPrescriptionDate()) : " ";
+            String dispenseType = patient.getPrescriptions().iterator().hasNext() ? patient.getPrescriptions().iterator().next().getDispenseType().getDescription() : " ";
+            table.addCell(String.valueOf(nid));
+            table.addCell(String.valueOf(namen));
+            table.addCell(String.valueOf(gender));
+            table.addCell(age);
+            table.addCell(String.valueOf(referenceDate));
+            table.addCell(String.valueOf(prescriptionDate));
+            table.addCell(String.valueOf(dispenseType));
         }
 
         PdfWriter.getInstance(document, output);
@@ -314,8 +338,8 @@ public class DispenseReportActivity extends BaseActivity {
         document.add(image);
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 35.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
-        document.add(new Paragraph("Relatorio de Dispensas Da Farmacia \n\n", f));
-        // document.add(new Paragraph("Relatorio de Entrada de Pacientes", g));
+        document.add(new Paragraph("Relatorio de Entrada de Pacientes \n\n", f));
+       // document.add(new Paragraph("Relatorio de Entrada de Pacientes", g));
         document.add(table);
 
         document.close();
@@ -323,14 +347,4 @@ public class DispenseReportActivity extends BaseActivity {
         Utilities.previewPdfFiles(this,pdfFile );
     }
 
-
-    @Override
-    public BaseViewModel initViewModel() {
-        return new ViewModelProvider(this).get(DispenseReportVM.class);
-    }
-
-    @Override
-    public DispenseReportVM getRelatedViewModel() {
-        return (DispenseReportVM) super.getRelatedViewModel();
-    }
 }

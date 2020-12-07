@@ -347,4 +347,15 @@ public class DateUtilities {
         return data;
 
     }
+
+    public static Date getDateOfForwardDays(Date date, int days)
+    {
+        if (days < 0)
+        {
+            throw new IllegalArgumentException(
+                    "The days must be a positive value");
+        }
+
+        return DateUtils.addDays(date, days);
+    }
 }

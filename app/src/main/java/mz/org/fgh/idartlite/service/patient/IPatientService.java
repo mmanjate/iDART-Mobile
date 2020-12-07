@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.service.patient;
 
+import android.app.Application;
+
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.sql.SQLException;
@@ -7,7 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.IBaseService;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 
 
@@ -30,5 +34,9 @@ public interface IPatientService extends IBaseService<Patient> {
     public void  updatePatient(Patient patient) throws SQLException ;
 
     public Patient checkExistsPatientWithNID(String nid) throws SQLException ;
+
+    public List<Patient> getPatientsBetweenStartDateAndEndDate(Application application, Date start, Date end , long offset, long limit) throws SQLException;
+
+    public List<Patient> searchPatientByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit, RestResponseListener listener) throws SQLException;
 
 }
