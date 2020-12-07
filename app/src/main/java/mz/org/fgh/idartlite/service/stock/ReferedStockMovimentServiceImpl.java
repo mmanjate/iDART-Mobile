@@ -111,11 +111,13 @@ public class ReferedStockMovimentServiceImpl extends BaseService<ReferedStockMov
 
     @Override
     public void tempCreateOperationTypes() throws SQLException {
-        OperationType o1 = new OperationType("Emprestimo");
-        OperationType o2 = new OperationType("Cedencia");
+        OperationType o1 = new OperationType("Entrada");
+        OperationType o2 = new OperationType("Saída");
 
-        getDataBaseHelper().getOperationTypeDao().create(o1);
-        getDataBaseHelper().getOperationTypeDao().create(o2);
+        if (!Utilities.listHasElements(getDataBaseHelper().getOperationTypeDao().queryForAll())) {
+            getDataBaseHelper().getOperationTypeDao().create(o1);
+            //getDataBaseHelper().getOperationTypeDao().create(o2);
+        }
 
     }
 

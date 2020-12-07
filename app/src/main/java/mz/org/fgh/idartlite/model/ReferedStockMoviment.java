@@ -49,7 +49,7 @@ public class ReferedStockMoviment extends BaseModel implements Listble<ReferedSt
     private boolean updatedStatus;
 
     @DatabaseField(columnName = COLUMN_ORDER_NUMBER)
-    private int orderNumber;
+    private String orderNumber;
 
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
@@ -105,11 +105,11 @@ public class ReferedStockMoviment extends BaseModel implements Listble<ReferedSt
         this.updatedStatus = updatedStatus;
     }
 
-    public int getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 
@@ -140,7 +140,7 @@ public class ReferedStockMoviment extends BaseModel implements Listble<ReferedSt
 
     @Override
     public String isValid(Context context) {
-        if (this.orderNumber <= 0) return  "O número da guia de referência deve ser indicado.";
+        if (!Utilities.stringHasValue(this.orderNumber)) return  "O número da guia de referência deve ser indicado.";
         if (this.operationType == null || this.operationType.getId() <= 0) return  "O tipo de operação deve ser indicado.";
         if (this.date == null) return  "A data de registo deve ser indicada.";
         if (this.stock == null) return  "O stock a referir deve ser indicado.";
