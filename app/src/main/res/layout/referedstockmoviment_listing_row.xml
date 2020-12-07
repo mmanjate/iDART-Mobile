@@ -63,7 +63,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{Utilities.parseIntToString(referedStock.orderNumber)}"
+                        android:text="@{referedStock.orderNumber}"
                         android:textSize="@dimen/dimen_12dp"
                         android:textStyle="bold"/>
 

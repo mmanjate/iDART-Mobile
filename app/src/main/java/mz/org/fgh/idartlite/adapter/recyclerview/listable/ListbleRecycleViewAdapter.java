@@ -126,7 +126,8 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
             ((ListbleViewHolder) viewHolder).listableItemBinding.imvEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    activity.getRelatedViewModel().setSelectedListble(listbles.get(position - 1));
+                    remove(position-1);
+
                 }
             });
         }
@@ -146,9 +147,6 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
         activity.getRelatedViewModel().setSelectedListble(listbles.get(position));
         listbles.remove(listbles.get(position));
 
-        for (int i = 0; i < listbles.size(); i++){
-            listbles.get(i).setListPosition(i+1);
-        }
         notifyItemRemoved(position);
         recyclerView.removeViewAt(position);
         notifyItemRangeChanged(position, getItemCount());

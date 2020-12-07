@@ -56,6 +56,9 @@ public class ReferedStockMovimentVM extends BaseViewModel {
     @Override
     protected void initFormData() {
         try {
+
+            getRelatedService().tempCreateOperationTypes();
+            
             List<Drug> drugs = getRelatedService().getallDrugs();
             List<OperationType> operationTypes = getRelatedService().getAllOperationTypes();
 
@@ -106,9 +109,8 @@ public class ReferedStockMovimentVM extends BaseViewModel {
 
         setSelectedDrug(getRelatedRecord().getStock().getDrug());
 
-        referedStockMovimentList.remove(selectedListble);
 
-        getRelatedActivity().displayReferedStockMoviments();
+        //getRelatedActivity().displayReferedStockMoviments();
 
         notifyChange();
     }
@@ -212,12 +214,12 @@ public class ReferedStockMovimentVM extends BaseViewModel {
 
     @Bindable
     public String getOrderNumber(){
-        return Utilities.parseIntToString(getRelatedRecord().getOrderNumber());
+        return getRelatedRecord().getOrderNumber();
     }
 
     public void setOrderNumber(String orderNumber){
         getRelatedRecord().getStock().setOrderNumber(orderNumber);
-        getRelatedRecord().setOrderNumber(Utilities.stringHasValue(orderNumber) ? Integer.parseInt(orderNumber) : 0);
+        getRelatedRecord().setOrderNumber(orderNumber);
         notifyPropertyChanged(BR.orderNumber);
     }
 
