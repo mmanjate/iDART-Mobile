@@ -406,7 +406,7 @@ public class Utilities {
 
 
 
-    public static void previewPdfFiles(final Context mContext,File pdfFile) {
+    public static void  previewPdfFiles(final Context mContext,File pdfFile) {
         PackageManager packageManager = mContext.getPackageManager();
         Intent testIntent = new Intent(Intent.ACTION_VIEW);
         testIntent.setType("application/pdf");
@@ -433,7 +433,7 @@ public class Utilities {
         if (hasWriteStoragePermission != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CONTACTS)) {
-                    showMessageOKCancel(activity,"You need to allow access to Storage",
+                    showMessageOKCancel(activity,"You need to allow access to Storage to store pdf reports ",
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

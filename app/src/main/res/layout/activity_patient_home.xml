@@ -143,24 +143,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/button2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@android:color/transparent"
-                        android:drawableTop="@drawable/ic_baseline_person_24_new"
-                        android:onClick="@{()-> viewModel.callAddNewPatient()}"
-                        android:text="@string/novo_paciente" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="@dimen/dimen_0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
                     <Button
                         android:id="@+id/button3"
                         android:layout_width="wrap_content"
@@ -170,6 +152,25 @@
                         android:layout_gravity="center"
                         android:onClick="@{()-> viewModel.callSearchPatient()}"
                         android:text="@string/procurar_paciente"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="@{viewModel.currentStep.checkSanitaryUnit(viewModel.currentClinic) ? View.VISIBLE: View.GONE}"
+                        android:background="@android:color/transparent"
+                        android:drawableTop="@drawable/ic_baseline_person_24_new"
+                        android:onClick="@{()-> viewModel.callAddNewPatient()}"
+                        android:text="@string/novo_paciente" />
+
+
                 </LinearLayout>
 
             </LinearLayout>

@@ -263,6 +263,32 @@ public class FILAReportActivity extends BaseActivity {
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);
 
+
+        PdfPTable tableImage = new PdfPTable(1);
+        tableImage.setWidthPercentage(100);
+        tableImage.setWidths(new float[]{3});
+        tableImage.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+        tableImage.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
+        tableImage.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        PdfPCell cell;
+
+        Drawable d = getResources().getDrawable(R.mipmap.ic_mz_misau);
+        Bitmap bmp =((BitmapDrawable)d).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Image image = Image.getInstance(stream.toByteArray());
+        image.setWidthPercentage(80);
+        image.scaleToFit(105,55);
+        cell = new PdfPCell(image);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setUseAscender(true);
+        cell.setBorder(PdfPCell.NO_BORDER);
+        cell.setPadding(2f);
+        tableImage.addCell(cell);
+
+
         PdfPTable table = new PdfPTable(new float[]{3, 3, 3,3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
@@ -289,7 +315,7 @@ public class FILAReportActivity extends BaseActivity {
 
         PdfWriter.getInstance(document, output);
         document.open();
-
+        document.add(tableImage);
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 35.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.BOLD, BaseColor.BLACK);
         Font normal = new Font(Font.FontFamily.TIMES_ROMAN, 15.0f, Font.NORMAL, BaseColor.BLACK);
