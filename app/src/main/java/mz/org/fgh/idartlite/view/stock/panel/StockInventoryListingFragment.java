@@ -128,12 +128,9 @@ public class StockInventoryListingFragment extends GenericFragment {
 
     public void displaySearchResult() {
 
-        if (this.adapter == null) {
             this.adapter = new IventoryAdapter(rcvIventory, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
             rcvIventory.setAdapter(this.adapter);
-        }else {
-            this.adapter.notifyDataSetChanged();
-        }
+
 
         if (this.adapter.getOnLoadMoreListener() == null) {
             this.adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {

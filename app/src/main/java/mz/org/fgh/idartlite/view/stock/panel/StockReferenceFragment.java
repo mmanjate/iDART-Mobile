@@ -108,12 +108,9 @@ public class StockReferenceFragment extends GenericFragment {
 
     public void displaySearchResult() {
 
-        if (this.adapter == null) {
             this.adapter = new ReferedStockMovimentAdapter(rcvReferedStock, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
             rcvReferedStock.setAdapter(this.adapter);
-        }else {
-            this.adapter.notifyDataSetChanged();
-        }
+
 
         if (this.adapter.getOnLoadMoreListener() == null) {
             this.adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
