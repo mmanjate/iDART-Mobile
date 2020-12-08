@@ -20,6 +20,7 @@ import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
 import mz.org.fgh.idartlite.service.patient.IPatientService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patientSearch.NewPatientSearchActivity;
 
@@ -71,6 +72,21 @@ public class NewPatientSearchVM extends SearchVM<Patient> {
            patientService.savePatient(patient);
        }
     }
+
+
+    public Episode initEpisode(Patient patient){
+
+        Episode episode=new Episode();
+        episode.setPatient(patient);
+        episode.setStartReason("Referido De");
+        episode.setUsUuid(getCurrentClinic().getUuid());
+        episode.setSanitaryUnit(getCurrentClinic().getDescription());
+        episode.setUuid(Utilities.getNewUUID().toString());
+        episode.setSyncStatus("R");
+        episode.setEpisodeDate(DateUtilities.getCurrentDate());
+      return  episode;
+    }
+
 
     public void createEpisode(Episode episode) throws SQLException {
         episodeService.createEpisode(episode);

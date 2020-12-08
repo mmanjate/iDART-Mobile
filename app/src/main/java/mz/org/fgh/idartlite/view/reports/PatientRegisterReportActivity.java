@@ -282,17 +282,29 @@ public class PatientRegisterReportActivity extends BaseActivity {
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);
 
-        Paragraph p = new Paragraph();
+        PdfPTable tableImage = new PdfPTable(1);
+        tableImage.setWidthPercentage(100);
+        tableImage.setWidths(new float[]{3});
+        tableImage.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+        tableImage.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
+        tableImage.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 
-        Drawable d = getResources().getDrawable(R.mipmap.cmam);
-        BitmapDrawable bitDw = ((BitmapDrawable) d);
-        Bitmap bmp = bitDw.getBitmap();
+        PdfPCell cell;
+
+        Drawable d = getResources().getDrawable(R.mipmap.ic_mz_misau);
+        Bitmap bmp =((BitmapDrawable)d).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         Image image = Image.getInstance(stream.toByteArray());
-        Chunk c1 = new Chunk(image, 0, -24);
-
-        p.add(c1);
+        image.setWidthPercentage(80);
+        image.scaleToFit(105,55);
+        cell = new PdfPCell(image);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setUseAscender(true);
+        cell.setBorder(PdfPCell.NO_BORDER);
+        cell.setPadding(2f);
+        tableImage.addCell(cell);
 
 
         PdfPTable table = new PdfPTable(new float[]{4, 4, 1.8f, 1.5f, 3,3,3});
@@ -334,8 +346,8 @@ public class PatientRegisterReportActivity extends BaseActivity {
 
         PdfWriter.getInstance(document, output);
         document.open();
-        document.add(p);
-        document.add(image);
+       // document.add(p);
+        document.add(tableImage);
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 35.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
         document.add(new Paragraph("Relatorio de Entrada de Pacientes \n\n", f));

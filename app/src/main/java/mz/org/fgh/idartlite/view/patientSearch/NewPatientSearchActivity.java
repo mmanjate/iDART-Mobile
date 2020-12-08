@@ -156,16 +156,10 @@ public class NewPatientSearchActivity extends BaseActivity implements RestRespon
 
         try {
             this.getRelatedViewModel().createPatientIfNotExists(getRelatedViewModel().getSearchResults().get(position));
-            Episode episode=new Episode();
-            episode.setPatient(getRelatedViewModel().getSearchResults().get(position));
-            episode.setStartReason("Referido De");
-            episode.setUsUuid(getCurrentClinic().getUuid());
-            episode.setSanitaryUnit(getCurrentClinic().getDescription());
-            episode.setUuid(Utilities.getNewUUID().toString());
-            episode.setSyncStatus("R");
-            episode.setEpisodeDate(DateUtilities.getCurrentDate());
 
-            this.getRelatedViewModel().createEpisode(episode);
+            Episode episode= this.getRelatedViewModel().initEpisode(getRelatedViewModel().getSearchResults().get(position));
+
+           this.getRelatedViewModel().createEpisode(episode);
 
         } catch (SQLException e) {
             e.printStackTrace();
