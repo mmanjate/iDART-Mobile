@@ -59,9 +59,9 @@ public class StockActivity extends BaseActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_stock_entrance);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_close);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_close);
-        tabLayout.getTabAt(3).setIcon(R.drawable.ic_stock_inventory);
+        tabLayout.getTabAt(1).setIcon(R.mipmap.ic_refered);
+        tabLayout.getTabAt(2).setIcon(R.mipmap.ic_destroy);
+        tabLayout.getTabAt(3).setIcon(R.mipmap.ic_inventory);
     }
 
     @Override

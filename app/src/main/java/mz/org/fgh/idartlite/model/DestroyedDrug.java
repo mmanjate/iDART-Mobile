@@ -141,7 +141,7 @@ public class DestroyedDrug extends BaseModel implements Listble {
             return "A data da operação não pode ser maior que a data corrente";
         }
 
-        if (this.quantity <= 0) return "A quantidade deve ser indicada.";
+        //if (this.quantity <= 0) return "A quantidade deve ser indicada.";
 
         if (!Utilities.stringHasValue(this.notes)) return "As notas da operação devem ser indicadas.";
         return null;

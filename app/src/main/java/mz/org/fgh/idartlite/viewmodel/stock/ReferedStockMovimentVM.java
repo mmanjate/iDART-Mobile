@@ -263,6 +263,9 @@ public class ReferedStockMovimentVM extends BaseViewModel {
             getRelatedService().saveMany(this.referedStockMovimentList);
 
             Utilities.displayAlertDialog(getRelatedActivity(), "Operação efectuada com sucesso.", ReferedStockMovimentVM.this).show();
+
+            getRelatedActivity().displayReferedStockMoviments();
+
         } catch (SQLException e) {
             Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao gravar os dados " + e.getLocalizedMessage()).show();
             e.printStackTrace();

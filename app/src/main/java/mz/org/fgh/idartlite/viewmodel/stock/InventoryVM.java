@@ -178,6 +178,7 @@ public class InventoryVM extends BaseViewModel {
             getRelatedActivity().summarizeView(View.VISIBLE);
 
             notifyPropertyChanged(BR.currentStep);
+            notifyChange();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -195,6 +196,7 @@ public class InventoryVM extends BaseViewModel {
         getRelatedActivity().displayResumeStockAjustmentInfo();
 
         notifyPropertyChanged(BR.currentStep);
+        notifyChange();
 
     }
 
