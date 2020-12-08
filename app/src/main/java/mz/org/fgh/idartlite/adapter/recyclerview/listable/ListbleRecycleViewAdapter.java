@@ -148,7 +148,7 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void remove(int position) {
         Listble listble = listbles.get(position);
-        
+
         listbles.remove(listbles.get(position));
 
         activity.getRelatedViewModel().setSelectedListble(listble);

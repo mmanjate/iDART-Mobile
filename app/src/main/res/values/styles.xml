@@ -197,5 +197,5 @@
         <item name="android:gravity">center_vertical|left</item>
     </style>
 
-    <color name="red">#C92C20</color>
+    <color name="red">#C11508</color>
 </resources>

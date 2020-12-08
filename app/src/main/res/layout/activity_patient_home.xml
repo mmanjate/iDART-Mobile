@@ -129,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:paddingTop="30dp"
+            android:paddingTop="80dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -140,7 +140,7 @@
 
                 <LinearLayout
                     android:layout_width="@dimen/dimen_0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -150,14 +150,14 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
-                        android:drawableTop="@drawable/ic_baseline_person_24_new"
+                        android:drawableTop="@mipmap/ic_new_patient"
                         android:onClick="@{()-> viewModel.callAddNewPatient()}"
                         android:text="@string/novo_paciente" />
 
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="@dimen/dimen_0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -166,7 +166,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:drawableTop="@drawable/ic_gestao_patient"
+                        android:drawableTop="@mipmap/ic_search_patient"
                         android:layout_gravity="center"
                         android:onClick="@{()-> viewModel.callSearchPatient()}"
                         android:text="@string/procurar_paciente"/>
@@ -177,7 +177,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
                 <View
@@ -190,7 +190,7 @@
                     android:layout_weight="2"
                     android:padding="20dp"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@mipmap/ic_reports"
+                    android:drawableTop="@mipmap/ic_report"
                     android:onClick="@{()-> viewModel.callReports()}"
                     android:text="@string/relatorios"/>
 
