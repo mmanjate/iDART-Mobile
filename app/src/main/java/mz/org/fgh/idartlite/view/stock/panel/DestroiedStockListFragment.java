@@ -135,12 +135,9 @@ public class DestroiedStockListFragment extends GenericFragment {
 
     public void displaySearchResult() {
 
-        if (this.adapter == null) {
             this.adapter = new DestroiedStockAdapter(destroyedStockRV, getRelatedViewModel().getAllDisplyedRecords(), getMyActivity());
             destroyedStockRV.setAdapter(this.adapter);
-        }else {
-            this.adapter.notifyDataSetChanged();
-        }
+
 
         if (this.adapter.getOnLoadMoreListener() == null) {
             this.adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {

@@ -126,7 +126,16 @@ public class ReferedStockMovimentVM extends BaseViewModel {
     }
 
     public void addSelectedDrug(){
-        ReferedStockMoviment referedStockMoviment = initNewReferedStockMoviment();
+
+        getRelatedRecord().getStock().setDrug(selectedDrug);
+        ReferedStockMoviment clone = getRelatedRecord().clone();
+
+        String validationErrors = clone.isValid(getRelatedActivity());
+
+        if (Utilities.stringHasValue(validationErrors)){
+            Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
+        }else {
+            ReferedStockMoviment referedStockMoviment = initNewReferedStockMoviment();
 
         if (!referedStockMovimentList.contains(referedStockMoviment)) {
             referedStockMoviment.setListType(Listble.REFERED_STOCK_LISTING);
@@ -145,26 +154,27 @@ public class ReferedStockMovimentVM extends BaseViewModel {
          */
         if (getCurrentStep().isApplicationStepEdit()){
             for (ReferedStockMoviment r : referedStockMovimentList){
-                r.setDate(r.getDate());
-                r.setOperationType(r.getOperationType());
-                r.setOrderNumber(r.getOrderNumber());
+                r.setDate(getRelatedRecord().getDate());
+                r.setOperationType(getRelatedRecord().getOperationType());
+                r.setOrderNumber(getRelatedRecord().getOrderNumber());
             }
+        }
         }
     }
 
     private ReferedStockMoviment initNewReferedStockMoviment() {
         getRelatedRecord().getStock().setDrug(selectedDrug);
-        ReferedStockMoviment r = getRelatedRecord().clone();
+        ReferedStockMoviment clone = getRelatedRecord().clone();
 
         setSelectedRecord(initRecord());
 
-        getRelatedRecord().setDate(r.getDate());
-        getRelatedRecord().setOperationType(r.getOperationType());
-        getRelatedRecord().setOrderNumber(r.getOrderNumber());
-        getRelatedRecord().setOrigin(r.getOrigin());
+        getRelatedRecord().setDate(clone.getDate());
+        getRelatedRecord().setOperationType(clone.getOperationType());
+        getRelatedRecord().setOrderNumber(clone.getOrderNumber());
+        getRelatedRecord().setOrigin(clone.getOrigin());
         getRelatedRecord().getStock().setClinic(getCurrentClinic());
 
-        return r;
+        return clone;
     }
 
     @Bindable
