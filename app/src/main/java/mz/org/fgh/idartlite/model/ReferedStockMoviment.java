@@ -11,6 +11,7 @@ import java.util.Objects;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.ReferedStockMovimentDaoDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = ReferedStockMoviment.TABLE_NAME, daoClass = ReferedStockMovimentDaoDaoImpl.class)
@@ -144,7 +145,20 @@ public class ReferedStockMoviment extends BaseModel implements Listble<ReferedSt
         if (!Utilities.stringHasValue(this.orderNumber)) return  "O número da guia de referência deve ser indicado.";
         if (this.operationType == null || this.operationType.getId() <= 0) return  "O tipo de operação deve ser indicado.";
         if (this.date == null) return  "A data de registo deve ser indicada.";
+        if((DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) > 0) {
+            return "A data de registo não pode ser maior que a data corrente";
+        }
         if (this.stock == null) return  "O stock a referir deve ser indicado.";
+        if (this.stock.getDrug() == null) return  "O medicamento deve ser indicado.";
+        if (!Utilities.stringHasValue(this.stock.getBatchNumber())) return  "O número do lote deve ser indicado.";
+        if (this.stock.getExpiryDate() == null ) return  "A data de validade deve ser indicada.";
+
+        if( (DateUtilities.dateDiff(this.stock.getExpiryDate(), DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) <= 0) {
+            return "A data de validade não pode ser inferior que a data corrente";
+        }
+
+        if (this.quantity <= 0) return  "A quantidade indicada é inválida.";
+        if (!Utilities.stringHasValue(this.origin)) return  "A origem deve ser indicada.";
 
         return null;
     }

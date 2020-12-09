@@ -329,7 +329,7 @@
                                android:layout_marginTop="@dimen/dimen_22dp"
                                android:background="@drawable/button_shape"
                                android:onClick="@{() -> viewModel.cancel()}"
-                               android:visibility="@{(viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit) ? View.VISIBLE : View.GONE}"
+                               android:visibility="@{viewModel.currentStep.applicationStepEdit ? View.VISIBLE : View.GONE}"
                                app:srcCompat="@drawable/ic_baseline_clear_24" />
 
                            <ImageView
