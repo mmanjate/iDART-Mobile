@@ -10,6 +10,6 @@ public interface InventoryRelatedObject {
 
     void setAjustmentInfo(List<StockAjustment> ajustmentInfo);
 
-    public void addAjustmentInfo(StockAjustment ajustment);
+    void addAjustmentInfo(StockAjustment ajustment);
 
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
@@ -202,7 +203,7 @@ public class InventoryVM extends BaseViewModel {
 
     public void finalizeInventory(){
         if (mustConfirmSubmid()){
-            Utilities.displayConfirmationDialog(getRelatedActivity(), "Existem campos com quantidade zero (0) o stock actual existente para os respectivos lotes será reduzido a zero (0), prosseguir?", "SIM", "NÃO", InventoryVM.this).show();
+            Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.exists_fields_with_zero), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), InventoryVM.this).show();
         }else {
             doOnConfirmed();
         }
@@ -247,7 +248,7 @@ public class InventoryVM extends BaseViewModel {
 
     public void previousDrug(){
         if (currentSelectedDrugPosition-1 < 0) {
-            Utilities.displayAlertDialog(getRelatedActivity(), "Não há mais medicamentos por visualizar, o corrente é o primeiro da lista.").show();
+            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.no_more_previous_drug)).show();
         }else {
             updateAjustmentInfo();
 
@@ -257,8 +258,7 @@ public class InventoryVM extends BaseViewModel {
 
     public void nextDrug(){
         if (currentSelectedDrugPosition+1 >= this.drugs.size()) {
-            Utilities.displayAlertDialog(getRelatedActivity(), "Não há mais medicamentos por visualizar, o corrente é o último da lista").show();
-            
+            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.no_more_next_drug)).show();
         }else {
             updateAjustmentInfo();
             setSelectedDrug(this.drugs.get(currentSelectedDrugPosition + 1));
@@ -287,7 +287,6 @@ public class InventoryVM extends BaseViewModel {
 
     @Bindable
     public String getDrugAutocompleteLabel(){
-        return "Medicamento "+(currentSelectedDrugPosition+1) +" de "+drugs.size();
+        return getRelatedActivity().getString(R.string.drug)+" "+(currentSelectedDrugPosition+1) + " "+getRelatedActivity().getString(R.string.of)+ " "+drugs.size();
     }
-
 }

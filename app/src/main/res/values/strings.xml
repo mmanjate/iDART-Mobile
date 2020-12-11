@@ -272,4 +272,33 @@
     <string name="are_sure_work_this_patient">Tem Certeza que pretende trabalhar com este paciente? Os Seus dados serao baixados</string>
 
     <string name="dta_levantamento">Data Levan</string>
+    <string name="reference_number_mandatory">O número da guia de referência deve ser indicado.</string>
+    <string name="operation_type_mandatory">O tipo de operação deve ser indicado.</string>
+    <string name="registration_date">A data de registo deve ser indicada.</string>
+    <string name="registration_date_cant_be_gt_than_current">A data de registo não pode ser maior que a data corrente</string>
+    <string name="refered_stock_is_mandatory">O stock a referir deve ser indicado.</string>
+    <string name="drug_must_be_indicated">O medicamento deve ser indicado.</string>
+    <string name="batch_number_mandatory">O número do lote deve ser indicado.</string>
+    <string name="expire_date_mandatory">A data de validade deve ser indicada.</string>
+    <string name="expire_date_must_be_gt_than_current">A data de validade não pode ser inferior que a data corrente</string>
+    <string name="invalid_quantity">A quantidade indicada é inválida.</string>
+    <string name="origin_mandatory">A origem deve ser indicada.</string>
+    <string name="record_cant_be_edited">Não pode efectuar alterações sobre este registo, pois já se encontra sincronizado com a central.</string>
+    <string name="record_cant_be_removed">Não pode remover este registo, pois já se encontra sincronizado com a central.</string>
+    <string name="operation_date_mandatory">A data da operação deve ser indicada.</string>
+    <string name="operation_date_cant_be_gt_current">A data da operação não pode ser maior que a data corrente</string>
+    <string name="operation_notes_mandatory">As notas da operação devem ser indicadas.</string>
+    <string name="operation_cant_be_edited">Esta operação de destruição de stock não pode ser alterada</string>
+    <string name="closed_record_cant_be_edited">Não pode editar este inventário pois ja se encontra fechado</string>
+    <string name="closed_record_cant_be_removed">Não pode remover este inventário pois já se encontra fechado</string>
+    <string name="operarion_cant_be_removed">Esta operação de destruição de stock não pode ser removida</string>
+    <string name="quantity_not_specified">Não indicou a quantidade de stock para destruir.</string>
+    <string name="stock_destruction_exists">Ja existe um registo de destruição de stock para este medicamento nesta data, gostaria de editar o mesmo?</string>
+    <string name="operation_success">Operação efectuada com sucesso.</string>
+    <string name="no_more_previous_drug">Não há mais medicamentos por visualizar, o corrente é o primeiro da lista.</string>
+    <string name="no_more_next_drug">Não há mais medicamentos por visualizar, o corrente é o último da lista</string>
+    <string name="drug">Medicamento</string>
+    <string name="of">de</string>
+    <string name="exists_fields_with_zero">Existem campos com quantidade zero (0) o stock actual existente para os respectivos lotes será reduzido a zero (0), prosseguir?</string>
+    <string name="operation_failure">\"Ocorreu um erro ao gravar os dados \"</string>
 </resources>

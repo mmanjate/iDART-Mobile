@@ -10,9 +10,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.IventoryDaoImpl;
 import mz.org.fgh.idartlite.model.StockAjustment;
+import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "inventory", daoClass = IventoryDaoImpl.class)
 public class Iventory extends BaseModel {
@@ -99,7 +101,11 @@ public class Iventory extends BaseModel {
     @Override
     public String canBeEdited(Context context) {
 
-        if (!isOpen()) return "Não pode editar este inventário pois ja se encontra fechado";
+        String errors = super.canBeEdited(this.syncStatus, context);
+        
+        if (Utilities.stringHasValue(errors)) return  errors;
+        
+        if (!isOpen()) return context.getString(R.string.closed_record_cant_be_edited);
 
         return null;
     }
@@ -107,7 +113,11 @@ public class Iventory extends BaseModel {
     @Override
     public String canBeRemoved(Context context) {
 
-        if (!isOpen()) return "Não pode remover este inventário pois já se encontra fechado";
+        String errors = super.canBeRemoved(this.syncStatus, context);
+
+        if (Utilities.stringHasValue(errors)) return  errors;
+        
+        if (!isOpen()) return context.getString(R.string.closed_record_cant_be_removed);
 
         return null;
     }
