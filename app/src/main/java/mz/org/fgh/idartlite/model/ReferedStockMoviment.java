@@ -8,6 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.ReferedStockMovimentDaoDaoImpl;
@@ -142,41 +143,35 @@ public class ReferedStockMoviment extends BaseModel implements Listble<ReferedSt
 
     @Override
     public String isValid(Context context) {
-        if (!Utilities.stringHasValue(this.orderNumber)) return  "O número da guia de referência deve ser indicado.";
-        if (this.operationType == null || this.operationType.getId() <= 0) return  "O tipo de operação deve ser indicado.";
-        if (this.date == null) return  "A data de registo deve ser indicada.";
+        if (!Utilities.stringHasValue(this.orderNumber)) return  context.getString(R.string.reference_number_mandatory);
+        if (this.operationType == null || this.operationType.getId() <= 0) return  context.getString(R.string.operation_type_mandatory);
+        if (this.date == null) return  context.getString(R.string.registration_date);
         if((DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) > 0) {
-            return "A data de registo não pode ser maior que a data corrente";
+            return context.getString(R.string.registration_date_cant_be_gt_than_current);
         }
-        if (this.stock == null) return  "O stock a referir deve ser indicado.";
-        if (this.stock.getDrug() == null) return  "O medicamento deve ser indicado.";
-        if (!Utilities.stringHasValue(this.stock.getBatchNumber())) return  "O número do lote deve ser indicado.";
-        if (this.stock.getExpiryDate() == null ) return  "A data de validade deve ser indicada.";
+        if (this.stock == null) return  context.getString(R.string.refered_stock_is_mandatory);
+        if (this.stock.getDrug() == null) return  context.getString(R.string.drug_must_be_indicated);
+        if (!Utilities.stringHasValue(this.stock.getBatchNumber())) return  context.getString(R.string.batch_number_mandatory);
+        if (this.stock.getExpiryDate() == null ) return  context.getString(R.string.expire_date_mandatory);
 
         if( (DateUtilities.dateDiff(this.stock.getExpiryDate(), DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) <= 0) {
-            return "A data de validade não pode ser inferior que a data corrente";
+            return context.getString(R.string.expire_date_must_be_gt_than_current);
         }
 
-        if (this.quantity <= 0) return  "A quantidade indicada é inválida.";
-        if (!Utilities.stringHasValue(this.origin)) return  "A origem deve ser indicada.";
+        if (this.quantity <= 0) return  context.getString(R.string.invalid_quantity);
+        if (!Utilities.stringHasValue(this.origin)) return  context.getString(R.string.origin_mandatory);
 
         return null;
     }
 
     @Override
     public String canBeEdited(Context context) {
-        if (!Utilities.stringHasValue(this.syncStatus)) return "";
-
-        if (isSyncStatusSent(this.syncStatus)) return "Não pode efectuar alterações sobre este registo, pois já se encontra sincronizado com a central.";
-        return null;
+        return super.canBeEdited(this.syncStatus, context);
     }
 
     @Override
     public String canBeRemoved(Context context) {
-        if (!Utilities.stringHasValue(this.syncStatus)) return "";
-
-        if (isSyncStatusSent(this.syncStatus)) return "Não pode remover este registo, pois já se encontra sincronizado com a central.";
-        return null;
+        return super.canBeRemoved(this.syncStatus, context);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.DestroyedDrugDaoImpl;
@@ -136,36 +137,31 @@ public class DestroyedDrug extends BaseModel implements Listble {
 
     @Override
     public String isValid(Context context) {
-        if (this.date == null) return "A data da operação deve ser indicada.";
-        if((int) (DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) > 0) {
-            return "A data da operação não pode ser maior que a data corrente";
+        if (this.date == null) return context.getString(R.string.operation_date_mandatory);
+        if((DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) > 0) {
+            return context.getString(R.string.operation_date_cant_be_gt_current);
         }
 
-        //if (this.quantity <= 0) return "A quantidade deve ser indicada.";
-
-        if (!Utilities.stringHasValue(this.notes)) return "As notas da operação devem ser indicadas.";
+        if (!Utilities.stringHasValue(this.notes)) return context.getString(R.string.operation_notes_mandatory);
         return null;
     }
 
     @Override
     public String canBeEdited(Context context) {
-        if((int) (DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) >= 30) {
-            return "Esta operação de destruição de stock não pode ser alterada";
+        if((DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) >= 30) {
+            return context.getString(R.string.operation_cant_be_edited);
         }
 
-        if (isSyncStatusSent(this.syncStatus)) return "Não pode efectuar alterações sobre este registo, pois já se encontra sincronizado com a central.";
-
-        return null;
+        return super.canBeEdited(this.syncStatus, context);
     }
 
     @Override
     public String canBeRemoved(Context context) {
-        if((int) (DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) >= 30) {
-            return "Esta operação de destruição de stock não pode ser removida";
+        if((DateUtilities.dateDiff(this.date, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT)) >= 30) {
+            return context.getString(R.string.operarion_cant_be_removed);
         }
 
-        if (isSyncStatusSent(this.syncStatus)) return "Não pode remover este registo, pois já se encontra sincronizado com a central.";
-        return null;
+        return super.canBeRemoved(this.syncStatus, context);
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
@@ -25,6 +26,7 @@ import mz.org.fgh.idartlite.service.stock.IReferedStockService;
 import mz.org.fgh.idartlite.service.stock.ReferedStockMovimentServiceImpl;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.stock.referedstock.ReferedStockMovimentActivity;
+
 
 public class ReferedStockMovimentVM extends BaseViewModel {
 
@@ -272,12 +274,12 @@ public class ReferedStockMovimentVM extends BaseViewModel {
         try {
             getRelatedService().saveMany(this.referedStockMovimentList);
 
-            Utilities.displayAlertDialog(getRelatedActivity(), "Operação efectuada com sucesso.", ReferedStockMovimentVM.this).show();
+            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.operation_success), ReferedStockMovimentVM.this).show();
 
             getRelatedActivity().displayReferedStockMoviments();
 
         } catch (SQLException e) {
-            Utilities.displayAlertDialog(getRelatedActivity(), "Ocorreu um erro ao gravar os dados " + e.getLocalizedMessage()).show();
+            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.operation_failure) + e.getLocalizedMessage()).show();
             e.printStackTrace();
         }
 

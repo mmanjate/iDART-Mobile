@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
@@ -66,45 +67,41 @@ public class DestroyStockVM extends BaseViewModel {
     @Override
     public void save() {
         try {
+            List<DestroyedDrug> stocksToDestroy = new ArrayList<>();
 
-                List<DestroyedDrug> stocksToDestroy = new ArrayList<>();
+            String errorMsg = getRelatedRecord().isValid(getRelatedActivity());
 
-                String errorMsg = getRelatedRecord().isValid(getRelatedActivity());
+            if (Utilities.stringHasValue(errorMsg)) {
+                Utilities.displayAlertDialog(getRelatedActivity(), errorMsg).show();
+            } else {
+                for (Listble listble : getRelatedActivity().getStockToDestroy()) {
+                    if (listble.getQtyToModify() > 0) {
+                        stocksToDestroy.add(((DestroyedDrug) listble));
+                        stocksToDestroy.get(stocksToDestroy.size() - 1).setNotes(getRelatedRecord().getNotes());
+                        stocksToDestroy.get(stocksToDestroy.size() - 1).setDate(getRelatedRecord().getDate());
+                        stocksToDestroy.get(stocksToDestroy.size() - 1).setSyncStatus(BaseModel.SYNC_SATUS_READY);
 
-                if (Utilities.stringHasValue(errorMsg)) {
-                    Utilities.displayAlertDialog(getRelatedActivity(), errorMsg).show();
-                } else {
-                    for (Listble listble : getRelatedActivity().getStockToDestroy()) {
-                        if (listble.getQtyToModify() > 0) {
-                            stocksToDestroy.add(((DestroyedDrug) listble));
-                            stocksToDestroy.get(stocksToDestroy.size() - 1).setNotes(getRelatedRecord().getNotes());
-                            stocksToDestroy.get(stocksToDestroy.size() - 1).setDate(getRelatedRecord().getDate());
-                            stocksToDestroy.get(stocksToDestroy.size() - 1).setSyncStatus(BaseModel.SYNC_SATUS_READY);
-
-                            if (getRelatedRecord().getStock() == null) getRelatedRecord().setStock(((DestroyedDrug) listble).getStock());
-                        }
+                        if (getRelatedRecord().getStock() == null) getRelatedRecord().setStock(((DestroyedDrug) listble).getStock());
                     }
-
-                    if (!Utilities.listHasElements(stocksToDestroy)) {
-                        Utilities.displayAlertDialog(getRelatedActivity(), "Não indicou nenhuma quantidade de stock para destruir.").show();
-                    } else {
-
-                        List<DestroyedDrug> destroyedDrugs = getRelatedService().getAllRelatedDestroyedStocks(stocksToDestroy.get(0));
-                        if (getCurrentStep().isApplicationstepCreate() && Utilities.listHasElements(destroyedDrugs)) {
-                            Utilities.displayConfirmationDialog(getRelatedActivity(), "Ja existe um registo de destruição de stock para este medicamento nesta data, gostaria de editar o mesmo?", "SIM", "NÃO", DestroyStockVM.this).show();
-                        }else {
-                            getRelatedService().saveAll(stocksToDestroy);
-                            getCurrentStep().changeToList();
-                            Utilities.displayAlertDialog(getRelatedActivity(), "Operação efectuada com sucesso.", DestroyStockVM.this).show();
-                        }
-                    }
-
                 }
 
-            } catch(SQLException e){
-                e.printStackTrace();
-            }
+                if (!Utilities.listHasElements(stocksToDestroy)) {
+                    Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.quantity_not_specified)).show();
+                } else {
 
+                    List<DestroyedDrug> destroyedDrugs = getRelatedService().getAllRelatedDestroyedStocks(stocksToDestroy.get(0));
+                    if (getCurrentStep().isApplicationstepCreate() && Utilities.listHasElements(destroyedDrugs)) {
+                        Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.stock_destruction_exists), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), DestroyStockVM.this).show();
+                    }else {
+                        getRelatedService().saveAll(stocksToDestroy);
+                        getCurrentStep().changeToList();
+                        Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.operation_success), DestroyStockVM.this).show();
+                    }
+                }
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -193,8 +190,6 @@ public class DestroyStockVM extends BaseViewModel {
                     notifyPropertyChanged(BR.selectedDrug);
                 }
                 getRelatedActivity().displaySelectedDrugs();
-            }else {
-                Utilities.displayAlertDialog(getRelatedActivity(), "Medicamento seleccionado não possui stock.").show();
             }
         } catch (SQLException e) {
             e.printStackTrace();
