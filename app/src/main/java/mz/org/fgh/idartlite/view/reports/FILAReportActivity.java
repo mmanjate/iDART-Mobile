@@ -235,7 +235,7 @@ public class FILAReportActivity extends BaseActivity {
             dialog.show();
         }
         else {
-            Utilities.displayAlertDialog(this, "O Paciente Nao tem Dispensas").show();
+            Utilities.displayAlertDialog(this, getString(R.string.paciente_nao_tem_dispensas)).show();
         }
 
     }
@@ -253,10 +253,11 @@ public class FILAReportActivity extends BaseActivity {
 
     @SuppressLint("LongLogTag")
     private void createPdf(List<Dispense> dispenses,Patient patient) throws IOException, DocumentException {
+
         File docsFolder = new File(Environment.getExternalStorageDirectory() + "/sdcard");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
-            Log.i(TAG, "Created a new directory for PDF");
+            Log.i(TAG, getString(R.string.criar_no_directorio));
         }
         String pdfname = "filaReport.pdf";
         File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
@@ -295,10 +296,10 @@ public class FILAReportActivity extends BaseActivity {
         table.setTotalWidth(PageSize.A4.getWidth());
         table.setWidthPercentage(100);
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell("Data de Levantamento");
-        table.addCell("Próx. levantamento");
-        table.addCell("Regime Terapêutico");
-        table.addCell("Tipo de Dispensa");
+        table.addCell(getString(R.string.dta_levantamento));
+        table.addCell(getString(R.string.dt_proximo_levantamento));
+        table.addCell(getString(R.string.therapeutic_regimen));
+        table.addCell(getString(R.string.dispense_type_report));
         table.setHeaderRows(1);
         PdfPCell[] cells = table.getRow(0).getCells();
         for (int j = 0; j < cells.length; j++) {
@@ -319,12 +320,12 @@ public class FILAReportActivity extends BaseActivity {
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 35.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.BOLD, BaseColor.BLACK);
         Font normal = new Font(Font.FontFamily.TIMES_ROMAN, 15.0f, Font.NORMAL, BaseColor.BLACK);
-        document.add(new Paragraph("Dispensas do Paciente(FILA)", f));
+        document.add(new Paragraph(getString(R.string.dispensas_paciente_fila), f));
         document.add(new Paragraph("\n\n"));
-        document.add(new Paragraph("NID: "+patient.getNid(),g));
-        document.add(new Paragraph("Nome: "+patient.getFullName(),normal));
-        document.add(new Paragraph("Genero: "+patient.getGender(),normal));
-        document.add(new Paragraph("Idade: "+patient.getAge(),normal));
+        document.add(new Paragraph(getString(R.string.nid)+patient.getNid(),g));
+        document.add(new Paragraph(getString(R.string.name)+patient.getFullName(),normal));
+        document.add(new Paragraph(getString(R.string.genero) + patient.getGender(),normal));
+        document.add(new Paragraph(getString(R.string.idade)+patient.getAge(),normal));
         document.add(new Paragraph("\n\n"));
 
         document.add(table);

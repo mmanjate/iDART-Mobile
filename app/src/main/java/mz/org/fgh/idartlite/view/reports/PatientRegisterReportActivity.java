@@ -72,7 +72,7 @@ public class PatientRegisterReportActivity extends BaseActivity {
 
     private RecyclerView reyclerPatient;
     private ActivityPatientRegisterReportBinding patientRegisterReportBinding;
-  //  private ContentDispensesReportBinding contentDispenseReportBinding;
+
     private ContentListPatientAdapter adapter;
 
     private static final String TAG = "PatientRegisterReportActivity";
@@ -275,7 +275,6 @@ public class PatientRegisterReportActivity extends BaseActivity {
         File docsFolder = new File(Environment.getExternalStorageDirectory() + "/sdcard");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
-            Log.i(TAG, "Created a new directory for PDF");
         }
         String pdfname = "patientReport.pdf";
         File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
@@ -307,19 +306,20 @@ public class PatientRegisterReportActivity extends BaseActivity {
         tableImage.addCell(cell);
 
 
-        PdfPTable table = new PdfPTable(new float[]{4, 4, 1.8f, 1.5f, 3,3,3});
+        PdfPTable table = new PdfPTable(new float[]{4, 4, 1.8f, 1.5f, 3,3,3,3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
         table.setWidthPercentage(100);
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell("NID");
-        table.addCell("Nome");
-        table.addCell("Genero");
-        table.addCell("Idade");
-        table.addCell("Data de Referencia");
-        table.addCell("Data de Prescricao");
-        table.addCell("Tipo de Dispensa");
+        table.addCell(getString(R.string.nid_report));
+        table.addCell(getString(R.string.name_report));
+        table.addCell(getString(R.string.genero_report));
+        table.addCell(getString(R.string.idade_report));
+        table.addCell(getString(R.string.data_de_referencia_report));
+        table.addCell(getString(R.string.prescription_date_report));
+        table.addCell(getString(R.string.dispense_type_report));
+        table.addCell(getString(R.string.unidade_sanit_ria_report));
         table.setHeaderRows(1);
         PdfPCell[] cells = table.getRow(0).getCells();
         for (int j = 0; j < cells.length; j++) {
@@ -335,6 +335,7 @@ public class PatientRegisterReportActivity extends BaseActivity {
             String referenceDate = patient.getEpisodes1().iterator().hasNext() ? patient.getEpisodes1().iterator().next().getStringEpisodeDate() : " ";
             String prescriptionDate = patient.getPrescriptions().iterator().hasNext() ? DateUtilities.formatToDDMMYYYY(patient.getPrescriptions().iterator().next().getPrescriptionDate()) : " ";
             String dispenseType = patient.getPrescriptions().iterator().hasNext() ? patient.getPrescriptions().iterator().next().getDispenseType().getDescription() : " ";
+            String sanitaryUnit=patient.getEpisodes1().iterator().hasNext() ? patient.getEpisodes1().iterator().next().getSanitaryUnit() : " ";
             table.addCell(String.valueOf(nid));
             table.addCell(String.valueOf(namen));
             table.addCell(String.valueOf(gender));
@@ -342,6 +343,7 @@ public class PatientRegisterReportActivity extends BaseActivity {
             table.addCell(String.valueOf(referenceDate));
             table.addCell(String.valueOf(prescriptionDate));
             table.addCell(String.valueOf(dispenseType));
+            table.addCell(sanitaryUnit);
         }
 
         PdfWriter.getInstance(document, output);
@@ -351,7 +353,7 @@ public class PatientRegisterReportActivity extends BaseActivity {
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 35.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
         document.add(new Paragraph("Relatorio de Entrada de Pacientes \n\n", f));
-       // document.add(new Paragraph("Relatorio de Entrada de Pacientes", g));
+
         document.add(table);
 
         document.close();

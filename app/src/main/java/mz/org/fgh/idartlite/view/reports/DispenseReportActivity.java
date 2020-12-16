@@ -63,7 +63,6 @@ public class DispenseReportActivity extends BaseActivity {
 
     private RecyclerView recyclerDispenses;
     private DispenseReportBinding dispenseReportBinding;
-    private ContentDispensesReportBinding contentDispenseReportBinding;
     private DispenseReportAdapter adapter;
     private IDispenseService dispenseService;
 
@@ -74,7 +73,7 @@ public class DispenseReportActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         dispenseReportBinding=   DataBindingUtil.setContentView(this, R.layout.dispense_report);
-        //   contentDispenseReportBinding=DataBindingUtil.setContentView(this, R.layout.content_dispenses_report);
+
         dispenseService= new DispenseService(getApplication(), getCurrentUser());
         recyclerDispenses = dispenseReportBinding.reyclerPatient;
 
@@ -260,7 +259,6 @@ public class DispenseReportActivity extends BaseActivity {
         File docsFolder = new File(Environment.getExternalStorageDirectory() + "/sdcard");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
-            Log.i(TAG, "Created a new directory for PDF");
         }
         String pdfname = "dispenseReport.pdf";
         File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
@@ -298,12 +296,12 @@ public class DispenseReportActivity extends BaseActivity {
         table.setTotalWidth(PageSize.A4.getWidth());
         table.setWidthPercentage(100);
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell("NID");
-        table.addCell("Nome");
-        table.addCell("Data de Levantamento");
-        table.addCell("Próx. levantamento");
-        table.addCell("Regime Terapêutico");
-        table.addCell("Tipo de Dispensa");
+        table.addCell(getString(R.string.nid_report));
+        table.addCell(getString(R.string.name_report));
+        table.addCell(getString(R.string.dta_levantamento));
+        table.addCell(getString(R.string.dt_proximo_levantamento));
+        table.addCell(getString(R.string.therapeutic_regimen));
+        table.addCell(getString(R.string.dispense_type_report));
         table.setHeaderRows(1);
         PdfPCell[] cells = table.getRow(0).getCells();
         for (int j = 0; j < cells.length; j++) {
