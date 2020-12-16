@@ -301,4 +301,19 @@
     <string name="of">de</string>
     <string name="exists_fields_with_zero">Existem campos com quantidade zero (0) o stock actual existente para os respectivos lotes será reduzido a zero (0), prosseguir?</string>
     <string name="operation_failure">\"Ocorreu um erro ao gravar os dados \"</string>
+
+    <string name="dispensas_paciente_fila">Dispensas do Paciente(FILA)</string>
+
+    <string name="criar_no_directorio">Created a new directory for PDF</string>
+
+    <string name="paciente_nao_tem_dispensas">O Paciente Nao tem Dispensas</string>
+
+    <string name="name_report">Nome</string>
+    <string name="nid_report">NID</string>
+    <string name="unidade_sanit_ria_report">Unidade Sanitária</string>
+    <string name="genero_report">Gênero</string>
+    <string name="idade_report">Idade</string>
+    <string name="dispense_type_report">Tipo de Dispensa </string>
+    <string name="data_de_referencia_report">Data de Referência</string>
+    <string name="prescription_date_report">Data da Prescrição</string>
 </resources>
