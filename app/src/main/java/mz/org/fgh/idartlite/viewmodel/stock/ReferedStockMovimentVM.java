@@ -321,6 +321,8 @@ public class ReferedStockMovimentVM extends BaseViewModel {
 
             getRelatedActivity().displayReferedStockMoviments();
             notifyChange();
+        }else {
+            getRelatedActivity().finish();
         }
     }
 

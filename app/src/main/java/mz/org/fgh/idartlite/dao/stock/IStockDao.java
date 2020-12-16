@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.dao.stock;
 
+import android.app.Application;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
 
 public interface IStockDao extends IGenericDao<Stock, Integer> {
-    public List<Stock> getStockByClinic(Clinic clinic, long offset, long limit) throws SQLException;
+    public List<Stock> getAllOfClinic(Application application, Clinic clinic, long offset, long limit) throws SQLException;
 
     public List<Stock> getStockByOrderNumber(String orderNumber, Clinic clinic) throws SQLException;
 

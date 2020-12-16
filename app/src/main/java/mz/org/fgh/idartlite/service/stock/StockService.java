@@ -42,7 +42,7 @@ public class StockService extends BaseService<Stock> implements IStockService {
     }
 
     public List<Stock> getStockByClinic(Clinic clinic, long offset, long limit) throws SQLException {
-        return getDataBaseHelper().getStockDao().getStockByClinic(clinic, offset, limit);
+        return getDataBaseHelper().getStockDao().getAllOfClinic(getApplication(), clinic, offset, limit);
     }
 
     public List<Stock> getStockByOrderNumber(String orderNumber, Clinic clinic) throws SQLException {

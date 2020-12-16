@@ -1,5 +1,8 @@
 package mz.org.fgh.idartlite.dao.stock;
 
+import android.app.Application;
+
+import com.j256.ormlite.stmt.ColumnArg;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
@@ -7,9 +10,11 @@ import com.j256.ormlite.table.DatabaseTableConfig;
 import java.sql.SQLException;
 import java.util.List;
 
+import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
+import mz.org.fgh.idartlite.model.ReferedStockMoviment;
 import mz.org.fgh.idartlite.model.Stock;
 
 public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements IStockDao {
@@ -27,8 +32,15 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements ISto
     }
 
     @Override
-    public List<Stock> getStockByClinic(Clinic clinic, long offset, long limit) throws SQLException {
-        return queryBuilder().offset(offset).limit(limit).orderBy(Stock.COLUMN_ORDER_NUMBER, true).groupBy(Stock.COLUMN_ORDER_NUMBER).where().eq(Stock.COLUMN_CLINIC, clinic.getId()).query();
+    public List<Stock> getAllOfClinic(Application application, Clinic clinic, long offset, long limit) throws SQLException {
+        QueryBuilder<ReferedStockMoviment, Integer> referedQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getReferedStockMovimentDao().queryBuilder();
+        referedQb.where().eq(ReferedStockMoviment.COLUMN_STOCK_ID, new ColumnArg(Stock.TABLE_NAME, Stock.COLUMN_ID));
+
+        QueryBuilder<Stock, Integer> stockQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getStockDao().queryBuilder();
+        stockQb.offset(offset).limit(limit).orderBy(Stock.COLUMN_ORDER_NUMBER, true).groupBy(Stock.COLUMN_ORDER_NUMBER);
+        stockQb.where().eq(Stock.COLUMN_CLINIC, clinic.getId()).and().not().exists(referedQb);
+
+        return stockQb.query();
     }
 
     @Override
