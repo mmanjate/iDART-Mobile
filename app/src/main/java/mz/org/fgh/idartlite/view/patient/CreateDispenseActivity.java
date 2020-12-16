@@ -337,9 +337,9 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
         int isWeekend = DateUtilitis.isSaturdayOrSunday(nextPickUpDate);
 
         if (isWeekend == 6) {
-            nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(nextPickUpDate, 2);
+            nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(nextPickUpDate, -1);
         } else if (isWeekend == 7) {
-            nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(nextPickUpDate, 1);
+            nextPickUpDate = DateUtilitis.getDateAfterAddingDaysToGivenDate(nextPickUpDate, -2);
         }
 
         return nextPickUpDate;

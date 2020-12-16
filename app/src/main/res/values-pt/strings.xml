@@ -167,7 +167,7 @@
     <string name="pharmacy_config_not_found">Não foi encontrada a configuração da farmácia.</string>
     <string name="user_or_pass_invalid">Não foi encontrada a configuração da farmácia.</string>
     <string name="error_verifying">Ocorreu um erro ao verificar a configuração de utilizadores</string>
-    <string name="cant_dispense_patient_has_drugs">Este paciente ainda tem medicamentos. A data de leventamento actual não pode ser menor que a data do próximo levantamento no último aviamento.</string>
+    <string name="cant_dispense_patient_has_drugs">Este paciente ainda tem medicamentos. Tem certeza que deseja aviar os medicamentos ao Paciente?</string>
     <string name="would_you_like_remove_prior_dispense">Gostaria de apagar o Aviamento anterior, e substituí-lo com este que você acabou de criar?</string>
     <string name="dispense_drug_detail_list">O Aviamento que pretende editar contém os detalhes abaixo</string>
     <string name="dispensed_drug_list">Medicamentos aviados</string>

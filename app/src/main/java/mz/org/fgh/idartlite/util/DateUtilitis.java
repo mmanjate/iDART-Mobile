@@ -17,103 +17,111 @@ import java.util.Date;
 
 public class DateUtilitis {
 
-    public static final String YEAR_FORMAT="YYYY";
-    public static final String DAY_FORMAT="DD";
-    public static final String MONTH_FORMAT="MM";
-    public static final String HOUR_FORMAT="HH";
-    public static final String SECOND_FORMAT="ss";
-    public static final String MINUTE_FORMAT="mm";
-    public static final String MILLISECOND_FORMAT="SSS";
-    public static final String DATE_FORMAT="dd-MM-yyyy";
+    public static final String YEAR_FORMAT = "YYYY";
+    public static final String DAY_FORMAT = "DD";
+    public static final String MONTH_FORMAT = "MM";
+    public static final String HOUR_FORMAT = "HH";
+    public static final String SECOND_FORMAT = "ss";
+    public static final String MINUTE_FORMAT = "mm";
+    public static final String MILLISECOND_FORMAT = "SSS";
+    public static final String DATE_FORMAT = "dd-MM-yyyy";
 
-    public static int getDayOfMonth(Date date){
+    public static int getDayOfMonth(Date date) {
         Calendar d = Calendar.getInstance();
         d.setTime(date);
 
         return d.get(Calendar.DAY_OF_MONTH);
     }
 
-    public static int getDayOfWeek(Date date){
+    public static int getDayOfWeek(Date date) {
         Calendar d = Calendar.getInstance();
         d.setTime(date);
 
         return d.get(Calendar.DAY_OF_WEEK);
     }
 
-    public static int getMonth(Date date){
+    public static int getMonth(Date date) {
         Calendar d = Calendar.getInstance();
         d.setTime(date);
 
         return d.get(Calendar.MONTH) + 1;
     }
 
-    public static int getYear(Date date){
+    public static int getYear(Date date) {
         Calendar d = Calendar.getInstance();
         d.setTime(date);
 
         return d.get(Calendar.YEAR);
     }
 
-    public static int getHours(Date date){
+    public static int getHours(Date date) {
         Calendar d = Calendar.getInstance();
         d.setTime(date);
 
         return d.get(Calendar.HOUR_OF_DAY);
     }
 
-    public static int getMinutes(Date date){
+    public static int getMinutes(Date date) {
         Calendar d = Calendar.getInstance();
         d.setTime(date);
 
         return d.get(Calendar.MINUTE);
     }
 
-    public static int getSeconds(Date date){
+    public static int getSeconds(Date date) {
         Calendar d = Calendar.getInstance();
         d.setTime(date);
 
         return d.get(Calendar.SECOND);
     }
 
-    public static Date getCurrentDate(){
+    public static Date addDaysToDate(Date date, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days);
+
+        return cal.getTime();
+    }
+
+    public static Date getCurrentDate() {
         return Calendar.getInstance().getTime();
     }
 
-    public static double dateDiff(Date dataMaior, Date dataMenor, String dateFormat){
+    public static double dateDiff(Date dataMaior, Date dataMenor, String dateFormat) {
 
-        double differenceMilliSeconds =  dataMaior.getTime() - dataMenor.getTime();
+        double differenceMilliSeconds = dataMaior.getTime() - dataMenor.getTime();
 
 
         if (dateFormat.equals(DateUtilitis.MILLISECOND_FORMAT)) return differenceMilliSeconds;
 
-        double diferenceSeconds = differenceMilliSeconds/1000;
+        double diferenceSeconds = differenceMilliSeconds / 1000;
 
         if (dateFormat.equals(DateUtilitis.SECOND_FORMAT)) return diferenceSeconds;
 
-        double diferenceMinutes = diferenceSeconds/60;
+        double diferenceMinutes = diferenceSeconds / 60;
 
         if (dateFormat.equals(DateUtilitis.MINUTE_FORMAT)) return diferenceMinutes;
 
-        double diferenceHours = diferenceMinutes/60;
+        double diferenceHours = diferenceMinutes / 60;
 
         if (dateFormat.equals(DateUtilitis.HOUR_FORMAT)) return diferenceHours;
 
-        double diferenceDays = diferenceHours/24;
+        double diferenceDays = diferenceHours / 24;
 
         if (dateFormat.equals(DateUtilitis.DAY_FORMAT)) return diferenceDays;
 
-        double diferenceMonts = diferenceDays/30;
+        double diferenceMonts = diferenceDays / 30;
 
         if (dateFormat.equals(DateUtilitis.MONTH_FORMAT)) return diferenceMonts;
 
-        double diferenceYears = diferenceMonts/12;
+        double diferenceYears = diferenceMonts / 12;
 
         if (dateFormat.equals(DateUtilitis.YEAR_FORMAT)) return diferenceYears;
 
         throw new IllegalArgumentException("UNKOWN DATE FORMAT [" + dateFormat + "]");
     }
 
-    public static String parseDateToYYYYMMDDString(Date toParse){
+    public static String parseDateToYYYYMMDDString(Date toParse) {
         SimpleDateFormat datetemp = new SimpleDateFormat("yyyy-MM-dd");
         String data = datetemp.format(toParse);
         return data;
@@ -131,20 +139,20 @@ public class DateUtilitis {
         }
     }
 
-    public static String formatToDDMMYYYY(Date date){
+    public static String formatToDDMMYYYY(Date date) {
         if (date == null) return null;
 
         return formatToDDMMYYYY(date, "-");
     }
 
-    public static String formatToDDMMYYYY(Date date, String separator){
-        if (date == null){
+    public static String formatToDDMMYYYY(Date date, String separator) {
+        if (date == null) {
             return "";
         }
         return garantirXCaracterOnNumber(getDayOfMonth(date), 2) + separator + garantirXCaracterOnNumber(getMonth(date), 2) + separator + getYear(date);
     }
 
-    public static String garantirXCaracterOnNumber(long number, int x){
+    public static String garantirXCaracterOnNumber(long number, int x) {
         String formatedNumber = "";
         int numberOfCharacterToIncrise = 0;
 
@@ -152,7 +160,7 @@ public class DateUtilitis {
 
         numberOfCharacterToIncrise = x - formatedNumber.length();
 
-        for(int i = 0; i < numberOfCharacterToIncrise; i++) formatedNumber = "0" + formatedNumber;
+        for (int i = 0; i < numberOfCharacterToIncrise; i++) formatedNumber = "0" + formatedNumber;
 
         return formatedNumber;
     }
@@ -212,7 +220,7 @@ public class DateUtilitis {
          * 		 Isso E PERIGOSO, mas por enquanto nAo há alternativa
          */
 
-        if (Integer.parseInt(mes) > 12){
+        if (Integer.parseInt(mes) > 12) {
             String mesAux = mes;
 
             mes = dia;
@@ -222,7 +230,7 @@ public class DateUtilitis {
         return dia + "-" + mes + "-" + ano;
     }
 
-    public static String parseDateToDDMMYYYYString(Date toParse){
+    public static String parseDateToDDMMYYYYString(Date toParse) {
         SimpleDateFormat datetemp = new SimpleDateFormat("dd-MM-yyyy");
         String data = datetemp.format(toParse);
         return data;
@@ -236,8 +244,7 @@ public class DateUtilitis {
      * @param date2 data final
      * @return numero de dias
      */
-    public static long getDaysBetween(final Date date1, final Date date2)
-    {
+    public static long getDaysBetween(final Date date1, final Date date2) {
         return (date2.getTime()
                 - date1.getTime())
                 / (1000 * 60 * 60 * 24);
@@ -245,8 +252,7 @@ public class DateUtilitis {
 
     public static Date getDateFromDayAndMonthAndYear(int day,
                                                      int month,
-                                                     int year)
-    {
+                                                     int year) {
         Calendar cal = Calendar.getInstance();
 
         cal.set(Calendar.DAY_OF_MONTH, day);
@@ -256,17 +262,17 @@ public class DateUtilitis {
         return cal.getTime();
     }
 
-    public static String getDateAfterAddingDaysToGivenDate(final String oldDate, int daysToAdd){
+    public static String getDateAfterAddingDaysToGivenDate(final String oldDate, int daysToAdd) {
 
         SimpleDateFormat sdf = new SimpleDateFormat(DateUtilitis.DATE_FORMAT);
 
         Calendar c = Calendar.getInstance();
-        try{
+        try {
             c.setTime(sdf.parse(oldDate));
-        }catch(ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
         }
-        c.add(Calendar.DAY_OF_MONTH,daysToAdd);
+        c.add(Calendar.DAY_OF_MONTH, daysToAdd);
 
         return sdf.format(c.getTime());
     }
@@ -305,10 +311,8 @@ public class DateUtilitis {
         }
     }
 
-    public static Date getDateOfPreviousDays(Date date, int days)
-    {
-        if (days < 0)
-        {
+    public static Date getDateOfPreviousDays(Date date, int days) {
+        if (days < 0) {
             throw new IllegalArgumentException(
                     "The days must be a positive value");
         }

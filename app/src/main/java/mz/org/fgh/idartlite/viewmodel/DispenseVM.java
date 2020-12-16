@@ -179,19 +179,35 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
                             if (dispense.getId() > 0) {
                                 this.editDispenseAndRemovePrior();
                             } else {
+                                Prescription prescription = this.getLastPatientPrescription(getDispense().getPrescription().getPatient());
+                                Dispense dispense = this.getLastPatientDispense(prescription);
 
-                                String secondValidationErrors = this.dispenseOnDateBeforePickupDate();
+                                if (dispense != null) {
+                                    double remainDays = DateUtilitis.dateDiff(dispense.getNextPickupDate(), this.dispense.getPickupDate(), DateUtilitis.DAY_FORMAT);
+                                    java.util.Date nextPickupDateCalculated = getNextPickupDate(this.dispense.getPickupDate(), this.dispense.getSupply(), (int) remainDays);
+                                    double controlNextPickupDate = DateUtilitis.dateDiff(this.dispense.getNextPickupDate(), nextPickupDateCalculated, DateUtilitis.DAY_FORMAT);
 
-                                if (!Utilities.stringHasValue(secondValidationErrors)) {
+                                    if (remainDays > 2 && controlNextPickupDate < 0) {
+                                        Utilities.displayConfirmationDialog(getRelatedActivity(),
+                                                getRelatedActivity().getString(R.string.cant_dispense_patient_has_drugs) + "\n" +
+                                                        "Nota: O Paciente contém medicamentos para +" + remainDays +" dias e caso desejar aviar, serão adicionados estes dias a data do próximo Levantamento, passando para [ " +
+                                                        nextPickupDateCalculated + " ]",
+                                                getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no),
+                                                DispenseVM.this).show();
+                                    }else{
+                                        String patientNid = this.dispense.getPrescription().getPatient().getNid();
+                                        this.dispenseService.saveOrUpdateDispense(this.dispense);
+                                        Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+                                    }
+                                }else {
                                     String patientNid = this.dispense.getPrescription().getPatient().getNid();
-                                    this.dispenseService.saveOrUpdateDispense(dispense);
+                                    this.dispenseService.saveOrUpdateDispense(this.dispense);
                                     Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
-                                } else {
-                                    Utilities.displayAlertDialog(getRelatedActivity(), secondValidationErrors).show();
+
                                 }
                             }
 
-                        } catch (SQLException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                             Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.save_error_msg) + e.getLocalizedMessage()).show();
                         }
@@ -234,23 +250,6 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
         getRelatedActivity().nextActivity(PatientActivity.class, params);
     }
 
-    public String dispenseOnDateBeforePickupDate() {
-        try {
-            Prescription prescription = this.getLastPatientPrescription(getDispense().getPrescription().getPatient());
-            Dispense dispense = this.getLastPatientDispense(prescription);
-
-            if (dispense != null) {
-                if (DateUtilitis.dateDiff(this.dispense.getPickupDate(), dispense.getNextPickupDate(), DateUtilitis.DAY_FORMAT) < -2) {
-                    return getRelatedActivity().getString(R.string.cant_dispense_patient_has_drugs);
-                }
-            }
-        } catch (SQLException sq) {
-            sq.printStackTrace();
-        }
-
-        return "";
-    }
-
     public String dispenseCanBeEdited() throws SQLException {
         if (this.dispense.isSyncStatusSent(this.dispense.getSyncStatus()))
             return getRelatedActivity().getString(R.string.cant_edit_synced_dispense);
@@ -286,6 +285,18 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
                 this.backToPreviusActivity();
             } catch (SQLException ex) {
 
+            }
+        } else {
+            try {
+                Prescription prescription = this.getLastPatientPrescription(getDispense().getPrescription().getPatient());
+                Dispense dispense = this.getLastPatientDispense(prescription);
+                double remainDays = DateUtilitis.dateDiff(dispense.getNextPickupDate(), this.dispense.getPickupDate(), DateUtilitis.DAY_FORMAT);
+                this.dispense.setNextPickupDate(getNextPickupDate(this.dispense.getPickupDate(), this.dispense.getSupply(), (int) remainDays));
+                String patientNid = this.dispense.getPrescription().getPatient().getNid();
+                this.dispenseService.saveOrUpdateDispense(this.dispense);
+                Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+            }catch (SQLException ex){
+                ex.printStackTrace();
             }
         }
     }
@@ -331,7 +342,43 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
         Utilities.displayConfirmationDialog(getRelatedActivity(), editWillRemoveSelectedDispense, getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), DispenseVM.this).show();
     }
 
-    public void changeDataViewStatus(View view){
+    public void changeDataViewStatus(View view) {
         ((CreateDispenseActivity) getRelatedActivity()).changeFormSectionVisibility(view);
+    }
+
+    public java.util.Date getNextPickupDate(java.util.Date dispenseDate, int dipenseDuration, int remainDays) {
+
+        int daysToAdd = 0;
+
+        if (dipenseDuration == 2) {
+            daysToAdd = Dispense.DURATION_TWO_WEEKS;
+        } else if (dipenseDuration == 4) {
+            daysToAdd = Dispense.DURATION_ONE_MONTH;
+        } else if (dipenseDuration == 8) {
+            daysToAdd = Dispense.DURATION_TWO_MONTHS;
+        } else if (dipenseDuration == 12) {
+            daysToAdd = Dispense.DURATION_THREE_MONTHS;
+        } else if (dipenseDuration == 16) {
+            daysToAdd = Dispense.DURATION_FOUR_MONTHS;
+        } else if (dipenseDuration == 20) {
+            daysToAdd = Dispense.DURATION_FIVE_MONTHS;
+        } else if (dipenseDuration == 24) {
+            daysToAdd = Dispense.DURATION_SIX_MONTHS;
+        }
+
+
+        java.util.Date nextPickupDate = DateUtilitis.addDaysToDate(dispenseDate, daysToAdd + remainDays);
+
+        String dataDispensa = DateUtilitis.parseDateToDDMMYYYYString(nextPickupDate);
+
+        int isWeekend = DateUtilitis.isSaturdayOrSunday(dataDispensa);
+
+        if (isWeekend == 6) {
+            nextPickupDate = DateUtilitis.addDaysToDate(nextPickupDate, -1);
+        } else if (isWeekend == 7) {
+            nextPickupDate = DateUtilitis.addDaysToDate(nextPickupDate, -2);
+        }
+
+        return nextPickupDate;
     }
 }
