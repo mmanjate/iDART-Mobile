@@ -16,9 +16,10 @@ import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.StockDaoImpl;
 
-@DatabaseTable(tableName = "Stock", daoClass = StockDaoImpl.class)
+@DatabaseTable(tableName = Stock.TABLE_NAME, daoClass = StockDaoImpl.class)
 public class Stock extends BaseModel implements Listble {
 
+    public static final String TABLE_NAME = "Stock";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_ORDER_NUMBER = "order_number";
     public static final String COLUMN_BATCH_NUMBER = "batch_number";

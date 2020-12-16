@@ -49,8 +49,6 @@ public class DestroyStockVM extends BaseViewModel {
         return new DestroyedDrug();
     }
 
-
-
     @Override
     protected void initFormData() {
         try {
