@@ -190,7 +190,7 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
                                     if (remainDays > 2 && controlNextPickupDate < 0) {
                                         Utilities.displayConfirmationDialog(getRelatedActivity(),
                                                 getRelatedActivity().getString(R.string.cant_dispense_patient_has_drugs) + "\n" +
-                                                        "Nota: O Paciente contém medicamentos para +" + remainDays +" dias e caso desejar aviar, serão adicionados estes dias a data do próximo Levantamento, passando para [ " +
+                                                        "Nota: O Paciente contém medicamentos para +" + remainDays +" dias e caso desejar aviar, estes dias serão adicionados a data do próximo Levantamento, passando para [ " +
                                                         nextPickupDateCalculated + " ]",
                                                 getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no),
                                                 DispenseVM.this).show();
@@ -203,7 +203,6 @@ public class DispenseVM extends BaseViewModel implements DialogListener {
                                     String patientNid = this.dispense.getPrescription().getPatient().getNid();
                                     this.dispenseService.saveOrUpdateDispense(this.dispense);
                                     Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
-
                                 }
                             }
 

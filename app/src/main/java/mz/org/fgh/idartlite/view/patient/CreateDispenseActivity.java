@@ -186,7 +186,13 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
             public void onClick(View view) {
                 int mYear, mMonth, mDay;
 
+                String nextPickupDateFixed = activityCreateDispenseBinding.nextPickupDate.getText().toString();
+
                 final Calendar c = Calendar.getInstance();
+
+                if(nextPickupDateFixed.length() > 0) {
+                    c.setTime( DateUtilitis.createDate(nextPickupDateFixed,DateUtilitis.DATE_FORMAT));
+                }
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -210,7 +216,14 @@ public class CreateDispenseActivity extends BaseActivity implements DialogListen
                 if (b) {
                     int mYear, mMonth, mDay;
 
+                    String nextPickupDateFixed = activityCreateDispenseBinding.nextPickupDate.getText().toString();
+
                     final Calendar c = Calendar.getInstance();
+
+                    if(nextPickupDateFixed.length() > 0) {
+                        c.setTime( DateUtilitis.createDate(nextPickupDateFixed,DateUtilitis.DATE_FORMAT));
+                    }
+
                     mYear = c.get(Calendar.YEAR);
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
