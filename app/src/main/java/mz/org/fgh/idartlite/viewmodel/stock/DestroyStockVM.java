@@ -74,12 +74,17 @@ public class DestroyStockVM extends BaseViewModel {
             } else {
                 for (Listble listble : getRelatedActivity().getStockToDestroy()) {
                     if (listble.getQtyToModify() > 0) {
-                        stocksToDestroy.add(((DestroyedDrug) listble));
-                        stocksToDestroy.get(stocksToDestroy.size() - 1).setNotes(getRelatedRecord().getNotes());
-                        stocksToDestroy.get(stocksToDestroy.size() - 1).setDate(getRelatedRecord().getDate());
-                        stocksToDestroy.get(stocksToDestroy.size() - 1).setSyncStatus(BaseModel.SYNC_SATUS_READY);
+                        if (listble.getQtyToModify() > listble.getSaldoActual()){
+                            Utilities.displayAlertDialog(getRelatedActivity(), "A quantidade informada para o lote ["+listble.getLote()+"] é superior ao saldo actual.").show();
+                        }else {
+                            stocksToDestroy.add(((DestroyedDrug) listble));
+                            stocksToDestroy.get(stocksToDestroy.size() - 1).setNotes(getRelatedRecord().getNotes());
+                            stocksToDestroy.get(stocksToDestroy.size() - 1).setDate(getRelatedRecord().getDate());
+                            stocksToDestroy.get(stocksToDestroy.size() - 1).setSyncStatus(BaseModel.SYNC_SATUS_READY);
 
-                        if (getRelatedRecord().getStock() == null) getRelatedRecord().setStock(((DestroyedDrug) listble).getStock());
+                            if (getRelatedRecord().getStock() == null)
+                                getRelatedRecord().setStock(((DestroyedDrug) listble).getStock());
+                        }
                     }
                 }
 
