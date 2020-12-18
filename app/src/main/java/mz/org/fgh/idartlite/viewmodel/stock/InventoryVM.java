@@ -292,5 +292,10 @@ public class InventoryVM extends BaseViewModel {
 
     public void back() {
 
+        if (getCurrentStep().isApplicationStepList()){
+            getCurrentStep().changeToEdit();
+            notifyChange();
+        }
+        else getRelatedActivity().finish();
     }
 }
