@@ -91,7 +91,9 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 public void afterTextChanged(Editable s) {
                    if (s != null && Utilities.stringHasValue(s.toString()) && Utilities.isNumeric(s.toString())){
 
-                       getItemAtPosition(position).setQtyToModify(Integer.valueOf(s.toString()));
+                       if (getItemAtPosition(position) != null) {
+                           getItemAtPosition(position).setQtyToModify(Integer.valueOf(s.toString()));
+                       }
                    }
                 }
             });
@@ -110,7 +112,9 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void afterTextChanged(Editable s) {
                     if(s.length()>0){
-                        getItemAtPosition(position).setQtyToModify(Integer.valueOf(( s).toString()));
+                        if (getItemAtPosition(position) != null) {
+                            getItemAtPosition(position).setQtyToModify(Integer.valueOf((s).toString()));
+                        }
                     }
 
                 }
@@ -142,7 +146,12 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
     public Listble getItemAtPosition(int position){
         if (!Utilities.listHasElements(listbles)) return null;
 
-        return listbles.get(position-1);
+        try {
+            return listbles.get(position-1);
+        }
+        catch (IndexOutOfBoundsException e){
+            return null;
+        }
     }
 
     @Override

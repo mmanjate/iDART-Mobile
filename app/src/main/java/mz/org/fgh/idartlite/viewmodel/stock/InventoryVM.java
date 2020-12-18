@@ -57,6 +57,7 @@ public class InventoryVM extends BaseViewModel {
             for (Drug drug : this.drugs){
                 for (StockAjustment ajustment : stockAjustments){
                     if (ajustment.getStock().getDrug().equals(drug)){
+                        if (Utilities.listHasElements(drug.getAjustmentInfo())) drug.getAjustmentInfo().clear();
                         drug.addAjustmentInfo(ajustment);
                     }
                 }
@@ -293,6 +294,7 @@ public class InventoryVM extends BaseViewModel {
     public void back() {
 
         if (getCurrentStep().isApplicationStepList()){
+            determineSelectedDrug();
             getCurrentStep().changeToEdit();
             notifyChange();
         }
