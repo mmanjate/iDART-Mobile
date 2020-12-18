@@ -64,7 +64,7 @@ public class IventoryActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                getRelatedViewModel().back();
             }
         });
 
@@ -76,6 +76,10 @@ public class IventoryActivity extends BaseActivity {
         if (Utilities.listHasElements(getRelatedViewModel().getAdjustmentList())) displaySelectedDrugStockAjustmentInfo();
     }
 
+    @Override
+    public void onBackPressed() {
+        getRelatedViewModel().back();
+    }
 
     public void populateDrugs(List<Drug> drugs){
         drugArrayAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, drugs);

@@ -289,4 +289,8 @@ public class InventoryVM extends BaseViewModel {
     public String getDrugAutocompleteLabel(){
         return getRelatedActivity().getString(R.string.drug)+" "+(currentSelectedDrugPosition+1) + " "+getRelatedActivity().getString(R.string.of)+ " "+drugs.size();
     }
+
+    public void back() {
+
+    }
 }
