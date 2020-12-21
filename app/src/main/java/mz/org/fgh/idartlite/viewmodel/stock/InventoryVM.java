@@ -6,6 +6,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import com.itextpdf.text.DocumentException;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +60,7 @@ public class InventoryVM extends BaseViewModel {
             for (Drug drug : this.drugs){
                 for (StockAjustment ajustment : stockAjustments){
                     if (ajustment.getStock().getDrug().equals(drug)){
+                        if (Utilities.listHasElements(drug.getAjustmentInfo())) drug.getAjustmentInfo().clear();
                         drug.addAjustmentInfo(ajustment);
                     }
                 }
@@ -288,5 +292,25 @@ public class InventoryVM extends BaseViewModel {
     @Bindable
     public String getDrugAutocompleteLabel(){
         return getRelatedActivity().getString(R.string.drug)+" "+(currentSelectedDrugPosition+1) + " "+getRelatedActivity().getString(R.string.of)+ " "+drugs.size();
+    }
+
+    public void back() {
+
+        if (getCurrentStep().isApplicationStepList()){
+            determineSelectedDrug();
+            getCurrentStep().changeToEdit();
+            notifyChange();
+        }
+        else getRelatedActivity().finish();
+    }
+
+    public void printCountForm(){
+        try {
+            getRelatedActivity().createPdf(this.drugs);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
     }
 }

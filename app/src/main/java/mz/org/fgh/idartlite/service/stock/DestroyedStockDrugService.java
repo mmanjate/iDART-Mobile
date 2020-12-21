@@ -33,7 +33,9 @@ public class DestroyedStockDrugService extends BaseService<DestroyedDrug> implem
 
         getDestroyedStockDrugDao().create(record);
 
-        processDestruction(record);
+        record.getStock().setStockMoviment(record.getStock().getStockMoviment() - record.getQtyToModify());
+
+        ((IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(record.getStock());
     }
 
     public List<Drug> getDestroyedDrugs() throws SQLException {
@@ -54,26 +56,15 @@ public class DestroyedStockDrugService extends BaseService<DestroyedDrug> implem
     public void update(DestroyedDrug record) throws SQLException {
         super.update(record);
 
-        processDestruction(record);
+        DestroyedDrug oldDestruction = getDestroyedStockDrugDao().queryForId(record.getId());
 
-        getDestroyedStockDrugDao().update(record);
-    }
-
-    private void processDestruction(DestroyedDrug record) throws SQLException {
-
-        if (record.getId() > 0) {
-            DestroyedDrug oldDestruction = getDestroyedStockDrugDao().queryForId(record.getId());
-
-            if (oldDestruction.getQtyToModify() != record.getQtyToModify()) {
-                record.getStock().setStockMoviment(record.getStock().getStockMoviment() + oldDestruction.getQtyToModify() - record.getQtyToModify());
-
-                ((IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(record.getStock());
-            }
-        }else {
-            record.getStock().setStockMoviment(record.getStock().getStockMoviment() - record.getQtyToModify());
+        if (oldDestruction.getQtyToModify() != record.getQtyToModify()) {
+            record.getStock().setStockMoviment(record.getStock().getStockMoviment() + oldDestruction.getQtyToModify() - record.getQtyToModify());
 
             ((IStockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).updateStock(record.getStock());
         }
+
+        getDestroyedStockDrugDao().update(record);
     }
 
     @Override

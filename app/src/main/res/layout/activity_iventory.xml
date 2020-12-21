@@ -110,7 +110,20 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginBottom="@dimen/dimen_10dp"
                             android:visibility="@{(viewModel.currentStep.applicationstepCreate &amp;&amp; !viewModel.relatedRecord.open) ? View.VISIBLE : View.GONE}"
+                            android:textColor="@color/white"/>
 
+                        <Button
+                            android:id="@+id/btn_print_count_form"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_shape"
+                            android:onClick="@{()-> viewModel.printCountForm()}"
+                            android:text="Imprimir Folha de Contagem"
+                            android:paddingLeft="@dimen/dimen_4dp"
+                            android:paddingRight="@dimen/dimen_4dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:visibility="@{viewModel.relatedRecord.open ? View.VISIBLE : View.GONE}"
                             android:textColor="@color/white"/>
 
                         <LinearLayout
@@ -120,8 +133,6 @@
                             android:orientation="vertical"
                             android:visibility="@{(viewModel.currentStep.applicationStepEdit||viewModel.currentStep.applicationStepDisplay || viewModel.currentStep.applicationStepList || viewModel.relatedRecord.open) ? View.VISIBLE : View.GONE}"
                             >
-
-
 
                         <TextView
                             android:id="@+id/lbl_drugs"
