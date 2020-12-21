@@ -1,6 +1,10 @@
 package mz.org.fgh.idartlite.view.stock.inventory;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -12,6 +16,23 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +43,8 @@ import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityIventoryBinding;
 import mz.org.fgh.idartlite.model.Drug;
+import mz.org.fgh.idartlite.model.StockAjustment;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.stock.InventoryVM;
 
@@ -151,4 +174,88 @@ public class IventoryActivity extends BaseActivity {
         iventoryBinding.save.setVisibility(visibility == View.VISIBLE ? View.GONE : View.VISIBLE);
         iventoryBinding.confirmation.setVisibility(visibility == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
+
+    public void createPdf(List<Drug> drugs) throws IOException, DocumentException {
+
+        File docsFolder = new File(Environment.getExternalStorageDirectory() + "/sdcard");
+        if (!docsFolder.exists()) {
+            docsFolder.mkdir();
+        }
+
+        String pdfname = "folha_de_contagem_de_stock.pdf";
+        File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
+        OutputStream output = new FileOutputStream(pdfFile);
+        Document document = new Document(PageSize.A4);
+
+
+        PdfPTable tableImage = new PdfPTable(1);
+        tableImage.setWidthPercentage(100);
+        tableImage.setWidths(new float[]{3});
+        tableImage.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+        tableImage.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
+        tableImage.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        PdfPCell cell;
+
+        Drawable d = getResources().getDrawable(R.mipmap.ic_mz_misau);
+        Bitmap bmp =((BitmapDrawable)d).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Image image = Image.getInstance(stream.toByteArray());
+        image.setWidthPercentage(80);
+        image.scaleToFit(105,55);
+        cell = new PdfPCell(image);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setUseAscender(true);
+        cell.setBorder(PdfPCell.NO_BORDER);
+        cell.setPadding(2f);
+        tableImage.addCell(cell);
+
+
+        PdfPTable table = new PdfPTable(new float[]{2, 3, 3,2, 2, 4});
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.getDefaultCell().setFixedHeight(50);
+        table.setTotalWidth(PageSize.A4.getWidth());
+        table.setWidthPercentage(100);
+        table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(getString(R.string.lote));
+        table.addCell(getString(R.string.drug));
+        table.addCell("Validade");
+        table.addCell("Saldo Actual");
+        table.addCell("Frascos contados");
+        table.addCell("Notas");
+        table.setHeaderRows(1);
+
+        PdfPCell[] cells = table.getRow(0).getCells();
+
+        for (int j = 0; j < cells.length; j++) {
+            cells[j].setBackgroundColor(BaseColor.GRAY);
+        }
+
+        for (Drug drug : drugs) {
+            for (StockAjustment ajustment : drug.getAjustmentInfo()) {
+                table.addCell(ajustment.getLote());
+                table.addCell(ajustment.getDescription());
+                table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(ajustment.getValidate())));
+                table.addCell(String.valueOf(ajustment.getSaldoActual()));
+                table.addCell(ajustment.getQtyToModify() > 0 ? String.valueOf(ajustment.getQtyToModify()) : "");
+                table.addCell(ajustment.getNotes());
+            }
+        }
+
+        PdfWriter.getInstance(document, output);
+        document.open();
+        document.add(tableImage);
+        // document.add(image);
+        Font f = new Font(Font.FontFamily.TIMES_ROMAN, 18.0f, Font.UNDERLINE, BaseColor.RED);
+        document.add(new Paragraph("Folha de Contagem de Stock \n\n", f));
+
+        document.add(table);
+
+        document.close();
+
+        Utilities.previewPdfFiles(this,pdfFile );
+    }
+
 }

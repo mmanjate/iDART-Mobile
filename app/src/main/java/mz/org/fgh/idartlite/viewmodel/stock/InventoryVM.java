@@ -6,6 +6,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import com.itextpdf.text.DocumentException;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -299,5 +302,15 @@ public class InventoryVM extends BaseViewModel {
             notifyChange();
         }
         else getRelatedActivity().finish();
+    }
+
+    public void printCountForm(){
+        try {
+            getRelatedActivity().createPdf(this.drugs);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
     }
 }

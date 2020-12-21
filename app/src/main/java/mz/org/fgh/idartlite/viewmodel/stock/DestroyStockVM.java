@@ -76,6 +76,7 @@ public class DestroyStockVM extends BaseViewModel {
                     if (listble.getQtyToModify() > 0) {
                         if (listble.getQtyToModify() > listble.getSaldoActual()){
                             Utilities.displayAlertDialog(getRelatedActivity(), "A quantidade informada para o lote ["+listble.getLote()+"] é superior ao saldo actual.").show();
+                            return;
                         }else {
                             stocksToDestroy.add(((DestroyedDrug) listble));
                             stocksToDestroy.get(stocksToDestroy.size() - 1).setNotes(getRelatedRecord().getNotes());

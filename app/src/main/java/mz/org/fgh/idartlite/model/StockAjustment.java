@@ -151,7 +151,7 @@ public class StockAjustment extends BaseModel implements Listble {
 
     @Override
     public String getDescription() {
-        return null;
+        return this.stock.getDescription();
     }
 
     @Override
