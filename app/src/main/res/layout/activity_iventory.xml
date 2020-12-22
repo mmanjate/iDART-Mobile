@@ -123,7 +123,7 @@
                             android:paddingRight="@dimen/dimen_4dp"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginBottom="@dimen/dimen_10dp"
-                            android:visibility="@{viewModel.relatedRecord.open ? View.VISIBLE : View.GONE}"
+                            android:visibility="@{(!viewModel.currentStep.applicationStepDisplay &amp;&amp; viewModel.relatedRecord.open) ? View.VISIBLE : View.GONE}"
                             android:textColor="@color/white"/>
 
                         <LinearLayout

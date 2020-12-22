@@ -57,51 +57,56 @@ public class InventoryVM extends BaseViewModel {
         try {
             List<StockAjustment> stockAjustments = getRelatedService().getAllStockAjustmentsOfInventory(getSelectedRecord());
 
-            for (Drug drug : this.drugs){
-                for (StockAjustment ajustment : stockAjustments){
-                    if (ajustment.getStock().getDrug().equals(drug)){
-                        if (Utilities.listHasElements(drug.getAjustmentInfo())) drug.getAjustmentInfo().clear();
-                        drug.addAjustmentInfo(ajustment);
+            if (getCurrentStep().isApplicationStepDisplay()) {
+                this.adjustmentList = Utilities.parseList(stockAjustments, Listble.class);
+            } else {
+
+                for (Drug drug : this.drugs) {
+                    for (StockAjustment ajustment : stockAjustments) {
+                        if (ajustment.getStock().getDrug().equals(drug)) {
+                            //if (Utilities.listHasElements(drug.getAjustmentInfo())) drug.getAjustmentInfo().clear();
+                            drug.addAjustmentInfo(ajustment);
+                        }
                     }
                 }
-            }
 
-            if (Utilities.listHasElements(drugs)) {
-                for (Drug drug : drugs) {
-                    if (!Utilities.listHasElements(drug.getAjustmentInfo())) {
-                        List<Stock> drugStocks = getRelatedService().getAllOfDrug(drug);
+                if (Utilities.listHasElements(drugs)) {
+                    for (Drug drug : drugs) {
+                        if (!Utilities.listHasElements(drug.getAjustmentInfo())) {
+                            List<Stock> drugStocks = getRelatedService().getAllOfDrug(drug);
 
-                        if (Utilities.listHasElements(drugStocks)) {
-                            for (Stock stock : drugStocks) {
+                            if (Utilities.listHasElements(drugStocks)) {
+                                for (Stock stock : drugStocks) {
 
-                                drug.setAjustmentInfo(new ArrayList<>());
-                                drug.getAjustmentInfo().add(initNewStockAjustment(stock));
+                                    drug.setAjustmentInfo(new ArrayList<>());
+                                    drug.getAjustmentInfo().add(initNewStockAjustment(stock));
+                                }
                             }
                         }
                     }
                 }
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+                if (getSelectedRecord().getId() > 0) {
 
-        if (getSelectedRecord().getId() > 0){
+                    boolean found = false;
 
-            boolean found = false;
+                    for (Drug drug : this.drugs) {
+                        if (drug.getAjustmentInfo().get(0).getId() <= 0) {
+                            setSelectedDrug(drug);
+                            found = true;
+                            break;
+                        }
+                    }
 
-            for (Drug drug : this.drugs){
-                if (drug.getAjustmentInfo().get(0).getId() <= 0){
-                    setSelectedDrug(drug);
-                    found = true;
-                    break;
+                    if (!found) setSelectedDrug(this.drugs.get(0));
+                } else {
+                    setSelectedDrug(this.drugs.get(0));
                 }
             }
 
-            if (!found) setSelectedDrug(this.drugs.get(0));
-        }else {
-            setSelectedDrug(this.drugs.get(0));
-        }
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
     }
 
     @Override
