@@ -11,6 +11,7 @@ public class ApplicationStep {
     public static final String STEP_DISPLAY = "DYSPLAY";
     public static final String STEP_CREATE = "CREATE";
     public static final String STEP_REMOVE= "REMOVE";
+    public static final String STEP_DOWNLOAD= "DOWNLOAD";
     public static final String SANITARY_UNIT="Unidade Sanitária";
 
     private int id;
@@ -80,6 +81,10 @@ public class ApplicationStep {
         return this.code.equals(STEP_CREATE);
     }
 
+    public boolean isApplicationstepDownload(){
+        return this.code.equals(STEP_DOWNLOAD);
+    }
+
     public void changeToInit(){
         this.code = STEP_INIT;
     }
@@ -110,6 +115,10 @@ public class ApplicationStep {
 
     public void changeTo(String stepCode){
         this.code = stepCode;
+    }
+
+    public void changetoDownload(){
+        this.code = STEP_DOWNLOAD;
     }
 
     public boolean checkSanitaryUnit(Clinic currentClinic){

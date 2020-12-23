@@ -51,6 +51,7 @@ public class NewPatientSearchActivity extends BaseActivity implements RestRespon
     private RecyclerView recyclerPatient;
     private ActivityNewPatientSearchBinding newPatientSearchBinding;
     private ContentListPatientAdapter adapter;
+    private int patientPosition=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +82,10 @@ public class NewPatientSearchActivity extends BaseActivity implements RestRespon
                 new ClickListener(getApplicationContext(), recyclerPatient, new ClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        nextActivity(position);
-                     //   download(position);
-
+                     //   nextActivity(position);
+                        changeApplicationStepToDownload();
+                        download(position);
+                        patientPosition=position;
                     }
 
                     @Override
@@ -99,7 +101,17 @@ public class NewPatientSearchActivity extends BaseActivity implements RestRespon
     }
 
     private void download(int position){
-        Utilities.displayConfirmationDialog(this, this.getString(R.string.are_sure_work_this_patient), this.getString(R.string.yes), this.getString(R.string.no), getRelatedViewModel().getRelatedActivity()).show();
+        try {
+            if(!getRelatedViewModel().checkIfPatientExists(getRelatedViewModel().getSearchResults().get(position))){
+                Utilities.displayConfirmationDialog(this, this.getString(R.string.are_sure_work_this_patient), this.getString(R.string.yes), this.getString(R.string.no), getRelatedViewModel().getRelatedActivity()).show();
+            }
+            else {
+                nextActivity(position);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -155,12 +167,7 @@ public class NewPatientSearchActivity extends BaseActivity implements RestRespon
     private void nextActivity(int position) {
 
         try {
-            this.getRelatedViewModel().createPatientIfNotExists(getRelatedViewModel().getSearchResults().get(position));
-
-            Episode episode= this.getRelatedViewModel().initEpisode(getRelatedViewModel().getSearchResults().get(position));
-
-           this.getRelatedViewModel().createEpisode(episode);
-
+            this.getRelatedViewModel().createPatientAndEpisodeIfNotExists(getRelatedViewModel().getSearchResults().get(position));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -237,13 +244,21 @@ public class NewPatientSearchActivity extends BaseActivity implements RestRespon
 
     @Override
     public void doOnConfirmed() {
-   //     Intent intent = new Intent(getRelatedViewModel(), AddNewPatientActivity.class);
-        Map<String, Object> params = new HashMap<>();
-        params.put("user", getCurrentUser());
-        params.put("clinic", getRelatedViewModel().getCurrentClinic());
-        params.put("step", ApplicationStep.STEP_CREATE);
-  //      intent.putExtras(bundle);
-        nextActivityFinishingCurrent(AddNewPatientActivity.class,params);
+
+        if(this.getApplicationStep().isApplicationstepDownload()){
+            nextActivity(patientPosition);
+        }
+        else {
+
+
+            //     Intent intent = new Intent(getRelatedViewModel(), AddNewPatientActivity.class);
+            Map<String, Object> params = new HashMap<>();
+            params.put("user", getCurrentUser());
+            params.put("clinic", getRelatedViewModel().getCurrentClinic());
+            params.put("step", ApplicationStep.STEP_CREATE);
+            //      intent.putExtras(bundle);
+            nextActivityFinishingCurrent(AddNewPatientActivity.class, params);
+        }
     }
 
     @Override

@@ -133,12 +133,12 @@ public class RestPatientService extends BaseRestService {
         clinicSectorService = new ClinicSectorService(getApp(), null);
         episodeService = new EpisodeService(getApp(), null);
 
-        if (patient == null)
+        if (patient != null) {
 
 
             try {
                 Clinic finalClinic = clinicService.getAllClinics().get(0);
-                ClinicSector clinicSector = (ClinicSector) clinicSectorService.getClinicSectorsByClinic(finalClinic);
+                ClinicSector clinicSector = (ClinicSector) clinicSectorService.getClinicSectorsByClinic(finalClinic).get(0);
                 Episode episode = episodeService.getAllEpisodesByPatient(patient).get(0);
 
                 if (episode.getSyncStatus().equalsIgnoreCase(BaseModel.SYNC_SATUS_READY))
@@ -182,6 +182,7 @@ public class RestPatientService extends BaseRestService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
     }
 
 
@@ -211,7 +212,7 @@ public class RestPatientService extends BaseRestService {
                 Clinic finalClinic = clinic;
                 Map<String, Province> finalProvinceMap = provinceMap;
                 getRestServiceExecutor().execute(() -> {
-                    String url = BaseRestService.baseUrl + "/patient?or=(patientid.like.*" + nid + "*" + ",firstnames.like.*" + name + "*" + ",lastname.like.*" + surname + "*)";
+                    String url = BaseRestService.baseUrl + "/patient?or=(patientid.like.*" + nid + "*" + ",firstnames.like.*" + name + "*" + ",lastname.like.*" + surname + "*) &patient_sector.stopdate=eq.null";
 
 
                     RESTServiceHandler handler = new RESTServiceHandler();
@@ -279,7 +280,7 @@ public class RestPatientService extends BaseRestService {
 
         SyncMobilePatient syncMobilePatient = new SyncMobilePatient();
 
-        syncMobilePatient.setAddress1(patient.getDistrict().getName());
+        syncMobilePatient.setAddress1(patient.getDistrict()!=null?patient.getDistrict().getName():" ");
         syncMobilePatient.setAddress2(patient.getAddress());
         syncMobilePatient.setAddress3("");
         syncMobilePatient.setCellphone(patient.getPhone());
@@ -290,7 +291,7 @@ public class RestPatientService extends BaseRestService {
         syncMobilePatient.setHomephone("");
         syncMobilePatient.setLastname(patient.getLastName());
         syncMobilePatient.setPatientid(patient.getNid());
-        syncMobilePatient.setProvince(patient.getProvince().getName());
+        syncMobilePatient.setProvince(patient.getProvince()!=null?patient.getProvince().getName():" ");
         if (patient.getGender().startsWith("F"))
             syncMobilePatient.setSex('F');
         else
@@ -298,7 +299,7 @@ public class RestPatientService extends BaseRestService {
         syncMobilePatient.setWorkphone("");
         syncMobilePatient.setRace("");
         syncMobilePatient.setUuidopenmrs("");
-        syncMobilePatient.setSex('F');
+    //    syncMobilePatient.setSex('F');
         syncMobilePatient.setSyncstatus(BaseModel.SYNC_SATUS_SENT);
         syncMobilePatient.setSyncuuid(UUID.randomUUID().toString());
         syncMobilePatient.setClinicsectoruuid(clinicSector.getUuid());

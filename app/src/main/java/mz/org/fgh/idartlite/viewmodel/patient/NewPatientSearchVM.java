@@ -66,11 +66,22 @@ public class NewPatientSearchVM extends SearchVM<Patient> {
         return patientService.searchPatientByNidOrNameOrSurname( nid, name, surname, offset, limit,this.getRelatedActivity());
     }
 
-    public void createPatientIfNotExists(Patient patient) throws SQLException {
-       Patient localPatient= patientService.checkExistsPatientWithNID(patient.getNid());
-       if(localPatient==null) {
+    public void createPatientAndEpisodeIfNotExists(Patient patient) throws SQLException {
+   //    Patient localPatient= patientService.checkExistsPatientWithNID(patient.getNid());
+       if(!checkIfPatientExists(patient)) {
            patientService.savePatient(patient);
+           Episode episode= this.initEpisode(patient);
+           this.createEpisode(episode);
        }
+    }
+
+    public boolean checkIfPatientExists(Patient patient) throws SQLException {
+        Patient localPatient= patientService.checkExistsPatientWithNID(patient.getNid());
+        if(localPatient==null) {
+            return false;
+        }else {
+            return true;
+        }
     }
 
 
