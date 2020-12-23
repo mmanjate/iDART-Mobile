@@ -301,6 +301,10 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         this.applicationStep.changetocreate();
     }
 
+    protected void changeApplicationStepToDownload(){
+        this.applicationStep.changetoDownload();
+    }
+
     /**
      *
      * @return the application current step
