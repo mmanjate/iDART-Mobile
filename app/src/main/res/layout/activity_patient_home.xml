@@ -132,31 +132,6 @@
             android:paddingTop="30dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="@dimen/dimen_0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <Button
-                        android:id="@+id/button3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawableTop="@mipmap/ic_search_patient"
-                        android:layout_gravity="center"
-                        android:onClick="@{()-> viewModel.callSearchPatient()}"
-                        android:text="@string/procurar_paciente"/>
-
-                </LinearLayout>
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -169,14 +144,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
                 <Button
-                    android:layout_width="0dp"
+                    android:id="@+id/button3"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:padding="20dp"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@mipmap/ic_report"
-                    android:onClick="@{()-> viewModel.callReports()}"
-                    android:text="@string/relatorios"/>
+                    android:drawableTop="@mipmap/ic_search_patient"
+                    android:layout_gravity="center"
+                    android:onClick="@{()-> viewModel.callSearchPatient()}"
+                    android:text="@string/procurar_paciente"/>
 
                 <View
                     android:layout_width="@dimen/dimen_0dp"
