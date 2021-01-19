@@ -211,7 +211,7 @@ public class StockAjustment extends BaseModel implements Listble {
         if (this == o) return true;
         if (!(o instanceof StockAjustment)) return false;
         StockAjustment that = (StockAjustment) o;
-        return id == that.id &&
+        return id == that.id && adjustedValue == that.adjustedValue &&
                 Objects.equals(stock, that.stock) &&
                 Objects.equals(iventory, that.iventory);
     }

@@ -23,7 +23,6 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.rest.service.RestRunDataForTestService;
-
 import mz.org.fgh.idartlite.rest.service.User.RestUserService;
 import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
@@ -152,7 +151,7 @@ public class LoginVM extends BaseViewModel {
                 } else {
                     // Somente para testes --- estas funcionalidades foram alocadas no WorkManager da app
                     if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
-                      //  RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
+                        RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
                     }
 
                     if (!userService.login(getCurrentUser())) {
