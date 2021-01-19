@@ -198,7 +198,7 @@ public class Dispense extends BaseModel {
         if(DateUtilities.dateDiff(this.pickupDate, this.nextPickupDate, DateUtilities.DAY_FORMAT) > 0) {
             return "A data do levantamento não pode ser maior que a data do próximo levantamento.";
         }
-        if(DateUtilities.dateDiff(this.prescription.getPrescriptionDate(), this.pickupDate, DateUtilities.DAY_FORMAT) > 0) {
+        if((int) DateUtilities.dateDiff(this.prescription.getPrescriptionDate(), this.pickupDate, DateUtilities.DAY_FORMAT) > 0) {
             return "A data da prescrição não pode ser maior que a data do levantamento.";
         }
         if(this.supply <= 0) return "A duração da prescrição deve ser indicada.";

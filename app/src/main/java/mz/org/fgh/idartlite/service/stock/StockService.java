@@ -5,6 +5,7 @@ import android.app.Application;
 import java.sql.SQLException;
 import java.util.List;
 
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
@@ -29,6 +30,7 @@ public class StockService extends BaseService<Stock> implements IStockService {
 
     @Override
     public void update(Stock record) throws SQLException {
+        record.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
         super.update(record);
         getDataBaseHelper().getStockDao().update(record);
     }

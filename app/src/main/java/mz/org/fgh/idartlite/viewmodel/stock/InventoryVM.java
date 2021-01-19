@@ -64,8 +64,11 @@ public class InventoryVM extends BaseViewModel {
                 for (Drug drug : this.drugs) {
                     for (StockAjustment ajustment : stockAjustments) {
                         if (ajustment.getStock().getDrug().equals(drug)) {
-                            //if (Utilities.listHasElements(drug.getAjustmentInfo())) drug.getAjustmentInfo().clear();
-                            drug.addAjustmentInfo(ajustment);
+                            if (Utilities.listHasElements(drug.getAjustmentInfo())) {
+                                if (!drug.getAjustmentInfo().contains(ajustment)){
+                                    drug.addAjustmentInfo(ajustment);
+                                }
+                            }
                         }
                     }
                 }
