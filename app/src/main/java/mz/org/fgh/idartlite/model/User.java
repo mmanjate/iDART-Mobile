@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.user.UserDaoImpl;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -66,16 +67,16 @@ public class User extends BaseModel {
         this.clinic = clinic;
     }
 
-    public String validadeToLogin() {
-        if (!Utilities.stringHasValue(this.userName)) return "O campo Utilizador deve ser preenchido.";
-        if (!Utilities.stringHasValue(this.password)) return "O campo Senha deve ser preenchido.";
+    private String validadeToLogin(Context context) {
+        if (!Utilities.stringHasValue(this.userName)) return context.getString(R.string.user_is_mandatory);
+        if (!Utilities.stringHasValue(this.password)) return context.getString(R.string.pass_is_mandatory);
 
         return "";
     }
 
     @Override
     public String isValid(Context context) {
-        return null;
+        return validadeToLogin(context);
     }
 
     @Override

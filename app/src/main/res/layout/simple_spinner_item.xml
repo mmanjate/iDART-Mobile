@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/login_spinner_normal"
 
     android:layout_marginLeft="@dimen/dimen_10dp"
@@ -11,8 +10,9 @@
 
     <TextView
         android:id="@+id/label"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:padding="@dimen/dimen_2dp"
         style="@style/spinner_label"
         android:text="Farmácia"

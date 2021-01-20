@@ -32,6 +32,8 @@ public abstract class BaseRestService {
     protected static ExecutorService restServiceExecutor;
     public static final String baseUrl = "http://dev.fgh.org.mz:3110";
 
+    //public static final String baseUrl = "http://192.168.1.163:3009";
+
     public BaseRestService(Application application, User currentUser, Clinic currentClinic) {
         init(application,currentUser, currentClinic);
     }

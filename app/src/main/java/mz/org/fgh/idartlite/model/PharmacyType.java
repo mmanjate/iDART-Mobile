@@ -63,6 +63,18 @@ public class PharmacyType extends BaseModel {
 				'}';
 	}
 
+	public boolean isUS(){
+		return this.description.equalsIgnoreCase("Unidade Sanitária");
+	}
+
+	public boolean isPrivate(){
+		return this.description.equalsIgnoreCase("Privada");
+	}
+
+	public boolean isComunitary(){
+		return this.description.equalsIgnoreCase("Comunitária");
+	}
+
 	@Override
 	public String isValid(Context context) {
 		return null;

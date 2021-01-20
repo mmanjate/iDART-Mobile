@@ -316,4 +316,6 @@
     <string name="dispense_type_report">Tipo de Dispensa </string>
     <string name="data_de_referencia_report">Data de Referência</string>
     <string name="prescription_date_report">Data da Prescrição</string>
+    <string name="user_is_mandatory">O campo Utilizador deve ser preenchido.</string>
+    <string name="pass_is_mandatory">O campo Senha deve ser preenchido.</string>
 </resources>

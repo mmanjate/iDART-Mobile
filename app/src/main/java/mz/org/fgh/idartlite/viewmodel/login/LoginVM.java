@@ -58,16 +58,17 @@ public class LoginVM extends BaseViewModel {
 
     public LoginVM(@NonNull Application application) {
         super(application);
+    }
+
+    @Override
+    protected IBaseService initRelatedService() {
 
         userService = new UserService(getApplication(), getCurrentUser());
         restUserService = new RestUserService(getApplication(), getCurrentUser());
         clinicService = new ClinicService(getApplication(), getCurrentUser());
         clinicSectorService= new ClinicSectorService(getApplication(),getCurrentUser());
-    }
 
-    @Override
-    protected IBaseService initRelatedService() {
-        return null;
+        return userService;
     }
 
     @Override
@@ -77,7 +78,11 @@ public class LoginVM extends BaseViewModel {
 
     @Override
     protected void initFormData() {
-
+        try {
+            this.clinicList = clinicService.getAllClinics();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setUserName(String userName) {
@@ -140,8 +145,7 @@ public class LoginVM extends BaseViewModel {
 
         try {
 
-
-            String loginErrors = getCurrentUser().validadeToLogin();
+            String loginErrors = getCurrentUser().isValid(getRelatedActivity());
 
             if (!Utilities.stringHasValue(loginErrors)) {
                 getCurrentUser().setUserName(getUserName().trim());
@@ -155,9 +159,9 @@ public class LoginVM extends BaseViewModel {
                     }
 
                     if (!userService.login(getCurrentUser())) {
-                        if (Utilities.listHasElements(clinicService.getAllClinics())) {
-                            setCurrentClinic(clinicService.getAllClinics().get(0));
-                            if(currentClinic.getPharmacyType().getDescription().equalsIgnoreCase("Unidade Sanitária")){
+                        if (Utilities.listHasElements(clinicList)) {
+                            setCurrentClinic(clinicList.get(0));
+                            if(currentClinic.getPharmacyType().isUS()){
                                 setCurrentClinicSector(clinicSectorService.getClinicSector());
                             }
 
@@ -169,8 +173,10 @@ public class LoginVM extends BaseViewModel {
                             Utilities.displayAlertDialog(getRelatedActivity(),  getRelatedActivity().getString(R.string.pharmacy_config_not_found)).show();
                         }
                     } else {
-                        getRelatedActivity().changeViewToNormalMode();
-                        Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.user_or_pass_invalid)).show();
+                        /*getRelatedActivity().changeViewToNormalMode();
+                        Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.user_or_pass_invalid)).show();*/
+                        if (getCurrentClinic() == null) setCurrentClinic(clinicList.get(0));
+                        runRestUserAccess();
                     }
                 }
             } else {

@@ -8,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -47,11 +45,9 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.databinding.ContentDispensesReportBinding;
 import mz.org.fgh.idartlite.databinding.DispenseReportBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
@@ -274,7 +270,7 @@ public class DispenseReportActivity extends BaseActivity {
 
         PdfPCell cell;
 
-        Drawable d = getResources().getDrawable(R.mipmap.ic_mz_misau);
+        Drawable d = getResources().getDrawable(R.mipmap.ic_misau);
         Bitmap bmp =((BitmapDrawable)d).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);

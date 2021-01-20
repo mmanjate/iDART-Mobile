@@ -13,13 +13,10 @@ import java.util.List;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
-import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
-
-import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.rest.service.User.RestUserService;
 import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -137,7 +134,6 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
                 Utilities.displayAlertDialog(LoginActivity.this, "Os dados do utilizador são inválidos").show();
             }
         }
-
     }
 
     public ActivityLoginBinding getActivityLoginBinding() {
@@ -156,6 +152,4 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
     public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {
 
     }
-
-
 }

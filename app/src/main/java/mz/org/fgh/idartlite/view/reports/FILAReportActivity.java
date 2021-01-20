@@ -1,13 +1,5 @@
 package mz.org.fgh.idartlite.view.reports;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -23,11 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -50,28 +47,19 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.ListbleReportFilaRecycleViewAdapter;
-import mz.org.fgh.idartlite.adapter.recyclerview.listable.ListbleReportRecycleViewAdapter;
 import mz.org.fgh.idartlite.adapter.recyclerview.patient.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityFilaDispenseReportDialogBinding;
 import mz.org.fgh.idartlite.databinding.ActivityFilaReportBinding;
-import mz.org.fgh.idartlite.databinding.ActivityPatientRegisterReportBinding;
-import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
-import mz.org.fgh.idartlite.databinding.ContentDispensesReportBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.model.StockReportData;
-import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;
 import mz.org.fgh.idartlite.viewmodel.dispense.FILAReportVM;
-import mz.org.fgh.idartlite.viewmodel.patient.PatientRegisterReportVM;
-import mz.org.fgh.idartlite.viewmodel.patient.PatientVM;
 
 public class FILAReportActivity extends BaseActivity {
 
@@ -274,7 +262,7 @@ public class FILAReportActivity extends BaseActivity {
 
         PdfPCell cell;
 
-        Drawable d = getResources().getDrawable(R.mipmap.ic_mz_misau);
+        Drawable d = getResources().getDrawable(R.mipmap.ic_misau);
         Bitmap bmp =((BitmapDrawable)d).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
