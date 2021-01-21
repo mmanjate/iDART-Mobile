@@ -316,4 +316,25 @@
     <string name="dispense_type_report">Tipo de Dispensa </string>
     <string name="data_de_referencia_report">Data de Referência</string>
     <string name="prescription_date_report">Data da Prescrição</string>
+
+
+    <string name="clinic_info">Informacao Clinica</string>
+
+    <string name="register_date">Data Registro:</string>
+    <string name="vital_signs">Sinais Vitais</string>
+    <string name="adherence_monitoring_and_screening">Monitoria e Rastreio de Adesao</string>
+    <string name="adverse_reactions">Reacoes Adversas</string>
+
+    <string name="weight">Peso</string>
+    <string name="height">Altura</string>
+    <string name="imc">IMC</string>
+    <string name="systole">Sistole</string>
+    <string name="distole">Distole</string>
+
+
+    <string name="tb_screening">Perguntas de Rastreio de Tuberculose</string>
+
+     <string name="profilatic_treatment_tpi">Esta Actualmente em tratamento Profilatico  com Isoniazida(TPI)?</string>
+    <string name="treatment_tb">Esta em tratamento de tuberculose(TB)?</string>
+
 </resources>
