@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
@@ -21,6 +22,7 @@ import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.service.ServiceProvider;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
+import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.User;
@@ -43,6 +45,9 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private Listble selectedListble;
     protected User currentUser;
     protected Clinic currentClinic;
+
+
+    protected List<AppSettings> systemSettings;
 
     protected ClinicSector currentClinicSector;
 
@@ -253,4 +258,12 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     }
 
     public abstract void preInit();
+
+    public List<AppSettings> getSystemSettings(){
+        return this.systemSettings;
+    }
+
+    public void setSystemSettings(List<AppSettings> systemSettings) {
+        this.systemSettings = systemSettings;
+    }
 }

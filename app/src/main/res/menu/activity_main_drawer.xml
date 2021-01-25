@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Início" />
+        <item
+            android:id="@+id/nav_add_user"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Registar Utilizador" />
+        <item
+            android:id="@+id/nav_change_pass"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Alterar Senha" />
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Configurações" />
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Sair" />
+    </group>
+</menu>

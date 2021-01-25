@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.viewmodel.home;
+package mz.org.fgh.idartlite.view.home.ui.home;
 
 import android.app.Application;
 import android.content.Intent;
@@ -14,9 +14,10 @@ import mz.org.fgh.idartlite.view.home.PatientHomeActivity;
 import mz.org.fgh.idartlite.view.reports.ReportTypeActivity;
 import mz.org.fgh.idartlite.view.stock.panel.StockActivity;
 
-public class HomeVM extends BaseViewModel {
+public class HomeViewModel extends BaseViewModel {
 
-    public HomeVM(@NonNull Application application) {
+
+    public HomeViewModel(@NonNull Application application) {
         super(application);
     }
 
@@ -35,26 +36,30 @@ public class HomeVM extends BaseViewModel {
 
     }
 
-    public void callHomePatient(){
-        getRelatedActivity().nextActivityWithGenericParams(PatientHomeActivity.class);
-    }
-
-    public void callStck(){
-        getRelatedActivity().nextActivityWithGenericParams(StockActivity.class);
-    }
-
-    public void callReports(){
-        getRelatedActivity().nextActivityWithGenericParams(ReportTypeActivity.class);
-    }
-
-    @Override
-    public IDartHomeActivity getRelatedActivity(){
-        return (IDartHomeActivity) super.getRelatedActivity();
-    }
-
     @Override
     public void preInit() {
 
+    }
+
+    public void callHomePatient(){
+        getMyActivity().nextActivityWithGenericParams(PatientHomeActivity.class);
+    }
+
+    public IDartHomeActivity getMyActivity(){
+        return (IDartHomeActivity) getRelatedFragment().getActivity();
+    }
+
+    public void callStck(){
+        getMyActivity().nextActivityWithGenericParams(StockActivity.class);
+    }
+
+    public void callReports(){
+        getMyActivity().nextActivityWithGenericParams(ReportTypeActivity.class);
+    }
+
+    @Override
+    public HomeFragment getRelatedFragment() {
+        return (HomeFragment) super.getRelatedFragment();
     }
 
     @Bindable

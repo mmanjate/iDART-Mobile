@@ -30,6 +30,7 @@ import mz.org.fgh.idartlite.dao.param.operationtype.IOperationTypeDao;
 import mz.org.fgh.idartlite.dao.patient.IPatientDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescribedDrugDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescriptionDao;
+import mz.org.fgh.idartlite.dao.settings.IAppSettingsDao;
 import mz.org.fgh.idartlite.dao.stock.IDestroyedDrugDao;
 import mz.org.fgh.idartlite.dao.stock.IIventoryDao;
 import mz.org.fgh.idartlite.dao.stock.IReferedStockMovimentDao;
@@ -40,6 +41,7 @@ import mz.org.fgh.idartlite.dao.territory.IDistrictDao;
 import mz.org.fgh.idartlite.dao.territory.IProvinceDao;
 import mz.org.fgh.idartlite.dao.territory.ISubdistrictDao;
 import mz.org.fgh.idartlite.dao.user.IUserDao;
+import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Country;
@@ -110,6 +112,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private IReferedStockMovimentDao referedStockMovimentDao;
     private IOperationTypeDao operationTypeDao;
+    private IAppSettingsDao appSettingsDao;
+
 
  //   private IPatientSectorDao patientSectorDao;
 
@@ -301,6 +305,13 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             operationTypeDao = getDao(OperationType.class);
         }
         return operationTypeDao;
+    }
+
+    public IAppSettingsDao getAppSettingsDao() throws SQLException {
+        if(appSettingsDao == null){
+            appSettingsDao = getDao(AppSettings.class);
+        }
+        return appSettingsDao;
     }
 
     /* public IPatientSectorDao getPatientSectorDao() throws SQLException {

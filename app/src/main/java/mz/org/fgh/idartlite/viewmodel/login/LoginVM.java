@@ -31,7 +31,7 @@ import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.user.IUserService;
 import mz.org.fgh.idartlite.service.user.UserService;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.home.HomeActivity;
+import mz.org.fgh.idartlite.view.home.IDartHomeActivity;
 import mz.org.fgh.idartlite.view.login.LoginActivity;
 import mz.org.fgh.idartlite.view.splash.SecondSplashActivity;
 
@@ -241,7 +241,7 @@ public class LoginVM extends BaseViewModel {
         if(getCurrentClinicSector()!=null)
         {params.put("clinicSector", getCurrentClinicSector());}
         params.put("clinic", getCurrentClinic());
-        getRelatedActivity().nextActivity(HomeActivity.class, params);
+        getRelatedActivity().nextActivity(IDartHomeActivity.class, params);
     }
 
     @Bindable
