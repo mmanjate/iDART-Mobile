@@ -4,15 +4,10 @@
 
     <data>
         <variable
-            name="episode"
-            type="mz.org.fgh.idartlite.model.Episode" />
+            name="clinicInformation"
+            type="mz.org.fgh.idartlite.model.ClinicInformation" />
 
-        <variable
-            name="firstEpisode"
-            type="mz.org.fgh.idartlite.model.Episode" />
-        <variable
-            name="lastDispense"
-            type="mz.org.fgh.idartlite.model.Dispense" />
+
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
     </data>
@@ -31,7 +26,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                bind:srcCompat="@mipmap/ic_episode"/>
+                bind:srcCompat="@mipmap/ic_clinic_info_last"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="@dimen/dimen_5dp"
@@ -56,12 +51,7 @@
                     android:layout_weight="9"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{episode.beginOrEnding}"
-                        android:textSize="@dimen/dimen_12dp"
-                        android:textStyle="bold"/>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -74,7 +64,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingBottom="@dimen/dimen_10dp"
-                            android:text="@{episode.stopReason!=null? episode.stopReason: episode.startReason}"
+                            android:text="@string/register_date"
                             android:textSize="@dimen/dimen_12dp"
                             android:textStyle="bold" />
 
@@ -85,7 +75,7 @@
                             android:paddingLeft="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:paddingRight="@dimen/dimen_10dp"
-                            android:text="@{episode.sanitaryUnit}"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(clinicInformation.registerDate)}"
                             android:textSize="@dimen/dimen_12dp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -96,7 +86,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="13"
+                android:layout_weight="15"
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:orientation="horizontal">
 
@@ -111,12 +101,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"
-                        android:text="@string/register_date"/>
+                        android:text="@string/vital_signs"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"
-                        android:text="@string/vital_signs"/>
+                        android:text="@string/tb_screening"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -131,42 +121,54 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_width="@dimen/dimen_8dp"
                     android:layout_height="70dp"
                     android:layout_weight="3"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/episodeDate"
+                    <CheckBox
+                        android:id="@+id/vital_signs"
                         style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{DateUtilities.formatToDDMMYYYY(episode.getStringEpisodeDate)}" />
+                        android:layout_height="15dp"
+                        android:buttonTint="@color/theme_primary"
+                        android:checked="@{clinicInformation.checkVitalSigns}"
+                        android:enabled="false"
+                        android:layoutDirection="rtl" />
 
-                    <TextView
-                        android:id="@+id/referenceDate"
+                    <CheckBox
+                        android:id="@+id/tb_screning"
                         style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{DateUtilities.formatToDDMMYYYY(firstEpisode.getStringEpisodeDate)}" />
+                        android:layout_height="15dp"
+                        android:layoutDirection="rtl"
+                        android:buttonTint="@color/theme_primary"
+                        android:enabled="false"
+                        android:checked="@{clinicInformation.checkForTb}" />
 
-                    <TextView
-                        android:id="@+id/nextPickUpDate"
+                    <CheckBox android:id="@+id/monitoring_reinforcement_adesao"
                         style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{episode.stopReason==null ? DateUtilities.formatToDDMMYYYY(lastDispense.nextPickupDate):episode.noInfoString}" />
+                        android:layout_height="15dp"
+                        android:layoutDirection="rtl"
+                        android:buttonTint="@color/theme_primary"
+                        android:enabled="false"
+                        android:checked="@{clinicInformation.checkMonitoring}"
+                        />
 
-                    <TextView
-                        android:id="@+id/notes"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <CheckBox android:id="@+id/checkAdversityReaction"
                         style="@style/patient_activity_lists"
-                        android:text="@{episode.notes}" />
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layoutDirection="rtl"
+                        android:enabled="false"
+                        android:buttonTint="@color/theme_primary"
+                        android:checked="@{clinicInformation.checkAdversity}"
+                        />
 
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_width="@dimen/dimen_12dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
@@ -175,7 +177,8 @@
                         android:layout_height="match_parent"
                         android:padding="@dimen/dimen_4dp"
                         android:layout_gravity="top"
-                        android:src="@{episode.isSyncStatusSent(episode.syncStatus) ? @drawable/ic_baseline_cloud_done_24 : @drawable/ic_baseline_cloud_queue_24}"/>
+                        android:src="@{ @drawable/ic_baseline_cloud_done_24}"
+                       />
 
                 </LinearLayout>
             </LinearLayout>

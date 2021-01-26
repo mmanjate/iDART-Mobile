@@ -21,6 +21,8 @@ public interface IClinicInfoService extends IBaseService<ClinicInformation> {
     public void updateClinicInfo(ClinicInformation clinicInformation) throws SQLException ;
     public void deleteClinicInfo(ClinicInformation clinicInformation) throws SQLException ;
 
+    public List<ClinicInformation> getAllClinicInfosByPatient(Patient patient) throws SQLException;
+
 
 
 

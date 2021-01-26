@@ -19,10 +19,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.clinicInfo.ClinicInfoAdapter;
 import mz.org.fgh.idartlite.adapter.recyclerview.episode.EpisodeAdapter;
 import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.FragmentClinicInfoBinding;
 import mz.org.fgh.idartlite.databinding.FragmentEpisodeBinding;
 import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
@@ -45,7 +47,7 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
     private List<ClinicInformation> clinicInformationsList;
     private Episode firstEpisode;
     private FragmentClinicInfoBinding fragmentClinicInfoBinding;
-    //private EpisodeAdapter episodeAdapter;
+    private ClinicInfoAdapter clinicInfoAdapter;
 
     int position1;
     private ClinicInformation clinicInformation;
@@ -71,18 +73,18 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
         this.rcvClinicInfos = fragmentClinicInfoBinding.rcvClinicInfos;
 
 
-     //   try {
-           // this.clinicInformationsList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
+        try {
+            this.clinicInformationsList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
 
 
-      //  } catch (SQLException e) {
-        //    e.printStackTrace();
-       // }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
         if (Utilities.listHasElements(clinicInformationsList)) {
-            // episodeAdapter = new EpisodeAdapter(this.rcvEpisodes, this.episodeList, getMyActivity(),firstEpisode,lastDispense);
-            // displayDataOnRecyclerView(rcvEpisodes, episodeAdapter, getContext());
+            clinicInfoAdapter = new ClinicInfoAdapter(this.rcvClinicInfos, this.clinicInformationsList,getMyActivity());
+             displayDataOnRecyclerView(rcvClinicInfos, clinicInfoAdapter, getContext());
 
         }
             fragmentClinicInfoBinding.newClinicInfo.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +108,40 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
             });
 
 
+        rcvClinicInfos.addOnItemTouchListener(
+                new ClickListener(
+                        getContext(), rcvClinicInfos, new ClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        clinicInformation = clinicInformationsList.get(position);
+                        position1=position;
+                        PopupMenu popup = new PopupMenu(view.getContext(),view);
+                        MenuInflater inflater = popup.getMenuInflater();
+                        popup.setOnMenuItemClickListener(ClinicInfoFragment.this::onMenuItemClick);
+                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
+                        popup.show();
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        clinicInformation = clinicInformationsList.get(position);
+                        position1=position;
+                        PopupMenu popup = new PopupMenu(view.getContext(),view);
+                        MenuInflater inflater = popup.getMenuInflater();
+                        popup.setOnMenuItemClickListener(ClinicInfoFragment.this::onMenuItemClick);
+                        inflater.inflate(R.menu.edit_remove_menu, popup.getMenu());
+                        popup.show();
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+                ));
+
+
+
 
 
 
@@ -115,29 +151,29 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
     }
 
 
-/*
+
 
     public boolean onMenuItemClick(MenuItem item){
+           Intent intent = new Intent(getContext(), ClinicInfoActivity.class);
+             Bundle bundle = new Bundle();
          switch (item.getItemId()){
 
              //Por retirar chamando tela de criar, por ser editado
              case R.id.edit:
-                 if(episode.getSyncStatus().equals("R")) {
+
                      //Call activity to Edit viewDetails
-                     Intent intent = new Intent(getContext(), EpisodeActivity.class);
-                     Bundle bundle = new Bundle();
+
                      bundle.putSerializable("user", getCurrentUser());
                      bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
-                     bundle.putSerializable("episode", episode);
+                     bundle.putSerializable("clinicInformation", clinicInformation);
                      bundle.putSerializable("patient", getMyActivity().getPatient());
+                      bundle.putSerializable("step",  ApplicationStep.STEP_EDIT);
+
                      intent.putExtras(bundle);
                      startActivity(intent);
                      return true;
-                 }
-                 else {
-                     Utilities.displayAlertDialog(ClinicInfoFragment.this.getContext(),getString(R.string.episode_cannot_be_edited_already_synchronized)).show();
-                     return true;
-                 }
+
+
 
              case R.id.remove:
 
@@ -147,13 +183,13 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
 
                  //Call activity to Edit
                  //viewDetails=true;
-                 Intent intent = new Intent(getContext(), EpisodeActivity.class);
-                 Bundle bundle = new Bundle();
+               //  Intent intent = new Intent(getContext(), ClinicInfoActivity.class);
+               //  Bundle bundle = new Bundle();
                  bundle.putSerializable("user", getCurrentUser());
                  bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
-                 bundle.putSerializable("episode", episode);
+                 bundle.putSerializable("clinicInformation", clinicInformation);
                  bundle.putSerializable("patient", getMyActivity().getPatient());
-                 bundle.putSerializable("viewDetails", true);
+                 bundle.putSerializable("step",  ApplicationStep.STEP_DISPLAY);
                  intent.putExtras(bundle);
                  startActivity(intent);
              default:
@@ -165,21 +201,21 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
     @Override
     public void onResume() {
         super.onResume();
-        this.rcvEpisodes = fragmentEpisodeBinding.rcvEpisodes;
+        this.rcvClinicInfos = fragmentClinicInfoBinding.rcvClinicInfos;
 
         try {
-            this.episodeList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
+            this.clinicInformationsList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        if (Utilities.listHasElements(episodeList)) {
-            episodeAdapter = new EpisodeAdapter(rcvEpisodes, this.episodeList, getMyActivity(),firstEpisode,lastDispense);
-            displayDataOnRecyclerView(rcvEpisodes, episodeAdapter, getContext());
+        if (Utilities.listHasElements(clinicInformationsList)) {
+            clinicInfoAdapter = new ClinicInfoAdapter(this.rcvClinicInfos, this.clinicInformationsList,getMyActivity());
+            displayDataOnRecyclerView(rcvClinicInfos, clinicInfoAdapter, getContext());
         }
     }
 
-*/
+
 
     public PatientPanelActivity getMyActivity(){
         return (PatientPanelActivity) getActivity();
@@ -187,7 +223,7 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
 
     @Override
     public BaseViewModel initViewModel() {
-        return new ViewModelProvider(this).get(EpisodeVM.class);
+        return new ViewModelProvider(this).get(ClinicInfoVM.class);
     }
 
     @Override
@@ -203,29 +239,27 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
     @Override
     public void remove(int position) {
 
-     /*   if(episodeList.get(position).getSyncStatus().equals("R")){
-        episodeList.remove(episodeList.get(position));
 
-        for (int i = 0; i < episodeList.size(); i++){
-            episodeList.get(i).setListPosition(i+1);
+        clinicInformationsList.remove(clinicInformationsList.get(position));
+
+        for (int i = 0; i < clinicInformationsList.size(); i++){
+            clinicInformationsList.get(i).setListPosition(i+1);
         }
-        rcvEpisodes.getAdapter().notifyItemRemoved(position);
-        rcvEpisodes.removeViewAt(position);
-        rcvEpisodes.getAdapter().notifyItemRangeChanged(position, rcvEpisodes.getAdapter().getItemCount());
+        rcvClinicInfos.getAdapter().notifyItemRemoved(position);
+        rcvClinicInfos.removeViewAt(position);
+        rcvClinicInfos.getAdapter().notifyItemRangeChanged(position, rcvClinicInfos.getAdapter().getItemCount());
 
-        getSelectedPatient().setEpisodes(episodeList);
+        //getSelectedPatient().set(clinicInformationsList);
 
             try {
-                getRelatedViewModel().deleteEpisode(episode);
+                getRelatedViewModel().deleteClinicInfo(clinicInformation);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        else {
-            Utilities.displayAlertDialog(ClinicInfoFragment.this.getContext(),getString(R.string.episode_cannot_be_removed_already_synchronized)).show();
-        }*/
 
-    }
+
+
 
     @Override
     public void remove(BaseModel baseModel) {

@@ -12,5 +12,5 @@ import mz.org.fgh.idartlite.model.Patient;
 public interface IClinicInfoDao extends IGenericDao<ClinicInformation, Integer> {
 
 
-
+    public List<ClinicInformation> getAllByPatient(Patient patient) throws SQLException;
 }

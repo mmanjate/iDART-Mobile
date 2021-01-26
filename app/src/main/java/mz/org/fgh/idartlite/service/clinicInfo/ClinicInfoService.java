@@ -46,4 +46,9 @@ public class ClinicInfoService extends BaseService<ClinicInformation> implements
     public void deleteClinicInfo(ClinicInformation clinicInformation) throws SQLException {
         getDataBaseHelper().getClinicInfoDao().delete(clinicInformation);
     }
+
+    @Override
+    public List<ClinicInformation> getAllClinicInfosByPatient(Patient patient) throws SQLException {
+        return getDataBaseHelper().getClinicInfoDao().getAllByPatient(patient);
+    }
 }

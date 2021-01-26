@@ -92,7 +92,7 @@ public class PatientPanelActivity extends BaseActivity {
         tabLayout.getTabAt(0).setIcon(R.mipmap.ic_patient);
         tabLayout.getTabAt(1).setIcon(R.mipmap.ic_precricao);
         tabLayout.getTabAt(2).setIcon(R.mipmap.ic_dispense);
-        tabLayout.getTabAt(3).setIcon(R.mipmap.ic_episode);
+        tabLayout.getTabAt(3).setIcon(R.mipmap.ic_clinic_info_last);
         tabLayout.getTabAt(4).setIcon(R.mipmap.ic_episode);
 
         if (Utilities.stringHasValue(selectedTab) && selectedTab.equals(PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION)) {

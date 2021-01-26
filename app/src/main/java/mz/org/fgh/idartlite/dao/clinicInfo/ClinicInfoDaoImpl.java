@@ -31,5 +31,9 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
     }
 
 
+    @Override
+    public List<ClinicInformation> getAllByPatient(Patient patient) throws SQLException {
+        return queryBuilder().orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).where().eq(ClinicInformation.COLUMN_PATIENT_ID, patient.getId()).query();
+    }
 
 }

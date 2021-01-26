@@ -11,6 +11,7 @@
         <variable name="viewModel"              type="mz.org.fgh.idartlite.viewmodel.clinicInfo.ClinicInfoVM" />
         <import type="mz.org.fgh.idartlite.model.ClinicInformation"/>
         <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="android.view.View"/>
 
         <variable
@@ -33,11 +34,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <include layout="@layout/app_bar"   />
+            <include layout="@layout/app_bar" />
 
-            <include
-                layout="@layout/pacient_header"   />
-
+            <include layout="@layout/pacient_info" bind:patient="@{viewModel.patient}"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -67,8 +66,23 @@
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_4dp"
                     >
+                    <TextView
+                        style="@style/input_labels"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/register_date" />
+
+                    <EditText
+                        android:id="@+id/registerDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_calendar"
+                        android:paddingStart="@dimen/dimen_4dp"
+                        android:paddingLeft="@dimen/dimen_4dp"
+                        android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.registerDate)}" />
+
                     <LinearLayout
-                        android:id="@+id/demografic_data"
+                        android:id="@+id/vital_signs"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/shape_normal"
@@ -81,14 +95,14 @@
                             android:layout_width="@dimen/dimen_0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="8"
-                            android:text='@{viewModel.currentStep.applicationStepEdit ? @string/actualizar_paciente_dados_demograficos : @string/adicionar_paciente_dados_demograficos}'
+                            android:text="@string/vital_signs"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:gravity="center_vertical|left"
                             android:paddingLeft="@dimen/dimen_10dp"/>
 
                         <ImageButton
-                            android:id="@+id/ibtn_initial_data"
+                            android:id="@+id/ibtn_vital_signs"
                             android:layout_width="@dimen/dimen_0dp"
                             android:layout_height="match_parent"
                             android:background="@color/background_layout"
@@ -99,86 +113,119 @@
 
 
                     <LinearLayout
-                        android:id="@+id/demografic_data_lyt"
+                        android:id="@+id/vital_signs_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
                         android:padding="@dimen/dimen_4dp">
-
-
-                                <TextView
-                                    style="@style/input_labels"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/weight" />
-
-                                <EditText
-                                    android:id="@+id/weight"
-                                    style="@style/bottom_border_edit_text_style"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:drawableLeft="@drawable/ic_quantidade_recebida"
-                                    android:inputType="number"/>
-
-                        <TextView
-                            style="@style/input_labels"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/height" />
+                            android:orientation="horizontal">
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/weight" />
 
-                        <EditText
-                            android:id="@+id/height"
-                            style="@style/bottom_border_edit_text_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/ic_quantidade_recebida"
-                            android:inputType="number"/>
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/height"/>
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/imc"/>
+                        </LinearLayout>
 
-                        <TextView
-                            style="@style/input_labels"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/imc" />
+                            android:orientation="horizontal">
+                            <EditText
+                                android:id="@+id/weight"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_quantidade_recebida"
+                                android:text="@={viewModel.weight}"
+                                android:inputType="number" />
 
-                        <EditText
-                            android:id="@+id/imc"
-                            style="@style/bottom_border_edit_text_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/ic_quantidade_recebida"
-                            android:inputType="number"/>
+                            <EditText
+                                android:id="@+id/height"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_quantidade_recebida"
+                                android:text="@={viewModel.height}"
+                                android:inputType="number"/>
+                            <EditText
+                                android:id="@+id/imc"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_baseline_double_arrow_24"
+                                android:text="@={viewModel.clinicInformation.imc}"
+                                android:inputType="number"/>
+                        </LinearLayout>
 
-                        <TextView
-                            style="@style/input_labels"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/systole" />
+                            android:orientation="horizontal">
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/systole" />
 
-                        <EditText
-                            android:id="@+id/systole"
-                            style="@style/bottom_border_edit_text_style"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/ic_quantidade_recebida"
-                            android:inputType="number"/>
-                        <TextView
-                            style="@style/input_labels"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/distole" />
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/distole"/>
 
-                        <EditText
-                            android:id="@+id/distole"
-                            style="@style/bottom_border_edit_text_style"
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/ic_quantidade_recebida"
-                            android:inputType="number"/>
+                            android:orientation="horizontal">
+                            <EditText
+                                android:id="@+id/systole"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_quantidade_recebida"
+                                android:text="@={viewModel.systole}"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/distole"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_quantidade_recebida"
+                                android:text="@={viewModel.distole}"
+                                android:inputType="number"/>
+
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/address_data"
+                        android:id="@+id/tb_screening_details"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/shape_normal"
@@ -191,14 +238,14 @@
                             android:layout_width="@dimen/dimen_0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="8"
-                            android:text='@{viewModel.currentStep.applicationStepEdit ? @string/actualizar_paciente_endereco_contacto : @string/adicionar_paciente_endereco_contacto}'
+                            android:text="@string/tb_screening"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:gravity="center_vertical|left"
                             android:paddingLeft="@dimen/dimen_10dp"/>
 
                         <ImageButton
-                            android:id="@+id/ibtn_address"
+                            android:id="@+id/ibtn_tb_screening_details"
                             android:layout_width="@dimen/dimen_0dp"
                             android:layout_height="match_parent"
                             android:background="@color/background_layout"
@@ -208,35 +255,92 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/txtTbScreening"
                         style="@style/input_labels"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tb_screening" />
+                        android:text="@string/tb_screening_questions" />
                     <LinearLayout
-                        android:id="@+id/address_data_lyt"
+                        android:id="@+id/tb_screening_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:background="@drawable/shape_normal_grey"
+
                         android:padding="@dimen/dimen_4dp">
                         <CheckBox android:id="@+id/checkbox1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/profilatic_treatment_tpi" />
-                        />
+                            android:layoutDirection="rtl"
+                            android:text="@string/profilatic_treatment_tpi"
+                            android:checked="@={viewModel.clinicInformation.treatmentTPI}" />
+
                         <CheckBox android:id="@+id/checkbox2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/_treatment_tb" />
+                            android:layoutDirection="rtl"
+                            android:checked="@={viewModel.clinicInformation.treatmentTB}"
+                            android:text="@string/treatment_tb" />
 
+
+                        <LinearLayout
+                            android:id="@+id/tb_syntoms_signs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@drawable/shape_normal_grey"
+                            android:padding="@dimen/dimen_12dp">
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/signs_syntoms_tb" />
+                        <CheckBox android:id="@+id/checkboxCough"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:checked="@={viewModel.clinicInformation.cough}"
+                            android:text="@string/cough_last_two_weeks" />
+
+                            <CheckBox android:id="@+id/checkboxFever"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:checked="@={viewModel.clinicInformation.fever}"
+                            android:text="@string/fever_last_two_weeks" />
+
+                            <CheckBox android:id="@+id/checkboxWeight"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layoutDirection="rtl"
+                                android:checked="@={viewModel.clinicInformation.lostWeight}"
+                                android:text="@string/lost_weight_last_month" />
+
+                            <CheckBox android:id="@+id/checkboxSweat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                                android:checked="@={viewModel.clinicInformation.sweating}"
+                            android:text="@string/sweat_in_the_night" />
+
+                            <CheckBox android:id="@+id/checkboxParent"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layoutDirection="rtl"
+                                android:checked="@={viewModel.clinicInformation.hasParentTBTreatment}"
+                                android:text="@string/got_parent_doing_tb_treatment" />
+                        </LinearLayout>
+
+                        <CheckBox android:id="@+id/checkboxPatientRefered"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:checked="@={viewModel.clinicInformation.referedToUsTB}"
+                            android:text="@string/patient_refered_evaluation_us" />
                     </LinearLayout>
 
-
-
-
-
                     <LinearLayout
-                        android:id="@+id/clinic_info"
+                        android:id="@+id/monitoring_reinforcement_adesao_details"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/shape_normal"
@@ -249,14 +353,14 @@
                             android:layout_width="@dimen/dimen_0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="8"
-                            android:text='@{viewModel.currentStep.applicationStepEdit ? @string/actualizar_paciente_information_clinic : @string/adicionar_paciente_information_clinic}'
+                            android:text="@string/monitoring"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:gravity="center_vertical|left"
                             android:paddingLeft="@dimen/dimen_10dp"/>
 
                         <ImageButton
-                            android:id="@+id/ibtn_clinic"
+                            android:id="@+id/ibtn_monitoring_reinforcment_details"
                             android:layout_width="@dimen/dimen_0dp"
                             android:layout_height="match_parent"
                             android:background="@color/background_layout"
@@ -268,13 +372,186 @@
 
 
                     <LinearLayout
-                        android:id="@+id/clinic_data_lyt"
+                        android:id="@+id/monitoring_reinforcment_details_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:background="@drawable/shape_normal_grey"
                         android:padding="@dimen/dimen_4dp">
 
+                        <CheckBox android:id="@+id/checkPatientCame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:checked="@={viewModel.clinicInformation.hasPatientCameCorrectDate}"
+                            android:text="@string/patient_right_date" />
+                        <LinearLayout
+                            android:id="@+id/monitoring_reinforcement_adesao1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@drawable/shape_normal_grey"
+                            android:padding="@dimen/dimen_4dp">
+
+                        <TextView android:id="@+id/checkPatientLate"
+                            android:layout_width="@dimen/dimen_m3dp"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:textColor="@color/black"
+                            android:text="@string/patient_wrong_date_days" />
+
+                        <EditText
+                            android:id="@+id/wrongDateNumber"
+                            style="@style/bottom_border_edit_text_style"
+                            android:layout_width="@dimen/dimen_50dp"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.lateDays}"
+                            android:maxLength="3"
+                            android:inputType="number"/>
+                        </LinearLayout>
+
+
+                        <CheckBox android:id="@+id/checkPatientHoursWrong"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:checked="@={viewModel.clinicInformation.patientForgotMedicine}"
+                            android:text="@string/forgot_medicines" />
+                        <LinearLayout
+                            android:id="@+id/monitoring_reinforcement_adesao2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@drawable/shape_normal_grey"
+                            android:padding="@dimen/dimen_25dp">
+
+                            <LinearLayout
+                                android:id="@+id/monitoring_reinforcement_adesao4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:background="@drawable/shape_normal_grey"
+                                android:padding="@dimen/dimen_2dp">
+
+                                <TextView
+                                    android:id="@+id/checkPatientLateHours"
+                                    android:layout_width="291dp"
+                                    android:layout_height="wrap_content"
+
+                                    android:text="@string/forgot_medicines_hours"
+                                    android:textColor="@color/black" />
+
+                                <EditText
+                                    android:id="@+id/daysWithoutMedicine"
+                                    style="@style/bottom_border_edit_text_style"
+                                    android:layout_width="@dimen/dimen_m3dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@={viewModel.daysWithoutMedicine}"
+                                    android:maxLength="3"
+                                    android:textColor="@color/black"
+                                    android:inputType="number"/>
+                            </LinearLayout>
+
+
+
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="@string/motives"
+                                android:padding="@dimen/dimen_10dp"/>
+
+                            <EditText
+                                android:id="@+id/editTextMotives"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/ic_round_notes_24"
+                                android:text="@={viewModel.clinicInformation.lateMotives}"
+                                android:inputType="textMultiLine" />
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/adversity_reaction"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="@string/adverse_reaction_ram"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_adverstiry_reaction"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_monitoring_adversity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/shape_normal_grey"
+                        android:padding="@dimen/dimen_4dp">
+                        <CheckBox android:id="@+id/checkAdversityReaction"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:checked="@={viewModel.clinicInformation.adverseReactionOfMedicine}"
+                            android:text="@string/patient_has_adverse_reaction" />
+
+
+
+                        <LinearLayout
+                            android:id="@+id/adversity_reactions2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@drawable/shape_normal_grey"
+                            android:padding="@dimen/dimen_25dp">
+
+
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:text="@string/describe_reaction"
+                                android:padding="@dimen/dimen_10dp"/>
+
+                            <EditText
+                                android:id="@+id/editTextAdverseReaction"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@={viewModel.clinicInformation.adverseReaction}"
+                                android:drawableLeft="@drawable/ic_round_notes_24"
+                                android:inputType="textMultiLine" />
+                        </LinearLayout>
+
+                        <CheckBox android:id="@+id/checkboxPatientReferedByRam"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:checked="@={viewModel.clinicInformation.referedToUsRAM}"
+                            android:text="@string/patient_refered_evaluation_us_on_ram" />
+                    </LinearLayout>
+
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -289,7 +566,7 @@
                             android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:layout_margin="@dimen/dimen_18dp"
                             android:background="@drawable/button_shape"
-                            android:onClick="@{() -> viewModel.save()}"
+                            android:onClick="@{() -> viewModel.save1()}"
                             android:layout_gravity="right"/>
 
 
