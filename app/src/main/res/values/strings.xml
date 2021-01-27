@@ -316,4 +316,61 @@
     <string name="dispense_type_report">Tipo de Dispensa </string>
     <string name="data_de_referencia_report">Data de Referência</string>
     <string name="prescription_date_report">Data da Prescrição</string>
+
+
+    <string name="clinic_info">Informacao Clinica</string>
+
+    <string name="register_date">Data Registro:</string>
+    <string name="vital_signs">Sinais Vitais</string>
+    <string name="adherence_monitoring_and_screening">Monitoria e Rastreio de Adesao</string>
+    <string name="adverse_reactions">Reacções Adversas</string>
+
+    <string name="weight">Peso</string>
+    <string name="height">Altura</string>
+    <string name="imc">IMC</string>
+    <string name="systole">Sistole</string>
+    <string name="distole">Distole</string>
+
+
+    <string name="tb_screening_questions">Perguntas de Rastreio de Tuberculose</string>
+
+     <string name="profilatic_treatment_tpi">Está Actualmente em tratamento Profilático com Isoniazida(TPI)?</string>
+    <string name="treatment_tb">Está em tratamento de tuberculose(TB)?</string>
+
+    <string name="signs_syntoms_tb">Sinais e sintomas sugestivos a TB</string>
+    <string name="cough_last_two_weeks">Está com tosse a duas semanas ou mais ?</string>
+    <string name="fever_last_two_weeks">Teve febres nas ultimas duas semanas ?</string>
+    <string name="lost_weight_last_month">Perdeu peso >1.5 kg no ultimo mês?</string>
+    <string name="sweat_in_the_night">Tem suado muito a noite?</string>
+    <string name="got_parent_doing_tb_treatment">Tem um parente em casa que está a fazer tratamento de TB ?</string>
+
+    <string name="patient_refered_evaluation_us">Paciente referido para mais avaliação na US ?</string>
+
+    <string name="monitoring_question">Perguntas de Monitoria e Reforco de Adesão</string>
+    <string name="patient_right_date">O paciente veio na data marcada ?</string>
+
+    <string name="patient_wrong_date_days">Se não, quantos dias de atraso completou o paciente ?</string>
+
+    <string name="forgot_medicines">Nos ultimos 2 meses teria se esquecido de tomar os seus medicamentos algum dia na sua hora habitual ?</string>
+
+    <string name="forgot_medicines_hours">Quantos dias passou da hora sem tomar os medicamentos ?</string>
+
+    <string name="motives">Motivos :</string>
+
+    <string name="patient_has_adverse_reaction">Tem alguma reação adversa que acha que e causada pelos medicamentos ?</string>
+
+    <string name="describe_reaction"> Descreva brevemente a reação?</string>
+
+    <string name="patient_refered_evaluation_us_on_ram">Paciente referido pelas reacções adversas para mais avaliação na US ?</string>
+
+
+
+    <string name="tb_screening">Rastreio de Tuberculose</string>
+
+    <string name="monitoring">Monitoria e Reforço de Adesão</string>
+    <string name="adverse_reaction_ram">Reacções Adversas aos Medicamentos (RAM)</string>
+
+    <string name="clinic_information_saved_sucessfuly">Informação Clinica gravada Com Sucesso</string>
+
+    <string name="save_error_msg_clinic_information">\"Ocorreu um erro ao gravar o Informação Clinica. \"</string>
 </resources>

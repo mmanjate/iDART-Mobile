@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="clinicInformation"
+            type="mz.org.fgh.idartlite.model.ClinicInformation" />
+
+
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_4dp"
+            android:layout_weight="3">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                bind:srcCompat="@mipmap/ic_clinic_info_last"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="@dimen/dimen_5dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="8">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9"
+                    android:orientation="vertical">
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textStartReason"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:text="@string/register_date"
+                            android:textSize="@dimen/dimen_12dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textUs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp"
+                            android:paddingRight="@dimen/dimen_10dp"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(clinicInformation.registerDate)}"
+                            android:textSize="@dimen/dimen_12dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="15"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="5">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="@string/vital_signs"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="@string/tb_screening"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="@string/adherence_monitoring_and_screening"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="@string/adverse_reactions" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_8dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/vital_signs"
+                        style="@style/patient_activity_lists"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:buttonTint="@color/theme_primary"
+                        android:checked="@{clinicInformation.checkVitalSigns}"
+                        android:enabled="false"
+                        android:layoutDirection="rtl" />
+
+                    <CheckBox
+                        android:id="@+id/tb_screning"
+                        style="@style/patient_activity_lists"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layoutDirection="rtl"
+                        android:buttonTint="@color/theme_primary"
+                        android:enabled="false"
+                        android:checked="@{clinicInformation.checkForTb}" />
+
+                    <CheckBox android:id="@+id/monitoring_reinforcement_adesao"
+                        style="@style/patient_activity_lists"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layoutDirection="rtl"
+                        android:buttonTint="@color/theme_primary"
+                        android:enabled="false"
+                        android:checked="@{clinicInformation.checkMonitoring}"
+                        />
+
+                    <CheckBox android:id="@+id/checkAdversityReaction"
+                        style="@style/patient_activity_lists"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layoutDirection="rtl"
+                        android:enabled="false"
+                        android:buttonTint="@color/theme_primary"
+                        android:checked="@{clinicInformation.checkAdversity}"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_12dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/dimen_4dp"
+                        android:layout_gravity="top"
+                        android:src="@{ @drawable/ic_baseline_cloud_done_24}"
+                       />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

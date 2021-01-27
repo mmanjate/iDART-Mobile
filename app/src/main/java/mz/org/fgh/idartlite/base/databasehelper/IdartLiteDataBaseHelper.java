@@ -14,6 +14,7 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.clinic.IClinicDao;
 import mz.org.fgh.idartlite.dao.clinic.IClinicSectorDao;
 import mz.org.fgh.idartlite.dao.clinic.IPharmacyTypeDao;
+import mz.org.fgh.idartlite.dao.clinicInfo.IClinicInfoDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispenseDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispenseTypeDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispensedDrugDao;
@@ -41,6 +42,7 @@ import mz.org.fgh.idartlite.dao.territory.IProvinceDao;
 import mz.org.fgh.idartlite.dao.territory.ISubdistrictDao;
 import mz.org.fgh.idartlite.dao.user.IUserDao;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Country;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
@@ -110,6 +112,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private IReferedStockMovimentDao referedStockMovimentDao;
     private IOperationTypeDao operationTypeDao;
+
+    private IClinicInfoDao clinicInfoDao;
 
  //   private IPatientSectorDao patientSectorDao;
 
@@ -325,6 +329,15 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         }
         return returnedDrugDao;
     }
+
+
+    public IClinicInfoDao getClinicInfoDao() throws SQLException {
+        if(clinicInfoDao == null){
+            clinicInfoDao = getDao(ClinicInformation.class);
+        }
+        return clinicInfoDao;
+    }
+
     private static IdartLiteDataBaseHelper dataBaseHelper;
 
     private IdartLiteDataBaseHelper(Context context) {
@@ -374,6 +387,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, ReturnedDrug.class);
             TableUtils.createTableIfNotExists(connectionSource, ReferedStockMoviment.class);
             TableUtils.createTableIfNotExists(connectionSource, OperationType.class);
+            TableUtils.createTableIfNotExists(connectionSource, ClinicInformation.class);
 
 
         } catch (SQLException e) {
@@ -424,6 +438,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, ClinicSector.class, true);
             TableUtils.dropTable(connectionSource, ReferedStockMoviment.class, true);
             TableUtils.dropTable(connectionSource, OperationType.class, true);
+
+            TableUtils.dropTable(connectionSource, ClinicInformation.class, true);
 
         } catch (SQLException e) {
             e.printStackTrace();
