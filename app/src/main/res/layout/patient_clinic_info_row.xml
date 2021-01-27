@@ -177,7 +177,7 @@
                         android:layout_height="match_parent"
                         android:padding="@dimen/dimen_4dp"
                         android:layout_gravity="top"
-                        android:src="@{ @drawable/ic_baseline_cloud_done_24}"
+                        android:src="@{clinicInformation.isSyncStatusSent(clinicInformation.syncStatus) ? @drawable/ic_baseline_cloud_done_24 : @drawable/ic_baseline_cloud_queue_24}"
                        />
 
                 </LinearLayout>
