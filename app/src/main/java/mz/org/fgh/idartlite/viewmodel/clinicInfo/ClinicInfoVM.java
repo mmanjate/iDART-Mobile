@@ -131,6 +131,8 @@ public class ClinicInfoVM extends BaseViewModel {
                 clinicInformation.setPatient(patient);
                 if (getClinicInformation().getId() == 0) {
 
+                    clinicInformation.setUuid(Utilities.getNewUUID().toString());
+                    clinicInformation.setSyncStatus("R");
                     clinicInfoService.createClinicInfo(clinicInformation);
                 }
                 else {

@@ -9,6 +9,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.ClinicInformation;
+import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 
@@ -34,6 +35,11 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
     @Override
     public List<ClinicInformation> getAllByPatient(Patient patient) throws SQLException {
         return queryBuilder().orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).where().eq(ClinicInformation.COLUMN_PATIENT_ID, patient.getId()).query();
+    }
+
+    @Override
+    public List<ClinicInformation> getAllClinicInfoByStatus(String status) throws SQLException {
+        return queryBuilder().where().eq(ClinicInformation.COLUMN_SYNC_STATUS, status).query();
     }
 
 }
