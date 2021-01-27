@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view.home.ui.home;
+package mz.org.fgh.idartlite.viewmodel.home;
 
 import android.app.Application;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.view.home.IDartHomeActivity;
 import mz.org.fgh.idartlite.view.home.PatientHomeActivity;
+import mz.org.fgh.idartlite.view.home.ui.home.HomeFragment;
 import mz.org.fgh.idartlite.view.reports.ReportTypeActivity;
 import mz.org.fgh.idartlite.view.stock.panel.StockActivity;
 

@@ -79,7 +79,7 @@
         <item name="android:typeface">sans</item>
         <item name="android:textSize">@dimen/dimen_10dp</item>
         <item name="android:padding">@dimen/dimen_4dp</item>
-        <item name="android:layout_marginBottom">@dimen/dimen_10dp</item>
+        <item name="android:layout_marginBottom">@dimen/dimen_6dp</item>
     </style>
 
     <style name="inventory_labels">
@@ -137,8 +137,8 @@
         <item name="android:background">@drawable/bottom_border_edit_text_border</item>
         <item name="android:paddingLeft">@dimen/dimen_15dp</item>
         <item name="android:paddingRight">@dimen/dimen_15dp</item>
-        <item name="android:paddingTop">@dimen/dimen_10dp</item>
-        <item name="android:paddingBottom">@dimen/dimen_10dp</item>
+        <item name="android:paddingTop">@dimen/dimen_6dp</item>
+        <item name="android:paddingBottom">@dimen/dimen_6dp</item>
         <item name="android:layout_marginBottom">@dimen/dimen_2dp</item>
     </style>
 

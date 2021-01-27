@@ -13,13 +13,19 @@
 
     <fragment
         android:id="@+id/nav_config"
-        android:name="mz.org.fgh.idartlite.view.home.ui.slideshow.AppSettingsFragment"
+        android:name="mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment"
         android:label="Configurações"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/nav_add_user"
-        android:name="mz.org.fgh.idartlite.view.home.ui.slideshow.AppSettingsFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_settings" />
+        android:name="mz.org.fgh.idartlite.view.home.ui.user.AddUserFragment"
+        android:label="Adicionar Utilizador"
+        tools:layout="@layout/fragment_add_user" />
+
+    <fragment
+        android:id="@+id/nav_change_pass"
+        android:name="mz.org.fgh.idartlite.view.home.ui.user.ChangeUserPassFragment"
+        android:label="Alterar Senha"
+        tools:layout="@layout/change_user_pass_fragment" />
 </navigation>

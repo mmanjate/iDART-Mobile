@@ -14,6 +14,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.FragmentHomeBinding;
+import mz.org.fgh.idartlite.viewmodel.home.HomeViewModel;
 
 
 public class HomeFragment extends GenericFragment {

@@ -14,6 +14,8 @@
     <color name="hint_text_appearence">#a79991</color>
     <color name="light_green">#A7FFCF</color>
 
+    <color name="light_grey">#DCDCDC</color>
+
     <color name="theme_primary">#0f9d58</color>
     <color name="theme_primary_text_inverted">#ffffff</color>
     <color name="theme_secondary_text_inverted">#8affffff</color>

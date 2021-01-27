@@ -21,7 +21,7 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityIDartHomeBinding;
 import mz.org.fgh.idartlite.databinding.NavHeaderMainBinding;
 import mz.org.fgh.idartlite.model.ClinicSector;
-import mz.org.fgh.idartlite.view.home.ui.home.HomeViewModel;
+import mz.org.fgh.idartlite.viewmodel.home.HomeViewModel;
 
 public class IDartHomeActivity extends BaseActivity {
 

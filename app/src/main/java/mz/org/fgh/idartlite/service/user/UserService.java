@@ -26,7 +26,7 @@ public class UserService extends BaseService<User> implements IUserService {
     private void init() {
         try {
             userDao = getDataBaseHelper().getUserDao();
-            //restUserService = new RestUserService(getApplication(), getCurrentUser());
+            restUserService = new RestUserService(getApplication());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,7 +40,7 @@ public class UserService extends BaseService<User> implements IUserService {
 
     @Override
     public void save(User record) throws SQLException {
-
+        saveUser(record);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class UserService extends BaseService<User> implements IUserService {
 
     @Override
     public void update(User record) throws SQLException {
-
+        userDao.update(record);
     }
 
     public boolean login(User user) throws SQLException {
@@ -63,7 +63,9 @@ public class UserService extends BaseService<User> implements IUserService {
 
     public void saveUser(User user) throws SQLException {
         user.setPassword(Utilities.MD5Crypt(user.getPassword()));
-        userDao.create(user);
+        if (user.getId() <= 0) {
+            userDao.create(user);
+        }else update(user);
     }
 
 }

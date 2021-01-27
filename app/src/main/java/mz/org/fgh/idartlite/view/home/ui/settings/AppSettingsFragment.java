@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.view.home.ui.slideshow;
+package mz.org.fgh.idartlite.view.home.ui.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

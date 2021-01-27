@@ -30,6 +30,10 @@ public class RestUserService extends BaseRestService {
         super(application, currentUser);
     }
 
+    public RestUserService(Application application) {
+        super(application);
+    }
+
     public void restGetUser(String clinicuuid){
 
         String url = BaseRestService.baseUrl + "/users?username=eq."+currentUser.getUserName()+"&password=eq."+currentUser.getPassword()+"&clinicuuid=eq."+clinicuuid;

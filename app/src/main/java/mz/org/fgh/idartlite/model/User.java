@@ -32,6 +32,9 @@ public class User extends BaseModel {
     @DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Clinic clinic;
 
+    @DatabaseField(columnName = COLUMN_SYNC_STATUS)
+    private String syncStatus;
+
     public User() {
     }
 
@@ -65,6 +68,14 @@ public class User extends BaseModel {
 
     public void setClinic(Clinic clinic) {
         this.clinic = clinic;
+    }
+
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
     }
 
     private String validadeToLogin(Context context) {
