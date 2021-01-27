@@ -45,14 +45,12 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
 
     private RecyclerView rcvClinicInfos;
     private List<ClinicInformation> clinicInformationsList;
-    private Episode firstEpisode;
     private FragmentClinicInfoBinding fragmentClinicInfoBinding;
     private ClinicInfoAdapter clinicInfoAdapter;
 
     int position1;
     private ClinicInformation clinicInformation;
 
-    private boolean viewDetails;
 
 
     public ClinicInfoFragment() {
@@ -92,10 +90,10 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
                 public void onClick(View view) {
 
 
-              //      if(getRelatedViewModel().patientHasEndingEpisode(getSelectedPatient())){
-                //        Utilities.displayAlertDialog(ClinicInfoFragment.this.getContext(),"Nao pode Criar um novo episodio para o paciente uma vez que ele ja tem um episodio de fim").show();
-                 //       return;
-                  //  }
+                    if (getMyActivity().getPatient().hasEndEpisode()) {
+                        Utilities.displayAlertDialog(ClinicInfoFragment.this.getContext(), getString(R.string.cant_edit_patient_data)).show();
+                    return;
+                    }
 
                     Intent intent = new Intent(getContext(), ClinicInfoActivity.class);
                     Bundle bundle = new Bundle();
@@ -156,45 +154,55 @@ public class ClinicInfoFragment extends GenericFragment implements IListbleDialo
     public boolean onMenuItemClick(MenuItem item){
            Intent intent = new Intent(getContext(), ClinicInfoActivity.class);
              Bundle bundle = new Bundle();
-         switch (item.getItemId()){
+        if (getMyActivity().getPatient().hasEndEpisode()) {
+            Utilities.displayAlertDialog(ClinicInfoFragment.this.getContext(), getString(R.string.cant_edit_patient_data)).show();
+           return true;
+        }
+        else {
 
-             //Por retirar chamando tela de criar, por ser editado
-             case R.id.edit:
+            switch (item.getItemId()) {
 
-                     //Call activity to Edit viewDetails
+                //Por retirar chamando tela de criar, por ser editado
+                case R.id.edit:
 
-                     bundle.putSerializable("user", getCurrentUser());
-                     bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
-                     bundle.putSerializable("clinicInformation", clinicInformation);
-                     bundle.putSerializable("patient", getMyActivity().getPatient());
-                      bundle.putSerializable("step",  ApplicationStep.STEP_EDIT);
-
-                     intent.putExtras(bundle);
-                     startActivity(intent);
-                     return true;
+                    //Call activity to Edit viewDetails
 
 
 
-             case R.id.remove:
 
-              Utilities.displayDeleteConfirmationDialogFromList(ClinicInfoFragment.this.getContext(), ClinicInfoFragment.this.getString(R.string.list_item_delete_msg),position1, ClinicInfoFragment.this).show();
-                 return true;
-             case R.id.viewDetails:
+                    bundle.putSerializable("user", getCurrentUser());
+                    bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                    bundle.putSerializable("clinicInformation", clinicInformation);
+                    bundle.putSerializable("patient", getMyActivity().getPatient());
+                    bundle.putSerializable("step", ApplicationStep.STEP_EDIT);
 
-                 //Call activity to Edit
-                 //viewDetails=true;
-               //  Intent intent = new Intent(getContext(), ClinicInfoActivity.class);
-               //  Bundle bundle = new Bundle();
-                 bundle.putSerializable("user", getCurrentUser());
-                 bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
-                 bundle.putSerializable("clinicInformation", clinicInformation);
-                 bundle.putSerializable("patient", getMyActivity().getPatient());
-                 bundle.putSerializable("step",  ApplicationStep.STEP_DISPLAY);
-                 intent.putExtras(bundle);
-                 startActivity(intent);
-             default:
-                return false;
-         }
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    return true;
+
+
+                case R.id.remove:
+
+                    Utilities.displayDeleteConfirmationDialogFromList(ClinicInfoFragment.this.getContext(), ClinicInfoFragment.this.getString(R.string.list_item_delete_msg), position1, ClinicInfoFragment.this).show();
+                    return true;
+                case R.id.viewDetails:
+
+                    //Call activity to Edit
+                    //viewDetails=true;
+                    //  Intent intent = new Intent(getContext(), ClinicInfoActivity.class);
+                    //  Bundle bundle = new Bundle();
+
+                    bundle.putSerializable("user", getCurrentUser());
+                    bundle.putSerializable("clinic", getMyActivity().getCurrentClinic());
+                    bundle.putSerializable("clinicInformation", clinicInformation);
+                    bundle.putSerializable("patient", getMyActivity().getPatient());
+                    bundle.putSerializable("step", ApplicationStep.STEP_DISPLAY);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                default:
+                    return false;
+            }
+        }
 
     }
 

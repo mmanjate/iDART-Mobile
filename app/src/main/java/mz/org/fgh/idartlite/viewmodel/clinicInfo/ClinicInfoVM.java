@@ -98,6 +98,8 @@ public class ClinicInfoVM extends BaseViewModel {
         clinicInfoService.deleteClinicInfo(clinicInformation);
     }
 
+
+
     public void changeInitialDataViewStatus(View view){
         ((ClinicInfoActivity) getRelatedActivity()).changeFormSectionVisibility(view);
     }
