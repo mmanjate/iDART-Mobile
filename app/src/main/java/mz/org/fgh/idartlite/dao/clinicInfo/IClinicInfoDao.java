@@ -13,4 +13,6 @@ public interface IClinicInfoDao extends IGenericDao<ClinicInformation, Integer> 
 
 
     public List<ClinicInformation> getAllByPatient(Patient patient) throws SQLException;
+
+    public List<ClinicInformation> getAllClinicInfoByStatus(String status) throws SQLException;
 }

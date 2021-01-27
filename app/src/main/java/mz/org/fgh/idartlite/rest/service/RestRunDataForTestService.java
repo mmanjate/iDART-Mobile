@@ -7,12 +7,14 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.rest.service.ClinicInfo.RestClinicInfoService;
 import mz.org.fgh.idartlite.rest.service.Disease.RestDiseaseTypeService;
 import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseService;
 import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseTypeService;
@@ -28,6 +30,8 @@ import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
+import mz.org.fgh.idartlite.service.clinicInfo.ClinicInfoService;
+import mz.org.fgh.idartlite.service.clinicInfo.IClinicInfoService;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
@@ -53,6 +57,7 @@ public class RestRunDataForTestService extends BaseRestService {
         IClinicService clinicService = new ClinicService(application, currentUser);
         IPatientService patientService = new PatientService(application, currentUser);
         IClinicSectorService clinicSectorService = new ClinicSectorService(application, currentUser);
+        IClinicInfoService clinicInfoService = new ClinicInfoService(application, currentUser);
         List<Stock> stockList;
         List<Dispense> dispenseList;
         List<Patient> patientList;
@@ -142,6 +147,19 @@ public class RestRunDataForTestService extends BaseRestService {
                             RestDispenseService.restGetLastDispense(patient);
                     }
                 }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+
+            List<ClinicInformation> clinicInformationList=clinicInfoService.getAllClinicInfoByStatus(BaseModel.SYNC_SATUS_READY);
+            if(clinicInformationList != null && clinicInformationList.size() > 0) {
+                for (ClinicInformation clinicInformation : clinicInformationList) {
+                    RestClinicInfoService.restPostClinicInfo(clinicInformation);
+                //    RestPatientService.restPostPatientSector(clinicInformation.getPatient());
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

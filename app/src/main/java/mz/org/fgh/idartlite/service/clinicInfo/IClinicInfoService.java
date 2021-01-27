@@ -23,6 +23,8 @@ public interface IClinicInfoService extends IBaseService<ClinicInformation> {
 
     public List<ClinicInformation> getAllClinicInfosByPatient(Patient patient) throws SQLException;
 
+    public List<ClinicInformation> getAllClinicInfoByStatus(String status) throws SQLException;
+
 
 
 
