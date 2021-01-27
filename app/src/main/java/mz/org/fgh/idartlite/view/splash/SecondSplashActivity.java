@@ -12,11 +12,10 @@ import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
 import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
-import mz.org.fgh.idartlite.view.home.HomeActivity;
+import mz.org.fgh.idartlite.view.home.IDartHomeActivity;
 import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 
 public class SecondSplashActivity extends BaseActivity implements RestResponseListener<Clinic> {
@@ -73,7 +72,7 @@ public class SecondSplashActivity extends BaseActivity implements RestResponseLi
         Map<String, Object> params = new HashMap<>();
         params.put("user", getCurrentUser());
         params.put("clinic", localClinic);
-        nextActivity(HomeActivity.class, params);
+        nextActivity(IDartHomeActivity.class, params);
         finish();
     }
 
