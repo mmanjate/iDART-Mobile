@@ -10,10 +10,12 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.service.ServiceProvider;
+import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.ExecutorThreadProvider;
@@ -30,9 +32,14 @@ public abstract class BaseRestService {
     protected static ServiceProvider serviceFactory;
 
     protected static ExecutorService restServiceExecutor;
-    public static final String baseUrl = "http://dev.fgh.org.mz:3110";
+
+    public static final String baseUrl = null;
+
+    //public static final String baseUrl = "http://dev.fgh.org.mz:3110";
 
     //public static final String baseUrl = "http://192.168.1.163:3009";
+
+    private List<AppSettings> settings;
 
     public BaseRestService(Application application, User currentUser, Clinic currentClinic) {
         init(application,currentUser, currentClinic);
@@ -91,5 +98,13 @@ public abstract class BaseRestService {
             return "Connection timeout";
         }
         return Utilities.stringHasValue(error.getMessage()) ? error.getMessage() : getApp().getString(R.string.unknown_error);
+    }
+
+    public List<AppSettings> getSettings() {
+        return settings;
+    }
+
+    public void setSettings(List<AppSettings> settings) {
+        this.settings = settings;
     }
 }

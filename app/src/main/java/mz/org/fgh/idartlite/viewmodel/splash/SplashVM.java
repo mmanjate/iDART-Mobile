@@ -69,7 +69,7 @@ public class SplashVM extends BaseViewModel {
     }
 
     private void requestConfiguration() {
-        
+
     }
 
     public boolean appHasNoUsersOnDB(){
