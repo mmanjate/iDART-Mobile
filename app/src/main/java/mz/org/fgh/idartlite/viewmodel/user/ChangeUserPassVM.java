@@ -17,5 +17,5 @@ public class ChangeUserPassVM extends UserVM {
         return currentUser;
     }
 
-   
+
 }

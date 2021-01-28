@@ -67,6 +67,16 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     }
 
+    protected boolean isCentralServerConfigured(){
+        if (!Utilities.listHasElements(systemSettings)) return false;
+
+        for (AppSettings appSettings : systemSettings){
+            if (appSettings.isUrlSetting()) return true;
+        }
+
+        return false;
+    }
+
     protected abstract IBaseService initRelatedService();
 
     protected abstract BaseModel initRecord();

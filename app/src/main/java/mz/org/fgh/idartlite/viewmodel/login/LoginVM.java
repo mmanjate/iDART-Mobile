@@ -28,6 +28,8 @@ import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
+import mz.org.fgh.idartlite.service.settings.AppSettingsService;
+import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
 import mz.org.fgh.idartlite.service.user.IUserService;
 import mz.org.fgh.idartlite.service.user.UserService;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -56,6 +58,8 @@ public class LoginVM extends BaseViewModel {
 
     private boolean sanitaryUnit;
 
+    private IAppSettingsService appSettingsService;
+
     public LoginVM(@NonNull Application application) {
         super(application);
     }
@@ -67,6 +71,7 @@ public class LoginVM extends BaseViewModel {
         restUserService = new RestUserService(getApplication(), getCurrentUser());
         clinicService = new ClinicService(getApplication(), getCurrentUser());
         clinicSectorService= new ClinicSectorService(getApplication(),getCurrentUser());
+        appSettingsService = new AppSettingsService(getApplication());
 
         return userService;
     }
@@ -80,6 +85,7 @@ public class LoginVM extends BaseViewModel {
     protected void initFormData() {
         try {
             this.clinicList = clinicService.getAllClinics();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

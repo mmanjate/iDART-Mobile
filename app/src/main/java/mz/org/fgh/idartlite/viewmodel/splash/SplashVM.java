@@ -19,6 +19,8 @@ import mz.org.fgh.idartlite.service.drug.DiseaseTypeService;
 import mz.org.fgh.idartlite.service.drug.DrugService;
 import mz.org.fgh.idartlite.service.drug.IDiseaseTypeService;
 import mz.org.fgh.idartlite.service.drug.IDrugService;
+import mz.org.fgh.idartlite.service.settings.AppSettingsService;
+import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
 import mz.org.fgh.idartlite.service.user.IUserService;
 import mz.org.fgh.idartlite.service.user.UserService;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -28,6 +30,7 @@ public class SplashVM extends BaseViewModel {
     private IPharmacyTypeService pharmacyTypeService;
     private IDiseaseTypeService diseaseTypeService;
     private IDrugService drugService;
+    private IAppSettingsService appSettingsService;
 
     public SplashVM(@NonNull Application application) {
         super(application);
@@ -35,6 +38,7 @@ public class SplashVM extends BaseViewModel {
         this.pharmacyTypeService = new PharmacyTypeService(application, null);
         diseaseTypeService = new DiseaseTypeService(application, null);
         drugService = new DrugService(application, null);
+        appSettingsService = new AppSettingsService(getApplication());
     }
 
     @Override
@@ -55,6 +59,17 @@ public class SplashVM extends BaseViewModel {
     @Override
     public void preInit() {
 
+        try {
+            this.systemSettings = appSettingsService.getAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (!isCentralServerConfigured()) requestConfiguration();
+    }
+
+    private void requestConfiguration() {
+        
     }
 
     public boolean appHasNoUsersOnDB(){
