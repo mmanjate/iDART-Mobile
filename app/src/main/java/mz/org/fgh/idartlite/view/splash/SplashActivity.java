@@ -18,16 +18,15 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.rest.service.clinic.RestClinicService;
 import mz.org.fgh.idartlite.rest.service.Disease.RestDiseaseTypeService;
 import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseTypeService;
 import mz.org.fgh.idartlite.rest.service.Drug.RestDrugService;
 import mz.org.fgh.idartlite.rest.service.Form.RestFormService;
-import mz.org.fgh.idartlite.rest.service.clinic.RestPharmacyTypeService;
-import mz.org.fgh.idartlite.rest.service.TherapeuticLine.RestTherapeuticLineService;
 import mz.org.fgh.idartlite.rest.service.Regimen.RestTherapeuticRegimenService;
+import mz.org.fgh.idartlite.rest.service.TherapeuticLine.RestTherapeuticLineService;
+import mz.org.fgh.idartlite.rest.service.clinic.RestClinicService;
+import mz.org.fgh.idartlite.rest.service.clinic.RestPharmacyTypeService;
 import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
 import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -216,6 +215,33 @@ public class SplashActivity extends BaseActivity implements RestResponseListener
         }else {
             nextActivityFinishingCurrent(LoginActivity.class);
         }
+    }
+
+    public void requestCentralServerSettings(){
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+
+        final EditText editText = (EditText) dialogView.findViewById(R.id.edt_comment);
+        Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
+        Button button2 = (Button) dialogView.findViewById(R.id.buttonCancel);
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder.dismiss();
+            }
+        });
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // DO SOMETHINGS
+                dialogBuilder.dismiss();
+            }
+        });
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
     }
 
     @Override
