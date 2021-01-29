@@ -43,6 +43,8 @@ public class ClinicInformation extends BaseModel {
     public static final String COLUMN_ADVERSE_REACTION_MEDICINE = "adverse_reaction_medicine";
     public static final String COLUMN_ADVERSE_REACTION = "adverse_reaction";
     public static final String COLUMN_IS_REFERED_TO_US_RAM = "is_refered_to_us_ram";
+    public static final String COLUMN_SYNC_STATUS = "sync_status";
+    public static final String COLUMN_UUID = "uuid";
 
 
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
@@ -116,6 +118,12 @@ public class ClinicInformation extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_IS_REFERED_TO_US_RAM)
     private boolean isReferedToUsRAM;
+
+    @DatabaseField(columnName = COLUMN_SYNC_STATUS)
+    private String syncStatus;
+
+    @DatabaseField(columnName = COLUMN_UUID)
+    private String uuid;
 
 
 
@@ -312,6 +320,21 @@ public class ClinicInformation extends BaseModel {
         isReferedToUsRAM = referedToUsRAM;
     }
 
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public String getStringRegisterDate(){
         return DateUtilities.parseDateToDDMMYYYYString(this.registerDate);

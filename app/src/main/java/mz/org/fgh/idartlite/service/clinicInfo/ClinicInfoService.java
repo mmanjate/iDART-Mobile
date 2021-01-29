@@ -51,4 +51,9 @@ public class ClinicInfoService extends BaseService<ClinicInformation> implements
     public List<ClinicInformation> getAllClinicInfosByPatient(Patient patient) throws SQLException {
         return getDataBaseHelper().getClinicInfoDao().getAllByPatient(patient);
     }
+
+    @Override
+    public List<ClinicInformation> getAllClinicInfoByStatus(String status) throws SQLException {
+        return getDataBaseHelper().getClinicInfoDao().getAllClinicInfoByStatus(status);
+    }
 }
