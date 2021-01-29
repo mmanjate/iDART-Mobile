@@ -65,7 +65,9 @@ public class SplashVM extends BaseViewModel {
             e.printStackTrace();
         }
 
-        if (!isCentralServerConfigured()) requestConfiguration();
+        if (!isCentralServerConfigured()) {
+            requestConfiguration();
+        }
     }
 
     private void requestConfiguration() {
@@ -98,5 +100,9 @@ public class SplashVM extends BaseViewModel {
 
     public List<Drug> getAllDrugs() throws SQLException {
         return drugService.getAll();
+    }
+
+    public void saveSettings(String s) {
+
     }
 }
