@@ -21,4 +21,9 @@ public class AppSettingsDaoImpl extends GenericDaoImpl<AppSettings, Integer> imp
     public AppSettingsDaoImpl(ConnectionSource connectionSource, DatabaseTableConfig tableConfig) throws SQLException {
         super(connectionSource, tableConfig);
     }
+
+    @Override
+    public AppSettings getCentralServerUrl() throws SQLException {
+        return queryBuilder().where().eq(AppSettings.COLUMN_SETTING_CODE, AppSettings.SERVER_URL_SETTING).queryForFirst();
+    }
 }

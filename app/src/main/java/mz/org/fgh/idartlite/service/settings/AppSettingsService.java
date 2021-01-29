@@ -21,7 +21,7 @@ public class AppSettingsService extends BaseService<AppSettings> implements IApp
     public AppSettingsService(Application application) {
         super(application);
 
-        restService = new RestRunDataForTestService(application);
+        //restService = new RestRunDataForTestService(application);
     }
 
     @Override
@@ -39,6 +39,11 @@ public class AppSettingsService extends BaseService<AppSettings> implements IApp
     @Override
     public List<AppSettings> getAll() throws SQLException {
         return getDataBaseHelper().getAppSettingsDao().queryForAll();
+    }
+
+    @Override
+    public AppSettings getCentralServerSettings() throws SQLException {
+        return getDataBaseHelper().getAppSettingsDao().getCentralServerUrl();
     }
 
     @Override

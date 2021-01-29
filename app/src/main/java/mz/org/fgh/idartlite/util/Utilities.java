@@ -21,10 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
-import com.itextpdf.text.DocumentException;
-
 import java.io.File;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -46,6 +43,8 @@ public class Utilities {
 
     final static int REQUEST_CODE_ASK_PERMISSIONS = 111;
 
+    public static String centralServerUrl;
+
     private Utilities() {
     }
 
@@ -54,6 +53,10 @@ public class Utilities {
             instance = new Utilities();
         }
         return instance;
+    }
+
+    public static String getCentralServerUrl() {
+        return centralServerUrl;
     }
 
     static {

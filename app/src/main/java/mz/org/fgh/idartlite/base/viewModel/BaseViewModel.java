@@ -67,7 +67,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     }
 
-    protected boolean isCentralServerConfigured(){
+    public boolean isCentralServerConfigured(){
         if (!Utilities.listHasElements(systemSettings)) return false;
 
         for (AppSettings appSettings : systemSettings){

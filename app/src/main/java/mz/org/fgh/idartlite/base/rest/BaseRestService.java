@@ -10,6 +10,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -19,6 +20,8 @@ import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.ExecutorThreadProvider;
+import mz.org.fgh.idartlite.service.settings.AppSettingsService;
+import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public abstract class BaseRestService {
@@ -29,11 +32,13 @@ public abstract class BaseRestService {
 
     public static Application app;
 
+    private IAppSettingsService appSettingsService;
+
     protected static ServiceProvider serviceFactory;
 
     protected static ExecutorService restServiceExecutor;
 
-    public static final String baseUrl = null;
+    public static String baseUrl = null;
 
     //public static final String baseUrl = "http://dev.fgh.org.mz:3110";
 
@@ -66,6 +71,22 @@ public abstract class BaseRestService {
         this.currentUser = currentUser;
         this.application = application;
         app = application;
+
+        appSettingsService = new AppSettingsService(getApp());
+
+        try {
+            AppSettings appSetting = appSettingsService.getCentralServerSettings();
+
+            if (appSetting != null) {
+                baseUrl = appSetting.getValue();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setBaseUrl(String baseUrl) {
+        BaseRestService.baseUrl = baseUrl;
     }
 
     public static ServiceProvider getServiceFactory() {

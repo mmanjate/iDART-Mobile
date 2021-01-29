@@ -9,6 +9,8 @@ import mz.org.fgh.idartlite.model.AppSettings;
 public interface IAppSettingsService extends IBaseService<AppSettings> {
     List<AppSettings> getAll() throws SQLException;
 
+    AppSettings getCentralServerSettings() throws SQLException;
+
     void saveSetting(AppSettings record) throws SQLException;
 
     void runDataSync();
