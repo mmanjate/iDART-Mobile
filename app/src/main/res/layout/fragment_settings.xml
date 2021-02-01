@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.settings.SettingsVM" />
+
+        <variable name="syncPeriodAdapter"    type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="metadataSyncPeriodAdapter"            type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="dataRemovingAdapter"         type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/colorPrimary"
+                android:padding="@dimen/dimen_8dp"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:src="@drawable/ic_baseline_settings_24"
+                    android:layout_gravity="center|center_vertical"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_8dp"
+                android:layout_marginTop="@dimen/dimen_4dp"
+                android:layout_marginBottom="@dimen/dimen_4dp"
+                android:background="@color/hint_text_appearence"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/server_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="Endereço do Servidor"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_server_data"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="@dimen/dimen_50dp"
+                        android:padding="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_baseline_insert_link_24"/>
+                    <RelativeLayout
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dimen_4dp"
+                        android:layout_weight="5">
+
+                        <TextView
+                            android:id="@+id/txt_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Endereço do servidor"
+                            style="@style/input_labels"/>
+
+                        <EditText
+                            android:id="@+id/edt_url"
+                            android:layout_width="match_parent"
+                            android:layout_below="@+id/txt_url"
+                            android:inputType="textUri"
+                            android:text="@={viewModel.serverUrl}"
+                            android:layout_height="wrap_content"
+                            style="@style/bottom_border_edit_text_style"/>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/edt_url"
+                            android:layout_alignParentRight="true"
+                            android:onClick="@{() -> viewModel.saveUrlSettings()}"
+                            android:drawableLeft="@drawable/ic_save_green"
+                            android:text="GRAVAR"/>
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/sync_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="Sincronizar dados"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_sync_data"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="@dimen/dimen_50dp"
+                        android:padding="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_baseline_sync_24"/>
+                    <RelativeLayout
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dimen_4dp"
+                        android:layout_weight="5">
+
+                        <TextView
+                            android:id="@+id/txt_sync"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Período de sincronização"
+                            style="@style/input_labels"/>
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spn_period"
+                            android:layout_width="fill_parent"
+                            android:layout_below="@+id/txt_sync"
+                            style="@style/bottom_spinner_style"
+                            android:layout_height="wrap_content"
+                            app:adapter="@{syncPeriodAdapter}"
+                            bind:selectedOpt="@={viewModel.dataSyncPeriod}"/>
+                        />
+
+
+                        <Button
+                            android:id="@+id/btn_sync_now"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/spn_period"
+                            android:layout_alignParentRight="true"
+                            android:onClick="@{() -> viewModel.syncDataNow()}"
+                            android:drawableLeft="@drawable/ic_baseline_sync_green"
+                            android:text="Sincronizar gora"/>
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/sync_metadata"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="Actualizar metadados"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_sync_metadata"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="@dimen/dimen_50dp"
+                    android:padding="@dimen/dimen_10dp"
+                    android:src="@drawable/ic_baseline_update_24"/>
+                <RelativeLayout
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_4dp"
+                    android:layout_weight="5">
+
+                    <TextView
+                        android:id="@+id/txt_update_sync"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Período de sincronização"
+                        style="@style/input_labels"/>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spn_update_period"
+                        android:layout_width="fill_parent"
+                        android:layout_below="@+id/txt_update_sync"
+                        style="@style/bottom_spinner_style"
+                        android:layout_height="wrap_content"
+                        app:adapter="@{metadataSyncPeriodAdapter}"
+                        bind:selectedOpt="@={viewModel.metadataSyncPeriod}"/>
+                    />
+
+
+                    <Button
+                        android:id="@+id/btn_update_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/spn_update_period"
+                        android:layout_alignParentRight="true"
+                        android:onClick="@{() -> viewModel.syncMetadataNow()}"
+                        android:drawableLeft="@drawable/ic_baseline_cloud_download_24"
+                        android:text="Actualizar gora"/>
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_normal"
+                    android:layout_margin="@dimen/dimen_4dp"
+                    android:padding="3dp"
+                    android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="Remover dados"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="@dimen/dimen_10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/ibtn_remove_data"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_layout"
+                        android:src="@drawable/ic_row_dados_pessoais"
+                        android:layout_marginRight="@dimen/dimen_2dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="@dimen/dimen_10dp"
+                    android:layout_marginBottom="@dimen/dimen_50dp"
+                    android:src="@drawable/ic_baseline_delete_forever_24"/>
+                <RelativeLayout
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_4dp"
+                    android:layout_weight="5">
+
+                    <TextView
+                        android:id="@+id/txt_remove"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Volume de dados por remover"
+                        style="@style/input_labels"/>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spn_remove_period"
+                        android:layout_width="fill_parent"
+                        android:layout_below="@+id/txt_remove"
+                        style="@style/bottom_spinner_style"
+                        android:layout_height="wrap_content"
+                        app:adapter="@{dataRemovingAdapter}"
+                        bind:selectedOpt="@={viewModel.dataRemotionPeriod}"/>
+                    />
+
+
+                    <Button
+                        android:id="@+id/btn_remove_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/spn_remove_period"
+                        android:onClick="@{() -> viewModel.initDataRemotionNow()}"
+                        android:layout_alignParentRight="true"
+                        android:drawableLeft="@drawable/ic_baseline_delete_red"
+                        android:text="Remover"/>
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

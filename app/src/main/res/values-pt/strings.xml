@@ -361,4 +361,7 @@
     <string name="clinic_information_saved_sucessfuly">Informação Clinica gravada Com Sucesso</string>
 
     <string name="save_error_msg_clinic_information">\"Ocorreu um erro ao gravar o Informação Clinica. \"</string>
+    <string name="user_is_mandatory">O campo Utilizador deve ser preenchido.</string>
+    <string name="pass_is_mandatory">O campo Senha deve ser preenchido.</string>
+    <string name="generic_error_msg">Ocorreu um erro ao tentar realizar a operação desejada.</string>
 </resources>

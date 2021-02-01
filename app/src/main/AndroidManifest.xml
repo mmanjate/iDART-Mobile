@@ -18,7 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.clinicInfo.ClinicInfoActivity"></activity>
+        <activity
+            android:name=".view.home.IDartHomeActivity"
+            android:label="@string/title_activity_i_dart_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".view.settings.SettingsActivity" />
         <activity android:name=".view.reports.FILAReportActivity" />
         <activity android:name=".view.patientSearch.NewPatientSearchActivity" />
         <activity android:name=".view.reports.PatientRegisterReportActivity" />

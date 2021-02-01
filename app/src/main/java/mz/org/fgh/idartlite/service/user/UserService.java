@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.dao.user.IUserDao;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.rest.service.User.RestUserService;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public class UserService extends BaseService<User> implements IUserService {
@@ -15,14 +16,17 @@ public class UserService extends BaseService<User> implements IUserService {
 
     private IUserDao userDao;
 
+    private RestUserService restUserService;
+
     public UserService(Application application, User currUser) {
         super(application, currUser);
-        initDao();
+        init();
     }
 
-    private void initDao() {
+    private void init() {
         try {
             userDao = getDataBaseHelper().getUserDao();
+            restUserService = new RestUserService(getApplication());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -31,17 +35,22 @@ public class UserService extends BaseService<User> implements IUserService {
 
     public UserService(Application application) {
         super(application);
-        initDao();
+        init();
     }
 
     @Override
     public void save(User record) throws SQLException {
+        saveUser(record);
+    }
+
+    @Override
+    public void authenticate(User record) throws SQLException {
 
     }
 
     @Override
     public void update(User record) throws SQLException {
-
+        userDao.update(record);
     }
 
     public boolean login(User user) throws SQLException {
@@ -54,7 +63,9 @@ public class UserService extends BaseService<User> implements IUserService {
 
     public void saveUser(User user) throws SQLException {
         user.setPassword(Utilities.MD5Crypt(user.getPassword()));
-        userDao.create(user);
+        if (user.getId() <= 0) {
+            userDao.create(user);
+        }else update(user);
     }
 
 }

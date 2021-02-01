@@ -31,6 +31,7 @@ import mz.org.fgh.idartlite.dao.param.operationtype.IOperationTypeDao;
 import mz.org.fgh.idartlite.dao.patient.IPatientDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescribedDrugDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescriptionDao;
+import mz.org.fgh.idartlite.dao.settings.IAppSettingsDao;
 import mz.org.fgh.idartlite.dao.stock.IDestroyedDrugDao;
 import mz.org.fgh.idartlite.dao.stock.IIventoryDao;
 import mz.org.fgh.idartlite.dao.stock.IReferedStockMovimentDao;
@@ -41,6 +42,7 @@ import mz.org.fgh.idartlite.dao.territory.IDistrictDao;
 import mz.org.fgh.idartlite.dao.territory.IProvinceDao;
 import mz.org.fgh.idartlite.dao.territory.ISubdistrictDao;
 import mz.org.fgh.idartlite.dao.user.IUserDao;
+import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.ClinicSector;
@@ -75,7 +77,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
     private static final String DATABASE_NAME    = "idartlite.db";
-    private static final int    DATABASE_VERSION = 6;
+    private static final int    DATABASE_VERSION = 9;
 
 
     private IUserDao userDao;
@@ -112,6 +114,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private IReferedStockMovimentDao referedStockMovimentDao;
     private IOperationTypeDao operationTypeDao;
+    private IAppSettingsDao appSettingsDao;
+
 
     private IClinicInfoDao clinicInfoDao;
 
@@ -307,6 +311,13 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         return operationTypeDao;
     }
 
+    public IAppSettingsDao getAppSettingsDao() throws SQLException {
+        if(appSettingsDao == null){
+            appSettingsDao = getDao(AppSettings.class);
+        }
+        return appSettingsDao;
+    }
+
     /* public IPatientSectorDao getPatientSectorDao() throws SQLException {
         if(patientSectorDao == null){
             patientSectorDao = getDao(PatientSector.class);
@@ -387,6 +398,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, ReturnedDrug.class);
             TableUtils.createTableIfNotExists(connectionSource, ReferedStockMoviment.class);
             TableUtils.createTableIfNotExists(connectionSource, OperationType.class);
+            TableUtils.createTableIfNotExists(connectionSource, AppSettings.class);
             TableUtils.createTableIfNotExists(connectionSource, ClinicInformation.class);
 
 
@@ -397,8 +409,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        //dropTables();
-        //onCreate(database,connectionSource);
+        dropTables();
+        onCreate(database,connectionSource);
     }
 
     @Override
@@ -438,6 +450,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, ClinicSector.class, true);
             TableUtils.dropTable(connectionSource, ReferedStockMoviment.class, true);
             TableUtils.dropTable(connectionSource, OperationType.class, true);
+            TableUtils.dropTable(connectionSource, AppSettings.class, true);
 
             TableUtils.dropTable(connectionSource, ClinicInformation.class, true);
 

@@ -197,7 +197,7 @@ public class IventoryActivity extends BaseActivity {
 
         PdfPCell cell;
 
-        Drawable d = getResources().getDrawable(R.mipmap.ic_mz_misau);
+        Drawable d = getResources().getDrawable(R.mipmap.ic_misau);
         Bitmap bmp =((BitmapDrawable)d).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);

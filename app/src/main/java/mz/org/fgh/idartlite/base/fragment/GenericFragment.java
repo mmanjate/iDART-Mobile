@@ -39,10 +39,19 @@ public abstract class GenericFragment extends Fragment implements GenericActivit
             this.relatedViewModel.setCurrentUser(getMyActivity().getCurrentUser());
             this.relatedViewModel.setCurrentClinic(getMyActivity().getCurrentClinic());
             this.relatedViewModel.setRelatedFragment(this);
+
         }
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (this.relatedViewModel != null) {
+            this.relatedViewModel.preInit();
+        }
+    }
 
     protected BaseActivity getMyActivity(){
         return (BaseActivity) getActivity();

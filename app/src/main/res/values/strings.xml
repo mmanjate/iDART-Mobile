@@ -373,4 +373,18 @@
     <string name="clinic_information_saved_sucessfuly">Informação Clinica gravada Com Sucesso</string>
 
     <string name="save_error_msg_clinic_information">\"Ocorreu um erro ao gravar o Informação Clinica. \"</string>
+    <string name="user_is_mandatory">O campo Utilizador deve ser preenchido.</string>
+    <string name="pass_is_mandatory">O campo Senha deve ser preenchido.</string>
+    <string name="title_activity_i_dart_home">iDartHomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="generic_error_msg">Ocorreu um erro ao tentar realizar a operação desejada.</string>
 </resources>

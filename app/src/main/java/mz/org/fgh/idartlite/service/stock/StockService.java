@@ -24,6 +24,7 @@ public class StockService extends BaseService<Stock> implements IStockService {
 
     @Override
     public void save(Stock record) throws SQLException {
+        record.setSyncStatus(BaseModel.SYNC_SATUS_READY);
         super.save(record);
         getDataBaseHelper().getStockDao().create(record);
     }
@@ -36,6 +37,12 @@ public class StockService extends BaseService<Stock> implements IStockService {
     }
 
     public void saveOrUpdateStock(Stock stock) throws SQLException {
+        if (stock.getId() > 0 ){
+            stock.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
+        }else {
+            stock.setSyncStatus(BaseModel.SYNC_SATUS_READY);
+        }
+
         getDataBaseHelper().getStockDao().createOrUpdate(stock);
     }
 
@@ -73,6 +80,7 @@ public class StockService extends BaseService<Stock> implements IStockService {
     }
 
     public void updateStock(Stock stock) throws SQLException {
+        stock.setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
         getDataBaseHelper().getStockDao().update(stock);
     }
 
