@@ -2,14 +2,51 @@ package mz.org.fgh.idartlite.rest.service;
 
 import android.app.Application;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.model.ClinicInformation;
+import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.rest.service.ClinicInfo.RestClinicInfoService;
+import mz.org.fgh.idartlite.rest.service.Disease.RestDiseaseTypeService;
+import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseService;
+import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseTypeService;
+import mz.org.fgh.idartlite.rest.service.Drug.RestDrugService;
+import mz.org.fgh.idartlite.rest.service.Episode.RestEpisodeService;
+import mz.org.fgh.idartlite.rest.service.Form.RestFormService;
+import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
+import mz.org.fgh.idartlite.rest.service.Regimen.RestTherapeuticRegimenService;
+import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
+import mz.org.fgh.idartlite.rest.service.TherapeuticLine.RestTherapeuticLineService;
+import mz.org.fgh.idartlite.rest.service.clinic.RestPharmacyTypeService;
+import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
+import mz.org.fgh.idartlite.service.clinic.ClinicService;
+import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
+import mz.org.fgh.idartlite.service.clinic.IClinicService;
+import mz.org.fgh.idartlite.service.clinicInfo.ClinicInfoService;
+import mz.org.fgh.idartlite.service.clinicInfo.IClinicInfoService;
+import mz.org.fgh.idartlite.service.dispense.DispenseService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseService;
+import mz.org.fgh.idartlite.service.episode.EpisodeService;
+import mz.org.fgh.idartlite.service.episode.IEpisodeService;
+import mz.org.fgh.idartlite.service.patient.IPatientService;
+import mz.org.fgh.idartlite.service.patient.PatientService;
+import mz.org.fgh.idartlite.service.stock.IStockService;
+import mz.org.fgh.idartlite.service.stock.StockService;
+import mz.org.fgh.idartlite.service.territory.CountryService;
+import mz.org.fgh.idartlite.service.territory.ICountryService;
 
 public class RestRunDataForTestService extends BaseRestService {
     public RestRunDataForTestService(Application application, User currentUser) {
         super(application, currentUser);
 
-        /*IDispenseService dispenseService = new DispenseService(application, currentUser);
+        IDispenseService dispenseService = new DispenseService(application, currentUser);
         IStockService stockService = new StockService(application, currentUser);
         IEpisodeService episodeService = new EpisodeService(application, currentUser);
         ICountryService countryService = new CountryService(application, currentUser);
@@ -23,14 +60,9 @@ public class RestRunDataForTestService extends BaseRestService {
         List<Patient> patientList;
         Episode episode;
 
-
-
-            RestTerritoryService.restGetAllCountries();
-
-            RestTerritoryService.restGetAllProvinces();
-            RestTerritoryService.restGetAllDistricts();
-
-
+        RestTerritoryService.restGetAllCountries();
+        RestTerritoryService.restGetAllProvinces();
+        RestTerritoryService.restGetAllDistricts();
 
         RestPharmacyTypeService.restGetAllPharmacyType();
         RestFormService.restGetAllForms();
@@ -42,6 +74,7 @@ public class RestRunDataForTestService extends BaseRestService {
         RestPatientService.restGetAllPatient(null);
         RestEpisodeService.restGetAllReadyEpisodes(null);
         RestEpisodeService.restGetAllEpisodes(null);
+
         try {
             RestStockService.restGetStock(clinicService.getAllClinics().get(0));
         } catch (SQLException e) {
@@ -72,7 +105,6 @@ public class RestRunDataForTestService extends BaseRestService {
             e.printStackTrace();
         }
 
-
         try {
             dispenseList = dispenseService.getAllDispensesByStatus(BaseModel.SYNC_SATUS_READY);
             if (dispenseList != null)
@@ -87,8 +119,8 @@ public class RestRunDataForTestService extends BaseRestService {
 
         try {
 
-            List<Episode> episodeList=episodeService.getAllEpisodeByStatus(BaseModel.SYNC_SATUS_READY);
-            if(episodeList != null && episodeList.size() > 0) {
+            List<Episode> episodeList = episodeService.getAllEpisodeByStatus(BaseModel.SYNC_SATUS_READY);
+            if (episodeList != null && episodeList.size() > 0) {
                 for (Episode episode1 : episodeList) {
                     RestEpisodeService.restPostEpisode(episode1);
                     RestPatientService.restPostPatientSector(episode1.getPatient());
@@ -97,7 +129,8 @@ public class RestRunDataForTestService extends BaseRestService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        try{
+
+        try {
             patientList = patientService.getALLPatient();
             if (patientList != null)
                 if (patientList.size() > 0) {
@@ -113,16 +146,16 @@ public class RestRunDataForTestService extends BaseRestService {
 
         try {
 
-            List<ClinicInformation> clinicInformationList=clinicInfoService.getAllClinicInfoByStatus(BaseModel.SYNC_SATUS_READY);
-            if(clinicInformationList != null && clinicInformationList.size() > 0) {
+            List<ClinicInformation> clinicInformationList = clinicInfoService.getAllClinicInfoByStatus(BaseModel.SYNC_SATUS_READY);
+            if (clinicInformationList != null && clinicInformationList.size() > 0) {
                 for (ClinicInformation clinicInformation : clinicInformationList) {
                     RestClinicInfoService.restPostClinicInfo(clinicInformation);
-                //    RestPatientService.restPostPatientSector(clinicInformation.getPatient());
+                    //    RestPatientService.restPostPatientSector(clinicInformation.getPatient());
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
 
       /*  try{
           List<ClinicSector>  clinicSectors= clinicSectorService.getClinicSectorsByClinic(clinicService.getAllClinics().get(0));
@@ -142,11 +175,11 @@ public class RestRunDataForTestService extends BaseRestService {
         }*/
     }
 
-    public void runMetaDataSync(){
+    public void runMetaDataSync() {
 
     }
 
-    public void runDataSync(){
+    public void runDataSync() {
 
     }
 }

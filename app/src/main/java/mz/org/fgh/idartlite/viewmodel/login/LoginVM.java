@@ -161,7 +161,7 @@ public class LoginVM extends BaseViewModel {
                 } else {
                     // Somente para testes --- estas funcionalidades foram alocadas no WorkManager da app
                     if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
-                        RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
+                      //  RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
                     }
 
                     if (!userService.login(getCurrentUser())) {
