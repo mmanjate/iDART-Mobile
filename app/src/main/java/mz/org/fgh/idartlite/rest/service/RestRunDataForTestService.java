@@ -46,6 +46,26 @@ public class RestRunDataForTestService extends BaseRestService {
     public RestRunDataForTestService(Application application, User currentUser) {
         super(application, currentUser);
 
+
+      /*  try{
+          List<ClinicSector>  clinicSectors= clinicSectorService.getClinicSectorsByClinic(clinicService.getAllClinics().get(0));
+
+            if(clinicSectors.isEmpty()){
+                ClinicSector clinicSector=new ClinicSector();
+                clinicSector.setClinicId(clinicService.getAllClinics().get(0).getId());
+                clinicSector.setCode("001");
+                clinicSector.setPhone("84464422");
+                clinicSector.setSectorName("Paragem Unic HIV");
+                clinicSector.setUuid(Utilities.getNewUUID().toString());
+
+                clinicSectorService.saveClinicSector(clinicSector);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    public void runDataSync() {
         IDispenseService dispenseService = new DispenseService(application, currentUser);
         IStockService stockService = new StockService(application, currentUser);
         IEpisodeService episodeService = new EpisodeService(application, currentUser);
@@ -156,30 +176,9 @@ public class RestRunDataForTestService extends BaseRestService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-      /*  try{
-          List<ClinicSector>  clinicSectors= clinicSectorService.getClinicSectorsByClinic(clinicService.getAllClinics().get(0));
-
-            if(clinicSectors.isEmpty()){
-                ClinicSector clinicSector=new ClinicSector();
-                clinicSector.setClinicId(clinicService.getAllClinics().get(0).getId());
-                clinicSector.setCode("001");
-                clinicSector.setPhone("84464422");
-                clinicSector.setSectorName("Paragem Unic HIV");
-                clinicSector.setUuid(Utilities.getNewUUID().toString());
-
-                clinicSectorService.saveClinicSector(clinicSector);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
     }
 
     public void runMetaDataSync() {
-
-    }
-
-    public void runDataSync() {
 
     }
 }

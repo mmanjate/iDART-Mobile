@@ -252,9 +252,9 @@ public class SettingsVM extends BaseViewModel {
     }
 
     public void syncDataNow(){
-
-        RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
-        getRelatedService().runDataSync();
+        RestRunDataForTestService restTestData = new RestRunDataForTestService(getApplication(), getCurrentUser());
+        restTestData.runDataSync();
+//        getRelatedService().runDataSync();
     }
 
     public void syncMetadataNow(){
