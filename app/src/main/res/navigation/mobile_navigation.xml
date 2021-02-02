@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="mz.org.fgh.idartlite.view.home.ui.home.HomeFragment"
-        android:label="@string/menu_home"
+        android:label="Inicio"
         tools:layout="@layout/fragment_home" />
 
     <fragment
@@ -28,4 +28,16 @@
         android:name="mz.org.fgh.idartlite.view.home.ui.user.ChangeUserPassFragment"
         android:label="Alterar Senha"
         tools:layout="@layout/change_user_pass_fragment" />
+
+    <fragment
+        android:id="@+id/nav_exit"
+        android:name="mz.org.fgh.idartlite.view.home.ui.home.LogoutFragment"
+        android:label="Sair"
+        tools:layout="@layout/fragment_logout" />
+
+    <activity
+        android:id="@+id/nav_about"
+        android:name="mz.org.fgh.idartlite.view.about.AboutActivity"
+        tools:layout="@layout/activity_about" />
+
 </navigation>

@@ -44,7 +44,8 @@ public class UserVM extends BaseViewModel {
 
     @Override
     public User getRelatedRecord() {
-        return (User) super.getRelatedRecord();
+        //return (User) super.getRelatedRecord();
+        return new User();
     }
 
     @Override
