@@ -97,7 +97,7 @@ inner join prescription pr on pr.patient_id=p.id order by pr.prescription_date d
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="$USER_HOME$/Documents/idartlite.db" schema="main" />
+            <file path="$PROJECT_DIR$/../../../../../../idartlite.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />
