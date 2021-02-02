@@ -21,6 +21,8 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityIDartHomeBinding;
 import mz.org.fgh.idartlite.databinding.NavHeaderMainBinding;
 import mz.org.fgh.idartlite.model.ClinicSector;
+import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.reports.StockAlertReportActivity;
 import mz.org.fgh.idartlite.viewmodel.home.HomeViewModel;
 
 public class IDartHomeActivity extends BaseActivity {
@@ -44,6 +46,12 @@ public class IDartHomeActivity extends BaseActivity {
             }
         }
 
+        StockAlertReportActivity alert = new StockAlertReportActivity();
+        alert.showDialog(this,savedInstanceState);
+
+
+        Utilities.checkPermissionsToViewPdf(this);
+
         DrawerLayout drawer = homeBinding.drawerLayout;
         NavigationView navigationView = homeBinding.navView;
 
@@ -56,12 +64,15 @@ public class IDartHomeActivity extends BaseActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.i_dart_home, menu);
+        //getMenuInflater().inflate(R.menu.i_dart_home, menu);
         return true;
     }
 
@@ -81,4 +92,5 @@ public class IDartHomeActivity extends BaseActivity {
     public HomeViewModel getRelatedViewModel() {
         return (HomeViewModel) super.getRelatedViewModel();
     }
+
 }

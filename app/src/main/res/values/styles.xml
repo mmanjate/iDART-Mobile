@@ -82,6 +82,10 @@
         <item name="android:layout_marginBottom">@dimen/dimen_6dp</item>
     </style>
 
+    <style name="setting_dialog_label" parent="input_labels">
+        <item name="android:textSize">@dimen/dimen_14dp</item>
+    </style>
+
     <style name="inventory_labels">
         <item name="android:textColor">@color/red</item>
         <item name="android:typeface">sans</item>

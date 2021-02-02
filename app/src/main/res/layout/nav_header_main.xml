@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
             android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"
             android:text="@{viewModel.appVersionName}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -46,12 +47,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/user"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="Utilizador: "/>
             <TextView
                 android:id="@+id/user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@{viewModel.currentUser.userName}" />
         </RelativeLayout>
 
