@@ -56,13 +56,13 @@ public class AppSettingsService extends BaseService<AppSettings> implements IApp
     @Override
     public void runDataSync() {
 
-        restService.runDataSync();
+        //restService.runDataSync();
     }
 
     @Override
     public void runMetadataSync() {
 
-        restService.runMetaDataSync();
+        //restService.runMetaDataSync();
     }
 
     @Override
