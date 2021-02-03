@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/textView"
-        style="@style/input_labels"
+        style="@style/setting_dialog_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -26,9 +26,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:inputType="textMultiLine|text"
-        style="@style/bottom_border_edit_text_style"
-        android:padding="@dimen/dimen_8dp"
+        android:background="@drawable/square_edit_text_border"
+        android:inputType="textUri"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -40,6 +40,9 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/square_button_shape"
+        android:padding="@dimen/dimen_2dp"
+        android:textColor="@color/white"
         android:text="Submeter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,11 +53,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
         android:layout_marginTop="8dp"
-        android:text="@string/cancel"
+        android:text="Sair"
+        android:background="@drawable/square_button_shape"
+        android:padding="@dimen/dimen_2dp"
+        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSubmit"
         app:layout_constraintTop_toBottomOf="@+id/edt_comment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

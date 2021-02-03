@@ -153,6 +153,7 @@
                         app:srcCompat="@drawable/ic_done"
                         android:layout_marginTop="@dimen/dimen_22dp"
                         android:layout_margin="@dimen/dimen_18dp"
+                        android:visibility="gone"
                         android:background="@drawable/button_shape"
                         android:onClick="@{() -> viewModel.save()}"
                         android:layout_gravity="right"/>

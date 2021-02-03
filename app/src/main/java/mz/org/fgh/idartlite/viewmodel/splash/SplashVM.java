@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.viewmodel.splash;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -118,7 +119,8 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
             syncApp();
 
         }else {
-            Utilities.displayAlertDialog(getRelatedActivity(), "A aplicação não conseguiu ligar-se ao servidor central, por favor verifique a configuração informada ou a configuração de rede do dispositivo.").show();
+            Toast.makeText(getRelatedActivity(), "Sync error", Toast.LENGTH_LONG).show();
+            //Utilities.displayAlertDialog(getRelatedActivity(), "A aplicação não conseguiu ligar-se ao servidor central, por favor verifique a configuração informada ou a configuração de rede do dispositivo.").show();
         }
     }
 
@@ -184,10 +186,14 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
         super.doOnConfirmed();
 
         if (appHasNoUsersOnDB()){
-            getRelatedActivity().finishAffinity();
-            System.exit(0);
+            exitApp();
         }else {
             getRelatedActivity().nextActivityFinishingCurrent(LoginActivity.class);
         }
+    }
+
+    public void exitApp() {
+        getRelatedActivity().finishAffinity();
+        System.exit(0);
     }
 }

@@ -16,6 +16,7 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.AppSettings;
+import mz.org.fgh.idartlite.rest.service.RestRunDataForTestService;
 import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
 import mz.org.fgh.idartlite.util.SimpleValue;
@@ -251,7 +252,9 @@ public class SettingsVM extends BaseViewModel {
     }
 
     public void syncDataNow(){
-        getRelatedService().runDataSync();
+        RestRunDataForTestService restTestData = new RestRunDataForTestService(getApplication(), getCurrentUser());
+        restTestData.runDataSync();
+//        getRelatedService().runDataSync();
     }
 
     public void syncMetadataNow(){

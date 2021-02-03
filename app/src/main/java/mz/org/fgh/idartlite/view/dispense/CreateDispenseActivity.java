@@ -97,7 +97,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                     try {
                         this.prescription = getRelatedViewModel().getLastPatientPrescription(this.getPatient());
 
-                        dispenseList= (List<Dispense>) bundle.getSerializable("dispenses");
+                        dispenseList = (List<Dispense>) bundle.getSerializable("dispenses");
                         prescription.setDispenses(dispenseList);
                         getRelatedViewModel().getDispense().setPrescription((this.prescription));
 
@@ -435,9 +435,6 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             }
 
 
-
-
-
             ArrayAdapter<Drug> drugArrayAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, drugsToDisplay);
             activityCreateDispenseBinding.autCmpDrugs.setThreshold(1);
             activityCreateDispenseBinding.autCmpDrugs.setAdapter(drugArrayAdapter);
@@ -472,21 +469,21 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
     public void changeFormSectionVisibility(View view) {
         if (view.equals(activityCreateDispenseBinding.initialData)) {
-            if (activityCreateDispenseBinding.initialDataLyt.getVisibility() == View.VISIBLE){
+            if (activityCreateDispenseBinding.initialDataLyt.getVisibility() == View.VISIBLE) {
                 switchLayout();
                 activityCreateDispenseBinding.ibtnInitialData.animate().setDuration(200).rotation(180);
                 Utilities.collapse(activityCreateDispenseBinding.initialDataLyt);
-            }else {
+            } else {
                 switchLayout();
                 activityCreateDispenseBinding.ibtnInitialData.animate().setDuration(200).rotation(0);
                 Utilities.expand(activityCreateDispenseBinding.initialDataLyt);
             }
-        }else if (view.equals(activityCreateDispenseBinding.txvDrugs)){
-            if (activityCreateDispenseBinding.drugsDataLyt.getVisibility() == View.VISIBLE){
+        } else if (view.equals(activityCreateDispenseBinding.txvDrugs)) {
+            if (activityCreateDispenseBinding.drugsDataLyt.getVisibility() == View.VISIBLE) {
                 switchLayout();
                 activityCreateDispenseBinding.ibtnDrugs.animate().setDuration(200).rotation(180);
                 Utilities.collapse(activityCreateDispenseBinding.drugsDataLyt);
-            }else {
+            } else {
                 activityCreateDispenseBinding.ibtnDrugs.animate().setDuration(200).rotation(0);
                 Utilities.expand(activityCreateDispenseBinding.drugsDataLyt);
                 switchLayout();
@@ -605,12 +602,21 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
     private int getQuantidadeADispensar(Drug drug) {
 
         int supply = ((SimpleValue) activityCreateDispenseBinding.spnDuration.getSelectedItem()).getId();
-        int qtdAdispensar;
-        if (supply == 2) {
-            qtdAdispensar = (int) (0.5 * drug.getPackSize());
+        int qtdAdispensar = 0;
+        int supplyPerDugPackSize = (int) drug.getPackSize() / 7;
+
+        if (drug.getPackSize() == 60)
+            supplyPerDugPackSize = supplyPerDugPackSize / 2;
+
+        if (supplyPerDugPackSize >= supply) {
+            qtdAdispensar = drug.getPackSize();
         } else {
-            qtdAdispensar = (supply / 4) * drug.getPackSize();
+            if (supplyPerDugPackSize * 2 == supply) {
+                qtdAdispensar = drug.getPackSize() * 2;
+            } else if (supplyPerDugPackSize * 2 < supply)
+                qtdAdispensar = (supply / 4) * drug.getPackSize();
         }
+
         return qtdAdispensar;
     }
 

@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.splash.SplashVM;
 
@@ -52,6 +53,7 @@ public class SplashActivity extends BaseActivity{
         final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+        dialogBuilder.setCanceledOnTouchOutside(false);
 
         final EditText editText = (EditText) dialogView.findViewById(R.id.edt_comment);
         Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
@@ -60,6 +62,7 @@ public class SplashActivity extends BaseActivity{
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getRelatedViewModel().exitApp();
                 dialogBuilder.dismiss();
             }
         });
@@ -67,9 +70,16 @@ public class SplashActivity extends BaseActivity{
             @Override
             public void onClick(View view) {
                 if (Utilities.stringHasValue(editText.getText().toString())) {
-                    getRelatedViewModel().saveSettings(editText.getText().toString());
+                    if (RESTServiceHandler.getServerStatus(editText.getText().toString())) {
+                        getRelatedViewModel().saveSettings(editText.getText().toString());
+
+                        dialogBuilder.dismiss();
+                    }else {
+                        Utilities.displayAlertDialog(SplashActivity.this, "A aplicação não conseguiu ligar-se ao servidor central, por favor verifique a URL informada ou a configuração de rede do dispositivo.").show();
+                    }
+                }else {
+                    Utilities.displayAlertDialog(SplashActivity.this, "Por favor indicar a URL do servidor central.").show();
                 }
-                dialogBuilder.dismiss();
             }
         });
 
