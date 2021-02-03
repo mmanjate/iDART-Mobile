@@ -98,6 +98,10 @@
         <activity
             android:name=".view.episode.EpisodeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".view.clinicInfo.ClinicInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

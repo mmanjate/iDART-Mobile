@@ -150,8 +150,8 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
         createClinicInfoBinding.imc.setEnabled(false);
         createClinicInfoBinding.distole.setEnabled(false);
         createClinicInfoBinding.systole.setEnabled(false);
-        createClinicInfoBinding.checkbox1.setEnabled(false);
-        createClinicInfoBinding.checkbox2.setEnabled(false);
+      //  createClinicInfoBinding.checkbox1.setEnabled(false);
+       /* createClinicInfoBinding.checkbox2.setEnabled(false);
         createClinicInfoBinding.checkboxCough.setEnabled(false);
         createClinicInfoBinding.checkboxFever.setEnabled(false);
         createClinicInfoBinding.checkboxWeight.setEnabled(false);
@@ -166,7 +166,7 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
         createClinicInfoBinding.checkAdversityReaction.setEnabled(false);
         createClinicInfoBinding.editTextAdverseReaction.setEnabled(false);
         createClinicInfoBinding.checkboxPatientReferedByRam.setEnabled(false);
-        createClinicInfoBinding.saveAndContinue.setVisibility(View.GONE);
+        createClinicInfoBinding.saveAndContinue.setVisibility(View.GONE);*/
     }
 
 
@@ -181,7 +181,8 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
                 createClinicInfoBinding.ibtnVitalSigns.animate().setDuration(200).rotation(0);
                 Utilities.expand(createClinicInfoBinding.vitalSignsList);
             }
-        }else if (view.equals(createClinicInfoBinding.tbScreeningDetails)){
+        }
+        /*else if (view.equals(createClinicInfoBinding.tbScreeningDetails)){
             if (createClinicInfoBinding.tbScreeningList.getVisibility() == View.VISIBLE){
                 switchLayout();
                 createClinicInfoBinding.ibtnTbScreeningDetails.animate().setDuration(200).rotation(180);
@@ -192,8 +193,9 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
                 Utilities.expand(createClinicInfoBinding.tbScreeningList);
                 createClinicInfoBinding.txtTbScreening.setVisibility(View.VISIBLE);
                 switchLayout();
-            }
-        }else if (view.equals(createClinicInfoBinding.monitoringReinforcementAdesaoDetails)){
+            }*/
+     //   }
+       /* else if (view.equals(createClinicInfoBinding.monitoringReinforcementAdesaoDetails)){
             if (createClinicInfoBinding.monitoringReinforcmentDetailsList.getVisibility() == View.VISIBLE){
                 createClinicInfoBinding.ibtnMonitoringReinforcmentDetails.animate().setDuration(200).rotation(180);
                 Utilities.collapse(createClinicInfoBinding.monitoringReinforcmentDetailsList);
@@ -214,7 +216,7 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
                 Utilities.expand(createClinicInfoBinding.linearMonitoringAdversity);
                 switchLayout();
             }
-        }
+        }*/
     }
 
 

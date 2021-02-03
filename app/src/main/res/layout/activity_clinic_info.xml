@@ -117,6 +117,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:visibility="gone"
                         android:padding="@dimen/dimen_4dp">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -224,6 +225,9 @@
                         </LinearLayout>
                     </LinearLayout>
 
+
+
+
                     <LinearLayout
                         android:id="@+id/tb_screening_details"
                         android:layout_width="match_parent"
@@ -245,7 +249,7 @@
                             android:paddingLeft="@dimen/dimen_10dp"/>
 
                         <ImageButton
-                            android:id="@+id/ibtn_tb_screening_details"
+                            android:id="@+id/ibtn_tb_screening_details1"
                             android:layout_width="@dimen/dimen_0dp"
                             android:layout_height="match_parent"
                             android:background="@color/background_layout"
@@ -254,90 +258,364 @@
                             android:layout_weight="1"/>
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/txtTbScreening"
-                        style="@style/input_labels"
+                    <LinearLayout
+                        android:id="@+id/tb_screening_question"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tb_screening_questions" />
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:padding="@dimen/dimen_4dp">
+                        <RelativeLayout
+                            android:id="@+id/tb_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txtTbScreening"
+                            style="@style/input_labels"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:text="@string/tb_screening_questions" />
+                            <TextView
+                                android:id="@+id/TbYes"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/TbNo"
+                                android:textSize="14sp"
+                                android:text="Sim" />
+
+                            <TextView
+                                android:id="@+id/TbNo"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:gravity="right"
+                                android:textSize="14sp"
+                                android:text="Nao" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/tb_screening_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:orientation="vertical"
+                    android:background="@drawable/shape_normal_grey"
+                    android:padding="@dimen/dimen_4dp">
+
+
                     <LinearLayout
-                        android:id="@+id/tb_screening_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/tpiQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/profilatic_treatment_tpi"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/tpiAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioTpiYes1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioTpiNo1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/tbQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/treatment_tb"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/tbAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioTbYes1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioTbNo1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:background="@drawable/shape_normal_grey"
-
                         android:padding="@dimen/dimen_4dp">
-                        <CheckBox android:id="@+id/checkbox1"
+                        <TextView
+                            style="@style/input_labels"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:text="@string/profilatic_treatment_tpi"
-                            android:checked="@={viewModel.clinicInformation.treatmentTPI}" />
-
-                        <CheckBox android:id="@+id/checkbox2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:checked="@={viewModel.clinicInformation.treatmentTB}"
-                            android:text="@string/treatment_tb" />
-
-
+                            android:text="@string/signs_syntoms_tb"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black"
+                            />
                         <LinearLayout
-                            android:id="@+id/tb_syntoms_signs"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:background="@drawable/shape_normal_grey"
-                            android:padding="@dimen/dimen_12dp">
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
                             <TextView
-                                style="@style/input_labels"
-                                android:layout_width="match_parent"
+                                android:id="@+id/coughQuestion"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="@string/signs_syntoms_tb" />
-                        <CheckBox android:id="@+id/checkboxCough"
+                                android:layout_weight="4"
+                                android:text="@string/cough_last_two_weeks"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/coughAnswers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioCoughYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                 />
+
+                                <RadioButton
+                                    android:id="@+id/radioCoughNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                     />
+                            </RadioGroup>
+                        </LinearLayout>
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:checked="@={viewModel.clinicInformation.cough}"
-                            android:text="@string/cough_last_two_weeks" />
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
 
-                            <CheckBox android:id="@+id/checkboxFever"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:checked="@={viewModel.clinicInformation.fever}"
-                            android:text="@string/fever_last_two_weeks" />
-
-                            <CheckBox android:id="@+id/checkboxWeight"
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:id="@+id/feverQuestion"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layoutDirection="rtl"
-                                android:checked="@={viewModel.clinicInformation.lostWeight}"
-                                android:text="@string/lost_weight_last_month" />
+                                android:layout_weight="4"
+                                android:text="@string/fever_last_two_weeks"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
 
-                            <CheckBox android:id="@+id/checkboxSweat"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                                android:checked="@={viewModel.clinicInformation.sweating}"
-                            android:text="@string/sweat_in_the_night" />
-
-                            <CheckBox android:id="@+id/checkboxParent"
-                                android:layout_width="match_parent"
+                            <RadioGroup
+                                android:id="@+id/feverAnswers"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layoutDirection="rtl"
-                                android:checked="@={viewModel.clinicInformation.hasParentTBTreatment}"
-                                android:text="@string/got_parent_doing_tb_treatment" />
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioFeverYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+
+                                <RadioButton
+                                    android:id="@+id/radioFeverNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RadioGroup>
                         </LinearLayout>
 
-                        <CheckBox android:id="@+id/checkboxPatientRefered"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:checked="@={viewModel.clinicInformation.referedToUsTB}"
-                            android:text="@string/patient_refered_evaluation_us" />
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:id="@+id/weightQuestion"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/lost_weight_last_month"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/weightAnswers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioWeightYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+
+                                <RadioButton
+                                    android:id="@+id/radioWeightNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RadioGroup>
+                        </LinearLayout>
+
+                        <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/sweatingQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:text="@string/sweat_in_the_night"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/sweatingAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:id="@+id/radioSweatingYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+
+                            <RadioButton
+                                android:id="@+id/radioSweatingNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                />
+                        </RadioGroup>
                     </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:id="@+id/tbParentQuestion"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/got_parent_doing_tb_treatment"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/parentAnswers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioParentYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+
+                                <RadioButton
+                                    android:id="@+id/radioParentNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                            </RadioGroup>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/tbRefered"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/patient_refered_evaluation_us"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/tbReferedAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioTbReferedYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioTbReferedNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+
 
                     <LinearLayout
                         android:id="@+id/monitoring_reinforcement_adesao_details"
@@ -369,36 +647,107 @@
                             android:layout_weight="1"/>
                     </LinearLayout>
 
-
-
                     <LinearLayout
                         android:id="@+id/monitoring_reinforcment_details_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@drawable/shape_normal_grey"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+                        <RelativeLayout
+                            android:id="@+id/tb_data_monitoring"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txtMonitoringScreening"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:text="@string/monitoring_question" />
+                            <TextView
+                                android:id="@+id/MonitoringYes"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/MonitoringNo"
+                                android:textSize="14sp"
+                                android:text="Sim" />
+
+                            <TextView
+                                android:id="@+id/MonitoringNo"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:gravity="right"
+                                android:textSize="14sp"
+                                android:text="Nao" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/monitoring_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:orientation="vertical"
+                    android:background="@drawable/shape_normal_grey"
+                    android:padding="@dimen/dimen_4dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:padding="@dimen/dimen_4dp">
 
-                        <CheckBox android:id="@+id/checkPatientCame"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/patientCameQuestion"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:checked="@={viewModel.clinicInformation.hasPatientCameCorrectDate}"
-                            android:text="@string/patient_right_date" />
-                        <LinearLayout
-                            android:id="@+id/monitoring_reinforcement_adesao1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:background="@drawable/shape_normal_grey"
-                            android:padding="@dimen/dimen_4dp">
-
-                        <TextView android:id="@+id/checkPatientLate"
-                            android:layout_width="@dimen/dimen_m3dp"
-                            android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
+                            android:layout_weight="1"
+                            android:text="@string/patient_right_date"
                             android:textColor="@color/black"
-                            android:text="@string/patient_wrong_date_days" />
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/patientCameAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioPatientCameYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioPatientCameNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/checkPatientLate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/patient_wrong_date_days"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
 
                         <EditText
                             android:id="@+id/wrongDateNumber"
@@ -408,69 +757,102 @@
                             android:text="@={viewModel.lateDays}"
                             android:maxLength="3"
                             android:inputType="number"/>
-                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
 
-
-                        <CheckBox android:id="@+id/checkPatientHoursWrong"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/patientHoursWrongQuestion"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:checked="@={viewModel.clinicInformation.patientForgotMedicine}"
-                            android:text="@string/forgot_medicines" />
-                        <LinearLayout
-                            android:id="@+id/monitoring_reinforcement_adesao2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:background="@drawable/shape_normal_grey"
-                            android:padding="@dimen/dimen_25dp">
+                            android:layout_weight="1"
+                            android:text="@string/forgot_medicines"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
 
-                            <LinearLayout
-                                android:id="@+id/monitoring_reinforcement_adesao4"
-                                android:layout_width="match_parent"
+                        <RadioGroup
+                            android:id="@+id/patientHoursWrongAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/patientHoursWrongYes"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:background="@drawable/shape_normal_grey"
-                                android:padding="@dimen/dimen_2dp">
+                                android:layout_weight="1" />
 
-                                <TextView
-                                    android:id="@+id/checkPatientLateHours"
-                                    android:layout_width="291dp"
-                                    android:layout_height="wrap_content"
+                            <RadioButton
+                                android:id="@+id/patientHoursWrongNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
 
-                                    android:text="@string/forgot_medicines_hours"
-                                    android:textColor="@color/black" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/shape_normal_grey"
+                        android:padding="@dimen/dimen_4dp">
 
-                                <EditText
-                                    android:id="@+id/daysWithoutMedicine"
-                                    style="@style/bottom_border_edit_text_style"
-                                    android:layout_width="@dimen/dimen_m3dp"
-                                    android:layout_height="wrap_content"
-                                    android:text="@={viewModel.daysWithoutMedicine}"
-                                    android:maxLength="3"
-                                    android:textColor="@color/black"
-                                    android:inputType="number"/>
-                            </LinearLayout>
-
-
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginEnd="@dimen/dimen_50dp"
+                            android:padding="@dimen/dimen_10dp">
 
                             <TextView
-                                style="@style/input_labels"
-                                android:layout_width="match_parent"
+                                android:id="@+id/patientLateHoursQuestion"
+                                android:layout_width="@dimen/dimen_0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/forgot_medicines_hours"
                                 android:textColor="@color/black"
-                                android:text="@string/motives"
-                                android:padding="@dimen/dimen_10dp"/>
+                                android:padding="@dimen/dimen_2dp"/>
 
                             <EditText
-                                android:id="@+id/editTextMotives"
-                                android:layout_width="fill_parent"
+                                android:id="@+id/daysWithoutMedicine"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_50dp"
                                 android:layout_height="wrap_content"
-                                android:drawableLeft="@drawable/ic_round_notes_24"
-                                android:text="@={viewModel.clinicInformation.lateMotives}"
-                                android:inputType="textMultiLine" />
+                                android:layout_marginEnd="@dimen/dimen_m3dp"
+                                android:text="@={viewModel.daysWithoutMedicine}"
+                                android:maxLength="3"
+                                android:textColor="@color/black"
+                                android:inputType="number"/>
                         </LinearLayout>
+
+
+
+                        <TextView
+                            style="@style/input_labels"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@string/motives"
+                            android:layout_marginEnd="@dimen/dimen_50dp"
+                            android:padding="@dimen/dimen_10dp"/>
+
+                        <EditText
+                            android:id="@+id/editTextMotives"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_round_notes_24"
+                            android:text="@={viewModel.clinicInformation.lateMotives}"
+                            android:layout_marginEnd="@dimen/dimen_50dp"
+                            android:padding="@dimen/dimen_10dp"
+                            android:inputType="textMultiLine" />
                     </LinearLayout>
+
+                </LinearLayout>
+
 
                     <LinearLayout
                         android:id="@+id/adversity_reaction"
@@ -503,55 +885,152 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/linear_monitoring_adversity"
+                        android:id="@+id/adverse_reaction_question"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@drawable/shape_normal_grey"
+                        android:orientation="horizontal"
                         android:padding="@dimen/dimen_4dp">
-                        <CheckBox android:id="@+id/checkAdversityReaction"
+                        <RelativeLayout
+                            android:id="@+id/realtive_adverse"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:checked="@={viewModel.clinicInformation.adverseReactionOfMedicine}"
-                            android:text="@string/patient_has_adverse_reaction" />
+                            android:layout_height="wrap_content">
 
+                            <TextView
+                                android:id="@+id/txtAdverseReaction"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:text="@string/tb_adverse_reaction_questions" />
+                            <TextView
+                                android:id="@+id/adverseReactionYes"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/adverseReactionNo"
+                                android:textSize="14sp"
+                                android:text="Sim" />
 
+                            <TextView
+                                android:id="@+id/adverseReactionNo"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:gravity="right"
+                                android:textSize="14sp"
+                                android:text="Nao" />
 
+                        </RelativeLayout>
+                    </LinearLayout>
                         <LinearLayout
-                            android:id="@+id/adversity_reactions2"
+                            android:id="@+id/linear_monitoring_adversity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:background="@drawable/shape_normal_grey"
-                            android:padding="@dimen/dimen_25dp">
-
-
-                            <TextView
-                                style="@style/input_labels"
+                            android:padding="@dimen/dimen_4dp">
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:text="@string/describe_reaction"
-                                android:padding="@dimen/dimen_10dp"/>
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_4dp">
 
-                            <EditText
-                                android:id="@+id/editTextAdverseReaction"
-                                android:layout_width="fill_parent"
+                                <TextView
+                                    android:id="@+id/adversityReactionQuestion"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/patient_has_adverse_reaction"
+                                    android:textColor="@color/black"
+                                    android:textColorHighlight="@color/black" />
+
+                                <RadioGroup
+                                    android:id="@+id/adversityReactionAnswers"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0"
+                                    android:orientation="horizontal">
+
+                                    <RadioButton
+                                        android:id="@+id/adversityReactionYes"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+
+                                    <RadioButton
+                                        android:id="@+id/adversityReactionNo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+                                </RadioGroup>
+                            </LinearLayout>
+
+
+
+                            <LinearLayout
+                                android:id="@+id/adversity_reactions2"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@={viewModel.clinicInformation.adverseReaction}"
-                                android:drawableLeft="@drawable/ic_round_notes_24"
-                                android:inputType="textMultiLine" />
+                                android:orientation="vertical"
+                                android:background="@drawable/shape_normal_grey"
+                                android:padding="@dimen/dimen_25dp">
+
+
+                                <TextView
+                                    style="@style/input_labels"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/black"
+                                    android:text="@string/describe_reaction"
+                                    android:padding="@dimen/dimen_10dp"/>
+
+                                <EditText
+                                    android:id="@+id/editTextAdverseReaction"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@={viewModel.clinicInformation.adverseReaction}"
+                                    android:drawableLeft="@drawable/ic_round_notes_24"
+                                    android:inputType="textMultiLine" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_4dp">
+
+                                <TextView
+                                    android:id="@+id/patientReferedByRam"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/patient_refered_evaluation_us_on_ram"
+                                    android:textColor="@color/black"
+                                    android:textColorHighlight="@color/black" />
+
+                                <RadioGroup
+                                    android:id="@+id/patientReferedAnswers"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0"
+                                    android:orientation="horizontal">
+
+                                    <RadioButton
+                                        android:id="@+id/patientReferedYes"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+
+                                    <RadioButton
+                                        android:id="@+id/patientReferedNo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+                                </RadioGroup>
+                            </LinearLayout>
                         </LinearLayout>
-
-                        <CheckBox android:id="@+id/checkboxPatientReferedByRam"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:checked="@={viewModel.clinicInformation.referedToUsRAM}"
-                            android:text="@string/patient_refered_evaluation_us_on_ram" />
-                    </LinearLayout>
-
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -568,8 +1047,6 @@
                             android:background="@drawable/button_shape"
                             android:onClick="@{() -> viewModel.save1()}"
                             android:layout_gravity="right"/>
-
-
                     </RelativeLayout>
                 </LinearLayout>
             </ScrollView>
