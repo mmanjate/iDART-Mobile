@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.view.dispense;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -309,6 +310,13 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             }
         });
 
+        if(getRelatedViewModel().getDispense().getPrescription().getTimeLeftInMonths()==0){
+            activityCreateDispenseBinding.prescriptionLabel.setTextColor(Color.RED);
+            activityCreateDispenseBinding.prescriptionLabelTimeLeft.setTextColor(Color.RED);
+        }
+
+     //   activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getSupply())));
+
         if (getApplicationStep().isApplicationStepDisplay()) {
             disableAllSpinners();
         }
@@ -393,7 +401,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
     private void loadSelectedDispenseToForm() {
 
-        activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getSupply())));
+     //   activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getSupply())));
 
         if (getRelatedViewModel().getDispense() != null) {
 
@@ -452,6 +460,17 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             valorSimplesArrayAdapter = new ArrayAdapter<SimpleValue>(getApplicationContext(), android.R.layout.simple_spinner_item, durations);
             valorSimplesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             activityCreateDispenseBinding.spnDuration.setAdapter(valorSimplesArrayAdapter);
+
+
+            for (SimpleValue s: durations) {
+             if( s.equals(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getPrescription().getSupply()))) {
+                 activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(s));
+                 break;
+             }
+            }
+
+
+
 
         } catch (SQLException e) {
             Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.error_loading_form_data) + e.getMessage());
