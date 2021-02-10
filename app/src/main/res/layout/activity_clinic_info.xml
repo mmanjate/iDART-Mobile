@@ -117,7 +117,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
                         android:padding="@dimen/dimen_4dp">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -174,7 +173,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:drawableLeft="@drawable/ic_baseline_double_arrow_24"
-                                android:text="@={viewModel.clinicInformation.imc}"
+                                android:text="@={viewModel.imc}"
+                                android:enabled="false"
+                                android:clickable="false"
                                 android:inputType="number"/>
                         </LinearLayout>
 
@@ -263,7 +264,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="gone"
                         android:padding="@dimen/dimen_4dp">
                         <RelativeLayout
                             android:id="@+id/tb_data"
@@ -337,12 +337,16 @@
                                 android:id="@+id/radioTpiYes1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setTreatmentTPI(true)}"
+                                android:checked="@{viewModel.clinicInformation.treatmentTPI}"
                                 android:layout_weight="1" />
 
                             <RadioButton
                                 android:id="@+id/radioTpiNo1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setTreatmentTPI(false)}"
+                                android:checked="@{viewModel.clinicInformation.treatmentTPI== false ? true :viewModel.clinicInformation.treatmentTPI}"
                                 android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
@@ -373,15 +377,48 @@
                                 android:id="@+id/radioTbYes1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setTreatmentTB(true)}"
+                                android:checked="@{viewModel.clinicInformation.treatmentTB}"
                                 android:layout_weight="1" />
 
                             <RadioButton
                                 android:id="@+id/radioTbNo1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setTreatmentTB(false)}"
+                                android:checked="@{viewModel.clinicInformation.treatmentTB== false ? true :viewModel.clinicInformation.treatmentTB}"
                                 android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
+
+                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_6dp"
+                         android:layout_marginLeft="@dimen/dimen_m3dp">
+
+                         <TextView
+                             android:id="@+id/startTreatmentDate"
+                             android:layout_width="0dp"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="1"
+                             android:text="@string/treatment_start_date"
+                             android:textColor="@color/black"
+                             android:textColorHighlight="@color/black"
+                            />
+                         <EditText
+                             android:id="@+id/editStartTreatmentDate"
+                             android:layout_width="0dp"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="1"
+                             android:drawableLeft="@drawable/ic_calendar"
+                             android:paddingStart="@dimen/dimen_4dp"
+                             android:paddingLeft="@dimen/dimen_4dp"
+                             android:paddingRight="@dimen/dimen_4dp"
+                             android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.treatmentStartDate)}" />
+                     </LinearLayout>
+
 
 
                     <LinearLayout
@@ -425,12 +462,16 @@
                                     android:id="@+id/radioCoughYes"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setCough(true)}"
+                                    android:checked="@{viewModel.clinicInformation.isCough}"
                                  />
 
                                 <RadioButton
                                     android:id="@+id/radioCoughNo"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setCough(false)}"
+                                    android:checked="@{viewModel.clinicInformation.isCough== false ? true :viewModel.clinicInformation.isCough}"
                                      />
                             </RadioGroup>
                         </LinearLayout>
@@ -460,12 +501,16 @@
                                     android:id="@+id/radioFeverYes"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setFever(true)}"
+                                    android:checked="@{viewModel.clinicInformation.isFever}"
                                     />
 
                                 <RadioButton
                                     android:id="@+id/radioFeverNo"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setFever(false)}"
+                                    android:checked="@{viewModel.clinicInformation.isFever== false ? true :viewModel.clinicInformation.isFever}"
                                     />
                             </RadioGroup>
                         </LinearLayout>
@@ -496,12 +541,17 @@
                                     android:id="@+id/radioWeightYes"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setLostWeight(true)}"
+                                    android:checked="@{viewModel.clinicInformation.isLostWeight}"
+
                                     />
 
                                 <RadioButton
                                     android:id="@+id/radioWeightNo"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setLostWeight(false)}"
+                                    android:checked="@{viewModel.clinicInformation.isLostWeight== false ? true :viewModel.clinicInformation.isLostWeight}"
                                     />
                             </RadioGroup>
                         </LinearLayout>
@@ -532,15 +582,59 @@
                                 android:id="@+id/radioSweatingYes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setSweating(true)}"
+                                android:checked="@{viewModel.clinicInformation.isSweating}"
                                 />
 
                             <RadioButton
                                 android:id="@+id/radioSweatingNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setSweating(false)}"
+                                android:checked="@{viewModel.clinicInformation.isSweating== false ? true :viewModel.clinicInformation.isSweating}"
                                 />
                         </RadioGroup>
                     </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:id="@+id/fatigueQuestion"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/has_fatigue_or_tiredness_last_two_weeks"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/fatigueAnswers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioFatigueYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setHasFatigueOrTirednesLastTwoWeeks(true)}"
+                                    android:checked="@{viewModel.clinicInformation.hasFatigueOrTirednesLastTwoWeeks}" />
+
+                                <RadioButton
+                                    android:id="@+id/radioFatigueNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setHasFatigueOrTirednesLastTwoWeeks(false)}"
+                                    android:checked="@{viewModel.clinicInformation.hasFatigueOrTirednesLastTwoWeeks== false ? true :viewModel.clinicInformation.hasFatigueOrTirednesLastTwoWeeks}"
+                                    />
+                            </RadioGroup>
+                        </LinearLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -568,12 +662,16 @@
                                     android:id="@+id/radioParentYes"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setHasParentTBTreatment(true)}"
+                                    android:checked="@{viewModel.clinicInformation.isHasParentTBTreatment}"
                                     />
 
                                 <RadioButton
                                     android:id="@+id/radioParentNo"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setHasParentTBTreatment(false)}"
+                                    android:checked="@{viewModel.clinicInformation.isHasParentTBTreatment== false ? true :viewModel.clinicInformation.isHasParentTBTreatment}"
                                     />
                             </RadioGroup>
                         </LinearLayout>
@@ -605,17 +703,184 @@
                                 android:id="@+id/radioTbReferedYes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setReferedToUsTB(true)}"
+                                android:checked="@{viewModel.clinicInformation.isReferedToUsTB}"
                                 android:layout_weight="1" />
 
                             <RadioButton
                                 android:id="@+id/radioTbReferedNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                android:layout_weight="1"
+                                android:onClick="@{()->viewModel.clinicInformation.setReferedToUsTB(false)}"
+                                android:checked="@{viewModel.clinicInformation.isReferedToUsTB== false ? true :viewModel.clinicInformation.isReferedToUsTB}"
+                                />
                         </RadioGroup>
                     </LinearLayout>
                 </LinearLayout>
 
+
+                    <LinearLayout
+                        android:id="@+id/pregnancy_screening"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="@string/tb_pregnancy_screening"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_pregnancy_screening_details1"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/pregnancy_screening_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+                        <RelativeLayout
+                            android:id="@+id/tb_data_pregnancy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txtPregnancyScreening"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:text="@string/tb_pregnancy_screening" />
+                            <TextView
+                                android:id="@+id/PregnancyYes"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/PregnancyNo"
+                                android:textSize="14sp"
+                                android:text="@string/yes" />
+
+                            <TextView
+                                android:id="@+id/PregnancyNo"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:gravity="right"
+                                android:textSize="14sp"
+                                android:text="@string/no" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                    android:id="@+id/pregnancy_screening_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:orientation="vertical"
+                    android:background="@drawable/shape_normal_grey"
+                    android:padding="@dimen/dimen_4dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/pregnancyQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/patient_is_pregnant"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/pregnancyAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioPregnancyYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setPregnant(true)}"
+                                android:checked="@{viewModel.clinicInformation.isPregnant}"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioPregnancyNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setPregnant(false)}"
+                                android:checked="@{viewModel.clinicInformation.isPregnant== false ? true :viewModel.clinicInformation.isPregnant}"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/menstruationQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/patient_menstruated_last_two_months"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/menstruationAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioMenstruationYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setHasHadMenstruationLastTwoMonths(true)}"
+                                android:checked="@{viewModel.clinicInformation.hasHadMenstruationLastTwoMonths}"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioMenstruationNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setPregnant(false)}"
+                                android:checked="@{viewModel.clinicInformation.hasHadMenstruationLastTwoMonths== false ? true :viewModel.clinicInformation.hasHadMenstruationLastTwoMonths}"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/monitoring_reinforcement_adesao_details"
@@ -673,7 +938,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_toLeftOf="@+id/MonitoringNo"
                                 android:textSize="14sp"
-                                android:text="Sim" />
+                                android:text="@string/yes"/>
 
                             <TextView
                                 android:id="@+id/MonitoringNo"
@@ -683,7 +948,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:gravity="right"
                                 android:textSize="14sp"
-                                android:text="Nao" />
+                                android:text="@string/no"/>
 
                         </RelativeLayout>
                     </LinearLayout>
@@ -724,12 +989,16 @@
                                 android:id="@+id/radioPatientCameYes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setHasPatientCameCorrectDate(true)}"
+                                android:checked="@{viewModel.clinicInformation.hasPatientCameCorrectDate}"
                                 android:layout_weight="1" />
 
                             <RadioButton
                                 android:id="@+id/radioPatientCameNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setHasPatientCameCorrectDate(false)}"
+                                android:checked="@{viewModel.clinicInformation.hasPatientCameCorrectDate== false ? true :viewModel.clinicInformation.hasPatientCameCorrectDate}"
                                 android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
@@ -784,12 +1053,16 @@
                                 android:id="@+id/patientHoursWrongYes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setPatientForgotMedicine(true)}"
+                                android:checked="@{viewModel.clinicInformation.patientForgotMedicine}"
                                 android:layout_weight="1" />
 
                             <RadioButton
                                 android:id="@+id/patientHoursWrongNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setPatientForgotMedicine(false)}"
+                                android:checked="@{viewModel.clinicInformation.patientForgotMedicine== false ? true :viewModel.clinicInformation.patientForgotMedicine}"
                                 android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
@@ -910,7 +1183,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_toLeftOf="@+id/adverseReactionNo"
                                 android:textSize="14sp"
-                                android:text="Sim" />
+                                android:text="@string/yes" />
 
                             <TextView
                                 android:id="@+id/adverseReactionNo"
@@ -920,7 +1193,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:gravity="right"
                                 android:textSize="14sp"
-                                android:text="Nao" />
+                                android:text="@string/no" />
 
                         </RelativeLayout>
                     </LinearLayout>
@@ -957,12 +1230,16 @@
                                         android:id="@+id/adversityReactionYes"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:onClick="@{()->viewModel.clinicInformation.setAdverseReactionOfMedicine(true)}"
+                                        android:checked="@{viewModel.clinicInformation.adverseReactionOfMedicine}"
                                         android:layout_weight="1" />
 
                                     <RadioButton
                                         android:id="@+id/adversityReactionNo"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:onClick="@{()->viewModel.clinicInformation.setAdverseReactionOfMedicine(false)}"
+                                        android:checked="@{viewModel.clinicInformation.adverseReactionOfMedicine== false ? true :viewModel.clinicInformation.adverseReactionOfMedicine}"
                                         android:layout_weight="1" />
                                 </RadioGroup>
                             </LinearLayout>
@@ -1021,12 +1298,16 @@
                                         android:id="@+id/patientReferedYes"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:onClick="@{()->viewModel.clinicInformation.setReferedToUsRAM(true)}"
+                                        android:checked="@{viewModel.clinicInformation.referedToUsRAM}"
                                         android:layout_weight="1" />
 
                                     <RadioButton
                                         android:id="@+id/patientReferedNo"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:onClick="@{()->viewModel.clinicInformation.setReferedToUsRAM(false)}"
+                                        android:checked="@{viewModel.clinicInformation.referedToUsRAM== false ? true :viewModel.clinicInformation.referedToUsRAM}"
                                         android:layout_weight="1" />
                                 </RadioGroup>
                             </LinearLayout>

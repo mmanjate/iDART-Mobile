@@ -64,6 +64,14 @@ public class SyncClinicInformation {
     private char syncstatus;
     private String uuid;
 
+    private Date starttreatmentdate;
+
+    private boolean hasfatigueortiredneslasttwoweeks;
+
+    private boolean ispregnant;
+
+    private boolean hashadmenstruationlasttwomonths;
+
 
     public int getId() {
         return id;
@@ -271,5 +279,37 @@ public class SyncClinicInformation {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public Date getStarttreatmentdate() {
+        return starttreatmentdate;
+    }
+
+    public void setStarttreatmentdate(Date starttreatmentdate) {
+        this.starttreatmentdate = starttreatmentdate;
+    }
+
+    public boolean isHasfatigueortiredneslasttwoweeks() {
+        return hasfatigueortiredneslasttwoweeks;
+    }
+
+    public void setHasfatigueortiredneslasttwoweeks(boolean hasfatigueortiredneslasttwoweeks) {
+        this.hasfatigueortiredneslasttwoweeks = hasfatigueortiredneslasttwoweeks;
+    }
+
+    public boolean isIspregnant() {
+        return ispregnant;
+    }
+
+    public void setIspregnant(boolean ispregnant) {
+        this.ispregnant = ispregnant;
+    }
+
+    public boolean isHashadmenstruationlasttwomonths() {
+        return hashadmenstruationlasttwomonths;
+    }
+
+    public void setHashadmenstruationlasttwomonths(boolean hashadmenstruationlasttwomonths) {
+        this.hashadmenstruationlasttwomonths = hashadmenstruationlasttwomonths;
     }
 }

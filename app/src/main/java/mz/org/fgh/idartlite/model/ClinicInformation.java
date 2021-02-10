@@ -45,6 +45,10 @@ public class ClinicInformation extends BaseModel {
     public static final String COLUMN_IS_REFERED_TO_US_RAM = "is_refered_to_us_ram";
     public static final String COLUMN_SYNC_STATUS = "sync_status";
     public static final String COLUMN_UUID = "uuid";
+    public static final String COLUMN_IS_PREGNANT = "is_pregnant";
+    public static final String COLUMN_HAS_HAD_MENSTRUATION_LAST_TWO_MONTHS = "has_had_menstruation_last_two_months";
+    public static final String COLUMN_HAS_FATIGUE_OR_TIREDNESS_LAST_TWO_WEEKS = "has_fatigue_or_tiredness_last_two_weeks";
+    public static final String COLUMN_START_TREATMENT_DATE = "start_treatment_date";
 
 
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
@@ -125,6 +129,18 @@ public class ClinicInformation extends BaseModel {
     @DatabaseField(columnName = COLUMN_UUID)
     private String uuid;
 
+
+    @DatabaseField(columnName = COLUMN_HAS_FATIGUE_OR_TIREDNESS_LAST_TWO_WEEKS)
+    private boolean hasFatigueOrTirednesLastTwoWeeks;
+
+    @DatabaseField(columnName = COLUMN_IS_PREGNANT)
+    private boolean isPregnant;
+
+    @DatabaseField(columnName = COLUMN_HAS_HAD_MENSTRUATION_LAST_TWO_MONTHS)
+    private boolean hasHadMenstruationLastTwoMonths;
+
+    @DatabaseField(columnName = COLUMN_START_TREATMENT_DATE)
+    private Date startTreatmentDate;
 
 
     public int getId() {
@@ -336,6 +352,38 @@ public class ClinicInformation extends BaseModel {
         this.uuid = uuid;
     }
 
+    public boolean isHasFatigueOrTirednesLastTwoWeeks() {
+        return hasFatigueOrTirednesLastTwoWeeks;
+    }
+
+    public void setHasFatigueOrTirednesLastTwoWeeks(boolean hasFatigueOrTirednesLastTwoWeeks) {
+        this.hasFatigueOrTirednesLastTwoWeeks = hasFatigueOrTirednesLastTwoWeeks;
+    }
+
+    public boolean isPregnant() {
+        return isPregnant;
+    }
+
+    public void setPregnant(boolean pregnant) {
+        isPregnant = pregnant;
+    }
+
+    public boolean isHasHadMenstruationLastTwoMonths() {
+        return hasHadMenstruationLastTwoMonths;
+    }
+
+    public void setHasHadMenstruationLastTwoMonths(boolean hasHadMenstruationLastTwoMonths) {
+        this.hasHadMenstruationLastTwoMonths = hasHadMenstruationLastTwoMonths;
+    }
+
+    public Date getStartTreatmentDate() {
+        return startTreatmentDate;
+    }
+
+    public void setStartTreatmentDate(Date startTreatmentDate) {
+        this.startTreatmentDate = startTreatmentDate;
+    }
+
     public String getStringRegisterDate(){
         return DateUtilities.parseDateToDDMMYYYYString(this.registerDate);
     }
@@ -343,12 +391,24 @@ public class ClinicInformation extends BaseModel {
 
     public String validateClinicInfoData(Context context){
         if(registerDate==null){
-            return context.getString(R.string.episode_date_required);
+            return context.getString(R.string.register_date_required);
         }
         if(DateUtilities.dateDiff(registerDate, Calendar.getInstance().getTime(), DateUtilities.DAY_FORMAT) >=0){
             return context.getString(R.string.visit_date_cannot_be_future);
         }
 
+        if(isTreatmentTB && startTreatmentDate== null)
+        {
+            return context.getString(R.string.treatment_start_date_required);
+        }
+
+        if(!hasPatientCameCorrectDate && lateDays==0) {
+            return context.getString(R.string.late_days_cannot_be_zero);
+        }
+
+        if(isAdverseReactionOfMedicine() && adverseReaction == null){
+            return context.getString(R.string.adverse_reaction_cannot_be_empty);
+        }
         return "";
     }
 
@@ -360,13 +420,15 @@ public class ClinicInformation extends BaseModel {
                 this.isLostWeight ||
                 this.isSweating ||
                 this.hasParentTBTreatment ||
-                this.isReferedToUsTB);
+                this.isReferedToUsTB ||
+                this.hasFatigueOrTirednesLastTwoWeeks);
     }
 
     public boolean getCheckMonitoring(){
         return (this.hasPatientCameCorrectDate ||
                 this.patientForgotMedicine ||
-                 lateMotives!=null);
+                 lateMotives!=null ||
+                  lateDays !=0 );
     }
 
     public boolean getCheckAdversity(){
@@ -381,6 +443,21 @@ public class ClinicInformation extends BaseModel {
                 this.imc!=null ||
                 this.systole!=0 ||
                 this.distort!=0);
+    }
+
+    public boolean getCheckForTbSyntoms(){
+        return (this.isFever ||
+                this.isCough ||
+                this.isLostWeight ||
+                this.isSweating ||
+                this.hasParentTBTreatment ||
+                this.isReferedToUsTB ||
+                this.hasFatigueOrTirednesLastTwoWeeks);
+    }
+
+    public boolean getCheckPregnancy(){
+        return (this.isPregnant ||
+                this.hasHadMenstruationLastTwoMonths);
     }
 
     @Override
