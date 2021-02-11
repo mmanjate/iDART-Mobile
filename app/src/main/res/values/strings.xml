@@ -318,23 +318,23 @@
     <string name="prescription_date_report">Data da Prescrição</string>
 
 
-    <string name="clinic_info">Informacao Clinica</string>
+    <string name="clinic_info">Vitais</string>
 
     <string name="register_date">Data Registro:</string>
     <string name="vital_signs">Sinais Vitais</string>
     <string name="adherence_monitoring_and_screening">Monitoria e Rastreio de Adesao</string>
     <string name="adverse_reactions">Reacções Adversas</string>
 
-    <string name="weight">Peso</string>
+    <string name="weight">Peso (Kg) </string>
     <string name="height">Altura</string>
     <string name="imc">IMC</string>
-    <string name="systole">Sistole</string>
-    <string name="distole">Distole</string>
+    <string name="systole">Sistole (mmHg)</string>
+    <string name="distole">Distole (mmHg) </string>
 
 
     <string name="tb_screening_questions">Perguntas de Rastreio de Tuberculose</string>
 
-    <string name="profilatic_treatment_tpi">Está Actualmente em tratamento Profilático com Isoniazida(TPI)?</string>
+     <string name="profilatic_treatment_tpi">Está Actualmente em tratamento Profilático com Isoniazida(TPI)?</string>
     <string name="treatment_tb">Está em tratamento de tuberculose(TB)?</string>
 
     <string name="signs_syntoms_tb">Sinais e sintomas sugestivos a TB</string>
@@ -363,6 +363,7 @@
 
     <string name="patient_refered_evaluation_us_on_ram">Paciente referido pelas reacções adversas para mais avaliação na US ?</string>
 
+    <string name="tb_adverse_reaction_questions">Perguntas de Rastreio de Tuberculose Reacções Adversas aos Medicamentos (RAM) </string>
 
     <string name="tb_screening">Rastreio de Tuberculose</string>
 
@@ -374,6 +375,17 @@
     <string name="save_error_msg_clinic_information">\"Ocorreu um erro ao gravar o Informação Clinica. \"</string>
     <string name="user_is_mandatory">O campo Utilizador deve ser preenchido.</string>
     <string name="pass_is_mandatory">O campo Senha deve ser preenchido.</string>
+
+    <string name="tb_pregnancy_screening">Rastreio de Gravidez</string>
+
+    <string name="patient_is_pregnant">Está gravida ?</string>
+    <string name="patient_menstruated_last_two_months">Não teve menstruação nos ultimos meses?</string>
+
+
+    <string name="has_fatigue_or_tiredness_last_two_weeks">Teve cansaço ou fadiga nas ultimas duas semanas?</string>
+
+    <string name="treatment_start_date">Data de Início de Tratamento</string>
+
     <string name="title_activity_i_dart_home">iDartHomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -388,4 +400,25 @@
     <string name="generic_error_msg">Ocorreu um erro ao tentar realizar a operação desejada.</string>
     <string name="geral">Geral</string>
     <string name="parcial">Parcial</string>
+
+    <string name="information_tb_message">Este paciente pode ter tuberculose. Por favor, referir o paciente de volta à Unidade Sanitaria para mais avaliações.</string>
+
+    <string name="info_tb_stop_message"> Parar com o rastreio de TB. Por favor, referir o paciente de volta a Unidade Sanitaria </string>
+
+    <string name="info_refer_to_us_message"> Por favor, referir o paciente de volta à Unidade Sanitaria para mais avaliações. </string>
+
+    <string name="info_monitoring_message"> Forneça aconselhamento de adesão sobre a importância de manter as datas </string>
+
+    <string name="info_ram_message"> Se o paciente tiver uma reacção adversa, Preenche a Ficha (amarela) de Notificação de Reações Adversas aos Medicamentos e Vacinas e envie-o para a Repartição Provincial de Farmácia).
+Se a reacção adversa for grave, referir o paciente para a US. </string>
+
+
+    <string name="register_date_required">A data do Registro é um dado obrigatório.</string>
+
+    <string name="treatment_start_date_required">A Data de Início do Tratamento é um dado obrigatório dado que respondeu afirmativamente a Esta em tratamento de tuberculose (TB).</string>
+
+    <string name="late_days_cannot_be_zero">Uma vez que o paciente não veio na data marcada, o numero de dias de atraso não pode ser zero.</string>
+
+    <string name="adverse_reaction_cannot_be_empty">Uma vez que o paciente teve reacção adversa deve descreve la</string>
+
 </resources>

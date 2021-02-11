@@ -89,6 +89,17 @@ public class ClinicInfoVM extends BaseViewModel {
     }
 
 
+    public void setTreatmentStartDate(Date date) {
+        this.clinicInformation.setStartTreatmentDate(date);
+        notifyPropertyChanged(BR.treatmentStartDate);
+    }
+
+    @Bindable
+    public Date getTreatmentStartDate() {
+        return this.clinicInformation.getStartTreatmentDate();
+
+    }
+
 
 
     public void createClinicInfo(ClinicInformation clinicInformation) throws SQLException {
@@ -124,6 +135,14 @@ public class ClinicInfoVM extends BaseViewModel {
 
     public void save1() {
 
+        String messageToShow= "";;
+
+      if(getRelatedActivity().getAnswerChecked().length()!=0){
+          Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getAnswerChecked()).show();
+          return;
+      }
+
+
         String validationErros = clinicInformation.validateClinicInfoData(getRelatedActivity());
         if (validationErros.isEmpty()) {
 
@@ -139,7 +158,43 @@ public class ClinicInfoVM extends BaseViewModel {
                     clinicInfoService.updateClinicInfo(clinicInformation);
                 }
 
-                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.clinic_information_saved_sucessfuly), getRelatedActivity()).show();
+                if(clinicInformation.isTreatmentTB()){
+                    //Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.info_tb_stop_message),getRelatedActivity().getString(R.string.yes),null, getRelatedActivity()).show();
+                   // return;
+
+                    messageToShow = Utilities.concatStrings(messageToShow, getRelatedActivity().getString(R.string.info_tb_stop_message)  , "\n\n");
+                }
+                if(clinicInformation.getCheckForTbSyntoms()){
+                    //Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.information_tb_message), getRelatedActivity()).show();
+                    //return;
+
+                    messageToShow = Utilities.concatStrings(messageToShow, getRelatedActivity().getString(R.string.information_tb_message)  , "\n\n");
+                }
+
+
+                if(clinicInformation.getCheckPregnancy()){
+                  //  Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.info_refer_to_us_message), getRelatedActivity()).show();
+                   // return;
+                    messageToShow = Utilities.concatStrings(messageToShow, getRelatedActivity().getString(R.string.info_refer_to_us_message)  , "\n\n");
+                }
+
+                if(clinicInformation.getLateDays()>7){
+                //    Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.info_monitoring_message), getRelatedActivity()).show();
+                //    return;
+                    messageToShow = Utilities.concatStrings(messageToShow, getRelatedActivity().getString(R.string.info_monitoring_message)+"  e / ou "  , "\n\n");
+
+                    messageToShow = Utilities.concatStrings(messageToShow, getRelatedActivity().getString(R.string.info_refer_to_us_message)  , "\n\n");
+                }
+
+                if(clinicInformation.isAdverseReactionOfMedicine()){
+                //    Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.info_ram_message), getRelatedActivity()).show();
+                //    return;
+
+                    messageToShow = Utilities.concatStrings(messageToShow, getRelatedActivity().getString(R.string.info_ram_message)  , "\n\n");
+                }
+
+                messageToShow = Utilities.concatStrings(messageToShow, getRelatedActivity().getString(R.string.clinic_information_saved_sucessfuly)  , "\n\n");
+                Utilities.displayAlertDialog(getRelatedActivity(),messageToShow, getRelatedActivity()).show();
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -182,27 +237,76 @@ public class ClinicInfoVM extends BaseViewModel {
 
     @Bindable
     public String getWeight() {
-        return String.valueOf(clinicInformation.getWeight());
+        if (getClinicInformation().getWeight() == 0) return "";
+
+        return Utilities.parseDoubleToString(getClinicInformation().getWeight());
     }
 
     public void setWeight(String weight) {
-            this.clinicInformation.setWeight(Double.parseDouble(weight));
+        this.clinicInformation.setWeight(Utilities.stringHasValue(weight) ? Double.parseDouble(weight) : 0);
         notifyPropertyChanged(BR.weight);
+
     }
 
     @Bindable
     public String getHeight() {
-        return String.valueOf(clinicInformation.getHeight());
+        if (getClinicInformation().getHeight() == 0) return "";
+
+        return Utilities.parseDoubleToString(getClinicInformation().getHeight());
     }
 
     public void setHeight(String height) {
-        this.clinicInformation.setHeight(Double.parseDouble(height));
+        this.clinicInformation.setHeight(Utilities.stringHasValue(height) ? Double.parseDouble(height) : 0);
         notifyPropertyChanged(BR.height);
     }
 
+
     @Bindable
-    public String getImc() {
-        return clinicInformation.getImc();
+    public String getSystole() {
+        if (getClinicInformation().getSystole() == 0) return "";
+
+        return Utilities.parseIntToString(getClinicInformation().getSystole());
+    }
+
+    public void setSystole(String systole) {
+        this.clinicInformation.setSystole(Utilities.stringHasValue(systole) ? Integer.parseInt(systole) : 0);
+        notifyPropertyChanged(BR.systole);
+    }
+
+    @Bindable
+    public String getDistole() {
+        if (getClinicInformation().getDistort() == 0) return "";
+
+        return Utilities.parseIntToString(getClinicInformation().getDistort());
+    }
+
+    public void setDistole(String distort) {
+        this.clinicInformation.setDistort(Utilities.stringHasValue(distort) ? Integer.parseInt(distort) : 0);
+        notifyPropertyChanged(BR.distole);
+    }
+
+    @Bindable
+    public String getLateDays() {
+        if (getClinicInformation().getLateDays() == 0) return "";
+
+        return Utilities.parseIntToString(getClinicInformation().getLateDays());
+    }
+
+    public void setLateDays(String lateDays) {
+        this.clinicInformation.setLateDays(Utilities.stringHasValue(lateDays) ? Integer.parseInt(lateDays) : 0);
+        notifyPropertyChanged(BR.lateDays);
+    }
+
+    @Bindable
+    public String getDaysWithoutMedicine() {
+        if (getClinicInformation().getDaysWithoutMedicine() == 0) return "";
+
+        return Utilities.parseIntToString(getClinicInformation().getDaysWithoutMedicine());
+    }
+
+    public void setDaysWithoutMedicine(String daysWithoutMedicine) {
+        this.clinicInformation.setDaysWithoutMedicine(Utilities.stringHasValue(daysWithoutMedicine) ? Integer.parseInt(daysWithoutMedicine) : 0);
+        notifyPropertyChanged(BR.daysWithoutMedicine);
     }
 
     public void setImc(String imc) {
@@ -211,46 +315,9 @@ public class ClinicInfoVM extends BaseViewModel {
     }
 
     @Bindable
-    public String getSystole() {
-        return String.valueOf(clinicInformation.getSystole());
+    public String getImc() {
+        return this.clinicInformation.getImc();
+
     }
 
-    public void setSystole(String systole) {
-        this.clinicInformation.setSystole(Integer.parseInt(systole));
-        notifyPropertyChanged(BR.systole);
-    }
-
-    @Bindable
-    public String getDistole() {
-        return String.valueOf(clinicInformation.getDistort());
-    }
-
-    public void setDistole(String distort) {
-        this.clinicInformation.setDistort(Integer.parseInt(distort));
-        notifyPropertyChanged(BR.distole);
-    }
-
-    @Bindable
-    public String getLateDays() {
-        return String.valueOf(clinicInformation.getLateDays());
-    }
-
-    public void setLateDays(String lateDays) {
-        if(!lateDays.isEmpty() || lateDays.length()!=0) {
-            this.clinicInformation.setLateDays(Integer.parseInt(lateDays));
-        }
-        notifyPropertyChanged(BR.lateDays);
-    }
-
-    @Bindable
-    public String getDaysWithoutMedicine() {
-        return String.valueOf(clinicInformation.getDaysWithoutMedicine());
-    }
-
-    public void setDaysWithoutMedicine(String daysWithoutMedicine) {
-        if(!daysWithoutMedicine.isEmpty() || daysWithoutMedicine.length()!=0) {
-            this.clinicInformation.setDaysWithoutMedicine(Integer.parseInt(daysWithoutMedicine));
-        }
-        notifyPropertyChanged(BR.daysWithoutMedicine);
-    }
 }

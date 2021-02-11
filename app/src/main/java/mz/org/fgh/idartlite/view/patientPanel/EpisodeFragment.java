@@ -197,6 +197,7 @@ public class EpisodeFragment extends GenericFragment implements IListbleDialogLi
 
         try {
             this.episodeList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
+            this.getSelectedPatient().setEpisodes(episodeList);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -20,7 +20,7 @@ import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.SyncEpisode;
+import mz.org.fgh.idartlite.model.*;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;

@@ -86,7 +86,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="15"
+                android:layout_weight="20"
                 android:paddingLeft="@dimen/dimen_10dp"
                 android:orientation="horizontal">
 
@@ -118,6 +118,12 @@
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"
                         android:text="@string/adverse_reactions" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="@string/tb_pregnancy_screening"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -164,6 +170,16 @@
                         android:enabled="false"
                         android:buttonTint="@color/theme_primary"
                         android:checked="@{clinicInformation.checkAdversity}"
+                        />
+
+                    <CheckBox android:id="@+id/checkPregnancy"
+                        style="@style/patient_activity_lists"
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layoutDirection="rtl"
+                        android:enabled="false"
+                        android:buttonTint="@color/theme_primary"
+                        android:checked="@{clinicInformation.checkPregnancy}"
                         />
 
                 </LinearLayout>

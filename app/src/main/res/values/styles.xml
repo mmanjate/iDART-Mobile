@@ -74,6 +74,12 @@
         <item name="android:textSize">@dimen/dimen_10dp</item>
     </style>
 
+    <style name="StocktabLayoutTextSize">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="input_labels">
         <item name="android:textColor">@color/input_labels</item>
         <item name="android:typeface">sans</item>

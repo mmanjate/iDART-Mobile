@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
+import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
@@ -130,6 +131,93 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
             }
         });
 
+        createClinicInfoBinding.editStartTreatmentDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int mYear, mMonth, mDay;
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(ClinicInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        getRelatedViewModel().setTreatmentStartDate(DateUtilities.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtilities.DATE_FORMAT));
+
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
+        createClinicInfoBinding.editStartTreatmentDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    int mYear, mMonth, mDay;
+
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(ClinicInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                            getRelatedViewModel().setTreatmentStartDate(DateUtilities.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtilities.DATE_FORMAT));
+                        }
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+                }
+            }
+        });
+
+        createClinicInfoBinding.weight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b) {
+
+
+
+                    double weight= Utilities.stringHasValue(createClinicInfoBinding.weight.getText().toString()) ? Double.parseDouble(createClinicInfoBinding.weight.getText().toString()) : 0;
+
+                    double height=getRelatedViewModel().getClinicInformation().getHeight();
+
+                    if(height !=0){
+
+                        double imc= weight/(height*height);
+
+                        getRelatedViewModel().setImc(String.valueOf(imc));
+                    }
+                }
+           }
+        });
+
+        createClinicInfoBinding.height.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b) {
+
+                    double height= Utilities.stringHasValue(createClinicInfoBinding.height.getText().toString()) ? Double.parseDouble(createClinicInfoBinding.height.getText().toString()) : 0;
+
+                    double weight=getRelatedViewModel().getClinicInformation().getWeight();
+
+                    if(weight !=0){
+
+                        double imc= weight/(height*height);
+
+                        getRelatedViewModel().setImc(String.valueOf(imc));
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
@@ -150,23 +238,41 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
         createClinicInfoBinding.imc.setEnabled(false);
         createClinicInfoBinding.distole.setEnabled(false);
         createClinicInfoBinding.systole.setEnabled(false);
-        createClinicInfoBinding.checkbox1.setEnabled(false);
-        createClinicInfoBinding.checkbox2.setEnabled(false);
-        createClinicInfoBinding.checkboxCough.setEnabled(false);
-        createClinicInfoBinding.checkboxFever.setEnabled(false);
-        createClinicInfoBinding.checkboxWeight.setEnabled(false);
-        createClinicInfoBinding.checkboxSweat.setEnabled(false);
-        createClinicInfoBinding.checkboxParent.setEnabled(false);
-        createClinicInfoBinding.checkboxPatientRefered.setEnabled(false);
-        createClinicInfoBinding.checkPatientCame.setEnabled(false);
+        createClinicInfoBinding.radioTpiYes1.setEnabled(false);
+        createClinicInfoBinding.radioTpiNo1.setEnabled(false);
+        createClinicInfoBinding.radioTbYes1.setEnabled(false);
+        createClinicInfoBinding.radioTbNo1.setEnabled(false);
+        createClinicInfoBinding.radioCoughYes.setEnabled(false);
+        createClinicInfoBinding.radioCoughNo.setEnabled(false);
+        createClinicInfoBinding.radioFeverNo.setEnabled(false);
+        createClinicInfoBinding.radioFeverYes.setEnabled(false);
+        createClinicInfoBinding.radioWeightYes.setEnabled(false);
+        createClinicInfoBinding.radioWeightNo.setEnabled(false);
+        createClinicInfoBinding.radioSweatingYes.setEnabled(false);
+        createClinicInfoBinding.radioSweatingNo.setEnabled(false);
+        createClinicInfoBinding.radioParentYes.setEnabled(false);
+        createClinicInfoBinding.radioParentNo.setEnabled(false);
+        createClinicInfoBinding.radioTbReferedYes.setEnabled(false);
+        createClinicInfoBinding.radioTbReferedNo.setEnabled(false);
+        createClinicInfoBinding.radioPregnancyYes.setEnabled(false);
+        createClinicInfoBinding.radioPregnancyNo.setEnabled(false);
+        createClinicInfoBinding.radioMenstruationYes.setEnabled(false);
+        createClinicInfoBinding.radioMenstruationNo.setEnabled(false);
+        createClinicInfoBinding.radioPatientCameYes.setEnabled(false);
+        createClinicInfoBinding.radioPatientCameNo.setEnabled(false);
+        createClinicInfoBinding.radioWeightNo.setEnabled(false);
         createClinicInfoBinding.wrongDateNumber.setEnabled(false);
-        createClinicInfoBinding.checkPatientHoursWrong.setEnabled(false);
+        createClinicInfoBinding.patientHoursWrongYes.setEnabled(false);
+        createClinicInfoBinding.patientHoursWrongNo.setEnabled(false);
         createClinicInfoBinding.daysWithoutMedicine.setEnabled(false);
         createClinicInfoBinding.editTextMotives.setEnabled(false);
-        createClinicInfoBinding.checkAdversityReaction.setEnabled(false);
+        createClinicInfoBinding.adversityReactionYes.setEnabled(false);
+        createClinicInfoBinding.adversityReactionNo.setEnabled(false);
         createClinicInfoBinding.editTextAdverseReaction.setEnabled(false);
-        createClinicInfoBinding.checkboxPatientReferedByRam.setEnabled(false);
+        createClinicInfoBinding.patientReferedYes.setEnabled(false);
+        createClinicInfoBinding.patientReferedNo.setEnabled(false);
         createClinicInfoBinding.saveAndContinue.setVisibility(View.GONE);
+
     }
 
 
@@ -181,26 +287,46 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
                 createClinicInfoBinding.ibtnVitalSigns.animate().setDuration(200).rotation(0);
                 Utilities.expand(createClinicInfoBinding.vitalSignsList);
             }
-        }else if (view.equals(createClinicInfoBinding.tbScreeningDetails)){
+        }
+        else if (view.equals(createClinicInfoBinding.tbScreeningDetails)){
             if (createClinicInfoBinding.tbScreeningList.getVisibility() == View.VISIBLE){
                 switchLayout();
-                createClinicInfoBinding.ibtnTbScreeningDetails.animate().setDuration(200).rotation(180);
+                createClinicInfoBinding.ibtnTbScreeningDetails1.animate().setDuration(200).rotation(180);
                 Utilities.collapse(createClinicInfoBinding.tbScreeningList);
                 createClinicInfoBinding.txtTbScreening.setVisibility(View.GONE);
+                createClinicInfoBinding.tbScreeningQuestion.setVisibility(View.GONE);
             }else {
-                createClinicInfoBinding.ibtnTbScreeningDetails.animate().setDuration(200).rotation(0);
+                createClinicInfoBinding.ibtnTbScreeningDetails1.animate().setDuration(200).rotation(0);
                 Utilities.expand(createClinicInfoBinding.tbScreeningList);
                 createClinicInfoBinding.txtTbScreening.setVisibility(View.VISIBLE);
+                createClinicInfoBinding.tbScreeningQuestion.setVisibility(View.VISIBLE);
                 switchLayout();
             }
-        }else if (view.equals(createClinicInfoBinding.monitoringReinforcementAdesaoDetails)){
-            if (createClinicInfoBinding.monitoringReinforcmentDetailsList.getVisibility() == View.VISIBLE){
+        }
+        else if (view.equals(createClinicInfoBinding.pregnancyScreening)){
+            if (createClinicInfoBinding.pregnancyScreeningList.getVisibility() == View.VISIBLE){
+                switchLayout();
+                createClinicInfoBinding.ibtnPregnancyScreeningDetails1.animate().setDuration(200).rotation(180);
+                Utilities.collapse(createClinicInfoBinding.pregnancyScreeningList);
+                createClinicInfoBinding.pregnancyScreeningQuestion.setVisibility(View.GONE);
+            }else {
+                createClinicInfoBinding.ibtnPregnancyScreeningDetails1.animate().setDuration(200).rotation(0);
+                Utilities.expand(createClinicInfoBinding.pregnancyScreeningList);
+                createClinicInfoBinding.pregnancyScreeningQuestion.setVisibility(View.VISIBLE);
+                switchLayout();
+            }
+        }
+
+        else if (view.equals(createClinicInfoBinding.monitoringReinforcementAdesaoDetails)){
+            if (createClinicInfoBinding.monitoringList.getVisibility() == View.VISIBLE){
                 createClinicInfoBinding.ibtnMonitoringReinforcmentDetails.animate().setDuration(200).rotation(180);
-                Utilities.collapse(createClinicInfoBinding.monitoringReinforcmentDetailsList);
+                Utilities.collapse(createClinicInfoBinding.monitoringList);
+                createClinicInfoBinding.monitoringReinforcmentDetailsList.setVisibility(View.GONE);
                 switchLayout();
             }else {
                 createClinicInfoBinding.ibtnMonitoringReinforcmentDetails.animate().setDuration(200).rotation(0);
-                Utilities.expand(createClinicInfoBinding.monitoringReinforcmentDetailsList);
+                Utilities.expand(createClinicInfoBinding.monitoringList);
+                createClinicInfoBinding.monitoringReinforcmentDetailsList.setVisibility(View.VISIBLE);
                 switchLayout();
             }
         }
@@ -208,10 +334,12 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
             if (createClinicInfoBinding.linearMonitoringAdversity.getVisibility() == View.VISIBLE){
                 createClinicInfoBinding.ibtnAdverstiryReaction.animate().setDuration(200).rotation(180);
                 Utilities.collapse(createClinicInfoBinding.linearMonitoringAdversity);
+                createClinicInfoBinding.adverseReactionQuestion.setVisibility(View.GONE);
                 switchLayout();
             }else {
                 createClinicInfoBinding.ibtnAdverstiryReaction.animate().setDuration(200).rotation(0);
                 Utilities.expand(createClinicInfoBinding.linearMonitoringAdversity);
+                createClinicInfoBinding.adverseReactionQuestion.setVisibility(View.VISIBLE);
                 switchLayout();
             }
         }
@@ -237,6 +365,58 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
     private void switchLayout(){
         getRelatedViewModel().setInitialDataVisible(!getRelatedViewModel().isInitialDataVisible());
         getRelatedViewModel().setAddressDataVisible(!getRelatedViewModel().isAddressDataVisible());
+    }
+
+
+   /* public String getAnswerChecked(){
+
+
+        String error="Por Favor Verifique se Respondeu a todas as Perguntas do Questionario";
+        int emptyRadio=-1;
+
+        if(createClinicInfoBinding.tpiAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.tbAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.coughAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.feverAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.weightAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.sweatingAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.parentAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.tbReferedAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.pregnancyAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.menstruationAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.patientCameAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.patientHoursWrongAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.adversityReactionAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.patientReferedAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+
+        return "";
+
+    }*/
+
+
+    public String getAnswerChecked(){
+
+
+        String error="Por Favor Verifique se Respondeu a todas as Perguntas do Questionario";
+        int emptyRadio=-1;
+
+        if(createClinicInfoBinding.tpiAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.tbAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.coughAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.feverAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.weightAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.sweatingAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.parentAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.tbReferedAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.pregnancyAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.menstruationAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.patientCameAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.patientHoursWrongAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.adversityReactionAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(createClinicInfoBinding.patientReferedAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+
+        return "";
+
     }
 
 
