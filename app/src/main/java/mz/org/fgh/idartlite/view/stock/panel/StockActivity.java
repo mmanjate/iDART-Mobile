@@ -51,9 +51,9 @@ public class StockActivity extends BaseActivity {
 
         adapter = new StockTabAdapter(getSupportFragmentManager());
         adapter.addFragment(new StockEntranceFragment(), getString(R.string.stock_entrance));
-        adapter.addFragment(StockReferenceFragment.newInstance(), "Entrada/Saida por referencia");
-        adapter.addFragment(DestroiedStockListFragment.newInstance(), "Destruir");
-        adapter.addFragment(StockInventoryListingFragment.newInstance(), "Inventario");
+        adapter.addFragment(StockReferenceFragment.newInstance(), "Ajuste Positivo");
+        adapter.addFragment(DestroiedStockListFragment.newInstance(), "Ajuste Negativo");
+        adapter.addFragment(StockInventoryListingFragment.newInstance(), "Inventário");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

@@ -26,14 +26,15 @@
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
-                    app:tabMode="fixed"
-                    app:tabGravity="fill"
-                    android:layout_below="@+id/stock_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/stock_info"
                     app:tabBackground="@color/white"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed"
                     app:tabTextColor="@color/colorPrimary"
-                    />
+                    app:tabUnboundedRipple="false"
+                    app:tabTextAppearance="@style/StocktabLayoutTextSize"/>
 
             </com.google.android.material.appbar.AppBarLayout>
 
