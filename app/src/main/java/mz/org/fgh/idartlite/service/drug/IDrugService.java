@@ -6,6 +6,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 
 
 public interface IDrugService extends IBaseService<Drug> {
@@ -31,4 +32,5 @@ public interface IDrugService extends IBaseService<Drug> {
     List<Drug> getAllDestroyedDrugs() throws SQLException;
 
 
+    List<Drug> getAllOnInventory(Iventory iventory) throws SQLException;
 }

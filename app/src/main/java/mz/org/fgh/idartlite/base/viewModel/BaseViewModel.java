@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
@@ -46,6 +47,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     protected User currentUser;
     protected Clinic currentClinic;
 
+    protected List<Listble> selectedListbles;
+
 
     protected List<AppSettings> systemSettings;
 
@@ -62,6 +65,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         this.relatedRecord = initRecord();
 
         relatedService = initRelatedService();
+
+        selectedListbles = new ArrayList<>();
 
         initFormData();
 
@@ -275,5 +280,17 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public void setSystemSettings(List<AppSettings> systemSettings) {
         this.systemSettings = systemSettings;
+    }
+
+    public List<Listble> getSelectedListbles() {
+        return selectedListbles;
+    }
+
+    public void addSelectedListable(Listble listble){
+        this.selectedListbles.add(listble);
+    }
+
+    public void removeSelectedListable(Listble listble){
+        this.selectedListbles.remove(listble);
     }
 }

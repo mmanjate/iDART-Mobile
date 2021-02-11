@@ -17,7 +17,6 @@ import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.user.IUserService;
 import mz.org.fgh.idartlite.service.user.UserService;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.home.ui.user.AddUserFragment;
 
 public class UserVM extends BaseViewModel {
 
@@ -38,14 +37,8 @@ public class UserVM extends BaseViewModel {
     }
 
     @Override
-    public AddUserFragment getRelatedFragment() {
-        return (AddUserFragment) super.getRelatedFragment();
-    }
-
-    @Override
     public User getRelatedRecord() {
-        //return (User) super.getRelatedRecord();
-        return new User();
+        return (User) super.getRelatedRecord();
     }
 
     @Override
@@ -57,14 +50,28 @@ public class UserVM extends BaseViewModel {
         String errors = getRelatedRecord().isValid(getRelatedFragment().getContext());
 
         if (!Utilities.stringHasValue(errors)) {
-            try {
-                getRelatedRecord().setClinic(getCurrentClinic());
-                getRelatedService().save(getRelatedRecord());
+            if (!getRelatedRecord().getPassword().equals(getUserPassRepeat())){
+                Utilities.displayAlertDialog(getRelatedFragment().getContext(), "As senhas indicadas não conferem, por favor verificar.").show();
+            }else {
+                try {
+                    getRelatedRecord().setClinic(getCurrentClinic());
 
-                Utilities.displayAlertDialog(getRelatedFragment().getContext(), "O seu pedido de acesso foi enviado com sucesso!").show();
-            } catch (SQLException e) {
-                Utilities.displayAlertDialog(getRelatedFragment().getContext(), getRelatedFragment().getContext().getString(R.string.generic_error_msg) + " " + e.getMessage()).show();
-                e.printStackTrace();
+                    if (getRelatedRecord().getId() > 0){
+                        getRelatedRecord().setSyncStatus(BaseModel.SYNC_SATUS_UPDATED);
+                    }else {
+                        getRelatedRecord().setSyncStatus(BaseModel.SYNC_SATUS_READY);
+                    }
+
+                    getRelatedService().save(getRelatedRecord());
+
+                    Utilities.displayAlertDialog(getRelatedFragment().getContext(), "Operação efectuada com sucesso!").show();
+
+                    setSelectedRecord(new User());
+
+                } catch (SQLException e) {
+                    Utilities.displayAlertDialog(getRelatedFragment().getContext(), getRelatedFragment().getContext().getString(R.string.generic_error_msg) + " " + e.getMessage()).show();
+                    e.printStackTrace();
+                }
             }
         }else {
             Utilities.displayAlertDialog(getRelatedFragment().getContext(), errors).show();

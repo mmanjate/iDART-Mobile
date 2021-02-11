@@ -364,4 +364,6 @@
     <string name="user_is_mandatory">O campo Utilizador deve ser preenchido.</string>
     <string name="pass_is_mandatory">O campo Senha deve ser preenchido.</string>
     <string name="generic_error_msg">Ocorreu um erro ao tentar realizar a operação desejada.</string>
+    <string name="geral">Geral</string>
+    <string name="parcial">Parcial</string>
 </resources>

@@ -61,8 +61,14 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
         return ((StockService) ServiceProvider.getInstance(getApplication()).get(StockService.class)).getAll(selectedDrug);
     }
 
+    @Override
     public List<Drug> getAllDrugsWithExistingLote() throws SQLException{
         return ((DrugService) ServiceProvider.getInstance(getApplication()).get(DrugService.class)).getAllWithLote();
+    }
+
+    @Override
+    public List<Drug> getAllDrugsOnInventory(Iventory selectedRecord) throws SQLException{
+        return ((DrugService) ServiceProvider.getInstance(getApplication()).get(DrugService.class)).getAllOnInventory(selectedRecord);
     }
 
     @Override

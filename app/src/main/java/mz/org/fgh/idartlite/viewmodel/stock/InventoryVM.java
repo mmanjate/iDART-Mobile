@@ -37,7 +37,11 @@ public class InventoryVM extends BaseViewModel {
 
     private List<Listble> adjustmentList;
 
+    private List<Listble> drugList;
+
     private int currentSelectedDrugPosition;
+
+    private boolean geral;
 
     public InventoryVM(@NonNull Application application) {
         super(application);
@@ -45,6 +49,17 @@ public class InventoryVM extends BaseViewModel {
 
     @Override
     public void preInit() {
+        try {
+            if (getCurrentStep().isApplicationStepEdit()){
+                this.drugs = getRelatedService().getAllDrugsOnInventory(getRelatedRecord());
+            }else
+                this.drugs = getRelatedService().getAllDrugsWithExistingLote();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         determineSelectedDrug();
     }
 
@@ -59,14 +74,16 @@ public class InventoryVM extends BaseViewModel {
 
             if (getCurrentStep().isApplicationStepDisplay()) {
                 this.adjustmentList = Utilities.parseList(stockAjustments, Listble.class);
-            } else {
+            } else if (getCurrentStep().isApplicationStepEdit()) {
 
-                for (Drug drug : this.drugs) {
-                    for (StockAjustment ajustment : stockAjustments) {
-                        if (ajustment.getStock().getDrug().equals(drug)) {
-                            if (Utilities.listHasElements(drug.getAjustmentInfo())) {
-                                if (!drug.getAjustmentInfo().contains(ajustment)){
-                                    drug.addAjustmentInfo(ajustment);
+                if (Utilities.listHasElements(stockAjustments)) {
+                    for (Drug drug : this.drugs) {
+                        for (StockAjustment ajustment : stockAjustments) {
+                            if (ajustment.getStock().getDrug().equals(drug)) {
+                                if (Utilities.listHasElements(drug.getAjustmentInfo())) {
+                                    if (!drug.getAjustmentInfo().contains(ajustment)) {
+                                        drug.addAjustmentInfo(ajustment);
+                                    }
                                 }
                             }
                         }
@@ -83,6 +100,7 @@ public class InventoryVM extends BaseViewModel {
 
                                     drug.setAjustmentInfo(new ArrayList<>());
                                     drug.getAjustmentInfo().add(initNewStockAjustment(stock));
+                                    getRelatedService().saveAjustment(drug.getAjustmentInfo().get(drug.getAjustmentInfo().size()-1));
                                 }
                             }
                         }
@@ -131,13 +149,7 @@ public class InventoryVM extends BaseViewModel {
 
     @Override
     protected void initFormData() {
-        try {
-            this.drugs = getRelatedService().getAllDrugsWithExistingLote();
 
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -185,10 +197,27 @@ public class InventoryVM extends BaseViewModel {
 
     public void initInventory() {
         try {
-            getCurrentStep().changeToEdit();
+            if (isGeral()) {
+                getCurrentStep().changeToEdit();
 
-            getRelatedService().initInventory(getRelatedRecord());
-            getRelatedActivity().summarizeView(View.VISIBLE);
+                getRelatedService().initInventory(getRelatedRecord());
+
+                getRelatedActivity().summarizeView(View.VISIBLE);
+
+                this.drugs = getRelatedService().getAllDrugsWithExistingLote();
+
+                determineSelectedDrug();
+
+                getRelatedActivity().populateDrugs(this.drugs);
+
+            }else {
+                for (Drug drug : drugs){
+                    drug.setListType(Listble.INVENTORY_SELECTION_LISTING);
+                }
+
+                getRelatedActivity().displaySelectedDrugsForSelection();
+                getCurrentStep().changeToSelect();
+            }
 
             notifyPropertyChanged(BR.currentStep);
             notifyChange();
@@ -208,7 +237,6 @@ public class InventoryVM extends BaseViewModel {
         getRelatedActivity().summarizeView(View.GONE);
         getRelatedActivity().displayResumeStockAjustmentInfo();
 
-        notifyPropertyChanged(BR.currentStep);
         notifyChange();
 
     }
@@ -320,5 +348,62 @@ public class InventoryVM extends BaseViewModel {
         } catch (DocumentException e) {
             e.printStackTrace();
         }
+    }
+
+    @Bindable
+    public boolean isGeral() {
+        return geral;
+    }
+
+    public void setGeral(boolean geral) {
+        this.geral = geral;
+        notifyPropertyChanged(BR.geral);
+    }
+
+    private boolean isGeneralSelected(String iventoryType){
+        return getRelatedActivity().getString(R.string.geral).equalsIgnoreCase(iventoryType);
+    }
+
+    public void onInventoryTypeClick(String iventoryType) {
+        if (isGeneralSelected(iventoryType)){
+            setGeral(true);
+        }else
+            setGeral(false);
+
+        notifyChange();
+    }
+
+    public void continueInventory(){
+        try {
+            getRelatedService().initInventory(getRelatedRecord());
+            //getRelatedActivity().summarizeView(View.VISIBLE);
+
+            if (!isGeral()) {
+                this.drugs.clear();
+
+                for (Listble listble : selectedListbles) {
+                    this.drugs.add((Drug) listble);
+                }
+            }
+            getCurrentStep().changeToEdit();
+
+            determineSelectedDrug();
+
+            notifyChange();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Drug> getSelectedDrugs() {
+        //List<Drug> drugList = null;
+        try {
+            return getRelatedService().getAllDrugsOnInventory(getRelatedRecord());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

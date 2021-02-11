@@ -386,4 +386,6 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="generic_error_msg">Ocorreu um erro ao tentar realizar a operação desejada.</string>
+    <string name="geral">Geral</string>
+    <string name="parcial">Parcial</string>
 </resources>

@@ -16,7 +16,9 @@ import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.RegimenDrug;
 import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.model.StockAjustment;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 
 public class DrugDaoImpl extends GenericDaoImpl<Drug, Integer> implements IDrugDao {
 
@@ -83,6 +85,23 @@ public class DrugDaoImpl extends GenericDaoImpl<Drug, Integer> implements IDrugD
         stockQb.join(destroyedQb);
 
         QueryBuilder<Drug, Integer> drugQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDrugDao().queryBuilder();
+        drugQb.where().exists(stockQb);
+        drugQb.orderBy(Drug.COLUMN_DESCRIPTION, true);
+        return drugQb.query();
+    }
+
+    @Override
+    public List<Drug> getAllOnInventory(Iventory iventory, Application application) throws SQLException {
+
+        QueryBuilder<StockAjustment, Integer> destroyedQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getStockAjustmentDao().queryBuilder();
+        destroyedQb.where().eq(StockAjustment.COLUMN_IVENTORY_ID, iventory.getId());
+
+        QueryBuilder<Stock, Integer> stockQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getStockDao().queryBuilder();
+        stockQb.where().eq(Stock.COLUMN_DRUG, new ColumnArg(Drug.TABLE_NAME, Drug.COLUMN_ID));
+        stockQb.join(destroyedQb);
+
+        QueryBuilder<Drug, Integer> drugQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDrugDao().queryBuilder();
+        drugQb.distinct();
         drugQb.where().exists(stockQb);
         drugQb.orderBy(Drug.COLUMN_DESCRIPTION, true);
         return drugQb.query();

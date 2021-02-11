@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
@@ -62,7 +63,16 @@ public class RestPatientService extends BaseRestService {
         patientService = new PatientService(getApplication(), null);
     }
 
-    public static void restGetAllPatient(RestResponseListener listener) {
+    public static void restGetAllPatient()  {
+        getAllPatient(null);
+    }
+
+    public static void restGetAllPatient(RestResponseListener listener)  {
+        getAllPatient(listener);
+    }
+
+
+    public static void getAllPatient(RestResponseListener listener) {
 
         try {
             clinicService = new ClinicService(getApp(), null);
@@ -72,6 +82,12 @@ public class RestPatientService extends BaseRestService {
             patientService = new PatientService(getApp(), null);
 
             String url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinic.getUuid() + "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
+
+            ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
+
+            serviceWatcher.setServiceAsRunning();
+
+            if (listener != null) listener.registRunningService(serviceWatcher);
 
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
@@ -85,12 +101,15 @@ public class RestPatientService extends BaseRestService {
                             Log.d("Response", String.valueOf(patients.length));
 
                             if (patients.length > 0) {
+                                int counter = 0;
+
                                 for (Object patient : patients) {
                                     Log.i(TAG, "onResponse: " + patient);
                                     try {
                                         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) patient;
                                         if (!patientService.checkPatient(itemresult)) {
                                             patientService.saveOnPatient(itemresult);
+                                            counter++;
                                         } else {
                                             Log.i(TAG, "onResponse: " + patient + " Ja Existe");
                                         }
@@ -100,9 +119,13 @@ public class RestPatientService extends BaseRestService {
                                         continue;
                                     }
                                 }
+                                if (counter > 0) serviceWatcher.setUpdates(counter +" novos Pacientes");
                             } else {
                                 Log.w(TAG, "Response Sem Info." + patients.length);
                             }
+
+                            serviceWatcher.setServiceAsStopped();
+                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
 
                             if (listener != null) {
                                 listener.doOnRestSucessResponse(null);
@@ -112,6 +135,9 @@ public class RestPatientService extends BaseRestService {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            serviceWatcher.setServiceAsStopped();
+                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
+
                             Log.e("Response", generateErrorMsg(error));
                         }
                     });

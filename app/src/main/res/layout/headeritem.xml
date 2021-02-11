@@ -36,6 +36,13 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:visibility="@{listble.iventorySelectionListing ? View.VISIBLE : View.GONE}"
+                    style="@style/listble_header" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.8"
                     android:text="@string/codigo"
                     android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
@@ -53,7 +60,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2.6"
-                    android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing ||  listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing ||  listble.returnDispenseListing|| listble.iventorySelectionListing) ? View.VISIBLE : View.GONE}"
                     style="@style/listble_header"
                     android:text="@string/descricao" />
 

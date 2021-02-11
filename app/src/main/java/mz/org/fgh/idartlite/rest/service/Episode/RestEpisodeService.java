@@ -16,6 +16,7 @@ import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Episode;
@@ -116,8 +117,16 @@ public class RestEpisodeService extends BaseRestService {
 
     }
 
+    public static void restGetAllReadyEpisodes()  {
+        getAllReadyEpisodes(null);
+    }
 
-    public static void restGetAllReadyEpisodes(RestResponseListener listener) {
+    public static void restGetAllReadyEpisodes(RestResponseListener listener)  {
+        getAllReadyEpisodes(listener);
+    }
+
+
+    public static void getAllReadyEpisodes(RestResponseListener listener) {
 
         try {
             clinicService = new ClinicService(getApp(),null);
@@ -125,6 +134,12 @@ public class RestEpisodeService extends BaseRestService {
             Clinic clinic = clinicService.getAllClinics().get(0);
 
             String url = BaseRestService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.R";
+
+            ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
+
+            serviceWatcher.setServiceAsRunning();
+
+            if (listener != null) listener.registRunningService(serviceWatcher);
 
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
@@ -138,12 +153,15 @@ public class RestEpisodeService extends BaseRestService {
                             Log.d("Response", String.valueOf(episodes.length));
 
                             if (episodes.length > 0) {
+                                int counter = 0;
+
                                 for (Object episode : episodes) {
                                     Log.i(TAG, "onResponse: " + episode);
                                     try {
                                         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) episode;
                                         if(!episodeService.checkEpisodeExists(itemresult)){
                                             episodeService.saveOnEpisodeEnding(itemresult);
+                                            counter++;
                                         }else{
                                             restPatchEpisode(itemresult);
                                         }
@@ -153,9 +171,13 @@ public class RestEpisodeService extends BaseRestService {
                                         continue;
                                     }
                                 }
+                                if (counter > 0) serviceWatcher.setUpdates(counter +" novos Episodios");
                             }else {
                                 Log.w(TAG, "Response Sem Info." + episodes.length);
                             }
+
+                            serviceWatcher.setServiceAsStopped();
+                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
 
                             if(listener != null){
                                 listener.doOnRestSucessResponse(null);
@@ -165,6 +187,9 @@ public class RestEpisodeService extends BaseRestService {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            serviceWatcher.setServiceAsStopped();
+                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
+
                             Log.e("Response", generateErrorMsg(error));
                         }
                     });
@@ -219,7 +244,15 @@ public class RestEpisodeService extends BaseRestService {
         });
     }
 
-    public static void restGetAllEpisodes(RestResponseListener listener) {
+    public static void restGetAllEpisodes()  {
+        getAllEpisodes(null);
+    }
+
+    public static void restGetAllEpisodes(RestResponseListener listener)  {
+        getAllEpisodes(listener);
+    }
+
+    public static void getAllEpisodes(RestResponseListener listener) {
 
         try {
             clinicService = new ClinicService(getApp(),null);
@@ -227,6 +260,12 @@ public class RestEpisodeService extends BaseRestService {
             Clinic clinic = clinicService.getAllClinics().get(0);
 
             String url = BaseRestService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid();
+
+            ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
+
+            serviceWatcher.setServiceAsRunning();
+
+            if (listener != null) listener.registRunningService(serviceWatcher);
 
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
@@ -240,12 +279,14 @@ public class RestEpisodeService extends BaseRestService {
                             Log.d("Response", String.valueOf(episodes.length));
 
                             if (episodes.length > 0) {
+                                int counter = 0;
                                 for (Object episode : episodes) {
                                     Log.i(TAG, "onResponse: " + episode);
                                     try {
                                         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) episode;
                                         if(!episodeService.checkEpisodeExists(itemresult)){
                                             episodeService.saveOnEpisodeEnding(itemresult);
+                                            counter++;
                                             Log.w(TAG, "Numero de Episodios Criados" + episodes.length);
                                         }
                                     } catch (Exception e) {
@@ -254,6 +295,7 @@ public class RestEpisodeService extends BaseRestService {
                                         continue;
                                     }
                                 }
+                                if (counter > 0) serviceWatcher.setUpdates(counter+" novos Episódios");
                             }else {
                                 Log.w(TAG, "Response Sem Info." + episodes.length);
                             }
@@ -261,11 +303,17 @@ public class RestEpisodeService extends BaseRestService {
                             if(listener != null){
                                 listener.doOnRestSucessResponse(null);
                             }
+
+                            serviceWatcher.setServiceAsStopped();
+                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
                         }
 
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            serviceWatcher.setServiceAsStopped();
+                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
+
                             Log.e("Response", generateErrorMsg(error));
                         }
                     });

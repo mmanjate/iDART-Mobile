@@ -6,9 +6,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.bumptech.glide.util.ContentLengthInputStream;
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,21 +15,14 @@ import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
-import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
-import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.SyncClinicInformation;
-import mz.org.fgh.idartlite.model.SyncDispense;
-import mz.org.fgh.idartlite.model.SyncEpisode;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.clinicInfo.ClinicInfoService;
 import mz.org.fgh.idartlite.service.clinicInfo.IClinicInfoService;
-import mz.org.fgh.idartlite.service.episode.EpisodeService;
-import mz.org.fgh.idartlite.service.episode.IEpisodeService;
 
 public class RestClinicInfoService extends BaseRestService {
 
@@ -71,7 +62,7 @@ public class RestClinicInfoService extends BaseRestService {
 
                     @Override
                     public void onResponse(Object response) {
-                        Log.d(TAG, "onResponse: Informacao Clinica enviado" + response);
+                        Log.d(TAG, "onResponse: Informacao Clinica enviada" + response);
                         try {
                             clinicInformation.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
                             clinicInfoService.updateClinicInfo(clinicInformation);

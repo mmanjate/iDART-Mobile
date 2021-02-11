@@ -86,6 +86,12 @@
         <item name="android:textSize">@dimen/dimen_14dp</item>
     </style>
 
+    <style name="inventory_init_label" parent="input_labels">
+        <item name="android:textSize">@dimen/dimen_22dp</item>
+        <item name="android:layout_marginBottom">@dimen/dimen_22dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="inventory_labels">
         <item name="android:textColor">@color/red</item>
         <item name="android:typeface">sans</item>

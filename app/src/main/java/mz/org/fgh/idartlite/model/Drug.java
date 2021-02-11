@@ -210,6 +210,11 @@ public class Drug extends BaseModel implements Listble, InventoryRelatedObject {
     }
 
     @Override
+    public boolean isIventorySelectionListing() {
+        return listType.equals(Listble.INVENTORY_SELECTION_LISTING);
+    }
+
+    @Override
     public List<StockAjustment> getAjustmentInfo() {
         return ajustmentInfo;
     }

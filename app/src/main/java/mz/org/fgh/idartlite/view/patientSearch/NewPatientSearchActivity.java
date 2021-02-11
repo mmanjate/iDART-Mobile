@@ -1,13 +1,5 @@
 package mz.org.fgh.idartlite.view.patientSearch;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +7,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,6 +23,7 @@ import java.util.Map;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.patient.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.ActivityNewPatientSearchBinding;
@@ -31,19 +31,12 @@ import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
-import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.view.dispense.CreateDispenseActivity;
-import mz.org.fgh.idartlite.view.home.PatientHomeActivity;
 import mz.org.fgh.idartlite.view.patientPanel.AddNewPatientActivity;
 import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
-import mz.org.fgh.idartlite.view.splash.SplashActivity;
 import mz.org.fgh.idartlite.viewmodel.patient.NewPatientSearchVM;
-import mz.org.fgh.idartlite.viewmodel.patient.PatientVM;
 
 public class NewPatientSearchActivity extends BaseActivity implements RestResponseListener<Patient>, IDialogListener {
 
@@ -239,7 +232,15 @@ public class NewPatientSearchActivity extends BaseActivity implements RestRespon
 
     }
 
+    @Override
+    public boolean registRunningService(ServiceWatcher serviceWatcher) {
+        return false;
+    }
 
+    @Override
+    public void updateServiceStatus(ServiceWatcher serviceWatcher) {
+
+    }
 
 
     @Override

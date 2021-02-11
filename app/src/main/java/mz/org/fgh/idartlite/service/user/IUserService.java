@@ -16,4 +16,5 @@ public interface IUserService extends IBaseService<User> {
 
     public void saveUser(User user) throws SQLException ;
 
+    User getByUserNameAndPassword(User currentUser);
 }

@@ -10,24 +10,18 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.dao.patient.PatientDaoImpl;
-import mz.org.fgh.idartlite.util.DateUtilities;
-import mz.org.fgh.idartlite.util.Utilities;
-
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.patient.PatientDaoImpl;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-
-import static mz.org.fgh.idartlite.model.Subdistrict.COLUMN_DISTRICT;
 
 @DatabaseTable(tableName = "patient", daoClass = PatientDaoImpl.class)
 public class Patient extends BaseModel {
@@ -245,6 +239,12 @@ public class Patient extends BaseModel {
 			if (Utilities.stringHasValue(episode.getStopReason())) return true;
 		}
 		return false;
+	}
+
+	public void addEpisode(Episode e){
+		if (this.episodes == null) this.episodes = new ArrayList<>();
+
+		this.episodes.add(e);
 	}
 
 	public int getAge() {

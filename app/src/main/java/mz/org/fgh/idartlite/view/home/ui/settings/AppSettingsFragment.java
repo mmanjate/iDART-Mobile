@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -27,6 +28,7 @@ public class AppSettingsFragment extends GenericFragment {
     private ListableSpinnerAdapter metadataSyncPeriodAdapter;
     private ListableSpinnerAdapter dataRemovingAdapter;
 
+    private NotificationManagerCompat notificationManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         settingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
@@ -37,6 +39,8 @@ public class AppSettingsFragment extends GenericFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        notificationManager = NotificationManagerCompat.from(getContext());
 
         settingsBinding.setViewModel(getRelatedViewModel());
 
@@ -51,6 +55,10 @@ public class AppSettingsFragment extends GenericFragment {
         dataRemovingAdapter = new ListableSpinnerAdapter(getMyActivity(), R.layout.simple_auto_complete_item, getRelatedViewModel().getDataDeletionPeriodList());
         settingsBinding.spnRemovePeriod.setAdapter(dataRemovingAdapter);
         settingsBinding.setDataRemovingAdapter(dataRemovingAdapter);
+    }
+
+    public NotificationManagerCompat getNotificationManager() {
+        return notificationManager;
     }
 
     @Override

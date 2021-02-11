@@ -9,6 +9,7 @@ import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
@@ -88,6 +89,16 @@ public class SecondSplashActivity extends BaseActivity implements RestResponseLi
 
     @Override
     public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {
+
+    }
+
+    @Override
+    public boolean registRunningService(ServiceWatcher serviceWatcher) {
+        return false;
+    }
+
+    @Override
+    public void updateServiceStatus(ServiceWatcher serviceWatcher) {
 
     }
 

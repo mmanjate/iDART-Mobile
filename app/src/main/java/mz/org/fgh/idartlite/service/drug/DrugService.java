@@ -14,6 +14,7 @@ import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Form;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 
 import static java.util.Objects.requireNonNull;
 
@@ -144,5 +145,10 @@ public class DrugService extends BaseService<Drug> implements IDrugService {
 
     public List<Drug> getAllDestroyedDrugs() throws SQLException{
         return getDataBaseHelper().getDrugDao().getAllDestroyedDrugs(getApplication());
+    }
+
+    @Override
+    public List<Drug> getAllOnInventory(Iventory iventory) throws SQLException {
+        return getDataBaseHelper().getDrugDao().getAllOnInventory(iventory, getApplication());
     }
 }
