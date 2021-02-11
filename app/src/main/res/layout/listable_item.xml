@@ -26,6 +26,13 @@
             android:paddingBottom="@dimen/dimen_2dp"
             android:background="@color/list_icon">
 
+            <CheckBox
+                android:id="@+id/cbx_select"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:visibility="@{listble.iventorySelectionListing ? View.VISIBLE : View.GONE}"
+                android:layout_weight="0.2"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -53,14 +60,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
-                android:visibility="@{(listble.stockListing || listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.stockListing || listble.stockDestroyListing || listble.iventoryListing || listble.iventorySelectionListing) ? View.VISIBLE : View.GONE}"
                 android:background="@color/white"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2.6"
-                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing|| listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing|| listble.returnDispenseListing || listble.iventorySelectionListing) ? View.VISIBLE : View.GONE}"
                 style="@style/listble_content"
                 android:text="@{listble.description}"/>
 

@@ -24,7 +24,9 @@ import java.util.UUID;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
@@ -42,7 +44,7 @@ import static mz.org.fgh.idartlite.util.DateUtilities.getUtilDateFromString;
 
 public class RestStockService extends BaseRestService {
 
-    private static final String TAG = "RestStockService";
+    public static final String TAG = "RestStockService";
     private static IStockService stockService;
     private static IDrugService drugService;
     private static IClinicService clinicService;
@@ -101,6 +103,14 @@ public class RestStockService extends BaseRestService {
     }
 
     public static void restGetStock(Clinic clinic) throws SQLException {
+        getStock(clinic,null);
+    }
+
+    public static void restGetStock(Clinic clinic, RestResponseListener listener) throws SQLException {
+        getStock(clinic, listener);
+    }
+
+    public static void getStock(Clinic clinic, RestResponseListener listener) throws SQLException {
 
         stockService = new StockService(getApp(), null);
         clinicService = new ClinicService(BaseService.getApp(), null);
@@ -111,6 +121,12 @@ public class RestStockService extends BaseRestService {
         Clinic finalClinic = clinic;
         String url = BaseRestService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
 
+        ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
+
+        serviceWatcher.setServiceAsRunning();
+
+        if (listener != null) listener.registRunningService(serviceWatcher);
+
         getRestServiceExecutor().execute(() -> {
             RESTServiceHandler handler = new RESTServiceHandler();
             handler.addHeader("Content-Type", "Application/json");
@@ -119,6 +135,9 @@ public class RestStockService extends BaseRestService {
                 public void onResponse(Object[] stocks) {
 
                     if (stocks.length > 0) {
+
+                        int counter = 0;
+
                         for (Object stock : stocks) {
                             Log.i(TAG, "onResponse: " + stock);
                             try {
@@ -127,6 +146,7 @@ public class RestStockService extends BaseRestService {
                                     Stock localStock = getNewLocalStock(itemresult, finalClinic);
                                     if (localStock != null) {
                                         stockService.saveOrUpdateStock(localStock);
+                                        counter++;
                                     }
                                 } else {
                                     Log.e(TAG, "onResponse: " + stock + " Nao tem referencia no servidor central");
@@ -137,24 +157,40 @@ public class RestStockService extends BaseRestService {
                                 continue;
                             }
                         }
+                        if (counter > 0) serviceWatcher.setUpdates(counter +" novas referencias de Stocks");
                     } else
                         Log.w(TAG, "Response Sem Info." + stocks.length);
+
+                    serviceWatcher.setServiceAsStopped();
+                    if (listener != null) listener.updateServiceStatus(serviceWatcher);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    serviceWatcher.setServiceAsStopped();
+                    if (listener != null) listener.updateServiceStatus(serviceWatcher);
+
                     Log.e("Response", Utilities.stringHasValue(error.getMessage()) ? error.getMessage() : error instanceof TimeoutError ? "Time out" : "Unkown error");
                 }
             });
         });
     }
 
+    public static void restPostStock(Stock localStock, ServiceWatcher watcher, RestResponseListener listener) {
+        doRestPostStock(localStock, watcher, listener);
+    }
 
     public static void restPostStock(Stock localStock) {
+        doRestPostStock(localStock, null, null);
+    }
+
+    private static void doRestPostStock(Stock localStock, ServiceWatcher watcher, RestResponseListener listener) {
 
         String url = BaseRestService.baseUrl + "/stock?select=id";
 
         stockService = new StockService(getApp(), null);
+
+        if (watcher != null) watcher.setRequestedUrl(url);
 
         try {
             getRestServiceExecutor().execute(() -> {
@@ -181,6 +217,15 @@ public class RestStockService extends BaseRestService {
                                 restPostStockLevel(localStock);
                             } catch (SQLException e) {
                                 e.printStackTrace();
+                            }
+                            if (watcher != null) {
+                                watcher.increaseSentRecords();
+
+                                if (watcher.isAllSent()) {
+                                    watcher.setServiceAsStopped();
+                                    watcher.setUpdates(watcher.getSentRecords() + " Stocks enviados para central;");
+                                    if (listener != null) listener.updateServiceStatus(watcher);
+                                }
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -239,10 +284,19 @@ public class RestStockService extends BaseRestService {
         }
     }
 
+    public static void restGetAndPatchStockLevel(Stock localStock, ServiceWatcher watcher, RestResponseListener listener) {
+        doRestGetAndPatchStockLevel(localStock, watcher, listener);
+    }
 
-    public static void restGetAndPatchStockLevel(Stock stock) {
+    public static void restGetAndPatchStockLevel(Stock localStock) {
+        doRestGetAndPatchStockLevel(localStock, null, null);
+    }
+
+    public static void doRestGetAndPatchStockLevel(Stock stock, ServiceWatcher watcher, RestResponseListener listener) {
 
         String url = BaseRestService.baseUrl + "/stocklevel?batch=eq." + stock.getRestId();
+        if (watcher != null) watcher.setRequestedUrl(url);
+
         getRestServiceExecutor().execute(() -> {
 
             RESTServiceHandler handler = new RESTServiceHandler();
@@ -276,7 +330,7 @@ public class RestStockService extends BaseRestService {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("Response", error.getMessage());
+                    Log.e("Response", generateErrorMsg(error));
                 }
             });
         });

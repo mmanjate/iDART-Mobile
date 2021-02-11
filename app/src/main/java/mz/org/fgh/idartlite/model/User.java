@@ -82,6 +82,9 @@ public class User extends BaseModel {
         if (!Utilities.stringHasValue(this.userName)) return context.getString(R.string.user_is_mandatory);
         if (!Utilities.stringHasValue(this.password)) return context.getString(R.string.pass_is_mandatory);
 
+        if (this.userName.length() < 4) return "O nome do utilizador deve ter o minimo de quatro caracteres";
+        if (this.password.length() < 4) return "A senha deve ter o minimo de quatro caracteres";
+
         return "";
     }
 

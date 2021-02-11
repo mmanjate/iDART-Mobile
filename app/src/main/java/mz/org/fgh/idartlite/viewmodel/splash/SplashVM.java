@@ -14,6 +14,7 @@ import java.util.Map;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
@@ -179,6 +180,16 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
         Map<String, Object> params = new HashMap<>();
         params.put("clinicList", objects);
         getRelatedActivity().nextActivityFinishingCurrent(LoginActivity.class, params);
+    }
+
+    @Override
+    public boolean registRunningService(ServiceWatcher serviceWatcher) {
+        return false;
+    }
+
+    @Override
+    public void updateServiceStatus(ServiceWatcher serviceWatcher) {
+
     }
 
     @Override

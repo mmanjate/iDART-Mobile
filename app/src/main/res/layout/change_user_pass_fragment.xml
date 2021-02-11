@@ -94,6 +94,7 @@
                         android:layout_below="@+id/txt_url"
                         android:inputType="textUri"
                         android:drawableLeft="@drawable/ic_person_24"
+                        android:enabled="false"
                         android:text="@{viewModel.userName}"
                         android:layout_height="wrap_content"
                         style="@style/bottom_border_edit_text_style"/>
@@ -108,7 +109,7 @@
                         android:id="@+id/edt_user_old_pass"
                         android:layout_width="match_parent"
                         android:layout_below="@+id/txt_url"
-                        android:inputType="textUri"
+                        android:inputType="textPassword"
                         android:drawableLeft="@drawable/ic_pass"
                         android:text="@={viewModel.userOldPassword}"
                         android:layout_height="wrap_content"
@@ -124,9 +125,9 @@
                         android:id="@+id/edt_user_pass"
                         android:layout_width="match_parent"
                         android:layout_below="@+id/txt_url"
-                        android:inputType="textUri"
+                        android:inputType="textPassword"
                         android:drawableLeft="@drawable/ic_pass"
-                        android:text="@={viewModel.userPassword}"
+                        android:text="@={viewModel.userNewPassword}"
                         android:layout_height="wrap_content"
                         style="@style/bottom_border_edit_text_style"/>
 
@@ -140,7 +141,7 @@
                         android:id="@+id/edt_user_pass_repeat"
                         android:layout_width="match_parent"
                         android:layout_below="@+id/txt_url"
-                        android:inputType="textUri"
+                        android:inputType="textPassword"
                         android:drawableLeft="@drawable/ic_pass"
                         android:text="@={viewModel.userPassRepeat}"
                         android:layout_height="wrap_content"
@@ -153,7 +154,6 @@
                         app:srcCompat="@drawable/ic_done"
                         android:layout_marginTop="@dimen/dimen_22dp"
                         android:layout_margin="@dimen/dimen_18dp"
-                        android:visibility="gone"
                         android:background="@drawable/button_shape"
                         android:onClick="@{() -> viewModel.save()}"
                         android:layout_gravity="right"/>

@@ -68,4 +68,14 @@ public class UserService extends BaseService<User> implements IUserService {
         }else update(user);
     }
 
+    @Override
+    public User getByUserNameAndPassword(User currentUser) {
+        try {
+            return userDao.getByCredentials(currentUser);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

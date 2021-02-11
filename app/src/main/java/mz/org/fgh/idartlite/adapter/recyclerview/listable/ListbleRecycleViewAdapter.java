@@ -5,6 +5,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -134,6 +135,21 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                     activity.getRelatedViewModel().getCurrentStep().changeToEdit();
                     activity.getRelatedViewModel().setSelectedListble(listbles.get(position - 1));
 
+                }
+            });
+
+            ((ListbleViewHolder) viewHolder).listableItemBinding.cbxSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        if (getItemAtPosition(position) != null) {
+                            activity.getRelatedViewModel().addSelectedListable(getItemAtPosition(position));
+                        }
+                    }else {
+                        if (getItemAtPosition(position) != null) {
+                            activity.getRelatedViewModel().removeSelectedListable(getItemAtPosition(position));
+                        }
+                    }
                 }
             });
         }

@@ -9,6 +9,7 @@ public class ApplicationStep {
     public static final String STEP_EDIT = "EDIT";
     public static final String STEP_LIST = "LIST";
     public static final String STEP_DISPLAY = "DYSPLAY";
+    public static final String STEP_SELECT = "SELECT";
     public static final String STEP_CREATE = "CREATE";
     public static final String STEP_REMOVE= "REMOVE";
     public static final String STEP_DOWNLOAD= "DOWNLOAD";
@@ -85,6 +86,11 @@ public class ApplicationStep {
         return this.code.equals(STEP_DOWNLOAD);
     }
 
+    public boolean isApplicationStepSelect(){
+        return this.code.equals(STEP_SELECT);
+    }
+
+
     public void changeToInit(){
         this.code = STEP_INIT;
     }
@@ -120,6 +126,11 @@ public class ApplicationStep {
     public void changetoDownload(){
         this.code = STEP_DOWNLOAD;
     }
+
+    public void changeToSelect(){
+        this.code = STEP_SELECT;
+    }
+
 
     public boolean checkSanitaryUnit(Clinic currentClinic){
 

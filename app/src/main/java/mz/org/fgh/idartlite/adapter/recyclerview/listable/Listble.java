@@ -13,6 +13,7 @@ public interface Listble<T extends BaseModel> extends Comparable<T>{
     public static final String INVENTORY_LISTING = "inventory_listing";
     public static final String RETURN_DRUG_LISTING = "return_dispense_listing";
     public static final String REFERED_STOCK_LISTING = "refered_stock_listing";
+    public static final String INVENTORY_SELECTION_LISTING = "inventory_selection_listing";
 
     int getId();
 
@@ -91,6 +92,10 @@ public interface Listble<T extends BaseModel> extends Comparable<T>{
     }
 
     default boolean isIventoryListing() {
+        return false;
+    }
+
+    default boolean isIventorySelectionListing() {
         return false;
     }
 

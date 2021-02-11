@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.ListbleRecycleViewAdapter;
 import mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
@@ -54,7 +55,11 @@ public class IventoryActivity extends BaseActivity {
 
     private RecyclerView rcvSelectedDrugs;
 
+    private RecyclerView rcvDrugSelection;
+
     private ListbleRecycleViewAdapter listbleRecycleViewAdapter;
+
+    private ListbleRecycleViewAdapter selectionRecycleViewAdapter;
 
     private ActivityIventoryBinding iventoryBinding;
 
@@ -64,7 +69,7 @@ public class IventoryActivity extends BaseActivity {
         iventoryBinding = DataBindingUtil.setContentView(this, R.layout.activity_iventory);
 
         List<Drug> drugs = new ArrayList<>();
-        drugs.addAll(getRelatedViewModel().getDrugs());
+        drugs.addAll(getRelatedViewModel().getSelectedDrugs());
 
         populateDrugs(drugs);
 
@@ -120,6 +125,26 @@ public class IventoryActivity extends BaseActivity {
                 Utilities.expand(iventoryBinding.initialDataLyt);
             }
         }
+    }
+
+    public void displaySelectedDrugsForSelection(){
+        if (selectionRecycleViewAdapter != null) {
+            selectionRecycleViewAdapter.notifyDataSetChanged();
+
+        }else {
+            rcvDrugSelection = iventoryBinding.rcvSelection;
+
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(IventoryActivity.this);
+            rcvDrugSelection.setLayoutManager(mLayoutManager);
+            rcvDrugSelection.setItemAnimator(new DefaultItemAnimator());
+            rcvDrugSelection.addItemDecoration(new DividerItemDecoration(IventoryActivity.this, 0));
+
+            selectionRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvDrugSelection, Utilities.parseList(getRelatedViewModel().getDrugs(), Listble.class), this);
+            rcvDrugSelection.setAdapter(selectionRecycleViewAdapter);
+        }
+
+        Utilities.hideSoftKeyboard(this);
+        iventoryBinding.autCmpDrugs.dismissDropDown();
     }
 
     public void displaySelectedDrugStockAjustmentInfo(){

@@ -8,6 +8,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.model.inventory.Iventory;
 
 public interface IDrugDao extends IGenericDao<Drug, Integer> {
 
@@ -25,4 +26,6 @@ public interface IDrugDao extends IGenericDao<Drug, Integer> {
     List<Drug> getAllWithLote(Application application) throws SQLException;
 
     List<Drug> getAllDestroyedDrugs(Application application) throws SQLException;
+
+    List<Drug> getAllOnInventory(Iventory iventory, Application application) throws SQLException;
 }

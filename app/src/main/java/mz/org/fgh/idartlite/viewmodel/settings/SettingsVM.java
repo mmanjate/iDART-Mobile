@@ -1,9 +1,11 @@
 package mz.org.fgh.idartlite.viewmodel.settings;
 
 import android.app.Application;
+import android.app.Notification;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
@@ -21,6 +24,9 @@ import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
 import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment;
+
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 
 public class SettingsVM extends BaseViewModel {
 
@@ -231,6 +237,11 @@ public class SettingsVM extends BaseViewModel {
         Utilities.displayAlertDialog(getRelatedFragment().getContext(), "A configuração do servidor central foi gravada com sucesso.").show();
     }
 
+    @Override
+    public AppSettingsFragment getRelatedFragment() {
+        return (AppSettingsFragment) super.getRelatedFragment();
+    }
+
     public void saveSettings(AppSettings settings){
         try {
 
@@ -252,9 +263,17 @@ public class SettingsVM extends BaseViewModel {
     }
 
     public void syncDataNow(){
-        RestRunDataForTestService restTestData = new RestRunDataForTestService(getApplication(), getCurrentUser());
+        Notification builder = new NotificationCompat.Builder(getRelatedFragment().getContext(), CHANNEL_1_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("iDART MOBILE")
+                .setContentText("Sincronização Com Servidor Central Iniciada")
+                .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .build();
+
+        getRelatedFragment().getNotificationManager().notify(1, builder);
+
+        RestRunDataForTestService restTestData = new RestRunDataForTestService(getApplication(), getCurrentUser(), getRelatedFragment().getActivity());
         restTestData.runDataSync();
-//        getRelatedService().runDataSync();
     }
 
     public void syncMetadataNow(){

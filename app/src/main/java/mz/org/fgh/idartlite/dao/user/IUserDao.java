@@ -9,4 +9,6 @@ public interface IUserDao extends IGenericDao<User, Integer> {
     public boolean login(User user) throws SQLException;
 
     public boolean checkIfUsertableIsEmpty() throws SQLException;
+
+    User getByCredentials(User user) throws SQLException;
 }

@@ -1,12 +1,21 @@
 package mz.org.fgh.idartlite.rest.service;
 
+import android.app.Activity;
 import android.app.Application;
+import android.app.Notification;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
@@ -41,10 +50,24 @@ import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.service.territory.CountryService;
 import mz.org.fgh.idartlite.service.territory.ICountryService;
+import mz.org.fgh.idartlite.util.Utilities;
 
-public class RestRunDataForTestService extends BaseRestService {
-    public RestRunDataForTestService(Application application, User currentUser) {
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
+
+public class RestRunDataForTestService extends BaseRestService implements RestResponseListener {
+
+    private List<ServiceWatcher> serviceWatcherList;
+
+    private Activity activity;
+
+    private NotificationManagerCompat notificationManager;
+
+    public RestRunDataForTestService(Application application, User currentUser, Activity activity) {
         super(application, currentUser);
+        this.activity = activity;
+
+        notificationManager = NotificationManagerCompat.from(getApp());
 
 
       /*  try{
@@ -84,19 +107,19 @@ public class RestRunDataForTestService extends BaseRestService {
         RestTerritoryService.restGetAllProvinces();
         RestTerritoryService.restGetAllDistricts();
 
-        RestPharmacyTypeService.restGetAllPharmacyType();
-        RestFormService.restGetAllForms();
-        RestDrugService.restGetAllDrugs();
-        RestDiseaseTypeService.restGetAllDiseaseType();
-        RestDispenseTypeService.restGetAllDispenseType();
-        RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
-        RestTherapeuticLineService.restGetAllTherapeuticLine();
-        RestPatientService.restGetAllPatient(null);
-        RestEpisodeService.restGetAllReadyEpisodes(null);
-        RestEpisodeService.restGetAllEpisodes(null);
+        RestPharmacyTypeService.restGetAllPharmacyType(RestRunDataForTestService.this);
+        RestFormService.restGetAllForms(RestRunDataForTestService.this);
+        RestDrugService.restGetAllDrugs(RestRunDataForTestService.this);
+        RestDiseaseTypeService.restGetAllDiseaseType(RestRunDataForTestService.this);
+        RestDispenseTypeService.restGetAllDispenseType(RestRunDataForTestService.this);
+        RestTherapeuticRegimenService.restGetAllTherapeuticRegimen(RestRunDataForTestService.this);
+        RestTherapeuticLineService.restGetAllTherapeuticLine(RestRunDataForTestService.this);
+        RestPatientService.restGetAllPatient(RestRunDataForTestService.this);
+        RestEpisodeService.restGetAllReadyEpisodes(RestRunDataForTestService.this);
+        RestEpisodeService.restGetAllEpisodes(RestRunDataForTestService.this);
 
         try {
-            RestStockService.restGetStock(clinicService.getAllClinics().get(0));
+            RestStockService.restGetStock(clinicService.getAllClinics().get(0), RestRunDataForTestService.this);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -105,8 +128,11 @@ public class RestRunDataForTestService extends BaseRestService {
             stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_READY);
             if (stockList != null)
                 if (stockList.size() > 0) {
+                    registRunningService(ServiceWatcher.fastCreateUploadType(RestStockService.TAG, stockList.size()));
+                    serviceWatcherList.get(serviceWatcherList.size()-1).setServiceAsRunning();
+
                     for (Stock stock : stockList) {
-                        RestStockService.restPostStock(stock);
+                        RestStockService.restPostStock(stock, serviceWatcherList.get(serviceWatcherList.size()-1), RestRunDataForTestService.this);
                     }
                 }
         } catch (SQLException e) {
@@ -117,8 +143,11 @@ public class RestRunDataForTestService extends BaseRestService {
             stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_UPDATED);
             if (stockList != null)
                 if (stockList.size() > 0) {
+                    registRunningService(ServiceWatcher.fastCreateUploadType(RestStockService.TAG, stockList.size()));
+                    serviceWatcherList.get(serviceWatcherList.size()-1).setServiceAsRunning();
+
                     for (Stock stock : stockList) {
-                        RestStockService.restGetAndPatchStockLevel(stock);
+                        RestStockService.restGetAndPatchStockLevel(stock, serviceWatcherList.get(serviceWatcherList.size()-1), RestRunDataForTestService.this);
                     }
                 }
         } catch (SQLException e) {
@@ -176,9 +205,124 @@ public class RestRunDataForTestService extends BaseRestService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    private void dysplayDownloadResultNotification() {
+        String contentText = null;
+
+        for (ServiceWatcher watcher : serviceWatcherList){
+            if (!watcher.isUploadService() && Utilities.stringHasValue(watcher.getUpdates()))
+                contentText = Utilities.stringHasValue(contentText) ? contentText+'\n' + watcher.getUpdates() : watcher.getUpdates();
+        }
+
+        if (!Utilities.stringHasValue(contentText)) contentText = "Não foram encontrados dados novos para sincronizar.";
+
+        Notification builder = new NotificationCompat.Builder(getApp(), CHANNEL_1_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("iDART MOBILE")
+                .setContentText(contentText)
+                .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .build();
+
+        notificationManager.notify(1, builder);
+    }
+
+    private boolean hasRunningDownloadService() {
+        for (ServiceWatcher watcher : this.serviceWatcherList){
+            if (!watcher.isUploadService() && watcher.isRunning()) return true;
+        }
+        return false;
     }
 
     public void runMetaDataSync() {
 
+    }
+
+    @Override
+    public void doOnRestSucessResponse(String flag) {
+
+    }
+
+    @Override
+    public void doOnRestErrorResponse(String errormsg) {
+
+    }
+
+    @Override
+    public void doOnRestSucessResponseObject(String flag, BaseModel object) {
+
+    }
+
+    @Override
+    public void doOnRestSucessResponseObjects(String flag, List objects) {
+
+    }
+
+    @Override
+    public boolean registRunningService(ServiceWatcher serviceWatcher) {
+        if (this.serviceWatcherList == null) this.serviceWatcherList = new ArrayList<>();
+
+        if (!this.serviceWatcherList.contains(serviceWatcher)) {
+            this.serviceWatcherList.add(serviceWatcher);
+            return true;
+        }
+        else {
+
+            for (ServiceWatcher watcher : this.serviceWatcherList){
+                if (watcher.equals(serviceWatcher)){
+                    if (watcher.isStopped()) {
+                        this.serviceWatcherList.remove(watcher);
+                        this.serviceWatcherList.add(serviceWatcher);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+    }
+
+    @Override
+    public void updateServiceStatus(ServiceWatcher serviceWatcher) {
+
+        if (serviceWatcher.isUploadService()){
+            if (!hasUploadRunning()){
+                dysplayUploadResultNotification();
+            }
+        }else
+
+        if (!hasRunningDownloadService()) {
+            dysplayDownloadResultNotification();
+        }
+
+    }
+
+    private boolean hasUploadRunning() {
+        for (ServiceWatcher watcher : this.serviceWatcherList){
+            if (watcher.isUploadService() && watcher.isRunning()) return true;
+        }
+        return false;
+    }
+
+    private void dysplayUploadResultNotification() {
+        String contentText = null;
+
+        for (ServiceWatcher watcher : serviceWatcherList){
+            if (watcher.isUploadService() && Utilities.stringHasValue(watcher.getUpdates()))
+                contentText = Utilities.stringHasValue(contentText) ? contentText+'\n' + watcher.getUpdates() : watcher.getUpdates();
+        }
+
+        if (!Utilities.stringHasValue(contentText)) contentText = "Não foram enviados dados.";
+
+        Notification builder = new NotificationCompat.Builder(getApp(), CHANNEL_2_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("iDART MOBILE UPLOAD")
+                .setContentText(contentText)
+                .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .build();
+
+        notificationManager.notify(1, builder);
     }
 }

@@ -30,4 +30,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements IUserD
     public boolean checkIfUsertableIsEmpty() throws SQLException {
         return queryForAll().isEmpty();
     }
+
+    public User getByCredentials(User user) throws SQLException {
+        return queryBuilder().where().eq(User.COLUMN_USER_NAME, user.getUserName()).and().eq(User.COLUMN_PASSWORD, Utilities.MD5Crypt(user.getPassword())).query().get(0);
+    }
 }
