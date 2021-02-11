@@ -21,6 +21,10 @@ public class ServiceWatcher {
 
     private String type;
 
+    private int recordsToSend;
+
+    private int sentRecords;
+
     public ServiceWatcher(String serviceName, String requestedUrl) {
         this.serviceName = serviceName;
         this.requestedUrl = requestedUrl;
@@ -31,6 +35,13 @@ public class ServiceWatcher {
         this.serviceName = serviceName;
         this.requestedUrl = requestedUrl;
         this.type = type;
+    }
+
+    public ServiceWatcher(String serviceName, String requestedUrl, String type, int recordsToSend) {
+        this.serviceName = serviceName;
+        this.requestedUrl = requestedUrl;
+        this.type = type;
+        this.recordsToSend = recordsToSend;
     }
 
     public void setServiceAsRunning(){
@@ -59,6 +70,14 @@ public class ServiceWatcher {
 
     public static ServiceWatcher fastCreate(String serviceName, String requestedUrl, String type){
         return new ServiceWatcher(serviceName, requestedUrl, type);
+    }
+
+    public static ServiceWatcher fastCreateUploadType(String serviceName, String requestedUrl, int recordsToSend){
+        return new ServiceWatcher(serviceName, requestedUrl, TYPE_UPLOAD, recordsToSend);
+    }
+
+    public static ServiceWatcher fastCreateUploadType(String serviceName, int recordsToSend){
+        return new ServiceWatcher(serviceName, null, TYPE_UPLOAD, recordsToSend);
     }
 
     public boolean isNewUpdates() {
@@ -105,6 +124,43 @@ public class ServiceWatcher {
                 "serviceStatus='" + serviceStatus + '\'' +
                 ", serviceName='" + serviceName + '\'' +
                 ", requestedUrl='" + requestedUrl + '\'' +
+                ", newUpdates=" + newUpdates +
+                ", updates='" + updates + '\'' +
+                ", type='" + type + '\'' +
+                ", recordsToSend=" + recordsToSend +
+                ", sentRecords=" + sentRecords +
                 '}';
+    }
+
+    public int getRecordsToSend() {
+        return recordsToSend;
+    }
+
+    public void setRecordsToSend(int recordsToSend) {
+        this.recordsToSend = recordsToSend;
+    }
+
+    public int getSentRecords() {
+        return sentRecords;
+    }
+
+    public void setSentRecords(int sentRecords) {
+        this.sentRecords = sentRecords;
+    }
+
+    public void increaseSentRecords(){
+        this.sentRecords++;
+    }
+
+    public boolean isAllSent(){
+        return this.recordsToSend == this.sentRecords;
+    }
+
+    public void setRequestedUrl(String requestedUrl) {
+        this.requestedUrl = requestedUrl;
+    }
+
+    public boolean isUploadService(){
+        return this.type.equals(TYPE_UPLOAD);
     }
 }

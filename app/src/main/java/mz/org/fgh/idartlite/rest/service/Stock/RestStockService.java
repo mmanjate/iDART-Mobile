@@ -44,7 +44,7 @@ import static mz.org.fgh.idartlite.util.DateUtilities.getUtilDateFromString;
 
 public class RestStockService extends BaseRestService {
 
-    private static final String TAG = "RestStockService";
+    public static final String TAG = "RestStockService";
     private static IStockService stockService;
     private static IDrugService drugService;
     private static IClinicService clinicService;
@@ -176,16 +176,21 @@ public class RestStockService extends BaseRestService {
         });
     }
 
+    public static void restPostStock(Stock localStock, ServiceWatcher watcher, RestResponseListener listener) {
+        doRestPostStock(localStock, watcher, listener);
+    }
 
     public static void restPostStock(Stock localStock) {
+        doRestPostStock(localStock, null, null);
+    }
+
+    private static void doRestPostStock(Stock localStock, ServiceWatcher watcher, RestResponseListener listener) {
 
         String url = BaseRestService.baseUrl + "/stock?select=id";
 
         stockService = new StockService(getApp(), null);
 
-        ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url, ServiceWatcher.TYPE_UPLOAD);
-
-        serviceWatcher.setServiceAsRunning();
+        if (watcher != null) watcher.setRequestedUrl(url);
 
         try {
             getRestServiceExecutor().execute(() -> {
@@ -212,6 +217,15 @@ public class RestStockService extends BaseRestService {
                                 restPostStockLevel(localStock);
                             } catch (SQLException e) {
                                 e.printStackTrace();
+                            }
+                            if (watcher != null) {
+                                watcher.increaseSentRecords();
+
+                                if (watcher.isAllSent()) {
+                                    watcher.setServiceAsStopped();
+                                    watcher.setUpdates(watcher.getSentRecords() + " Stocks enviados para central;");
+                                    if (listener != null) listener.updateServiceStatus(watcher);
+                                }
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -270,10 +284,19 @@ public class RestStockService extends BaseRestService {
         }
     }
 
+    public static void restGetAndPatchStockLevel(Stock localStock, ServiceWatcher watcher, RestResponseListener listener) {
+        doRestGetAndPatchStockLevel(localStock, watcher, listener);
+    }
 
-    public static void restGetAndPatchStockLevel(Stock stock) {
+    public static void restGetAndPatchStockLevel(Stock localStock) {
+        doRestGetAndPatchStockLevel(localStock, null, null);
+    }
+
+    public static void doRestGetAndPatchStockLevel(Stock stock, ServiceWatcher watcher, RestResponseListener listener) {
 
         String url = BaseRestService.baseUrl + "/stocklevel?batch=eq." + stock.getRestId();
+        if (watcher != null) watcher.setRequestedUrl(url);
+
         getRestServiceExecutor().execute(() -> {
 
             RESTServiceHandler handler = new RESTServiceHandler();

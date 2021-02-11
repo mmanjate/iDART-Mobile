@@ -53,6 +53,7 @@ import mz.org.fgh.idartlite.service.territory.ICountryService;
 import mz.org.fgh.idartlite.util.Utilities;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
 
 public class RestRunDataForTestService extends BaseRestService implements RestResponseListener {
 
@@ -127,8 +128,11 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
             stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_READY);
             if (stockList != null)
                 if (stockList.size() > 0) {
+                    registRunningService(ServiceWatcher.fastCreateUploadType(RestStockService.TAG, stockList.size()));
+                    serviceWatcherList.get(serviceWatcherList.size()-1).setServiceAsRunning();
+
                     for (Stock stock : stockList) {
-                        RestStockService.restPostStock(stock);
+                        RestStockService.restPostStock(stock, serviceWatcherList.get(serviceWatcherList.size()-1), RestRunDataForTestService.this);
                     }
                 }
         } catch (SQLException e) {
@@ -139,8 +143,11 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
             stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_UPDATED);
             if (stockList != null)
                 if (stockList.size() > 0) {
+                    registRunningService(ServiceWatcher.fastCreateUploadType(RestStockService.TAG, stockList.size()));
+                    serviceWatcherList.get(serviceWatcherList.size()-1).setServiceAsRunning();
+
                     for (Stock stock : stockList) {
-                        RestStockService.restGetAndPatchStockLevel(stock);
+                        RestStockService.restGetAndPatchStockLevel(stock, serviceWatcherList.get(serviceWatcherList.size()-1), RestRunDataForTestService.this);
                     }
                 }
         } catch (SQLException e) {
@@ -202,18 +209,18 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
 
     }
 
-    private void dysplayResultNotification() {
+    private void dysplayDownloadResultNotification() {
         String contentText = null;
 
         for (ServiceWatcher watcher : serviceWatcherList){
-            if (Utilities.stringHasValue(watcher.getUpdates()))
+            if (!watcher.isUploadService() && Utilities.stringHasValue(watcher.getUpdates()))
                 contentText = Utilities.stringHasValue(contentText) ? contentText+'\n' + watcher.getUpdates() : watcher.getUpdates();
         }
 
         if (!Utilities.stringHasValue(contentText)) contentText = "Não foram encontrados dados novos para sincronizar.";
 
         Notification builder = new NotificationCompat.Builder(getApp(), CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_patient)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("iDART MOBILE")
                 .setContentText(contentText)
                 .setCategory(NotificationCompat.CATEGORY_STATUS)
@@ -222,9 +229,9 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
         notificationManager.notify(1, builder);
     }
 
-    private boolean hasRunningService() {
+    private boolean hasRunningDownloadService() {
         for (ServiceWatcher watcher : this.serviceWatcherList){
-            if (watcher.isRunning()) return true;
+            if (!watcher.isUploadService() && watcher.isRunning()) return true;
         }
         return false;
     }
@@ -280,16 +287,42 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
     @Override
     public void updateServiceStatus(ServiceWatcher serviceWatcher) {
 
-        /*for (ServiceWatcher watcher : this.serviceWatcherList){
-            if (watcher.equals(serviceWatcher)){
-                if (serviceWatcher.isStopped())
-                    watcher.setServiceAsStopped();
+        if (serviceWatcher.isUploadService()){
+            if (!hasUploadRunning()){
+                dysplayUploadResultNotification();
             }
-        }*/
+        }else
 
-        if (!hasRunningService()) {
-            dysplayResultNotification();
+        if (!hasRunningDownloadService()) {
+            dysplayDownloadResultNotification();
         }
 
+    }
+
+    private boolean hasUploadRunning() {
+        for (ServiceWatcher watcher : this.serviceWatcherList){
+            if (watcher.isUploadService() && watcher.isRunning()) return true;
+        }
+        return false;
+    }
+
+    private void dysplayUploadResultNotification() {
+        String contentText = null;
+
+        for (ServiceWatcher watcher : serviceWatcherList){
+            if (watcher.isUploadService() && Utilities.stringHasValue(watcher.getUpdates()))
+                contentText = Utilities.stringHasValue(contentText) ? contentText+'\n' + watcher.getUpdates() : watcher.getUpdates();
+        }
+
+        if (!Utilities.stringHasValue(contentText)) contentText = "Não foram enviados dados.";
+
+        Notification builder = new NotificationCompat.Builder(getApp(), CHANNEL_2_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("iDART MOBILE UPLOAD")
+                .setContentText(contentText)
+                .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .build();
+
+        notificationManager.notify(1, builder);
     }
 }
