@@ -26,7 +26,7 @@
                 android:id="@+id/initial_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lista de Entradas de Stock por Referência"
+                android:text="Lista de Ajustes Positivos"
                 android:background="@drawable/shape_normal"
                 android:textColor="@color/white"
                 android:textSize="15sp"
