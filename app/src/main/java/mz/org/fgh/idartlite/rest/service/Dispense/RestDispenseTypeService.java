@@ -5,11 +5,10 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
-import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.dispense.DispenseTypeService;
@@ -31,20 +30,14 @@ public class RestDispenseTypeService extends BaseRestService {
         getAllDispenseType(null);
     }
 
-    public static void restGetAllDispenseType(RestResponseListener listener)  {
-        getAllDispenseType(listener);
+    public static void restGetAllDispenseType(ServiceWatcher watcher)  {
+        getAllDispenseType(watcher);
     }
 
-    public static void getAllDispenseType(RestResponseListener listener) {
+    public static void getAllDispenseType(ServiceWatcher watcher) {
 
         String url = BaseRestService.baseUrl + "/simpledomain?description=eq.dispense_type";
         dispenseTypeService = new DispenseTypeService(getApp(), null);
-
-        serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
-
-        serviceWatcher.setServiceAsRunning();
-
-        if (listener != null) listener.registRunningService(serviceWatcher);
 
             getRestServiceExecutor().execute(() -> {
 
@@ -77,22 +70,11 @@ public class RestDispenseTypeService extends BaseRestService {
                                     continue;
                                 }
                             }
-                            if (counter > 0) serviceWatcher.setUpdates(counter+" novos Tipos de Dispensa");
+                            if (watcher != null && counter > 0) watcher.addUpdates(counter + " "+getApp().getString(R.string.new_dispense_types));
                         }else
                             Log.w(TAG, "Response Sem Info." + dispenseTypes.length);
-
-                        serviceWatcher.setServiceAsStopped();
-                        if (listener != null) listener.updateServiceStatus(serviceWatcher);
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        serviceWatcher.setServiceAsStopped();
-                        if (listener != null) listener.updateServiceStatus(serviceWatcher);
-
-                        Log.e("Response", generateErrorMsg(error));
-                    }
-                });
+                }, error -> Log.e("Response", generateErrorMsg(error)));
             });
     }
 }

@@ -68,6 +68,8 @@ public class IventoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         iventoryBinding = DataBindingUtil.setContentView(this, R.layout.activity_iventory);
 
+        getRelatedViewModel().setGeral(true);
+
         List<Drug> drugs = new ArrayList<>();
         drugs.addAll(getRelatedViewModel().getSelectedDrugs());
 

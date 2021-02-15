@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -38,7 +37,6 @@ import mz.org.fgh.idartlite.service.drug.DrugService;
 import mz.org.fgh.idartlite.service.drug.IDrugService;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
-import mz.org.fgh.idartlite.util.Utilities;
 
 import static mz.org.fgh.idartlite.util.DateUtilities.getUtilDateFromString;
 
@@ -106,11 +104,11 @@ public class RestStockService extends BaseRestService {
         getStock(clinic,null);
     }
 
-    public static void restGetStock(Clinic clinic, RestResponseListener listener) throws SQLException {
-        getStock(clinic, listener);
+    public static void restGetStock(Clinic clinic, ServiceWatcher watcher) throws SQLException {
+        getStock(clinic, watcher);
     }
 
-    public static void getStock(Clinic clinic, RestResponseListener listener) throws SQLException {
+    public static void getStock(Clinic clinic, ServiceWatcher watcher) throws SQLException {
 
         stockService = new StockService(getApp(), null);
         clinicService = new ClinicService(BaseService.getApp(), null);
@@ -120,12 +118,6 @@ public class RestStockService extends BaseRestService {
 
         Clinic finalClinic = clinic;
         String url = BaseRestService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
-
-        ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
-
-        serviceWatcher.setServiceAsRunning();
-
-        if (listener != null) listener.registRunningService(serviceWatcher);
 
         getRestServiceExecutor().execute(() -> {
             RESTServiceHandler handler = new RESTServiceHandler();
@@ -157,22 +149,12 @@ public class RestStockService extends BaseRestService {
                                 continue;
                             }
                         }
-                        if (counter > 0) serviceWatcher.setUpdates(counter +" novas referencias de Stocks");
+                        if (watcher != null && counter > 0) watcher.addUpdates(counter +" novas referencias de Stocks");
                     } else
                         Log.w(TAG, "Response Sem Info." + stocks.length);
 
-                    serviceWatcher.setServiceAsStopped();
-                    if (listener != null) listener.updateServiceStatus(serviceWatcher);
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    serviceWatcher.setServiceAsStopped();
-                    if (listener != null) listener.updateServiceStatus(serviceWatcher);
-
-                    Log.e("Response", Utilities.stringHasValue(error.getMessage()) ? error.getMessage() : error instanceof TimeoutError ? "Time out" : "Unkown error");
-                }
-            });
+            }, error -> Log.e("Response", generateErrorMsg(error)));
         });
     }
 
@@ -223,7 +205,6 @@ public class RestStockService extends BaseRestService {
 
                                 if (watcher.isAllSent()) {
                                     watcher.setServiceAsStopped();
-                                    watcher.setUpdates(watcher.getSentRecords() + " Stocks enviados para central;");
                                     if (listener != null) listener.updateServiceStatus(watcher);
                                 }
                             }
@@ -288,6 +269,10 @@ public class RestStockService extends BaseRestService {
         doRestGetAndPatchStockLevel(localStock, watcher, listener);
     }
 
+    public static void restGetAndPatchStockLevel(Stock localStock, ServiceWatcher watcher) {
+        doRestGetAndPatchStockLevel(localStock, watcher, null);
+    }
+
     public static void restGetAndPatchStockLevel(Stock localStock) {
         doRestGetAndPatchStockLevel(localStock, null, null);
     }
@@ -295,7 +280,6 @@ public class RestStockService extends BaseRestService {
     public static void doRestGetAndPatchStockLevel(Stock stock, ServiceWatcher watcher, RestResponseListener listener) {
 
         String url = BaseRestService.baseUrl + "/stocklevel?batch=eq." + stock.getRestId();
-        if (watcher != null) watcher.setRequestedUrl(url);
 
         getRestServiceExecutor().execute(() -> {
 

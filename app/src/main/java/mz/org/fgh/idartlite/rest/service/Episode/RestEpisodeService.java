@@ -14,13 +14,14 @@ import org.json.JSONObject;
 
 import java.sql.SQLException;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.*;
+import mz.org.fgh.idartlite.model.SyncEpisode;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
@@ -118,15 +119,19 @@ public class RestEpisodeService extends BaseRestService {
     }
 
     public static void restGetAllReadyEpisodes()  {
-        getAllReadyEpisodes(null);
+        getAllReadyEpisodes(null, null);
+    }
+
+    public static void restGetAllReadyEpisodes(ServiceWatcher watcher)  {
+        getAllReadyEpisodes(null, watcher);
     }
 
     public static void restGetAllReadyEpisodes(RestResponseListener listener)  {
-        getAllReadyEpisodes(listener);
+        getAllReadyEpisodes(listener, null);
     }
 
 
-    public static void getAllReadyEpisodes(RestResponseListener listener) {
+    public static void getAllReadyEpisodes(RestResponseListener listener, ServiceWatcher watcher) {
 
         try {
             clinicService = new ClinicService(getApp(),null);
@@ -134,12 +139,6 @@ public class RestEpisodeService extends BaseRestService {
             Clinic clinic = clinicService.getAllClinics().get(0);
 
             String url = BaseRestService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid()+"&syncstatus=eq.R";
-
-            ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
-
-            serviceWatcher.setServiceAsRunning();
-
-            if (listener != null) listener.registRunningService(serviceWatcher);
 
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
@@ -171,28 +170,18 @@ public class RestEpisodeService extends BaseRestService {
                                         continue;
                                     }
                                 }
-                                if (counter > 0) serviceWatcher.setUpdates(counter +" novos Episodios");
+                                if (watcher != null && counter > 0) watcher.addUpdates(counter + " "+getApp().getString(R.string.new_episodes));
                             }else {
                                 Log.w(TAG, "Response Sem Info." + episodes.length);
                             }
 
-                            serviceWatcher.setServiceAsStopped();
-                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
 
                             if(listener != null){
                                 listener.doOnRestSucessResponse(null);
                             }
                         }
 
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            serviceWatcher.setServiceAsStopped();
-                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
-
-                            Log.e("Response", generateErrorMsg(error));
-                        }
-                    });
+                    }, error -> Log.e("Response", generateErrorMsg(error)));
                 });
 
             } else {
@@ -245,14 +234,18 @@ public class RestEpisodeService extends BaseRestService {
     }
 
     public static void restGetAllEpisodes()  {
-        getAllEpisodes(null);
+        getAllEpisodes(null, null);
     }
 
     public static void restGetAllEpisodes(RestResponseListener listener)  {
-        getAllEpisodes(listener);
+        getAllEpisodes(listener, null);
     }
 
-    public static void getAllEpisodes(RestResponseListener listener) {
+    public static void restGetAllEpisodes(ServiceWatcher watcher)  {
+        getAllEpisodes(null, watcher);
+    }
+
+    public static void getAllEpisodes(RestResponseListener listener, ServiceWatcher watcher) {
 
         try {
             clinicService = new ClinicService(getApp(),null);
@@ -295,7 +288,8 @@ public class RestEpisodeService extends BaseRestService {
                                         continue;
                                     }
                                 }
-                                if (counter > 0) serviceWatcher.setUpdates(counter+" novos Episódios");
+                                if (watcher != null && counter > 0) watcher.addUpdates(counter + " "+getApp().getString(R.string.new_episodes));
+
                             }else {
                                 Log.w(TAG, "Response Sem Info." + episodes.length);
                             }
@@ -303,20 +297,9 @@ public class RestEpisodeService extends BaseRestService {
                             if(listener != null){
                                 listener.doOnRestSucessResponse(null);
                             }
-
-                            serviceWatcher.setServiceAsStopped();
-                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
                         }
 
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            serviceWatcher.setServiceAsStopped();
-                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
-
-                            Log.e("Response", generateErrorMsg(error));
-                        }
-                    });
+                    }, error -> Log.e("Response", generateErrorMsg(error)));
                 });
 
             } else {

@@ -38,11 +38,9 @@ public class IdartLiteApplication extends Application {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "channel 1", NotificationManager.IMPORTANCE_HIGH);
             channel1.setDescription("This is Channel 1");
-            channel1.enableVibration(true);
 
-            NotificationChannel channel2 = new NotificationChannel(CHANNEL_2_ID, "channel 2", NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel channel2 = new NotificationChannel(CHANNEL_2_ID, "channel 2", NotificationManager.IMPORTANCE_HIGH);
             channel2.setDescription("This is Channel 2");
-            channel2.enableVibration(true);
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);

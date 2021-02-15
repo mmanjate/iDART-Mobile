@@ -22,6 +22,8 @@ import mz.org.fgh.idartlite.viewmodel.settings.SettingsVM;
 
 public class AppSettingsFragment extends GenericFragment {
 
+    public static final String DOWNLOAD_MESSAGE_STATUS = "download_message_status";
+
     private FragmentSettingsBinding settingsBinding;
 
     private ListableSpinnerAdapter syncPeriodAdapter;
@@ -29,6 +31,8 @@ public class AppSettingsFragment extends GenericFragment {
     private ListableSpinnerAdapter dataRemovingAdapter;
 
     private NotificationManagerCompat notificationManager;
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         settingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
@@ -55,7 +59,10 @@ public class AppSettingsFragment extends GenericFragment {
         dataRemovingAdapter = new ListableSpinnerAdapter(getMyActivity(), R.layout.simple_auto_complete_item, getRelatedViewModel().getDataDeletionPeriodList());
         settingsBinding.spnRemovePeriod.setAdapter(dataRemovingAdapter);
         settingsBinding.setDataRemovingAdapter(dataRemovingAdapter);
+
     }
+
+
 
     public NotificationManagerCompat getNotificationManager() {
         return notificationManager;
@@ -75,6 +82,5 @@ public class AppSettingsFragment extends GenericFragment {
     public BaseViewModel initViewModel() {
         return new ViewModelProvider(this).get(SettingsVM.class);
     }
-
 
 }

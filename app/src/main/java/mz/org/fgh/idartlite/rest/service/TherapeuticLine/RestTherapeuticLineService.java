@@ -5,11 +5,10 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
-import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.drug.ITherapeuthicLineService;
@@ -31,21 +30,15 @@ public class RestTherapeuticLineService extends BaseRestService {
         getAllTherapeuticLine(null);
     }
 
-    public static void restGetAllTherapeuticLine(RestResponseListener listener)  {
-        getAllTherapeuticLine(listener);
+    public static void restGetAllTherapeuticLine(ServiceWatcher watcher)  {
+        getAllTherapeuticLine(watcher);
     }
 
 
-    public static void getAllTherapeuticLine(RestResponseListener listener) {
+    public static void getAllTherapeuticLine(ServiceWatcher watcher) {
 
         String url = BaseRestService.baseUrl + "/linhat";
         therapeuticLineService = new TherapeuthicLineService(getApp(),null);
-
-        ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
-
-        serviceWatcher.setServiceAsRunning();
-
-        if (listener != null) listener.registRunningService(serviceWatcher);
 
             getRestServiceExecutor().execute(() -> {
 
@@ -75,22 +68,11 @@ public class RestTherapeuticLineService extends BaseRestService {
                                     continue;
                                 }
                             }
-                            if (counter > 0) serviceWatcher.setUpdates(counter +" novas Linhas Terapéuticas");
+                            if (watcher != null && counter > 0) watcher.addUpdates(counter + " "+getApp().getString(R.string.new_lines));
                         }else
                             Log.w(TAG, "Response Sem Info." + linhasTerapeuticas.length);
-
-                        serviceWatcher.setServiceAsStopped();
-                        if (listener != null) listener.updateServiceStatus(serviceWatcher);
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        serviceWatcher.setServiceAsStopped();
-                        if (listener != null) listener.updateServiceStatus(serviceWatcher);
-
-                        Log.e("Response", generateErrorMsg(error));
-                    }
-                });
+                }, error -> Log.e("Response", generateErrorMsg(error)));
             });
     }
 }

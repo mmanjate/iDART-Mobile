@@ -7,9 +7,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
-import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.drug.FormService;
@@ -31,20 +31,14 @@ public class RestFormService extends BaseRestService {
         getAllForms(null);
     }
 
-    public static void restGetAllForms(RestResponseListener listener)  {
-        getAllForms(listener);
+    public static void restGetAllForms(ServiceWatcher watcher)  {
+        getAllForms(watcher);
     }
 
-    public static void getAllForms(RestResponseListener listener) {
+    public static void getAllForms(ServiceWatcher watcher) {
 
         String url = BaseRestService.baseUrl + "/form";
         formService = new FormService(getApp(),null);
-
-        ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
-
-        serviceWatcher.setServiceAsRunning();
-
-        if (listener != null) listener.registRunningService(serviceWatcher);
 
             getRestServiceExecutor().execute(() -> {
 
@@ -74,19 +68,15 @@ public class RestFormService extends BaseRestService {
                                     continue;
                                 }
                             }
-                            if (counter > 0) serviceWatcher.setUpdates(counter +" novos Formns");
+                            if (watcher != null && counter > 0) watcher.addUpdates(counter + " "+getApp().getString(R.string.new_forms));
+
                         }else
                             Log.w(TAG, "Response Sem Info." + forms.length);
 
-                        serviceWatcher.setServiceAsStopped();
-                        if (listener != null) listener.updateServiceStatus(serviceWatcher);
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        serviceWatcher.setServiceAsStopped();
-                        if (listener != null) listener.updateServiceStatus(serviceWatcher);
-
                         Log.e("Response", generateErrorMsg(error));
                     }
                 });

@@ -7,6 +7,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.databinding.Bindable;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,14 +22,17 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.AppSettings;
-import mz.org.fgh.idartlite.rest.service.RestRunDataForTestService;
 import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
 import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment;
+import mz.org.fgh.idartlite.workSchedule.work.DataSyncWorker;
+import mz.org.fgh.idartlite.workSchedule.work.MetaDataSyncWorker;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
+import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.DOWNLOAD_MESSAGE_STATUS;
 
 public class SettingsVM extends BaseViewModel {
 
@@ -44,6 +50,7 @@ public class SettingsVM extends BaseViewModel {
 
     private List<AppSettings> appSettings;
 
+    private WorkManager mWorkManager;
 
     public SettingsVM(@NonNull Application application) {
         super(application);
@@ -102,8 +109,7 @@ public class SettingsVM extends BaseViewModel {
 
     @Override
     public void preInit() {
-
-
+        mWorkManager = WorkManager.getInstance();
     }
 
     private void loadSyncPeriods(){
@@ -253,31 +259,73 @@ public class SettingsVM extends BaseViewModel {
                 getRelatedService().saveSetting(settings);
 
                 loadSettings();
-
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public void observeRunningSync(OneTimeWorkRequest mRequest, String notificationChannel){
+        mWorkManager.getWorkInfoByIdLiveData(mRequest.getId()).observe(getRelatedFragment().getViewLifecycleOwner(), workInfo -> {
+            if (workInfo != null) {
+
+                if (workInfo.getState() == WorkInfo.State.SUCCEEDED){
+                    WorkInfo.State state = workInfo.getState();
+                    workInfo.getOutputData().getString(DOWNLOAD_MESSAGE_STATUS);
+                    workInfo.getProgress();
+
+                    String notificationText;
+                    if (!Utilities.stringHasValue(workInfo.getOutputData().getString(DOWNLOAD_MESSAGE_STATUS))){
+                        if (notificationChannel.equals(CHANNEL_1_ID)){
+                            notificationText = "Sincronização de metadados concluída";
+                        }else {
+                            notificationText = "Envio de dados ao servidor central concluido";
+                        }
+                    }else notificationText = workInfo.getOutputData().getString(DOWNLOAD_MESSAGE_STATUS);
+
+                    issueNotification(notificationText, notificationChannel);
+                }else if (workInfo.getState() == WorkInfo.State.FAILED){
+                    issueNotification("Sincronização não efectuada, por favor tente mais tarde.", notificationChannel);
+                }
+            }
+        });
     }
 
     public void syncDataNow(){
-        Notification builder = new NotificationCompat.Builder(getRelatedFragment().getContext(), CHANNEL_1_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+
+        issueNotification("Sincronização de dados iniciada", CHANNEL_1_ID);
+
+
+        OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class).build();
+        mWorkManager.enqueue(mRequest);
+
+        observeRunningSync(mRequest, CHANNEL_1_ID);
+
+    }
+
+    private void issueNotification(String contentText, String channel) {
+
+        if (!Utilities.stringHasValue(contentText)) contentText = "Não foram encontrados dados novos para sincronizar.";
+
+        Notification builder = new NotificationCompat.Builder(getRelatedFragment().getContext(), channel)
+                .setSmallIcon(R.drawable.ic_data)
                 .setContentTitle("iDART MOBILE")
-                .setContentText("Sincronização Com Servidor Central Iniciada")
+                .setContentText(contentText)
                 .setCategory(NotificationCompat.CATEGORY_STATUS)
                 .build();
 
         getRelatedFragment().getNotificationManager().notify(1, builder);
-
-        RestRunDataForTestService restTestData = new RestRunDataForTestService(getApplication(), getCurrentUser(), getRelatedFragment().getActivity());
-        restTestData.runDataSync();
     }
 
+
     public void syncMetadataNow(){
-        getRelatedService().runMetadataSync();
+        issueNotification("Actualização de metadados iniciada", CHANNEL_2_ID);
+
+
+        OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(MetaDataSyncWorker.class).build();
+        mWorkManager.enqueue(mRequest);
+
+        observeRunningSync(mRequest, CHANNEL_2_ID);
     }
 
     public void initDataRemotionNow(){

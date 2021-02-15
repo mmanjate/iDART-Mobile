@@ -24,8 +24,8 @@ public class RestGetEpisodeWorkerScheduler extends Worker {
         try {
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 Log.d(TAG, "doWork: Sync Patient Data");
-                RestEpisodeService.restGetAllReadyEpisodes(null);
-                RestEpisodeService.restGetAllEpisodes(null);
+                RestEpisodeService.restGetAllReadyEpisodes();
+                RestEpisodeService.restGetAllEpisodes();
             } else {
                 Log.e(TAG, "Response Servidor Offline");
                 return Result.failure();
