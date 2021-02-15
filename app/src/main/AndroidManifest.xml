@@ -9,7 +9,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
+
     <application
+        android:requestLegacyExternalStorage="true"
         android:name=".base.application.IdartLiteApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,10 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".view.reports.PatientsAwaitingReportActivity"></activity>
         <activity
             android:name=".view.home.IDartHomeActivity"
             android:label="@string/title_activity_i_dart_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.settings.SettingsActivity" />
         <activity android:name=".view.reports.FILAReportActivity" />
         <activity android:name=".view.patientSearch.NewPatientSearchActivity" />
@@ -98,10 +102,11 @@
         <activity
             android:name=".view.episode.EpisodeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".view.clinicInfo.ClinicInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+
     </application>
 
 </manifest>

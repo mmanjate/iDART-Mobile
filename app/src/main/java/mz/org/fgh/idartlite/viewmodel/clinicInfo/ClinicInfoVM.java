@@ -142,13 +142,16 @@ public class ClinicInfoVM extends BaseViewModel {
           return;
       }
 
+      getRelatedActivity().getWeightFromView();
 
         String validationErros = clinicInformation.validateClinicInfoData(getRelatedActivity());
         if (validationErros.isEmpty()) {
 
             try {
                 clinicInformation.setPatient(patient);
+
                 if (getClinicInformation().getId() == 0) {
+
 
                     clinicInformation.setUuid(Utilities.getNewUUID().toString());
                     clinicInformation.setSyncStatus("R");
@@ -234,7 +237,7 @@ public class ClinicInfoVM extends BaseViewModel {
         notifyPropertyChanged(BR.addressDataVisible);
     }
 
-
+/*
     @Bindable
     public String getWeight() {
         if (getClinicInformation().getWeight() == 0) return "";
@@ -243,20 +246,20 @@ public class ClinicInfoVM extends BaseViewModel {
     }
 
     public void setWeight(String weight) {
-        this.clinicInformation.setWeight(Utilities.stringHasValue(weight) ? Double.parseDouble(weight) : 0);
+        this.clinicInformation.setWeight(Utilities.stringHasValue(weight) ? Double.parseDouble(weight) : 0.0);
         notifyPropertyChanged(BR.weight);
 
-    }
+    }*/
 
     @Bindable
     public String getHeight() {
         if (getClinicInformation().getHeight() == 0) return "";
 
-        return Utilities.parseDoubleToString(getClinicInformation().getHeight());
+        return Utilities.parseIntToString(getClinicInformation().getHeight());
     }
 
     public void setHeight(String height) {
-        this.clinicInformation.setHeight(Utilities.stringHasValue(height) ? Double.parseDouble(height) : 0);
+        this.clinicInformation.setHeight(Utilities.stringHasValue(height) ? Integer.parseInt(height) : 0);
         notifyPropertyChanged(BR.height);
     }
 

@@ -153,9 +153,10 @@
                                 android:layout_width="@dimen/dimen_0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:inputType="number|numberDecimal"
                                 android:drawableLeft="@drawable/ic_quantidade_recebida"
-                                android:text="@={viewModel.weight}"
-                                android:inputType="number" />
+                                android:text="@{Utilities.parseDoubleToString(viewModel.clinicInformation.weight)}"
+                                />
 
                             <EditText
                                 android:id="@+id/height"
@@ -416,6 +417,7 @@
                              android:paddingStart="@dimen/dimen_4dp"
                              android:paddingLeft="@dimen/dimen_4dp"
                              android:paddingRight="@dimen/dimen_4dp"
+                             android:enabled="false"
                              android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.treatmentStartDate)}" />
                      </LinearLayout>
 

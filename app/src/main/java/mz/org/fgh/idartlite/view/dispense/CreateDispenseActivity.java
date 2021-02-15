@@ -401,7 +401,8 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
     private void loadSelectedDispenseToForm() {
 
-     //   activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getSupply())));
+        if(getRelatedViewModel().getDispense().getSupply()!=0)  activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getSupply())));
+
 
         if (getRelatedViewModel().getDispense() != null) {
 

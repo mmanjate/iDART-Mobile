@@ -416,4 +416,6 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="new_lines">Novas Linhas Terapéuricas</string>
     <string name="new_patients">Novos Pacientes</string>
     <string name="new_episodes">Novos Episódios</string>
+    <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
+
 </resources>
