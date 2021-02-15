@@ -5,11 +5,10 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
-import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.drug.ITherapheuticRegimenService;
@@ -31,21 +30,15 @@ public class RestTherapeuticRegimenService extends BaseRestService {
         getAllTherapeuticRegimen(null);
     }
 
-    public static void restGetAllTherapeuticRegimen(RestResponseListener listener)  {
-        getAllTherapeuticRegimen(listener);
+    public static void restGetAllTherapeuticRegimen(ServiceWatcher watcher)  {
+        getAllTherapeuticRegimen(watcher);
     }
 
 
-    public static void getAllTherapeuticRegimen(RestResponseListener listener) {
+    public static void getAllTherapeuticRegimen(ServiceWatcher watcher) {
 
         String url = BaseRestService.baseUrl + "/regimeterapeutico?select=*,drug(*)&active=eq.true";
         therapeuticRegimenService = new TherapheuticRegimenService(getApp(),null);
-
-        ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
-
-        serviceWatcher.setServiceAsRunning();
-
-        if (listener != null) listener.registRunningService(serviceWatcher);
 
             getRestServiceExecutor().execute(() -> {
 
@@ -74,22 +67,12 @@ public class RestTherapeuticRegimenService extends BaseRestService {
                                     continue;
                                 }
                             }
-                            if (counter > 0) serviceWatcher.setUpdates(counter +" novos Regimes Terapéuticos");
+                            if (watcher != null && counter > 0) watcher.addUpdates(counter + " "+getApp().getString(R.string.new_regimens));
                         }else
                             Log.w(TAG, "Response Sem Info." + regimesterapeuticos.length);
 
-                        serviceWatcher.setServiceAsStopped();
-                        if (listener != null) listener.updateServiceStatus(serviceWatcher);
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        serviceWatcher.setServiceAsStopped();
-                        if (listener != null) listener.updateServiceStatus(serviceWatcher);
-
-                        Log.e("Response", generateErrorMsg(error));
-                    }
-                });
+                }, error -> Log.e("Response", generateErrorMsg(error)));
             });
     }
 

@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.rest.service;
 
-import android.app.Activity;
 import android.app.Application;
 import android.app.Notification;
 
@@ -59,13 +58,11 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
 
     private List<ServiceWatcher> serviceWatcherList;
 
-    private Activity activity;
 
     private NotificationManagerCompat notificationManager;
 
-    public RestRunDataForTestService(Application application, User currentUser, Activity activity) {
+    public RestRunDataForTestService(Application application, User currentUser) {
         super(application, currentUser);
-        this.activity = activity;
 
         notificationManager = NotificationManagerCompat.from(getApp());
 
@@ -107,19 +104,19 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
         RestTerritoryService.restGetAllProvinces();
         RestTerritoryService.restGetAllDistricts();
 
-        RestPharmacyTypeService.restGetAllPharmacyType(RestRunDataForTestService.this);
-        RestFormService.restGetAllForms(RestRunDataForTestService.this);
-        RestDrugService.restGetAllDrugs(RestRunDataForTestService.this);
-        RestDiseaseTypeService.restGetAllDiseaseType(RestRunDataForTestService.this);
-        RestDispenseTypeService.restGetAllDispenseType(RestRunDataForTestService.this);
-        RestTherapeuticRegimenService.restGetAllTherapeuticRegimen(RestRunDataForTestService.this);
-        RestTherapeuticLineService.restGetAllTherapeuticLine(RestRunDataForTestService.this);
-        RestPatientService.restGetAllPatient(RestRunDataForTestService.this);
-        RestEpisodeService.restGetAllReadyEpisodes(RestRunDataForTestService.this);
-        RestEpisodeService.restGetAllEpisodes(RestRunDataForTestService.this);
+        RestPharmacyTypeService.restGetAllPharmacyType();
+        RestFormService.restGetAllForms();
+        RestDrugService.restGetAllDrugs();
+        RestDiseaseTypeService.restGetAllDiseaseType();
+        RestDispenseTypeService.restGetAllDispenseType();
+        RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
+        RestTherapeuticLineService.restGetAllTherapeuticLine();
+        RestPatientService.restGetAllPatient();
+        RestEpisodeService.restGetAllReadyEpisodes();
+        RestEpisodeService.restGetAllEpisodes();
 
         try {
-            RestStockService.restGetStock(clinicService.getAllClinics().get(0), RestRunDataForTestService.this);
+            RestStockService.restGetStock(clinicService.getAllClinics().get(0));
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
@@ -64,15 +65,23 @@ public class RestPatientService extends BaseRestService {
     }
 
     public static void restGetAllPatient()  {
-        getAllPatient(null);
+        getAllPatient(null, null);
     }
 
     public static void restGetAllPatient(RestResponseListener listener)  {
-        getAllPatient(listener);
+        getAllPatient(listener, null);
+    }
+
+    public static void restGetAllPatient(ServiceWatcher watcher)  {
+        getAllPatient(null, watcher);
+    }
+
+    public static void restGetAllPatient(RestResponseListener listener, ServiceWatcher watcher)  {
+        getAllPatient(listener, watcher);
     }
 
 
-    public static void getAllPatient(RestResponseListener listener) {
+    public static void getAllPatient(RestResponseListener listener, ServiceWatcher watcher) {
 
         try {
             clinicService = new ClinicService(getApp(), null);
@@ -82,12 +91,6 @@ public class RestPatientService extends BaseRestService {
             patientService = new PatientService(getApp(), null);
 
             String url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinic.getUuid() + "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
-
-            ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
-
-            serviceWatcher.setServiceAsRunning();
-
-            if (listener != null) listener.registRunningService(serviceWatcher);
 
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
@@ -119,28 +122,17 @@ public class RestPatientService extends BaseRestService {
                                         continue;
                                     }
                                 }
-                                if (counter > 0) serviceWatcher.setUpdates(counter +" novos Pacientes");
+                                if (watcher != null && counter > 0) watcher.addUpdates(counter + " "+getApp().getString(R.string.new_patients));
                             } else {
                                 Log.w(TAG, "Response Sem Info." + patients.length);
                             }
-
-                            serviceWatcher.setServiceAsStopped();
-                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
 
                             if (listener != null) {
                                 listener.doOnRestSucessResponse(null);
                             }
                         }
 
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            serviceWatcher.setServiceAsStopped();
-                            if (listener != null) listener.updateServiceStatus(serviceWatcher);
-
-                            Log.e("Response", generateErrorMsg(error));
-                        }
-                    });
+                    }, error -> Log.e("Response", generateErrorMsg(error)));
                 });
 
             } else {

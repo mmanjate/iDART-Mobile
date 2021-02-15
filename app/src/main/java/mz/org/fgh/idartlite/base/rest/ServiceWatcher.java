@@ -1,6 +1,10 @@
 package mz.org.fgh.idartlite.base.rest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class ServiceWatcher {
 
@@ -15,15 +19,14 @@ public class ServiceWatcher {
 
     private String requestedUrl;
 
-    private boolean newUpdates;
-
-    private String updates;
+    private List<String> updateList;
 
     private String type;
 
     private int recordsToSend;
 
     private int sentRecords;
+    private String update;
 
     public ServiceWatcher(String serviceName, String requestedUrl) {
         this.serviceName = serviceName;
@@ -42,6 +45,10 @@ public class ServiceWatcher {
         this.requestedUrl = requestedUrl;
         this.type = type;
         this.recordsToSend = recordsToSend;
+    }
+
+    public ServiceWatcher(String type) {
+        this.type = type;
     }
 
     public void setServiceAsRunning(){
@@ -68,6 +75,10 @@ public class ServiceWatcher {
         return new ServiceWatcher(serviceName, requestedUrl);
     }
 
+    public static ServiceWatcher fastCreate(String type){
+        return new ServiceWatcher(type);
+    }
+
     public static ServiceWatcher fastCreate(String serviceName, String requestedUrl, String type){
         return new ServiceWatcher(serviceName, requestedUrl, type);
     }
@@ -80,21 +91,6 @@ public class ServiceWatcher {
         return new ServiceWatcher(serviceName, null, TYPE_UPLOAD, recordsToSend);
     }
 
-    public boolean isNewUpdates() {
-        return newUpdates;
-    }
-
-    public void setNewUpdates(boolean newUpdates) {
-        this.newUpdates = newUpdates;
-    }
-
-    public String getUpdates() {
-        return updates;
-    }
-
-    public void setUpdates(String updates) {
-        this.updates = updates;
-    }
 
     public String getType() {
         return type;
@@ -124,8 +120,6 @@ public class ServiceWatcher {
                 "serviceStatus='" + serviceStatus + '\'' +
                 ", serviceName='" + serviceName + '\'' +
                 ", requestedUrl='" + requestedUrl + '\'' +
-                ", newUpdates=" + newUpdates +
-                ", updates='" + updates + '\'' +
                 ", type='" + type + '\'' +
                 ", recordsToSend=" + recordsToSend +
                 ", sentRecords=" + sentRecords +
@@ -162,5 +156,29 @@ public class ServiceWatcher {
 
     public boolean isUploadService(){
         return this.type.equals(TYPE_UPLOAD);
+    }
+
+    public void addUpdates(String s) {
+        if (this.updateList == null) this.updateList = new ArrayList<>();
+
+        this.updateList.add(s);
+    }
+
+    public String getUpdates() {
+        if (!Utilities.listHasElements(updateList)) return null;
+
+        String msg = null;
+        for (String s : updateList){
+            msg = Utilities.stringHasValue(msg) ? msg+"; " + s : s;
+        }
+        return msg;
+    }
+
+    public void setUpdates(String s) {
+        this.update = s;
+    }
+
+    public String getUpdate() {
+        return update;
     }
 }

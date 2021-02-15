@@ -35,6 +35,8 @@ public class InventoryVM extends BaseViewModel {
 
     private List<Drug> drugs;
 
+    private List<Drug> bkpDrugs;
+
     private List<Listble> adjustmentList;
 
     private List<Listble> drugList;
@@ -50,7 +52,7 @@ public class InventoryVM extends BaseViewModel {
     @Override
     public void preInit() {
         try {
-            if (getCurrentStep().isApplicationStepEdit()){
+            if (getCurrentStep().isApplicationStepEdit() || getCurrentStep().isApplicationStepDisplay()){
                 this.drugs = getRelatedService().getAllDrugsOnInventory(getRelatedRecord());
             }else
                 this.drugs = getRelatedService().getAllDrugsWithExistingLote();
@@ -70,20 +72,24 @@ public class InventoryVM extends BaseViewModel {
 
     private void determineSelectedDrug() {
         try {
-            List<StockAjustment> stockAjustments = getRelatedService().getAllStockAjustmentsOfInventory(getSelectedRecord());
+            List<StockAjustment> stockAjustments = new ArrayList<>();
 
-            if (getCurrentStep().isApplicationStepDisplay()) {
+            if (getSelectedRecord().getId() > 0) {
+                stockAjustments = getRelatedService().getAllStockAjustmentsOfInventory(getSelectedRecord());
+            }
+
+            if (getCurrentStep().isApplicationStepDisplay() && Utilities.listHasElements(stockAjustments)) {
                 this.adjustmentList = Utilities.parseList(stockAjustments, Listble.class);
-            } else if (getCurrentStep().isApplicationStepEdit()) {
+            } else if (getCurrentStep().isApplicationStepEdit() || getCurrentStep().isApplicationStepDisplay()) {
 
                 if (Utilities.listHasElements(stockAjustments)) {
                     for (Drug drug : this.drugs) {
                         for (StockAjustment ajustment : stockAjustments) {
                             if (ajustment.getStock().getDrug().equals(drug)) {
-                                if (Utilities.listHasElements(drug.getAjustmentInfo())) {
-                                    if (!drug.getAjustmentInfo().contains(ajustment)) {
-                                        drug.addAjustmentInfo(ajustment);
-                                    }
+                                if (!Utilities.listHasElements(drug.getAjustmentInfo())) {
+                                    drug.addAjustmentInfo(ajustment);
+                                }else if (!drug.getAjustmentInfo().contains(ajustment)) {
+                                    drug.addAjustmentInfo(ajustment);
                                 }
                             }
                         }
@@ -105,6 +111,12 @@ public class InventoryVM extends BaseViewModel {
                             }
                         }
                     }
+                }
+
+                bkpDrugs = new ArrayList<>();
+
+                for (Drug d : drugs){
+                    bkpDrugs.add(d);
                 }
 
                 if (getSelectedRecord().getId() > 0) {
@@ -297,6 +309,10 @@ public class InventoryVM extends BaseViewModel {
     }
 
     public void nextDrug(){
+
+        if (this.drugs.size() != bkpDrugs.size()){
+            this.drugs = bkpDrugs;
+        }
         if (currentSelectedDrugPosition+1 >= this.drugs.size()) {
             Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.no_more_next_drug)).show();
         }else {
@@ -307,6 +323,8 @@ public class InventoryVM extends BaseViewModel {
 
     private void updateAjustmentInfo() {
         try {
+
+
         if (this.drugs.get(currentSelectedDrugPosition).getAjustmentInfo() == null){
             this.drugs.get(currentSelectedDrugPosition).setAjustmentInfo(new ArrayList<>());
             for (Listble listble : this.adjustmentList) {
