@@ -334,7 +334,7 @@
 
     <string name="tb_screening_questions">Perguntas de Rastreio de Tuberculose</string>
 
-     <string name="profilatic_treatment_tpi">Está Actualmente em tratamento Profilático com Isoniazida(TPI)?</string>
+    <string name="profilatic_treatment_tpi">Está Actualmente em tratamento Profilático com Isoniazida(TPI)?</string>
     <string name="treatment_tb">Está em tratamento de tuberculose(TB)?</string>
 
     <string name="signs_syntoms_tb">Sinais e sintomas sugestivos a TB</string>
@@ -363,7 +363,7 @@
 
     <string name="patient_refered_evaluation_us_on_ram">Paciente referido pelas reacções adversas para mais avaliação na US ?</string>
 
-    <string name="tb_adverse_reaction_questions">Perguntas de Rastreio de Tuberculose Reacções Adversas aos Medicamentos (RAM) </string>
+    <string name="tb_adverse_reaction_questions">Perguntas de Rastreio de Tuberculose Reacções Adversas aos Medicamentos  </string>
 
     <string name="tb_screening">Rastreio de Tuberculose</string>
 
@@ -430,4 +430,6 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="new_patients">Novos Pacientes</string>
     <string name="new_episodes">Novos Episódios</string>
 
+
+    <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
 </resources>

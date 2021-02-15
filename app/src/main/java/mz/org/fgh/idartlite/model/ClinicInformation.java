@@ -61,7 +61,7 @@ public class ClinicInformation extends BaseModel {
     private double weight;
 
     @DatabaseField(columnName = COLUMN_HEIGHT)
-    private double height;
+    private int height;
 
     @DatabaseField(columnName = COLUMN_IMC)
     private String imc;
@@ -159,11 +159,11 @@ public class ClinicInformation extends BaseModel {
         this.weight = weight;
     }
 
-    public double getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
