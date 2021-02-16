@@ -23,7 +23,7 @@ public class MetaDataSyncWorker extends Worker {
 
     public static final String TAG = "download_job";
     private static final String PROGRESS = "PROGRESS";
-    private static final long DELAY = 1000L;
+    private static final long DELAY = 6000;
 
 
     public MetaDataSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -61,7 +61,7 @@ public class MetaDataSyncWorker extends Worker {
             // ... handle exception
         }
 
-        Data outputData = new Data.Builder().putString(DOWNLOAD_MESSAGE_STATUS, watcher.getUpdate()).build();
+        Data outputData = new Data.Builder().putString(DOWNLOAD_MESSAGE_STATUS, watcher.getUpdates()).build();
 
         return Result.success(outputData);
     }

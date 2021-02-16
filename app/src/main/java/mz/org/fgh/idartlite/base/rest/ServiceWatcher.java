@@ -169,7 +169,7 @@ public class ServiceWatcher {
 
         String msg = null;
         for (String s : updateList){
-            msg = Utilities.stringHasValue(msg) ? msg+"; " + s : s;
+            msg = Utilities.stringHasValue(msg) ? msg+ System.lineSeparator() + s : s;
         }
         return msg;
     }

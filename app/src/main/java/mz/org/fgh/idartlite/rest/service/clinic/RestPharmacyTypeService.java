@@ -7,7 +7,6 @@ import androidx.collection.ArrayMap;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import java.util.Map;
 
@@ -79,17 +78,12 @@ public class RestPharmacyTypeService extends BaseRestService {
                                 continue;
                             }
                         }
-                         if (watcher != null) watcher.setUpdates(counter +getApp().getString(R.string.new_pharmacy_types));
+                         if (watcher != null && counter > 0) watcher.addUpdates(counter + " " +getApp().getString(R.string.new_pharmacy_types));
 
                     }else
                         Log.w(TAG, "Response Sem Info." + pharmacyTypes.length);
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("Response", generateErrorMsg(error));
-                }
-            });
+            }, error -> Log.e("Response", generateErrorMsg(error)));
         });
     }
 }

@@ -40,9 +40,13 @@ import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.service.territory.CountryService;
 import mz.org.fgh.idartlite.service.territory.ICountryService;
 
-import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.DOWNLOAD_MESSAGE_STATUS;
+import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.UPLOAD_MESSAGE_STATUS;
 
 public class DataSyncWorker extends Worker {
+
+    public static final String TAG = "data_upload_job";
+    private static final String PROGRESS = "PROGRESS";
+    private static final long DELAY = 6000;
 
     public DataSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -162,7 +166,12 @@ public class DataSyncWorker extends Worker {
             return Result.failure();
         }
 
-        Data outputData = new Data.Builder().putString(DOWNLOAD_MESSAGE_STATUS, watcher.getUpdates()).build();
+        try {
+            Thread.sleep(DELAY);
+        } catch (InterruptedException exception) {
+            // ... handle exception
+        }
+        Data outputData = new Data.Builder().putString(UPLOAD_MESSAGE_STATUS, watcher.getUpdates()).build();
 
         return Result.success(outputData);
     }
