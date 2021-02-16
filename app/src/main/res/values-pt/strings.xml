@@ -407,15 +407,16 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="late_days_cannot_be_zero">Uma vez que o paciente não veio na data marcada, o numero de dias de atraso não pode ser zero.</string>
 
     <string name="adverse_reaction_cannot_be_empty">Uma vez que o paciente teve reacção adversa deve descreve la</string>
-    <string name="new_pharmacy_types">Novos Pharmacy Types</string>
-    <string name="new_forms">Novos Forms</string>
-    <string name="new_drugs">Novos Medicamentos</string>
-    <string name="new_diseases">Novos Diseases</string>
-    <string name="new_dispense_types">Novos Tipos de Dispensa</string>
-    <string name="new_regimens">Novos Regimes Terapéuticos</string>
-    <string name="new_lines">Novas Linhas Terapéuricas</string>
-    <string name="new_patients">Novos Pacientes</string>
-    <string name="new_episodes">Novos Episódios</string>
+    <string name="new_pharmacy_types">Novo(s) Pharmacy Types</string>
+    <string name="new_forms">Novo(s) Forms</string>
+    <string name="new_drugs">Novo(s) Medicamentos</string>
+    <string name="new_diseases">Novo(s) Diseases</string>
+    <string name="new_dispense_types">Novo(s) Tipos de Dispensa</string>
+    <string name="new_regimens">Novo(s )Regimes Terapéuticos</string>
+    <string name="new_lines">Nova(s) Linhas Terapéuricas</string>
+    <string name="new_patients">Novo(s) Pacientes</string>
+    <string name="new_episodes">Novo(s) Episódios</string>
+    <string name="no_selected_drug">Por favor seleccione pelo menos um medicamento.</string>
     <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
 
 </resources>
