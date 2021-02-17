@@ -33,6 +33,7 @@ import mz.org.fgh.idartlite.workSchedule.work.MetaDataSyncWorker;
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
 import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.DOWNLOAD_MESSAGE_STATUS;
+import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.UPLOAD_MESSAGE_STATUS;
 
 public class SettingsVM extends BaseViewModel {
 
@@ -271,17 +272,24 @@ public class SettingsVM extends BaseViewModel {
 
                 if (workInfo.getState() == WorkInfo.State.SUCCEEDED){
                     WorkInfo.State state = workInfo.getState();
+
                     workInfo.getOutputData().getString(DOWNLOAD_MESSAGE_STATUS);
+                    workInfo.getOutputData().getString(UPLOAD_MESSAGE_STATUS);
+
                     workInfo.getProgress();
 
                     String notificationText;
-                    if (!Utilities.stringHasValue(workInfo.getOutputData().getString(DOWNLOAD_MESSAGE_STATUS))){
-                        if (notificationChannel.equals(CHANNEL_1_ID)){
-                            notificationText = "Sincronização de metadados concluída";
-                        }else {
-                            notificationText = "Envio de dados ao servidor central concluido";
-                        }
-                    }else notificationText = workInfo.getOutputData().getString(DOWNLOAD_MESSAGE_STATUS);
+                    if (notificationChannel.equals(CHANNEL_2_ID)){
+                        if (!Utilities.stringHasValue(workInfo.getOutputData().getString(DOWNLOAD_MESSAGE_STATUS))){
+                            notificationText = "Actualização de metadados concluída, Não há metadados novos.";
+                        } else notificationText = workInfo.getOutputData().getString(DOWNLOAD_MESSAGE_STATUS);
+                    }else
+                    if (notificationChannel.equals(CHANNEL_1_ID)){
+                        if (!Utilities.stringHasValue(workInfo.getOutputData().getString(UPLOAD_MESSAGE_STATUS))){
+                            notificationText = "Sincronização de dados concluída, Não há dados novos.";
+                        } else notificationText = workInfo.getOutputData().getString(UPLOAD_MESSAGE_STATUS);
+                    }else throw new RuntimeException("Unknown Notification channel");
+
 
                     issueNotification(notificationText, notificationChannel);
                 }else if (workInfo.getState() == WorkInfo.State.FAILED){
@@ -310,6 +318,7 @@ public class SettingsVM extends BaseViewModel {
         Notification builder = new NotificationCompat.Builder(getRelatedFragment().getContext(), channel)
                 .setSmallIcon(R.drawable.ic_data)
                 .setContentTitle("iDART MOBILE")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
                 .setContentText(contentText)
                 .setCategory(NotificationCompat.CATEGORY_STATUS)
                 .build();

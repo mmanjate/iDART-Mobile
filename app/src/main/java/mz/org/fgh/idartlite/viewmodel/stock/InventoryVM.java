@@ -393,6 +393,11 @@ public class InventoryVM extends BaseViewModel {
 
     public void continueInventory(){
         try {
+            if (!isGeral() && !Utilities.listHasElements(selectedListbles)){
+                Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.no_selected_drug)).show();
+                return;
+            }
+
             getRelatedService().initInventory(getRelatedRecord());
             //getRelatedActivity().summarizeView(View.VISIBLE);
 
@@ -409,9 +414,10 @@ public class InventoryVM extends BaseViewModel {
 
             notifyChange();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+
     }
 
     public List<Drug> getSelectedDrugs() {
