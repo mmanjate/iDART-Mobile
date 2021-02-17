@@ -258,7 +258,7 @@ public class PatientRegisterReportActivity extends BaseActivity {
 
     @SuppressLint("LongLogTag")
     private void createPdf(List<Patient> patients) throws IOException, DocumentException {
-        File docsFolder = new File(Environment.getExternalStorageDirectory() + "/sdcard");
+        File docsFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dir");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
         }

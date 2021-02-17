@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_dispense" />
+            app:srcCompat="@drawable/ic_pacient" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -99,7 +99,7 @@
                     android:layout_below="@id/pacient_name"
                     android:layout_toLeftOf="@+id/emptyspace3"
                     android:gravity="right"
-                    android:text="@string/data_levantamento"
+                    android:text="@string/dta_marcada_levantamento"
                     android:textStyle="bold" />
 
                 <TextView
@@ -117,44 +117,16 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/pacient_name"
                     android:layout_alignParentRight="true"
-                    android:text="@{DateUtilities.formatToDDMMYYYY(dispense.pickupDate)}"/>
-
-
-
-                <TextView
-                    android:id="@+id/dataProximoLevantamento"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/lbl_pick_up_date"
-                    android:layout_toLeftOf="@+id/emptyspace3"
-                    android:gravity="right"
-                    android:text="@string/dt_proximo_levantamento"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/emptyspace4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/pacient_name"
-                    android:layout_toLeftOf="@id/pick_up_date"
-                    android:gravity="right"
-                    android:text="   " />
-
-                <TextView
-                    android:id="@+id/next_pickUpDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/pick_up_date"
-                    android:layout_alignParentRight="true"
                     android:text="@{DateUtilities.formatToDDMMYYYY(dispense.nextPickupDate)}"/>
 
-                <LinearLayout
+
+             '   <LinearLayout
                     android:id="@+id/linearDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/next_pickUpDate"
+                    android:layout_below="@id/pick_up_date"
                     android:layout_marginTop="0dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -166,6 +138,7 @@
                             android:id="@+id/regime"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+
                             android:layout_toLeftOf="@+id/regime_thera"
                             android:gravity="right"
                             android:text="@string/regime_terapeutico"
@@ -200,7 +173,6 @@
                             android:layout_toLeftOf="@+id/regime_thera"
                             android:paddingLeft="@dimen/dimen_4dp"
                             android:text="@{dispense.prescription.dispenseType.description}" />
-
                         <TextView
                             android:id="@+id/lbl_sanitary_unit"
                             android:layout_width="wrap_content"

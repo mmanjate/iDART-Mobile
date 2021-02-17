@@ -36,7 +36,8 @@ public class DispenseReportAdapter extends AbstractRecycleViewAdapter<Dispense> 
         if (viewType == VIEW_TYPE_ITEM) {
             contentDispensesReportBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.content_dispenses_report, parent, false);
             return new DispenseViewHolder(contentDispensesReportBinding);
-        }else if (viewType == VIEW_TYPE_LOADING) {
+        }
+        else if (viewType == VIEW_TYPE_LOADING) {
             itemLoadingBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_loading, parent, false);
             return new LoadingViewHolder(itemLoadingBinding);
         }

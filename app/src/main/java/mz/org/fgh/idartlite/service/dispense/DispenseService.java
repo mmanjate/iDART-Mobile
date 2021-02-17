@@ -288,4 +288,9 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
     }
 
+    @Override
+    public List<Dispense> getDispensesBetweenNextPickupDateStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return getDataBaseHelper().getDispenseDao().getDispensesBetweenNextPickppDateStartDateAndEndDateWithLimit(startDate,endDate,offset,limit);
+    }
+
 }
