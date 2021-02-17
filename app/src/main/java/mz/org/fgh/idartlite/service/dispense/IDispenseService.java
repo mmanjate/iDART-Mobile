@@ -41,4 +41,6 @@ public interface IDispenseService extends IBaseService<Dispense> {
     public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException;
 
     public List<StockReportData> getStockAlertReportLastThreeMonthsPeriod() throws SQLException;
+
+    public List<Dispense> getDispensesBetweenNextPickupDateStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException;
 }

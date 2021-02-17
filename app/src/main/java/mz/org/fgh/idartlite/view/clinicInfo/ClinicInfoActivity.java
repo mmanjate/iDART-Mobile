@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 import mz.org.fgh.idartlite.BR;
@@ -371,9 +373,7 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
 
                     if(height !=0){
 
-                        double imc= weight/(height*height);
-
-                        getRelatedViewModel().setImc(String.valueOf(imc));
+                        getRelatedViewModel().setImc(getImcValue(weight,height));
                     }
                 }
            }
@@ -390,9 +390,9 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
 
                     if(weight !=0){
 
-                        double imc= weight/(height*height);
+                      //  double imc= weight/(height*height);
 
-                        getRelatedViewModel().setImc(String.valueOf(imc));
+                        getRelatedViewModel().setImc(getImcValue(weight,height));
                     }
                 }
             }
@@ -459,6 +459,14 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
 
     public void getWeightFromView(){
         getRelatedViewModel().getClinicInformation().setWeight(Double.parseDouble(createClinicInfoBinding.weight.getText().toString()));
+    }
+
+    private String getImcValue(double weight,double height) {
+
+        double imc= weight/(height*height);
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.CEILING);
+        return String.valueOf(df.format(imc));
     }
 
 

@@ -432,4 +432,6 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
 
 
     <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
+
+    <string name="awaiting_patients_report">Pacientes Esperados no Periodo</string>
 </resources>
