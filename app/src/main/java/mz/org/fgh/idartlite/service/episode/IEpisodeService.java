@@ -37,4 +37,5 @@ public interface IEpisodeService extends IBaseService<Episode> {
     public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end,long limit,long offset) throws SQLException;
 
 
+    List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end) throws SQLException;
 }

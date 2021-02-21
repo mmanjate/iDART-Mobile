@@ -21,6 +21,7 @@ import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
+import mz.org.fgh.idartlite.util.Utilities;
 
 import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
 
@@ -66,8 +67,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
     }
 
     public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic, long offset, long limit) throws SQLException {
-            return patientDao.searchPatientByParamAndClinic(param, clinic, offset , limit);
-
+        return patientDao.searchPatientByParamAndClinic(param, clinic, offset , limit);
     }
 
     public List<Patient> getALLPatient() throws  SQLException {
@@ -78,8 +78,9 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         patientDao.create(patient);
     }
 
-    public int countNewPatientsByPeriod(Date start, Date end) throws SQLException {
-        return patientDao.countNewPatientsByPeriod(start, end, getApplication());
+    @Override
+    public int countNewPatientsByPeriod(Date start, Date end, String sanitaryUnit) throws SQLException {
+        return patientDao.countNewPatientsByPeriod(start, end, sanitaryUnit, getApplication());
     }
 
     public Patient getPatientByUuid(String uuid) throws SQLException {
@@ -176,6 +177,20 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
 */
          //   }
         return patients;
+    }
+
+    @Override
+    public List<String> getSanitaryUnitsWithRecordsOnPeriod(Date start, Date end) throws SQLException {
+        List<String> usLits = new ArrayList<>();
+
+        List<Episode> episodes = episodeService.getAllStartEpisodesBetweenStartDateAndEndDate(start, end);
+
+        if (!Utilities.listHasElements(episodes)) return  null;
+
+        for (Episode episode : episodes){
+            usLits.add(episode.getSanitaryUnit());
+        }
+        return usLits;
     }
 
 

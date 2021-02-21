@@ -27,6 +27,8 @@ import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public abstract class BaseViewModel  extends AndroidViewModel implements Observable, IDialogListener {
@@ -56,6 +58,12 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     protected ServiceProvider serviceProvider;
 
+    private static final String SETTINGS_PREF = "settings_pref";
+
+    private static final String APP_LAST_SYNC_DATE = "app_last_sync";
+
+    protected SecurePreferences settingsPreferences;
+
     public BaseViewModel(@NonNull Application application) {
         super(application);
         callbacks = new PropertyChangeRegistry();
@@ -69,6 +77,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         selectedListbles = new ArrayList<>();
 
         initFormData();
+
+        settingsPreferences = new SecurePreferences(application, SETTINGS_PREF,  true);
 
     }
 
@@ -292,5 +302,21 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public void removeSelectedListable(Listble listble){
         this.selectedListbles.remove(listble);
+    }
+
+    public void saveSharedSettings(){
+        settingsPreferences.put(APP_LAST_SYNC_DATE, DateUtilities.formatToDDMMYYYY_HHMISS(DateUtilities.getCurrentDate()));
+    }
+
+    public String getSettingsData(String key) {
+        if (settingsPreferences.containsKey(key)) {
+            return  settingsPreferences.getString(key);
+        }
+
+        return "Sem data";
+    }
+
+    public String getAppLastSyncDate(){
+        return "Última Sincronização: "+getSettingsData(APP_LAST_SYNC_DATE);
     }
 }

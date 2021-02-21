@@ -13,7 +13,6 @@ import java.util.List;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
-import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
@@ -154,13 +153,4 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
 
     }
 
-    @Override
-    public boolean registRunningService(ServiceWatcher serviceWatcher) {
-        return false;
-    }
-
-    @Override
-    public void updateServiceStatus(ServiceWatcher serviceWatcher) {
-
-    }
 }

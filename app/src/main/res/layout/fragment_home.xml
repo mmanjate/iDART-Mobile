@@ -203,6 +203,15 @@
                 android:textSize="@dimen/dimen_10dp"
                 android:text="@{viewModel.appVersionName}"
                 android:gravity="top|center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_0dp"
+                android:layout_weight="2"
+                android:paddingTop="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_10dp"
+                android:text="@{viewModel.appLastSyncDate}"
+                android:gravity="top|center"/>
         </LinearLayout>
 
     </LinearLayout>

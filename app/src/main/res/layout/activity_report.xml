@@ -27,9 +27,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Gráfico de entrada de pacientes referidos"
+                android:text="Gráfico de entrada de pacientes referidos por Unidade Sanitária"
                 android:textColor="@color/text_color"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

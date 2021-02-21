@@ -309,6 +309,8 @@ public class SettingsVM extends BaseViewModel {
 
         observeRunningSync(mRequest, CHANNEL_1_ID);
 
+        saveSharedSettings();
+
     }
 
     private void issueNotification(String contentText, String channel) {

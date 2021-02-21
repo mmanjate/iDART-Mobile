@@ -23,7 +23,6 @@ import java.util.Map;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.patient.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
-import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.ActivityNewPatientSearchBinding;
@@ -229,16 +228,6 @@ public class NewPatientSearchActivity extends BaseActivity implements RestRespon
         if(newPatients.isEmpty()){
             Utilities.displayConfirmationDialog(this, this.getString(R.string.would_like_create_patient), this.getString(R.string.yes), this.getString(R.string.no), ((NewPatientSearchActivity)this)).show();
         }
-
-    }
-
-    @Override
-    public boolean registRunningService(ServiceWatcher serviceWatcher) {
-        return false;
-    }
-
-    @Override
-    public void updateServiceStatus(ServiceWatcher serviceWatcher) {
 
     }
 
