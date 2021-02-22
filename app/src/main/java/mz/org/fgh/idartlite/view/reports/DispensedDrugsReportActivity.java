@@ -160,7 +160,7 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         options.setChart(chart);
 
         HITitle title = new HITitle();
-        title.setText("Percentagem de Aviamentos por Regime, "+start+" à "+end);
+        title.setText("Percentagem de Dispensas por Regime, "+start+" à "+end);
         options.setTitle(title);
 
         HITooltip tooltip = new HITooltip();

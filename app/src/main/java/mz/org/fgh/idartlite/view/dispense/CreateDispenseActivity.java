@@ -646,7 +646,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
         if (prescriptionExpireDate != null) {
             return "A última prescrição " +
-                    "do paciente não pode ser aviada, porque já atingiu o limite de aviamentos. VALIDADE DA PRESCRIÇÃO: " + prescriptionExpireDate;
+                    "do paciente não pode ser dispensada, porque já atingiu o limite de levantamentos. VALIDADE DA PRESCRIÇÃO: " + prescriptionExpireDate;
         } else {
 
             int prescriptionSupply = this.prescription.getSupply();

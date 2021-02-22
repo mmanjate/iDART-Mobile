@@ -29,7 +29,7 @@
     <string name="stock_inventory_fragment">Inventário Inactivo por enquanto.</string>
     <string name="general_info">Visão Geral</string>
     <string name="episode">Episódio</string>
-    <string name="dispense">Aviamento</string>
+    <string name="dispense">Dispensa</string>
     <string name="prescription">Prescrição</string>
     <string name="alert_ok">OK</string>
     <string name="name">Nome: </string>
@@ -115,10 +115,10 @@
     <string name="prescri_o_especial_info">Prescrição Especial</string>
     <string name="prescri_o_especial">Prescrição Especial?</string>
     <string name="motivo">Motivo *</string>
-    <string name="prescription_got_dispenses_msg">Esta prescrição já tem aviamentos registados, não pode ser removida.</string>
+    <string name="prescription_got_dispenses_msg">Esta prescrição já tem levantamentos registados, não pode ser removida.</string>
     <string name="no_search_results">Não foram encontrados resultados para a sua pesquisa.</string>
     <string name="nid_or_name_is_mandatory">Deve informar o nome ou nid para pesquisar.</string>
-    <string name="cant_edit_prescription_msg">Não pode efectuar alterações sobre esta prescrição pois a mesma ja possui aviamentos registados.</string>
+    <string name="cant_edit_prescription_msg">Não pode efectuar alterações sobre esta prescrição pois a mesma ja possui levantamentos registados.</string>
     <string name="cant_edit_synced_prescription">Não pode efectuar alterações sobre esta prescrição pois a mesma ja foi sincronizada com o iDART central.</string>
     <string name="save_error_msg_episode">\"Ocorreu um erro ao gravar o Episodio. \"</string>
     <string name="loading">\" Por favor, aguarde ...\"</string>
@@ -133,8 +133,8 @@
     <string name="prescription_urgent_notes_mandatory">Indicou que a prescrição é especial, por favor indique o motivo.</string>
     <string name="error_loading_patient_data">Ocorreu um erro ao carregar os dados do paciente.</string>
     <string name="no_episode_found">Não foi encontrado nenhum episódio do paciente seleccionado</string>
-    <string name="new_prescription_creation">A ultima prescrição ainda não teve todos os aviamentos efectuados, confirma anular a mesma e criar nova?</string>
-    <string name="cant_edit_synced_dispense">Não pode efectuar alterações sobre este aviamento pois o mesmo já foi sincronizado com o iDART central.</string>
+    <string name="new_prescription_creation">A ultima prescrição ainda não teve todos os levantamentos efectuados, confirma anular a mesma e criar nova?</string>
+    <string name="cant_edit_synced_dispense">Não pode efectuar alterações sobre esta dispensa pois a mesma já foi sincronizada com o iDART central.</string>
     <string name="dispense_cant_be_removed_msg">Esta Dispensa não pode ser removida, pois já foi sincronizada com o IDART central.</string>
     <string name="error_removing_record">Ocorreu um erro ao remover o registo.</string>
     <string name="error_msg_server_offline">Servidor offline, não será possível realizar sincronizações, por favor tente mais tarde.</string>
@@ -163,10 +163,10 @@
     <string name="pharmacy_required">O campo Farmácia deve ser preenchido.</string>
     <string name="pharmacy_config_not_found">Não foi encontrada a configuração da farmácia.</string>
     <string name="user_or_pass_invalid">Não foi encontrada a configuração da farmácia.</string>
-    <string name="would_you_like_remove_prior_dispense">Gostaria de apagar o Aviamento anterior, e substituí-lo com este que você acabou de criar?</string>
-    <string name="dispense_drug_detail_list">O Aviamento que pretende editar contém os detalhes abaixo</string>
+    <string name="would_you_like_remove_prior_dispense">Gostaria de apagar a dispensa anterior, e substituí-lo com este que você acabou de criar?</string>
+    <string name="dispense_drug_detail_list">A Dispensa que pretende editar contém os detalhes abaixo</string>
     <string name="error_verifying">Ocorreu um erro ao verificar a configuração de utilizadores</string>
-    <string name="cant_dispense_patient_has_drugs">Este paciente ainda tem medicamentos. A data de leventamento actual não pode ser menor que a data do próximo levantamento no último aviamento.</string>
+    <string name="cant_dispense_patient_has_drugs">Este paciente ainda tem medicamentos. A data de leventamento actual não pode ser menor que a data do próximo levantamento na última dispensa efectuada.</string>
     <string name="dispensed_drug_list">Medicamentos aviados</string>
     <string name="dados_iniciais">Dados Iniciais</string>
     <string name="medicamentos">Medicamentos</string>
@@ -177,8 +177,8 @@
     <string name="quantidade">Quantidade</string>
     <string name="dados_do_episodio">Dados do Episódio</string>
     <string name="prescription_must_be_urgent">Esta prescrição deve ser indicada como especial, pois a anterior foi anulada.</string>
-    <string name="remove_dispense_drug_detail_list">O Aviamento que pretende remover contém os detalhes abaixo</string>
-    <string name="would_you_like_remove_dispense">Confirma a remoção do aviamento?</string>
+    <string name="remove_dispense_drug_detail_list">A dispensa que pretende remover contém os detalhes abaixo</string>
+    <string name="would_you_like_remove_dispense">Confirma a remoção da dispensa?</string>
     <string name="dispense_has_final_episode_cant_be_edit">Não pode se editar/remover a dispensa porque o paciente já tem o episódio final.</string>
     <string name="patient_has_final_episode_cant_create_dispense">Não pode criar nova dispensa porque o paciente já tem o episódio final.</string>
 

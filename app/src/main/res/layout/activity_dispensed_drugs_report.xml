@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Gráfico de aviamentos por regime"
+                android:text="Gráfico de Levantamentos por regime"
                 android:textColor="@color/text_color"
                 android:textSize="16sp"
                 android:textStyle="bold" />
