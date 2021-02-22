@@ -100,12 +100,12 @@ public class RestDispenseService extends BaseRestService {
                                             Prescription newPrescription = getPrescroptionRest(dispense, patient);
                                             Prescription lastPrescription = prescriptionService.getLastPatientPrescription(patient);
 
-                                            if (DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) > 0) {
+                                            if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) > 0) {
                                                 prescriptionService.createPrescription(newPrescription);
                                                 savePrescribedDrugOnRest(dispense, newPrescription);
                                                 lastPrescription.setExpiryDate(newPrescription.getPrescriptionDate());
                                                 prescriptionService.updatePrescriptionEntity(lastPrescription);
-                                            } else if (DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) == 0) {
+                                            } else if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) == 0) {
                                                 newPrescription = lastPrescription;
                                             } else {
                                                 break;
@@ -115,7 +115,7 @@ public class RestDispenseService extends BaseRestService {
                                             Dispense lastDispense = dispenseService.getLastDispenseFromPrescription(newPrescription);
 
                                             if (lastDispense != null) {
-                                                if (DateUtilities.dateDiff(newDispense.getPickupDate(), lastDispense.getPickupDate(), DateUtilities.DAY_FORMAT) > 0) {
+                                                if ((int) DateUtilities.dateDiff(newDispense.getPickupDate(), lastDispense.getPickupDate(), DateUtilities.DAY_FORMAT) > 0) {
                                                     dispenseService.createDispense(newDispense);
                                                     saveDispensedOnRest(dispense, newDispense);
                                                 } else {
