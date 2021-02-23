@@ -13,6 +13,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
@@ -97,6 +98,16 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
     public List<Dispense> getAllDispensesByStatus(String status) throws SQLException {
         return queryBuilder().where().eq(Dispense.COLUMN_SYNC_STATUS, status).query();
     }
+
+    @Override
+    public List<Dispense> getDispensesBetweenNextPickppDateStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return queryBuilder().orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,true).limit(limit)
+                .offset(offset).where().ge(Dispense.COLUMN_NEXT_PICKUP_DATE, startDate)
+                .and()
+                .le(Dispense.COLUMN_NEXT_PICKUP_DATE, endDate).query();
+    }
+
+
 
 
 }

@@ -433,4 +433,6 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
     <string name="app_cant_connect_to_server">A aplicação não conseguiu ligar-se ao servidor central, por favor verifique a URL informada ou a configuração de rede do dispositivo.</string>
     <string name="central_server_url_mandatory">Por favor indicar a URL do servidor central.</string>
+
+    <string name="awaiting_patients_report">Pacientes Esperados no Periodo</string>
 </resources>

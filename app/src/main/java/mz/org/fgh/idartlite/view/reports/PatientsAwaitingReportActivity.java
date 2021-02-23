@@ -1,5 +1,13 @@
 package mz.org.fgh.idartlite.view.reports;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -12,13 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
@@ -43,8 +44,10 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseReportAdapter;
+import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingDispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.databinding.ActivityPatientsAwaitingReportBinding;
 import mz.org.fgh.idartlite.databinding.DispenseReportBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Dispense;
@@ -53,13 +56,15 @@ import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
+import mz.org.fgh.idartlite.viewmodel.dispense.AwatingPatientsReportVM;
 import mz.org.fgh.idartlite.viewmodel.dispense.DispenseReportVM;
 
-public class DispenseReportActivity extends BaseActivity {
+public class PatientsAwaitingReportActivity extends BaseActivity {
 
     private RecyclerView recyclerDispenses;
-    private DispenseReportBinding dispenseReportBinding;
-    private DispenseReportAdapter adapter;
+    private ActivityPatientsAwaitingReportBinding dispenseReportBinding;
+    private PatientAwaitingDispenseReportAdapter adapter;
+    private IDispenseService dispenseService;
 
     private static final String TAG = "DispenseReportActivity";
 
@@ -67,9 +72,9 @@ public class DispenseReportActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dispenseReportBinding=   DataBindingUtil.setContentView(this, R.layout.dispense_report);
+        dispenseReportBinding=   DataBindingUtil.setContentView(this, R.layout.activity_patients_awaiting_report);
 
-
+        dispenseService= new DispenseService(getApplication(), getCurrentUser());
         recyclerDispenses = dispenseReportBinding.reyclerPatient;
 
         dispenseReportBinding.setViewModel(getRelatedViewModel());
@@ -114,7 +119,7 @@ public class DispenseReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -138,7 +143,7 @@ public class DispenseReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -163,12 +168,12 @@ public class DispenseReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                        dispenseReportBinding.edtSearchParam.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        dispenseReportBinding.edtSearchParam2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -187,7 +192,7 @@ public class DispenseReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -228,7 +233,7 @@ public class DispenseReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new DispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this);
+            adapter = new PatientAwaitingDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this);
 
             recyclerDispenses.setAdapter(adapter);
         }
@@ -293,8 +298,7 @@ public class DispenseReportActivity extends BaseActivity {
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(getString(R.string.nid_report));
         table.addCell(getString(R.string.name_report));
-        table.addCell(getString(R.string.dta_levantamento));
-        table.addCell(getString(R.string.dt_proximo_levantamento));
+        table.addCell(getString(R.string.dta_marcada_levantamento));
         table.addCell(getString(R.string.therapeutic_regimen));
         table.addCell(getString(R.string.dispense_type_report));
         table.addCell(getString(R.string.unidade_sanit_ria));
@@ -308,7 +312,6 @@ public class DispenseReportActivity extends BaseActivity {
 
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getNid()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getFullName()));
-            table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getPickupDate())));
             table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getNextPickupDate())));
             table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticRegimen().getDescription()));
             table.addCell(String.valueOf(dispense.getPrescription().getDispenseType().getDescription()));
@@ -318,10 +321,10 @@ public class DispenseReportActivity extends BaseActivity {
         PdfWriter.getInstance(document, output);
         document.open();
         document.add(tableImage);
-
+        // document.add(image);
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 35.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
-        document.add(new Paragraph("Relatorio de Dispensas Da Farmacia \n\n", f));
+        document.add(new Paragraph("Relatorio de Pacientes Esperados  Da Farmacia \n\n", f));
 
         document.add(table);
 
@@ -333,11 +336,11 @@ public class DispenseReportActivity extends BaseActivity {
 
     @Override
     public BaseViewModel initViewModel() {
-        return new ViewModelProvider(this).get(DispenseReportVM.class);
+        return new ViewModelProvider(this).get(AwatingPatientsReportVM.class);
     }
 
     @Override
-    public DispenseReportVM getRelatedViewModel() {
-        return (DispenseReportVM) super.getRelatedViewModel();
+    public AwatingPatientsReportVM getRelatedViewModel() {
+        return (AwatingPatientsReportVM) super.getRelatedViewModel();
     }
 }
