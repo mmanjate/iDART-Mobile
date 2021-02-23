@@ -24,6 +24,7 @@ import mz.org.fgh.idartlite.util.Utilities;
 @DatabaseTable(tableName = "prescription", daoClass = PrescriptionDaoImpl.class)
 public class Prescription extends BaseModel {
 
+	public static final String TABLE_NAME = "Prescription";
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_PRESCRIPTION_DATE = "prescription_date";
 	public static final String COLUMN_SUPPLY = "supply";

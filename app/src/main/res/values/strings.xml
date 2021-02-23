@@ -432,5 +432,15 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="no_selected_drug">Por favor seleccione pelo menos um medicamento.</string>
     <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
 
+
+
     <string name="awaiting_patients_report">Pacientes Esperados no Periodo</string>
+
+    <string name="absent_patients_report">Pacientes Faltosos no Periodo</string>
+
+    <string name="date_missed">Data que faltou ao Levantamento</string>
+
+    <string name="remove_dispense">Remover Dispensa</string>
+
+    <string name="days_missed">Numero de Dias que faltou</string>
 </resources>

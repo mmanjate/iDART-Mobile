@@ -29,6 +29,7 @@ import mz.org.fgh.idartlite.service.dispense.IReturnedDrugService;
 import mz.org.fgh.idartlite.service.dispense.ReturnedDrugService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.dispense.ReturnDispenseActivity;
+import mz.org.fgh.idartlite.view.patientPanel.DispenseFragment;
 
 public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
 
@@ -90,6 +91,10 @@ public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
             returnedDrug.setListType(Listble.RETURN_DRUG_LISTING);
             returnedDrug.setDispensedDrug(dispenseDrug);
 
+            if(getRelatedActivity().getApplicationStep().isApplicationStepRemove()) {
+                returnedDrug.setQuantityReturned(dispenseDrug.getQuantitySupplied());
+            }
+
             returnedDrugs.add(returnedDrug);
 
         }
@@ -118,8 +123,19 @@ public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
             String validationErros=returnedDrug.validate(getRelatedActivity());
             if(validationErros.isEmpty()){
                 try {
-                    returnedDrugService.createReturnedDrug(returnedDrug);
-                    Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_create_new_prescription), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), ((ReturnDispenseActivity)getRelatedActivity())).show();
+
+                    if(getRelatedActivity().getApplicationStep().isApplicationStepRemove()) {
+                        returnedDrugService.createRemoveDrug(returnedDrug);
+                        Utilities.displayAlertDialog(getRelatedActivity(),  getRelatedActivity().getString(R.string.record_sucessfuly_removed),getRelatedActivity()).show();
+
+                    }
+                    else
+                    {
+                        returnedDrugService.createReturnedDrug(returnedDrug);
+                        Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_to_create_new_prescription), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), ((ReturnDispenseActivity)getRelatedActivity())).show();
+
+                    }
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -200,7 +216,9 @@ public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
 
     @Override
     public void doOnConfirmed() {
-        getCurrentStep().changeToSave();
+        if(!getRelatedActivity().getApplicationStep().isApplicationStepRemove()) {
+            getCurrentStep().changeToSave();
+        }
         doSave();
     }
 
