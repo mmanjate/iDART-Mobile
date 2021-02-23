@@ -53,6 +53,9 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
     private DispenseAdapter dispenseAdapter;
     private List<Prescription> prescriptionList;
 
+
+
+
     public DispenseFragment() {
         // Required empty public constructor
     }
@@ -166,8 +169,17 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                 return true;
             case R.id.remove:
                 //Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(), DispenseFragment.this.getString(R.string.list_item_delete_msg), dispensePosition, DispenseFragment.this).show();
-                this.removeDispenseConfirmation();
-                return true;
+            //    this.removeDispenseConfirmation();
+              //  return true;
+                    Map<String, Object> newParams = new HashMap<>();
+                newParams.put("patient", getMyActivity().getPatient());
+                newParams.put("user", getCurrentUser());
+                newParams.put("clinic", getMyActivity().getCurrentClinic());
+                newParams.put("dispense", getRelatedViewModel().getDispense());
+                newParams.put("step", ApplicationStep.STEP_REMOVE);
+                newParams.put("positionRemoved",dispensePosition);
+                    nextActivity(ReturnDispenseActivity.class, newParams);
+                    return true;
 
             case R.id.viewDetails:
                 Map<String, Object> params = new HashMap<>();
@@ -260,6 +272,8 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
 
         try {
             this.dispenseList = getRelatedViewModel().gatAllOfPatient(getSelectedPatient());
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -268,6 +282,11 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
             dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
             displayDataOnRecyclerView(rcvDispences, dispenseAdapter, getContext());
         }
+        else {
+           if(getMyActivity().getPositionRemoved() !=null) {
+                dispenseAdapter.notifyItemRangeRemoved(0,dispenseList.size());
+           }
+           }
     }
 
     public List<Dispense> getDispenseList() {

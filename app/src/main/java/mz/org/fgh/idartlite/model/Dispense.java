@@ -25,6 +25,7 @@ import mz.org.fgh.idartlite.util.Utilities;
 @DatabaseTable(tableName = "Dispense", daoClass = DispenseDaoImpl.class)
 public class Dispense extends BaseModel {
 
+    public static final String TABLE_NAME = "Dispense";
     public static final String COLUMN_PICKUP_DATE = "pickup_date";
     public static final String COLUMN_SUPPLY = "supply";
     public static final String COLUMN_NEXT_PICKUP_DATE = "next_pickup_date";
@@ -32,7 +33,8 @@ public class Dispense extends BaseModel {
     public static final String COLUMN_UUID = "uuid";
     public static final String COLUMN_SYNC_STATUS = "sync_status";
     public static final String COLUMN_RETURNED = "returned";
-
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_VOIDED = "voided";
 
     public static final int DURATION_TWO_WEEKS = 15;
     public static final int DURATION_ONE_MONTH = 30;
@@ -42,7 +44,7 @@ public class Dispense extends BaseModel {
     public static final int DURATION_FIVE_MONTHS = 150;
     public static final int DURATION_SIX_MONTHS = 180;
 
-    @DatabaseField(columnName = "id", generatedId = true)
+    @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
 
     @DatabaseField(columnName = COLUMN_PICKUP_DATE)
@@ -66,10 +68,11 @@ public class Dispense extends BaseModel {
     @DatabaseField(columnName = COLUMN_RETURNED)
     private boolean returned=false;
 
+    @DatabaseField(columnName = COLUMN_VOIDED)
+    private boolean voided=false;
+
     private List<DispensedDrug> dispensedDrugs = new ArrayList<>();
 
-    public Dispense() {
-    }
 
     public int getId() {
         return id;
@@ -189,6 +192,14 @@ public class Dispense extends BaseModel {
         this.returned = returned;
     }
 
+    public boolean isVoided() {
+        return voided;
+    }
+
+    public void setVoided(boolean voided) {
+        this.voided = voided;
+    }
+
     public String validate() {
         if (this.pickupDate == null) return "A data da dispensa é obrigatória";
         if (this.nextPickupDate == null) return "A data do próximo levantamento é obrigatória";
@@ -221,4 +232,6 @@ public class Dispense extends BaseModel {
     public String canBeRemoved(Context context) {
         return null;
     }
+
+
 }

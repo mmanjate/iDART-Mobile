@@ -26,6 +26,7 @@ import mz.org.fgh.idartlite.util.Utilities;
 @DatabaseTable(tableName = "patient", daoClass = PatientDaoImpl.class)
 public class Patient extends BaseModel {
 
+	public static final String TABLE_NAME = "Patient";
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_NID = "nid";
 	public static final String COLUMN_FIRST_NAME = "first_name";

@@ -1,10 +1,13 @@
 package mz.org.fgh.idartlite.viewmodel.dispense;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.DocumentException;
 
 import java.io.IOException;
@@ -23,10 +26,11 @@ import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
+import mz.org.fgh.idartlite.view.reports.AbsentPatientsReportActivity;
 import mz.org.fgh.idartlite.view.reports.DispensedDrugsReportActivity;
+import mz.org.fgh.idartlite.view.reports.PatientsAwaitingReportActivity;
 
-public class DispenseReportVM extends SearchVM<Dispense> {
+public class AbsentPatientsReportVM extends SearchVM<Dispense> {
 
 
     private IDispenseService dispenseService;
@@ -36,7 +40,7 @@ public class DispenseReportVM extends SearchVM<Dispense> {
     private String endDate;
 
 
-    public DispenseReportVM(@NonNull Application application) {
+    public AbsentPatientsReportVM(@NonNull Application application) {
         super(application);
         dispenseService = new DispenseService(application, getCurrentUser());
 
@@ -59,17 +63,17 @@ public class DispenseReportVM extends SearchVM<Dispense> {
     }
 
     public List<Dispense> getDispensesByDates(Date startDate,Date endDate, long offset, long limit) throws SQLException {
-        return dispenseService.getDispensesBetweenStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
+        return dispenseService.getAbsentPatientsBetweenNextPickppDateStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
     }
 
 
 
     @Override
     public void initSearch(){
-        if (!Utilities.stringHasValue(startDate) || !Utilities.stringHasValue(endDate) ){
-            Utilities.displayAlertDialog(getRelatedActivity(), "Por favor indicar o período por analisar!").show();
-        }else
-        if (DateUtilities.dateDiff(DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
+        if(!Utilities.stringHasValue(startDate) || !Utilities.stringHasValue(endDate)) {
+            Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.start_end_date_is_mandatory)).show();
+        }
+        if (DateUtilities.dateDiff(DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(startDate , DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
             Utilities.displayAlertDialog(getRelatedActivity(), "A data inicio deve ser menor que a data fim.").show();
         }else
         if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
@@ -78,7 +82,8 @@ public class DispenseReportVM extends SearchVM<Dispense> {
         else
         if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
             Utilities.displayAlertDialog(getRelatedActivity(), "A data fim deve ser menor que a data corrente.").show();
-        }else {
+        }
+        else {
 
             try {
                 super.initSearch();
@@ -95,6 +100,7 @@ public class DispenseReportVM extends SearchVM<Dispense> {
 
         }
     }
+
 
     public void generatePDF() {
         try {
@@ -129,8 +135,8 @@ public class DispenseReportVM extends SearchVM<Dispense> {
 
 
 
-    public DispenseReportActivity getRelatedActivity() {
-        return (DispenseReportActivity) super.getRelatedActivity();
+    public AbsentPatientsReportActivity getRelatedActivity() {
+        return (AbsentPatientsReportActivity) super.getRelatedActivity();
     }
 
     @Override
