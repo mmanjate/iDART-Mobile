@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.view.reports;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -43,12 +42,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseReportAdapter;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingDispenseReportAdapter;
+import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingAbsentDispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientsAwaitingReportBinding;
-import mz.org.fgh.idartlite.databinding.DispenseReportBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
@@ -57,13 +54,12 @@ import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.dispense.AwatingPatientsReportVM;
-import mz.org.fgh.idartlite.viewmodel.dispense.DispenseReportVM;
 
 public class PatientsAwaitingReportActivity extends BaseActivity {
 
     private RecyclerView recyclerDispenses;
     private ActivityPatientsAwaitingReportBinding dispenseReportBinding;
-    private PatientAwaitingDispenseReportAdapter adapter;
+    private PatientAwaitingAbsentDispenseReportAdapter adapter;
     private IDispenseService dispenseService;
 
     private static final String TAG = "PatientsAwaitingReportActivity";
@@ -233,7 +229,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new PatientAwaitingDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this,true);
+            adapter = new PatientAwaitingAbsentDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this,true);
 
             recyclerDispenses.setAdapter(adapter);
         }
