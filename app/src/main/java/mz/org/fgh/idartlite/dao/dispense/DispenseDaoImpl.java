@@ -58,8 +58,6 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
         QueryBuilder<TherapeuticLine, Integer> therapeuticLineQb = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getTherapeuticLineDao().queryBuilder();
         prescriptionQb.join(therapeuticLineQb);
 
-        QueryBuilder<Dispense, Integer> dispenseQb = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDispenseDao().queryBuilder();
-        dispenseQb.join(prescriptionQb);
         QueryBuilder<Dispense, Integer> dispenseQb =   IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDispenseDao().queryBuilder();
         dispenseQb.join(prescriptionQb).where().eq(Dispense.COLUMN_VOIDED,false);
 
@@ -110,8 +108,10 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
 
     @Override
     public List<Dispense> getDispensesBetweenNextPickppDateStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
-        return queryBuilder().orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE, true).limit(limit)
+        return null;
+    }
 
+    @Override
     public List<Dispense> getDispensesBetweenNextPickppDateStartDateAndEndDateWithLimit(Application application,Date startDate, Date endDate, long offset, long limit) throws SQLException {
 
         QueryBuilder<Prescription, Integer> prescriptionQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPrescriptionDao().queryBuilder();

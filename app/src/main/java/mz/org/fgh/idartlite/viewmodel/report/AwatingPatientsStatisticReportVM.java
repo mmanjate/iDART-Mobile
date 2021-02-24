@@ -5,8 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
-import com.itextpdf.text.DocumentException;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,13 +21,13 @@ import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.service.drug.ITherapheuticRegimenService;
 import mz.org.fgh.idartlite.service.drug.TherapheuticRegimenService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.reports.PatientsAwaitingReportActivity;
 import mz.org.fgh.idartlite.view.reports.PatientsAwaitingStatisticsActivity;
 
 public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
@@ -123,7 +121,7 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
                     getRelatedActivity().generatePdfButton(false);
                 }
 
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -135,7 +133,7 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (DocumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -157,6 +155,11 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
         Utilities.hideSoftKeyboard(getRelatedActivity());
 
         getRelatedActivity().displaySearchResult();
+    }
+
+    @Override
+    public AbstractSearchParams<Dispense> initSearchParams() {
+        return null;
     }
 
     public PatientsAwaitingStatisticsActivity getRelatedActivity() {
