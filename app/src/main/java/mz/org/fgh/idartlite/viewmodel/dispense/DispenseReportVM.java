@@ -21,9 +21,9 @@ import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.searchparams.DispenseSearchParams;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
-import mz.org.fgh.idartlite.view.reports.DispensedDrugsReportActivity;
 
 public class DispenseReportVM extends SearchVM<Dispense> {
 
@@ -83,7 +83,23 @@ public class DispenseReportVM extends SearchVM<Dispense> {
         return getDispensesByDates(getSearchParams().getStartdate(), getSearchParams().getEndDate(),offset,limit);
     }
 
-
+    @Override
+    public String validateBeforeSearch() {
+        if (getSearchParams().getStartdate() == null || getSearchParams().getEndDate() == null ){
+            return "Por favor indicar o período por analisar!";
+        }else
+        if (DateUtilities.dateDiff(getSearchParams().getEndDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT) < 0){
+            return "A data inicio deve ser menor que a data fim.";
+        }else
+        if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT)) < 0){
+            return "A data inicio deve ser menor que a data corrente.";
+        }
+        else
+        if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getEndDate(), DateUtilities.DAY_FORMAT) < 0){
+            return "A data fim deve ser menor que a data corrente.";
+        }
+        return null;
+    }
 
     @Override
     public void displaySearchResults() {

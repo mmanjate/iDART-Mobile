@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
@@ -57,14 +56,17 @@ public class AwatingPatientsReportVM extends SearchVM<Dispense> {
 
     @Override
     public String validateBeforeSearch() {
-        if(getSearchParams().getStartdate() == null || getSearchParams().getEndDate() == null) {
-            return getRelatedActivity().getString(R.string.start_end_date_is_mandatory);
+        if (getSearchParams().getStartdate() == null || getSearchParams().getEndDate() == null ){
+            return "Por favor indicar o período por analisar!";
+        }
+        else if (DateUtilities.dateDiff(getSearchParams().getEndDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT) < 0){
+            return "A data inicio deve ser menor que a data fim.";
         }else
         if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT)) > 0){
             return "A data inicio deve ser maior ou igual que a data corrente.";
         }
 
-        return super.validateBeforeSearch();
+        return null;
     }
 
     public void generatePDF() {
@@ -79,12 +81,6 @@ public class AwatingPatientsReportVM extends SearchVM<Dispense> {
 
     @Override
     protected void doOnNoRecordFound() {
-        /*if(getAllDisplyedRecords().size()>0){
-            getRelatedActivity().generatePdfButton(true);
-        }
-        else {
-            getRelatedActivity().generatePdfButton(false);
-        }*/
     }
 
 

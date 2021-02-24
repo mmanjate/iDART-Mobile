@@ -27,7 +27,7 @@ public abstract class AbstractSearchParams<T extends BaseModel> {
     }
 
     public boolean isByDateInterval(){
-        return this.startdate != null && this.endDate != null;
+        return this.startdate != null || this.endDate != null;
     }
 
     public void resetParams(){
