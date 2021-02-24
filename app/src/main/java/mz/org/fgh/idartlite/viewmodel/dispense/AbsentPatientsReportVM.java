@@ -24,6 +24,7 @@ import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.reports.AbsentPatientsReportActivity;
+import mz.org.fgh.idartlite.view.reports.DispensedDrugsReportActivity;
 
 public class AbsentPatientsReportVM extends SearchVM<Dispense> {
 
@@ -65,8 +66,8 @@ public class AbsentPatientsReportVM extends SearchVM<Dispense> {
         else if (DateUtilities.dateDiff(getSearchParams().getEndDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT) < 0){
             return "A data inicio deve ser menor que a data fim.";
         }else
-        if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT)) > 0){
-            return "A data inicio deve ser maior ou igual que a data corrente.";
+        if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT)) < 0){
+            return "A data inicio deve ser menor que a data corrente";
         }
         else
         if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT) < 0){
