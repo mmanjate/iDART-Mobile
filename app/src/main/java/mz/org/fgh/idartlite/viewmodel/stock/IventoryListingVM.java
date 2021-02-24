@@ -12,6 +12,7 @@ import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.inventory.Iventory;
+import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.service.stock.IIventoryService;
 import mz.org.fgh.idartlite.service.stock.IventoryService;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -65,6 +66,11 @@ public class IventoryListingVM extends SearchVM<Iventory> {
     @Override
     public void displaySearchResults() {
         getRelatedFragment().displaySearchResult();
+    }
+
+    @Override
+    public AbstractSearchParams<Iventory> initSearchParams() {
+        return null;
     }
 
     @Override

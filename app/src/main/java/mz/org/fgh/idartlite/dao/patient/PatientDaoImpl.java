@@ -13,12 +13,8 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.DestroyedDrug;
-import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.model.Prescription;
-import mz.org.fgh.idartlite.model.Stock;
 
 public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements IPatientDao {
 
@@ -47,12 +43,14 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
     }
 
     @Override
-    public int countNewPatientsByPeriod(Date start, Date end, Application application) throws SQLException {
+    public int countNewPatientsByPeriod(Date start, Date end, String sanitaryUnit, Application application) throws SQLException {
         QueryBuilder<Episode, Integer> episodeQb = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
         episodeQb.where()
                 .isNull(Episode.COLUMN_STOP_REASON)
                 .and()
                 .isNotNull(Episode.COLUMN_START_REASON)
+                .and()
+                .eq(Episode.COLUMN_SANITARY_UNIT, sanitaryUnit)
                 .and()
                 .ge(Episode.COLUMN_EPISODE_DATE, start)
                 .and()

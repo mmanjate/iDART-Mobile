@@ -10,6 +10,7 @@
                 type="mz.org.fgh.idartlite.viewmodel.patient.PatientRegisterReportVM" />
             <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
             <import type="android.view.View"/>
+            <import type="mz.org.fgh.idartlite.util.Utilities"/>
         </data>
 
 
@@ -105,7 +106,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="@={viewModel.start}"
+                        android:text="@={viewModel.startDate}"
                         android:background="@color/white"
                         android:inputType="text" />
 
@@ -131,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:padding="5dp"
                         android:background="@color/white"
-                        android:text="@={viewModel.end}"
+                        android:text="@={viewModel.endDate}"
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -181,7 +182,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{() -> viewModel.generatePDF()}"
-            android:visibility="@{View.GONE}"
+            android:visibility="@{Utilities.listHasElements(viewModel.allDisplyedRecords) ? View.VISIBLE : View.GONE}"
             android:src="@drawable/ic_baseline_picture_as_pdf_24"
             app:backgroundTint="@color/colorPrimary"
             app:elevation="6dp"

@@ -16,6 +16,7 @@ import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.view.stock.panel.StockEntranceActivity;
@@ -136,6 +137,11 @@ public class StockEntranceVM extends SearchVM<Stock> {
     @Override
     public void displaySearchResults() {
         getEntranceFragment().displaySearchResults();
+    }
+
+    @Override
+    public AbstractSearchParams<Stock> initSearchParams() {
+        return null;
     }
 
     public void changeInitialDataViewStatus(View view){

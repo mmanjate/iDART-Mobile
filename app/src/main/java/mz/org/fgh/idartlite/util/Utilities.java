@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.util;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
@@ -472,4 +475,16 @@ public class Utilities {
                 .show();
     }
 
+    public static void issueNotification(NotificationManagerCompat notificationManagerCompat, Context context, String contentText, String channel) {
+
+        Notification builder = new NotificationCompat.Builder(context, channel)
+                .setSmallIcon(R.drawable.ic_data)
+                .setContentTitle("iDART MOBILE")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
+                .setContentText(contentText)
+                .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .build();
+
+        notificationManagerCompat.notify(1, builder);
+    }
 }

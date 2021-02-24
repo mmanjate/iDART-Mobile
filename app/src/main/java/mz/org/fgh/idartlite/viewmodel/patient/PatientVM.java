@@ -15,6 +15,8 @@ import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
+import mz.org.fgh.idartlite.searchparams.PatientSearchParams;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
 import mz.org.fgh.idartlite.service.patient.IPatientService;
@@ -27,10 +29,6 @@ public class PatientVM extends SearchVM<Patient> {
     private Patient patient;
     private IPatientService patientService;
     private IEpisodeService episodeService;
-
-    
-    private String searchParam;
-
 
     public PatientVM(@NonNull Application application) {
         super(application);
@@ -69,14 +67,10 @@ public class PatientVM extends SearchVM<Patient> {
 
     @Override
     public void initSearch(){
-        if(!Utilities.stringHasValue(searchParam)) {
+        if(!Utilities.stringHasValue(getSearchParams().getSearchParam())) {
             Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.nid_or_name_is_mandatory)).show();
         }else {
-            try {
-                super.initSearch();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            super.initSearch();
         }
     }
 
@@ -93,8 +87,18 @@ public class PatientVM extends SearchVM<Patient> {
     }
 
     @Override
+    public PatientSearchParams getSearchParams() {
+        return (PatientSearchParams) super.getSearchParams();
+    }
+
+    @Override
+    public AbstractSearchParams<Patient> initSearchParams() {
+        return new PatientSearchParams();
+    }
+
+    @Override
     public List<Patient> doSearch(long offset, long limit) throws SQLException {
-        return searchPatient(this.searchParam.trim(), getCurrentClinic(), offset, limit);
+        return searchPatient(this.getSearchParams().getSearchParam().trim(), getCurrentClinic(), offset, limit);
     }
 
     public List<Patient> getAllPatient() throws SQLException {
@@ -125,11 +129,11 @@ public class PatientVM extends SearchVM<Patient> {
 
     @Bindable
     public String getSearchParam() {
-        return searchParam;
+        return getSearchParams().getSearchParam();
     }
 
     public void setSearchParam(String searchParam) {
-        this.searchParam = searchParam;
+        getSearchParams().setSearchParam(searchParam);
         notifyPropertyChanged(BR.searchParam);
     }
 

@@ -8,11 +8,9 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.rest.service.RestRunDataForTestService;
 
 public class AppSettingsService extends BaseService<AppSettings> implements IAppSettingsService {
 
-    private RestRunDataForTestService restService;
 
     public AppSettingsService(Application application, User currentUser) {
         super(application, currentUser);
@@ -21,7 +19,6 @@ public class AppSettingsService extends BaseService<AppSettings> implements IApp
     public AppSettingsService(Application application) {
         super(application);
 
-        //restService = new RestRunDataForTestService(application);
     }
 
     @Override
@@ -56,13 +53,11 @@ public class AppSettingsService extends BaseService<AppSettings> implements IApp
     @Override
     public void runDataSync() {
 
-        //restService.runDataSync();
     }
 
     @Override
     public void runMetadataSync() {
 
-        //restService.runMetaDataSync();
     }
 
     @Override

@@ -89,11 +89,7 @@ public class StockReferenceFragment extends GenericFragment {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            getRelatedViewModel().initSearch();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        getRelatedViewModel().initSearch();
     }
 
     @Override

@@ -75,10 +75,10 @@ public class SplashActivity extends BaseActivity{
 
                         dialogBuilder.dismiss();
                     }else {
-                        Utilities.displayAlertDialog(SplashActivity.this, "A aplicação não conseguiu ligar-se ao servidor central, por favor verifique a URL informada ou a configuração de rede do dispositivo.").show();
+                        Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.app_cant_connect_to_server)).show();
                     }
                 }else {
-                    Utilities.displayAlertDialog(SplashActivity.this, "Por favor indicar a URL do servidor central.").show();
+                    Utilities.displayAlertDialog(SplashActivity.this, getString(R.string.central_server_url_mandatory)).show();
                 }
             }
         });

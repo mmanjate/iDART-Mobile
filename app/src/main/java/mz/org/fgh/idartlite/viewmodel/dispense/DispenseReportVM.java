@@ -12,29 +12,23 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import mz.org.fgh.idartlite.BR;
-import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
+import mz.org.fgh.idartlite.searchparams.DispenseSearchParams;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
-import mz.org.fgh.idartlite.view.reports.DispensedDrugsReportActivity;
 
 public class DispenseReportVM extends SearchVM<Dispense> {
 
 
     private IDispenseService dispenseService;
-
-    private String startDate;
-
-    private String endDate;
-
 
     public DispenseReportVM(@NonNull Application application) {
         super(application);
@@ -62,40 +56,6 @@ public class DispenseReportVM extends SearchVM<Dispense> {
         return dispenseService.getDispensesBetweenStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
     }
 
-
-
-    @Override
-    public void initSearch(){
-        if (!Utilities.stringHasValue(startDate) || !Utilities.stringHasValue(endDate) ){
-            Utilities.displayAlertDialog(getRelatedActivity(), "Por favor indicar o período por analisar!").show();
-        }else
-        if (DateUtilities.dateDiff(DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
-            Utilities.displayAlertDialog(getRelatedActivity(), "A data inicio deve ser menor que a data fim.").show();
-        }else
-        if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
-            Utilities.displayAlertDialog(getRelatedActivity(), "A data inicio deve ser menor que a data corrente.").show();
-        }
-        else
-        if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
-            Utilities.displayAlertDialog(getRelatedActivity(), "A data fim deve ser menor que a data corrente.").show();
-        }else {
-
-            try {
-                super.initSearch();
-                if(getAllDisplyedRecords().size()>0){
-                    getRelatedActivity().generatePdfButton(true);
-                }
-                else {
-                    getRelatedActivity().generatePdfButton(false);
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
     public void generatePDF() {
         try {
             this.getRelatedActivity().createPdfDocument();
@@ -109,15 +69,37 @@ public class DispenseReportVM extends SearchVM<Dispense> {
     @Override
     protected void doOnNoRecordFound() {
 
+        if(getAllDisplyedRecords().size()>0){
+            getRelatedActivity().generatePdfButton(true);
+        }
+        else {
+            getRelatedActivity().generatePdfButton(false);
+        }
+
     }
 
 
     public List<Dispense> doSearch(long offset, long limit) throws SQLException {
-
-        return getDispensesByDates(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT),offset,limit);
+        return getDispensesByDates(getSearchParams().getStartdate(), getSearchParams().getEndDate(),offset,limit);
     }
 
-
+    @Override
+    public String validateBeforeSearch() {
+        if (getSearchParams().getStartdate() == null || getSearchParams().getEndDate() == null ){
+            return "Por favor indicar o período por analisar!";
+        }else
+        if (DateUtilities.dateDiff(getSearchParams().getEndDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT) < 0){
+            return "A data inicio deve ser menor que a data fim.";
+        }else
+        if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT)) < 0){
+            return "A data inicio deve ser menor que a data corrente.";
+        }
+        else
+        if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getEndDate(), DateUtilities.DAY_FORMAT) < 0){
+            return "A data fim deve ser menor que a data corrente.";
+        }
+        return null;
+    }
 
     @Override
     public void displaySearchResults() {
@@ -126,8 +108,15 @@ public class DispenseReportVM extends SearchVM<Dispense> {
         getRelatedActivity().displaySearchResult();
     }
 
+    @Override
+    public AbstractSearchParams<Dispense> initSearchParams() {
+        return new DispenseSearchParams();
+    }
 
-
+    @Override
+    public DispenseSearchParams getSearchParams() {
+        return (DispenseSearchParams) super.getSearchParams();
+    }
 
     public DispenseReportActivity getRelatedActivity() {
         return (DispenseReportActivity) super.getRelatedActivity();
@@ -141,26 +130,6 @@ public class DispenseReportVM extends SearchVM<Dispense> {
     @Bindable
     public Clinic getClinic(){
         return getCurrentClinic();
-    }
-
-    @Bindable
-    public String getSearchParam() {
-        return startDate;
-    }
-
-    public void setSearchParam(String searchParam) {
-        this.startDate = searchParam;
-        notifyPropertyChanged(BR.searchParam);
-    }
-
-    @Bindable
-    public String getSearchParam2() {
-        return endDate;
-    }
-
-    public void setSearchParam2(String searchParam) {
-        this.endDate = searchParam;
-        notifyPropertyChanged(BR.searchParam);
     }
 
 }

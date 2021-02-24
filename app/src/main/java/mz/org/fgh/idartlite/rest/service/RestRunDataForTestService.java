@@ -7,7 +7,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
@@ -125,7 +124,6 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
             stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_READY);
             if (stockList != null)
                 if (stockList.size() > 0) {
-                    registRunningService(ServiceWatcher.fastCreateUploadType(RestStockService.TAG, stockList.size()));
                     serviceWatcherList.get(serviceWatcherList.size()-1).setServiceAsRunning();
 
                     for (Stock stock : stockList) {
@@ -140,7 +138,6 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
             stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_UPDATED);
             if (stockList != null)
                 if (stockList.size() > 0) {
-                    registRunningService(ServiceWatcher.fastCreateUploadType(RestStockService.TAG, stockList.size()));
                     serviceWatcherList.get(serviceWatcherList.size()-1).setServiceAsRunning();
 
                     for (Stock stock : stockList) {
@@ -254,45 +251,6 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
 
     @Override
     public void doOnRestSucessResponseObjects(String flag, List objects) {
-
-    }
-
-    @Override
-    public boolean registRunningService(ServiceWatcher serviceWatcher) {
-        if (this.serviceWatcherList == null) this.serviceWatcherList = new ArrayList<>();
-
-        if (!this.serviceWatcherList.contains(serviceWatcher)) {
-            this.serviceWatcherList.add(serviceWatcher);
-            return true;
-        }
-        else {
-
-            for (ServiceWatcher watcher : this.serviceWatcherList){
-                if (watcher.equals(serviceWatcher)){
-                    if (watcher.isStopped()) {
-                        this.serviceWatcherList.remove(watcher);
-                        this.serviceWatcherList.add(serviceWatcher);
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-    }
-
-    @Override
-    public void updateServiceStatus(ServiceWatcher serviceWatcher) {
-
-        if (serviceWatcher.isUploadService()){
-            if (!hasUploadRunning()){
-                dysplayUploadResultNotification();
-            }
-        }else
-
-        if (!hasRunningDownloadService()) {
-            dysplayDownloadResultNotification();
-        }
 
     }
 
