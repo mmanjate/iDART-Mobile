@@ -23,6 +23,7 @@ import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
+import mz.org.fgh.idartlite.view.reports.DispensedDrugsReportActivity;
 
 public class DispenseReportVM extends SearchVM<Dispense> {
 

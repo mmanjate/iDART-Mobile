@@ -1,5 +1,13 @@
 package mz.org.fgh.idartlite.view.reports;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -12,13 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
@@ -45,31 +46,35 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingDispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.databinding.ActivityAbsentPatientsReportBinding;
 import mz.org.fgh.idartlite.databinding.ActivityPatientsAwaitingReportBinding;
+import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
+import mz.org.fgh.idartlite.viewmodel.dispense.AbsentPatientsReportVM;
 import mz.org.fgh.idartlite.viewmodel.dispense.AwatingPatientsReportVM;
 
-public class PatientsAwaitingReportActivity extends BaseActivity {
+public class AbsentPatientsReportActivity extends BaseActivity {
 
     private RecyclerView recyclerDispenses;
-    private ActivityPatientsAwaitingReportBinding dispenseReportBinding;
+    private ActivityAbsentPatientsReportBinding dispenseReportBinding;
     private PatientAwaitingDispenseReportAdapter adapter;
     private IDispenseService dispenseService;
 
     private static final String TAG = "PatientsAwaitingReportActivity";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dispenseReportBinding=   DataBindingUtil.setContentView(this, R.layout.activity_patients_awaiting_report);
+        dispenseReportBinding = DataBindingUtil.setContentView(this, R.layout.activity_absent_patients_report);
 
-        dispenseService= new DispenseService(getApplication(), getCurrentUser());
+        dispenseService = new DispenseService(getApplication(), getCurrentUser());
         recyclerDispenses = dispenseReportBinding.reyclerPatient;
 
         dispenseReportBinding.setViewModel(getRelatedViewModel());
@@ -114,7 +119,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AbsentPatientsReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -138,7 +143,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(AbsentPatientsReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -163,7 +168,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AbsentPatientsReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -187,7 +192,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(AbsentPatientsReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -200,14 +205,16 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
-    @SuppressLint("RestrictedApi")
-    public void generatePdfButton(boolean show){
-        FloatingActionButton generatePdf = dispenseReportBinding.generatePdf;
-        if(show) generatePdf.setVisibility(View.VISIBLE);
-        else {generatePdf.setVisibility(View.GONE);}
+    @Override
+    public BaseViewModel initViewModel() {
+        return new ViewModelProvider(this).get(AbsentPatientsReportVM.class);
+    }
+
+    @Override
+    public AbsentPatientsReportVM getRelatedViewModel() {
+        return (AbsentPatientsReportVM) super.getRelatedViewModel();
     }
 
     @Override
@@ -228,19 +235,33 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new PatientAwaitingDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this,true);
+            adapter = new PatientAwaitingDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this,false);
 
             recyclerDispenses.setAdapter(adapter);
         }
 
         if (adapter.getOnLoadMoreListener() == null) {
-            adapter.setOnLoadMoreListener(() -> getRelatedViewModel().loadMoreRecords(recyclerDispenses, adapter));
+            adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+                    getRelatedViewModel().loadMoreRecords(recyclerDispenses, adapter);
+                }
+            });
         }
 
     }
 
     public void createPdfDocument() throws IOException, DocumentException {
         createPdf(getRelatedViewModel().getAllDisplyedRecords());
+    }
+
+
+
+    @SuppressLint("RestrictedApi")
+    public void generatePdfButton(boolean show){
+        FloatingActionButton generatePdf = dispenseReportBinding.generatePdf;
+        if(show) generatePdf.setVisibility(View.VISIBLE);
+        else {generatePdf.setVisibility(View.GONE);}
     }
 
 
@@ -288,10 +309,10 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(getString(R.string.nid_report));
         table.addCell(getString(R.string.name_report));
-        table.addCell(getString(R.string.dta_marcada_levantamento));
-        table.addCell(getString(R.string.therapeutic_regimen));
-        table.addCell(getString(R.string.dispense_type_report));
-        table.addCell(getString(R.string.unidade_sanit_ria));
+        table.addCell(getString(R.string.contacto_pessoais));
+        table.addCell(getString(R.string.date_missed));
+        table.addCell(getString(R.string.days_missed));
+
         table.setHeaderRows(1);
         PdfPCell[] cells = table.getRow(0).getCells();
         for (int j = 0; j < cells.length; j++) {
@@ -302,10 +323,10 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
 
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getNid()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getFullName()));
+            table.addCell(String.valueOf(dispense.getPrescription().getPatient().getPhone()));
             table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getNextPickupDate())));
-            table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticRegimen().getDescription()));
-            table.addCell(String.valueOf(dispense.getPrescription().getDispenseType().getDescription()));
-            table.addCell(String.valueOf(dispense.getPrescription().getPatient().getEpisodes1().iterator().next().getSanitaryUnit()));
+            table.addCell(String.valueOf(DateUtilities.getDaysBetween(dispense.getNextPickupDate(),DateUtilities.getCurrentDate())));
+
         }
 
         PdfWriter.getInstance(document, output);
@@ -314,23 +335,12 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
         // document.add(image);
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 35.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
-        document.add(new Paragraph("Relatorio de Pacientes Esperados  Da Farmacia \n\n", f));
+        document.add(new Paragraph("Relatorio de Pacientes Faltosos  Da Farmacia \n\n", f));
 
         document.add(table);
 
         document.close();
 
         Utilities.previewPdfFiles(this,pdfFile );
-    }
-
-
-    @Override
-    public BaseViewModel initViewModel() {
-        return new ViewModelProvider(this).get(AwatingPatientsReportVM.class);
-    }
-
-    @Override
-    public AwatingPatientsReportVM getRelatedViewModel() {
-        return (AwatingPatientsReportVM) super.getRelatedViewModel();
     }
 }

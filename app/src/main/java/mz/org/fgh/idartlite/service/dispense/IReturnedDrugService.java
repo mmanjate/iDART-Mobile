@@ -14,4 +14,7 @@ public interface IReturnedDrugService extends IBaseService {
     public void createReturnedDrug(ReturnedDrug dispenseDrugs) throws SQLException;
 
 
+    public void createRemoveDrug(ReturnedDrug dispenseDrugs) throws SQLException;
+
+
 }

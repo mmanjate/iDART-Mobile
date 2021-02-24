@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.adapter.recyclerview.dispense;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
@@ -23,9 +24,11 @@ public class PatientAwaitingDispenseReportAdapter  extends AbstractRecycleViewAd
 
     private Activity activity;
     private List<Dispense> dispenseList;
+    private boolean awaitingReport;
 
-    public PatientAwaitingDispenseReportAdapter(RecyclerView recyclerView, List<Dispense> dispenseList, Activity activity) {
+    public PatientAwaitingDispenseReportAdapter(RecyclerView recyclerView, List<Dispense> dispenseList, Activity activity,boolean awaitingReport) {
         super(recyclerView, dispenseList, activity);
+        this.awaitingReport=awaitingReport;
     }
     @NonNull
     @Override
@@ -37,6 +40,14 @@ public class PatientAwaitingDispenseReportAdapter  extends AbstractRecycleViewAd
 
         if (viewType == VIEW_TYPE_ITEM) {
             ContentAwaitingPatientsReportBinding contentAwaitingPatientsReportBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.content_awaiting_patients_report, parent, false);
+
+            if(awaitingReport) {
+                contentAwaitingPatientsReportBinding.linearAwaitingDetails.setVisibility(View.VISIBLE);
+            }else {
+                contentAwaitingPatientsReportBinding.linearAbsentDetails.setVisibility(View.VISIBLE);
+            }
+
+
             return new DispenseViewHolder(contentAwaitingPatientsReportBinding);
         }  else if (viewType == VIEW_TYPE_LOADING) {
             itemLoadingBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_loading, parent, false);

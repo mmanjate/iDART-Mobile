@@ -165,6 +165,8 @@ public class ReturnedDrug extends BaseModel implements Listble {
         return listType.equals(Listble.RETURN_DRUG_LISTING);
     }
 
+
+
     public String validate(Context context) {
 
         if(this.dateReturned == null) return context.getString(R.string.return_date_mandatory);

@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.service.dispense;
 
+import android.app.Application;
+
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -43,4 +45,6 @@ public interface IDispenseService extends IBaseService<Dispense> {
     public List<StockReportData> getStockAlertReportLastThreeMonthsPeriod() throws SQLException;
 
     public List<Dispense> getDispensesBetweenNextPickupDateStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException;
+
+    public List<Dispense> getAbsentPatientsBetweenNextPickppDateStartDateAndEndDateWithLimit( Date startDate, Date endDate, long offset, long limit) throws SQLException;
 }

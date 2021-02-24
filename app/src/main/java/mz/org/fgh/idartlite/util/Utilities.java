@@ -266,6 +266,10 @@ public class Utilities {
         return String.valueOf(toParse);
     }
 
+    public static String parseLongToString(long toParse){
+        return String.valueOf(toParse);
+    }
+
     public static UUID getNewUUID(){
         return UUID.randomUUID();
     }
