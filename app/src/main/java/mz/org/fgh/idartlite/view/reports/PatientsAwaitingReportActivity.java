@@ -1,12 +1,5 @@
 package mz.org.fgh.idartlite.view.reports;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -50,7 +43,6 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingAbsentDispenseReportAdapter;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingDispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientsAwaitingReportBinding;
