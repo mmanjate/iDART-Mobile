@@ -14,19 +14,17 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
-import mz.org.fgh.idartlite.databinding.ContentAwaitingPatientsReportBinding;
-import mz.org.fgh.idartlite.databinding.ContentDispensesReportBinding;
+import mz.org.fgh.idartlite.databinding.ContentAwaitingAbsentPatientsReportBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
-import mz.org.fgh.idartlite.databinding.PatientDispenseRowBinding;
 import mz.org.fgh.idartlite.model.Dispense;
 
-public class PatientAwaitingDispenseReportAdapter  extends AbstractRecycleViewAdapter<Dispense> {
+public class PatientAwaitingAbsentDispenseReportAdapter extends AbstractRecycleViewAdapter<Dispense> {
 
     private Activity activity;
     private List<Dispense> dispenseList;
     private boolean awaitingReport;
 
-    public PatientAwaitingDispenseReportAdapter(RecyclerView recyclerView, List<Dispense> dispenseList, Activity activity,boolean awaitingReport) {
+    public PatientAwaitingAbsentDispenseReportAdapter(RecyclerView recyclerView, List<Dispense> dispenseList, Activity activity, boolean awaitingReport) {
         super(recyclerView, dispenseList, activity);
         this.awaitingReport=awaitingReport;
     }
@@ -34,12 +32,12 @@ public class PatientAwaitingDispenseReportAdapter  extends AbstractRecycleViewAd
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        ContentDispensesReportBinding contentDispensesReportBinding;
+
         ItemLoadingBinding itemLoadingBinding;
 
 
         if (viewType == VIEW_TYPE_ITEM) {
-            ContentAwaitingPatientsReportBinding contentAwaitingPatientsReportBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.content_awaiting_patients_report, parent, false);
+            ContentAwaitingAbsentPatientsReportBinding contentAwaitingPatientsReportBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.content_awaiting_absent_patients_report, parent, false);
 
             if(awaitingReport) {
                 contentAwaitingPatientsReportBinding.linearAwaitingDetails.setVisibility(View.VISIBLE);
@@ -51,7 +49,7 @@ public class PatientAwaitingDispenseReportAdapter  extends AbstractRecycleViewAd
             return new DispenseViewHolder(contentAwaitingPatientsReportBinding);
         }  else if (viewType == VIEW_TYPE_LOADING) {
             itemLoadingBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_loading, parent, false);
-            return new PatientAwaitingDispenseReportAdapter.LoadingViewHolder(itemLoadingBinding);
+            return new PatientAwaitingAbsentDispenseReportAdapter.LoadingViewHolder(itemLoadingBinding);
 
         }
         return null;
@@ -59,30 +57,28 @@ public class PatientAwaitingDispenseReportAdapter  extends AbstractRecycleViewAd
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        if (viewHolder instanceof PatientAwaitingDispenseReportAdapter.DispenseViewHolder){
+        if (viewHolder instanceof PatientAwaitingAbsentDispenseReportAdapter.DispenseViewHolder){
             Dispense dispense = (Dispense) records.get(position);
-            ((PatientAwaitingDispenseReportAdapter.DispenseViewHolder) viewHolder).contentAwaitingPatientsReportBinding.setDispense(dispense);
+            ((PatientAwaitingAbsentDispenseReportAdapter.DispenseViewHolder) viewHolder).contentAwaitingPatientsReportBinding.setDispense(dispense);
         }else
-        if (viewHolder instanceof PatientAwaitingDispenseReportAdapter.LoadingViewHolder){
-            showLoadingView((PatientAwaitingDispenseReportAdapter.LoadingViewHolder) viewHolder, position);
+        if (viewHolder instanceof PatientAwaitingAbsentDispenseReportAdapter.LoadingViewHolder){
+            showLoadingView((PatientAwaitingAbsentDispenseReportAdapter.LoadingViewHolder) viewHolder, position);
         }
     }
 
 
     public class DispenseViewHolder extends RecyclerView.ViewHolder{
 
-        private ContentAwaitingPatientsReportBinding contentAwaitingPatientsReportBinding;
+        private ContentAwaitingAbsentPatientsReportBinding contentAwaitingPatientsReportBinding;
 
 
-        public DispenseViewHolder(@NonNull ContentAwaitingPatientsReportBinding contentAwaitingPatientsReportBinding) {
+        public DispenseViewHolder(@NonNull ContentAwaitingAbsentPatientsReportBinding contentAwaitingPatientsReportBinding) {
             super(contentAwaitingPatientsReportBinding.getRoot());
             this.contentAwaitingPatientsReportBinding = contentAwaitingPatientsReportBinding;
         }
     }
 
     public class LoadingViewHolder extends RecyclerView.ViewHolder {
-
-        ProgressBar progressBar;
 
         ItemLoadingBinding itemLoadingBinding;
 
@@ -92,5 +88,5 @@ public class PatientAwaitingDispenseReportAdapter  extends AbstractRecycleViewAd
         }
     }
 
-    protected void showLoadingView(PatientAwaitingDispenseReportAdapter.LoadingViewHolder viewHolder, int position) {}
+    protected void showLoadingView(PatientAwaitingAbsentDispenseReportAdapter.LoadingViewHolder viewHolder, int position) {}
 }

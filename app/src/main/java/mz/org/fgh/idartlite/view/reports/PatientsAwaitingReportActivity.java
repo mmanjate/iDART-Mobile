@@ -1,5 +1,12 @@
 package mz.org.fgh.idartlite.view.reports;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -42,10 +49,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingAbsentDispenseReportAdapter;
 import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingDispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientsAwaitingReportBinding;
+import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
@@ -58,7 +67,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
 
     private RecyclerView recyclerDispenses;
     private ActivityPatientsAwaitingReportBinding dispenseReportBinding;
-    private PatientAwaitingDispenseReportAdapter adapter;
+    private PatientAwaitingAbsentDispenseReportAdapter adapter;
     private IDispenseService dispenseService;
 
     private static final String TAG = "PatientsAwaitingReportActivity";
@@ -228,13 +237,18 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new PatientAwaitingDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this,true);
+            adapter = new PatientAwaitingAbsentDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this,true);
 
             recyclerDispenses.setAdapter(adapter);
         }
 
         if (adapter.getOnLoadMoreListener() == null) {
-            adapter.setOnLoadMoreListener(() -> getRelatedViewModel().loadMoreRecords(recyclerDispenses, adapter));
+            adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+                    getRelatedViewModel().loadMoreRecords(recyclerDispenses, adapter);
+                }
+            });
         }
 
     }

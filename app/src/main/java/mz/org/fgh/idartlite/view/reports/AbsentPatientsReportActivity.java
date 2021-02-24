@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.view.reports;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -43,11 +42,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingDispenseReportAdapter;
+import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingAbsentDispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityAbsentPatientsReportBinding;
-import mz.org.fgh.idartlite.databinding.ActivityPatientsAwaitingReportBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
@@ -56,13 +54,12 @@ import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.dispense.AbsentPatientsReportVM;
-import mz.org.fgh.idartlite.viewmodel.dispense.AwatingPatientsReportVM;
 
 public class AbsentPatientsReportActivity extends BaseActivity {
 
     private RecyclerView recyclerDispenses;
     private ActivityAbsentPatientsReportBinding dispenseReportBinding;
-    private PatientAwaitingDispenseReportAdapter adapter;
+    private PatientAwaitingAbsentDispenseReportAdapter adapter;
     private IDispenseService dispenseService;
 
     private static final String TAG = "PatientsAwaitingReportActivity";
@@ -235,7 +232,7 @@ public class AbsentPatientsReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new PatientAwaitingDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this,false);
+            adapter = new PatientAwaitingAbsentDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this,false);
 
             recyclerDispenses.setAdapter(adapter);
         }
@@ -271,7 +268,7 @@ public class AbsentPatientsReportActivity extends BaseActivity {
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
         }
-        String pdfname = "dispenseReport.pdf";
+        String pdfname = "AbsentReport.pdf";
         File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);
@@ -301,7 +298,7 @@ public class AbsentPatientsReportActivity extends BaseActivity {
         tableImage.addCell(cell);
 
 
-        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3, 3,3});
+        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3, 3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
