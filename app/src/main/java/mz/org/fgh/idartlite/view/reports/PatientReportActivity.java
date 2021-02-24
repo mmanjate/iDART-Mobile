@@ -9,16 +9,16 @@ import android.widget.ImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.highsoft.highcharts.Common.HIChartsClasses.HIChart;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIColumn;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIOptions;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIPlotOptions;
-import com.highsoft.highcharts.Common.HIChartsClasses.HISubtitle;
-import com.highsoft.highcharts.Common.HIChartsClasses.HITitle;
-import com.highsoft.highcharts.Common.HIChartsClasses.HITooltip;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIXAxis;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIYAxis;
-import com.highsoft.highcharts.Core.HIChartView;
+import com.highsoft.highcharts.common.hichartsclasses.HIChart;
+import com.highsoft.highcharts.common.hichartsclasses.HIColumn;
+import com.highsoft.highcharts.common.hichartsclasses.HIOptions;
+import com.highsoft.highcharts.common.hichartsclasses.HIPlotOptions;
+import com.highsoft.highcharts.common.hichartsclasses.HISubtitle;
+import com.highsoft.highcharts.common.hichartsclasses.HITitle;
+import com.highsoft.highcharts.common.hichartsclasses.HITooltip;
+import com.highsoft.highcharts.common.hichartsclasses.HIXAxis;
+import com.highsoft.highcharts.common.hichartsclasses.HIYAxis;
+import com.highsoft.highcharts.core.HIChartView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -123,9 +123,9 @@ public class PatientReportActivity extends BaseActivity {
 
         HITitle title = new HITitle();
 
-        title.setText("Número de Pacientes Referidos da US");
+        title.setText("Número de Pacientes Referidos por Unidade Sanitária");
         HISubtitle subtitle = new HISubtitle();
-        subtitle.setText(start+" - "+end);
+        subtitle.setText(DateUtilities.formatToDDMMYYYY(start)+" - "+DateUtilities.formatToDDMMYYYY(end));
         options.setTitle(title);
         options.setSubtitle(subtitle);
 

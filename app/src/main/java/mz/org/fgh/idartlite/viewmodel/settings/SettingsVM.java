@@ -1,11 +1,9 @@
 package mz.org.fgh.idartlite.viewmodel.settings;
 
 import android.app.Application;
-import android.app.Notification;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.databinding.Bindable;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
@@ -16,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
-import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
@@ -290,6 +287,7 @@ public class SettingsVM extends BaseViewModel {
                         } else notificationText = workInfo.getOutputData().getString(UPLOAD_MESSAGE_STATUS);
                     }else throw new RuntimeException("Unknown Notification channel");
 
+                    if (!Utilities.stringHasValue(notificationText)) notificationText = "Não foram encontrados dados novos para sincronizar.";
 
                     issueNotification(notificationText, notificationChannel);
                 }else if (workInfo.getState() == WorkInfo.State.FAILED){
@@ -311,21 +309,6 @@ public class SettingsVM extends BaseViewModel {
 
         saveSharedSettings();
 
-    }
-
-    private void issueNotification(String contentText, String channel) {
-
-        if (!Utilities.stringHasValue(contentText)) contentText = "Não foram encontrados dados novos para sincronizar.";
-
-        Notification builder = new NotificationCompat.Builder(getRelatedFragment().getContext(), channel)
-                .setSmallIcon(R.drawable.ic_data)
-                .setContentTitle("iDART MOBILE")
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
-                .setContentText(contentText)
-                .setCategory(NotificationCompat.CATEGORY_STATUS)
-                .build();
-
-        getRelatedFragment().getNotificationManager().notify(1, builder);
     }
 
 

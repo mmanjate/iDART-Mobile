@@ -1,13 +1,5 @@
 package mz.org.fgh.idartlite.view.reports;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -20,6 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
@@ -43,13 +42,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseReportAdapter;
 import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingDispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientsAwaitingReportBinding;
-import mz.org.fgh.idartlite.databinding.DispenseReportBinding;
-import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
@@ -57,7 +53,6 @@ import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.dispense.AwatingPatientsReportVM;
-import mz.org.fgh.idartlite.viewmodel.dispense.DispenseReportVM;
 
 public class PatientsAwaitingReportActivity extends BaseActivity {
 
@@ -239,12 +234,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
         }
 
         if (adapter.getOnLoadMoreListener() == null) {
-            adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
-                @Override
-                public void onLoadMore() {
-                    getRelatedViewModel().loadMoreRecords(recyclerDispenses, adapter);
-                }
-            });
+            adapter.setOnLoadMoreListener(() -> getRelatedViewModel().loadMoreRecords(recyclerDispenses, adapter));
         }
 
     }

@@ -10,14 +10,14 @@ import android.widget.ImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.highsoft.highcharts.Common.HIChartsClasses.HIChart;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIDataLabels;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIOptions;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIPie;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIPlotOptions;
-import com.highsoft.highcharts.Common.HIChartsClasses.HITitle;
-import com.highsoft.highcharts.Common.HIChartsClasses.HITooltip;
-import com.highsoft.highcharts.Core.HIChartView;
+import com.highsoft.highcharts.common.hichartsclasses.HIChart;
+import com.highsoft.highcharts.common.hichartsclasses.HIDataLabels;
+import com.highsoft.highcharts.common.hichartsclasses.HIOptions;
+import com.highsoft.highcharts.common.hichartsclasses.HIPie;
+import com.highsoft.highcharts.common.hichartsclasses.HIPlotOptions;
+import com.highsoft.highcharts.common.hichartsclasses.HITitle;
+import com.highsoft.highcharts.common.hichartsclasses.HITooltip;
+import com.highsoft.highcharts.core.HIChartView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

@@ -135,7 +135,7 @@
 
         </LinearLayout>
     </LinearLayout>
-    <com.highsoft.highcharts.Core.HIChartView
+    <com.highsoft.highcharts.core.HIChartView
         android:id="@+id/hc_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -34,6 +34,10 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
 
     public PatientService(Application application, User currentUser) {
         super(application, currentUser);
+        init();
+    }
+
+    private void init(){
         try{
             patientDao = getDataBaseHelper().getPatientDao();
             this.prescriptionService = new PrescriptionService(application, currentUser);
@@ -48,12 +52,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
 
     public PatientService(Application application) {
         super(application);
-
-        try {
-            patientDao = getDataBaseHelper().getPatientDao();
-        } catch (SQLException sql) {
-            Log.i("erro ", sql.getMessage());
-        }
+        init();
     }
 
     @Override
@@ -188,7 +187,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         if (!Utilities.listHasElements(episodes)) return  null;
 
         for (Episode episode : episodes){
-            usLits.add(episode.getSanitaryUnit());
+            if (!usLits.contains(episode.getSanitaryUnit())) usLits.add(episode.getSanitaryUnit());
         }
         return usLits;
     }

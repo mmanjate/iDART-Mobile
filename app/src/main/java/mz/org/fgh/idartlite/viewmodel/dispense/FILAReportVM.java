@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
@@ -17,15 +16,13 @@ import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
+import mz.org.fgh.idartlite.searchparams.PatientSearchParams;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
-import mz.org.fgh.idartlite.service.episode.IEpisodeService;
 import mz.org.fgh.idartlite.service.patient.IPatientService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
-import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.patientSearch.SearchPatientActivity;
-import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
 import mz.org.fgh.idartlite.view.reports.FILAReportActivity;
 
 public class FILAReportVM extends SearchVM<Patient> {
@@ -34,10 +31,6 @@ public class FILAReportVM extends SearchVM<Patient> {
     private IPatientService patientService;
 
     private IDispenseService dispenseService;
-
-
-
-    private String searchParam;
 
 
     public FILAReportVM(@NonNull Application application) {
@@ -73,14 +66,10 @@ public class FILAReportVM extends SearchVM<Patient> {
 
     @Override
     public void initSearch(){
-        if(!Utilities.stringHasValue(searchParam)) {
+        if(!Utilities.stringHasValue(getSearchParam())) {
             Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.nid_or_name_is_mandatory)).show();
         }else {
-            try {
-                super.initSearch();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            super.initSearch();
         }
     }
 
@@ -97,8 +86,18 @@ public class FILAReportVM extends SearchVM<Patient> {
     }
 
     @Override
+    public PatientSearchParams getSearchParams() {
+        return (PatientSearchParams) super.getSearchParams();
+    }
+
+    @Override
+    public AbstractSearchParams<Patient> initSearchParams() {
+        return new PatientSearchParams();
+    }
+
+    @Override
     public List<Patient> doSearch(long offset, long limit) throws SQLException {
-        return searchPatient(this.searchParam.trim(), getCurrentClinic(), offset, limit);
+        return searchPatient(getSearchParam().trim(), getCurrentClinic(), offset, limit);
     }
 
 
@@ -126,11 +125,11 @@ public class FILAReportVM extends SearchVM<Patient> {
 
     @Bindable
     public String getSearchParam() {
-        return searchParam;
+        return getSearchParams().getSearchParam();
     }
 
     public void setSearchParam(String searchParam) {
-        this.searchParam = searchParam;
+        getSearchParams().setSearchParam(searchParam);
         notifyPropertyChanged(BR.searchParam);
     }
 }
