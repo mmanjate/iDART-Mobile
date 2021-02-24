@@ -52,7 +52,7 @@ public class RestPostPatientDataWorkerScheduler extends Worker {
                     for (Dispense dispense : dispenseList) {
                         RestDispenseService.restPostDispense(dispense);
                     }
-                }else {Log.d(TAG, "doWork: Sem Aviamentos para syncronizar");}
+                }else {Log.d(TAG, "doWork: Sem Dispensas para syncronizar");}
 
             List<Episode> episodeList=episodeService.getAllEpisodeByStatus(BaseModel.SYNC_SATUS_READY);
             if(episodeList != null && episodeList.size() > 0) {

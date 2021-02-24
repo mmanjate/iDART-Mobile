@@ -58,12 +58,14 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
         QueryBuilder<TherapeuticLine, Integer> therapeuticLineQb = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getTherapeuticLineDao().queryBuilder();
         prescriptionQb.join(therapeuticLineQb);
 
+        QueryBuilder<Dispense, Integer> dispenseQb = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDispenseDao().queryBuilder();
+        dispenseQb.join(prescriptionQb);
         QueryBuilder<Dispense, Integer> dispenseQb =   IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDispenseDao().queryBuilder();
         dispenseQb.join(prescriptionQb).where().eq(Dispense.COLUMN_VOIDED,false);
 
-        List<Dispense> dispenses = dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,false).query();
+        List<Dispense> dispenses = dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE, false).query();
 
-        System.out.println(dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,false).prepareStatementString());
+        System.out.println(dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE, false).prepareStatementString());
 
         return dispenses;
     }
@@ -78,7 +80,7 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
 
         dispenseList = dispenseQb.orderBy(Dispense.COLUMN_PICKUP_DATE, false).limit(1L).query();
 
-        if(dispenseList.size()!= 0)
+        if (dispenseList.size() != 0)
             return dispenseList.get(0);
 
         return null;
@@ -94,7 +96,6 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
     }
 
 
-
     @Override
     public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException {
         return queryBuilder().where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
@@ -108,6 +109,9 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
     }
 
     @Override
+    public List<Dispense> getDispensesBetweenNextPickppDateStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return queryBuilder().orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE, true).limit(limit)
+
     public List<Dispense> getDispensesBetweenNextPickppDateStartDateAndEndDateWithLimit(Application application,Date startDate, Date endDate, long offset, long limit) throws SQLException {
 
         QueryBuilder<Prescription, Integer> prescriptionQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPrescriptionDao().queryBuilder();
@@ -152,7 +156,5 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
 
        return dispenseQb.query();
     }
-
-
 
 }

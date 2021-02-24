@@ -211,7 +211,7 @@ public class DispenseVM extends BaseViewModel {
                                 if (!Utilities.stringHasValue(secondValidationErrors)) {
                                     String patientNid = this.dispense.getPrescription().getPatient().getNid();
                                      this.dispenseService.saveOrUpdateDispense(dispense);
-                                    Utilities.displayAlertDialog(getRelatedActivity(), "Aviamento para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
+                                    Utilities.displayAlertDialog(getRelatedActivity(), "Dispensa para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
                                 } else {
                                     Utilities.displayAlertDialog(getRelatedActivity(), secondValidationErrors).show();
                                 }
