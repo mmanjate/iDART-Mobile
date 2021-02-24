@@ -433,4 +433,10 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
 
     <string name="awaiting_patients_report">Pacientes Esperados no Periodo</string>
+    <string name="title_activity_patients_awaiting_statistics" translatable="false">PatientsAwaitingStatisticsActivity</string>
+    <string name="estatistica_esperados_por_regime_terapeutico" translatable="false">Estatistica de pacients esperados por Regime Terapeutico</string>
+    <string name="dispensa_mensal_dm" translatable="false">Dispensa Mensal (DM)</string>
+    <string name="dispensa_trimestral_dt" translatable="false">Dispensa Trimestral (DT)</string>
+    <string name="dispensa_semestral" translatable="false">Dispensa Semestral (DS)</string>
+    <string name="total_dispensas">Total Dispensas</string>
 </resources>
