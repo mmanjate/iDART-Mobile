@@ -79,6 +79,10 @@ public class ServiceWatcher {
         return new ServiceWatcher(type);
     }
 
+    public static ServiceWatcher fastCreate(){
+        return new ServiceWatcher(null);
+    }
+
     public static ServiceWatcher fastCreate(String serviceName, String requestedUrl, String type){
         return new ServiceWatcher(serviceName, requestedUrl, type);
     }
@@ -180,5 +184,9 @@ public class ServiceWatcher {
 
     public String getUpdate() {
         return update;
+    }
+
+    public boolean hasUpdates() {
+        return Utilities.listHasElements(this.updateList);
     }
 }

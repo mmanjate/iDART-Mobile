@@ -16,20 +16,15 @@ import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
-import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
-import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.rest.service.RestRunDataForTestService;
 import mz.org.fgh.idartlite.rest.service.User.RestUserService;
 import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
-import mz.org.fgh.idartlite.service.settings.AppSettingsService;
-import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
 import mz.org.fgh.idartlite.service.user.IUserService;
 import mz.org.fgh.idartlite.service.user.UserService;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -58,8 +53,6 @@ public class LoginVM extends BaseViewModel {
 
     private boolean sanitaryUnit;
 
-    private IAppSettingsService appSettingsService;
-
     public LoginVM(@NonNull Application application) {
         super(application);
     }
@@ -71,7 +64,6 @@ public class LoginVM extends BaseViewModel {
         restUserService = new RestUserService(getApplication(), getCurrentUser());
         clinicService = new ClinicService(getApplication(), getCurrentUser());
         clinicSectorService= new ClinicSectorService(getApplication(),getCurrentUser());
-        appSettingsService = new AppSettingsService(getApplication());
 
         return userService;
     }
@@ -109,7 +101,6 @@ public class LoginVM extends BaseViewModel {
     public void setUserPassword(String password) {
         this.currentUser.setPassword(password);
         notifyPropertyChanged(BR.userPassword);
-
     }
 
     @Bindable
@@ -121,8 +112,6 @@ public class LoginVM extends BaseViewModel {
         setCurrentClinic(c);
         notifyPropertyChanged(BR.clinic);
     }
-
-
 
     public void saveLogingUser() throws SQLException {
         this.currentUser.setClinic(clinicService.getAllClinics().get(0));
@@ -141,7 +130,6 @@ public class LoginVM extends BaseViewModel {
 
     public void login() {
         getRelatedActivity().changeViewToAuthenticatingMode();
-        getRelatedActivity().getActivityLoginBinding().executePendingBindings();
 
         if ((appHasUsersOnDB() && getCurrentClinic() == null) || (appHasUsersOnDB() && getCurrentClinic().getUuid()== null) ){
             getRelatedActivity().changeViewToNormalMode();
@@ -159,11 +147,6 @@ public class LoginVM extends BaseViewModel {
                     runRestUserAccess();
 
                 } else {
-                    // Somente para testes --- estas funcionalidades foram alocadas no WorkManager da app
-                    if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
-                      //  RestRunDataForTestService runDataForTestService = new RestRunDataForTestService(getApplication(), getCurrentUser());
-                    }
-
                     if (!userService.login(getCurrentUser())) {
                         if (Utilities.listHasElements(clinicList)) {
                             setCurrentClinic(clinicList.get(0));
@@ -179,8 +162,6 @@ public class LoginVM extends BaseViewModel {
                             Utilities.displayAlertDialog(getRelatedActivity(),  getRelatedActivity().getString(R.string.pharmacy_config_not_found)).show();
                         }
                     } else {
-                        /*getRelatedActivity().changeViewToNormalMode();
-                        Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.user_or_pass_invalid)).show();*/
                         if (getCurrentClinic() == null) setCurrentClinic(clinicList.get(0));
                         runRestUserAccess();
                     }
@@ -199,7 +180,7 @@ public class LoginVM extends BaseViewModel {
         }
     }
 
-    public void runRestUserAccess(){
+    private void runRestUserAccess(){
         restUserService.getUserAuthentication(getCurrentClinic().getUuid(), getRelatedActivity().getCurrentUser().getUserName(), getRelatedActivity().getCurrentUser().getPassword(), getRelatedActivity());
     }
 
@@ -244,8 +225,7 @@ public class LoginVM extends BaseViewModel {
     private void moveToHome() {
         Map<String, Object> params = new HashMap<>();
         params.put("user", getCurrentUser());
-        if(getCurrentClinicSector()!=null)
-        {params.put("clinicSector", getCurrentClinicSector());}
+        if(getCurrentClinicSector()!=null) {params.put("clinicSector", getCurrentClinicSector());}
         params.put("clinic", getCurrentClinic());
         getRelatedActivity().nextActivity(IDartHomeActivity.class, params);
     }
@@ -279,7 +259,6 @@ public class LoginVM extends BaseViewModel {
 
     public void setSelectedClinicSector(Listble selectedClinicSector) {
         this.selectedClinicSector = (ClinicSector) selectedClinicSector;
-     //   setCurrentClinic(this.selectedClinic);
         notifyPropertyChanged(BR.selectedClinicSector);
     }
 
@@ -291,16 +270,6 @@ public class LoginVM extends BaseViewModel {
     public void setClinicSectorsList(List<ClinicSector> clinicSectorsList) {
         this.clinicSectorsList = clinicSectorsList;
         notifyPropertyChanged(BR.clinicSectorsList);
-    }
-
-    @Bindable
-    public List<Clinic> getClinicList() {
-        return clinicList;
-    }
-
-    public void setClinicList(List<Clinic> clinicList) {
-        this.clinicList = clinicList;
-        notifyPropertyChanged(BR.clinicList);
     }
 
     @Bindable

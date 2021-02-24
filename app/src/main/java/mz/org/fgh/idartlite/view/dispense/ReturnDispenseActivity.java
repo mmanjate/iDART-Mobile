@@ -53,6 +53,8 @@ public class ReturnDispenseActivity extends BaseActivity implements IDialogListe
 
     private ListbleRecycleViewAdapter listbleRecycleViewAdapter;
 
+    private Integer positionRemoved;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +63,20 @@ public class ReturnDispenseActivity extends BaseActivity implements IDialogListe
 
         rcvDispensedDrugs = activityReturnDispenseBinding.rcvSelectedDrugs;
 
-        getApplicationStep().setCode(ApplicationStep.STEP_CREATE);
+        if(!getApplicationStep().isApplicationStepRemove()) {
+            getApplicationStep().setCode(ApplicationStep.STEP_CREATE);
+        }
         Intent intent = this.getIntent();
         if(intent != null) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 getRelatedViewModel().setDispense((Dispense) bundle.getSerializable("dispense"));
             }
+
+            positionRemoved= (Integer) bundle.getSerializable("positionRemoved");
         }
+
+
 
 
         activityReturnDispenseBinding.returnDate.setOnClickListener(new View.OnClickListener() {
@@ -167,17 +175,29 @@ public class ReturnDispenseActivity extends BaseActivity implements IDialogListe
 
 
     public void doAfterReturnSave(){
-        Map<String, Object> params = new HashMap<>();
-        params.put("patient", getRelatedViewModel().getDispense().getPrescription().getPatient());
-        params.put("user", getCurrentUser());
-        params.put("clinic", getCurrentClinic());
-        params.put("step", ApplicationStep.STEP_CREATE);
-        nextActivityFinishingCurrent(PrescriptionActivity.class,params);
+
+        if (getApplicationStep().isApplicationStepSave()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("patient", getRelatedViewModel().getDispense().getPrescription().getPatient());
+            params.put("user", getCurrentUser());
+            params.put("clinic", getCurrentClinic());
+            params.put("step", ApplicationStep.STEP_CREATE);
+            nextActivityFinishingCurrent(PrescriptionActivity.class, params);
+        }
+        else if(getApplicationStep().isApplicationStepRemove()){
+            Map<String, Object> params = new HashMap<>();
+            params.put("patient",getRelatedViewModel().getDispense().getPrescription().getPatient());
+            params.put("user", getCurrentUser());
+            params.put("clinic", getCurrentClinic());
+            params.put("requestedFragment", DispenseFragment.FRAGMENT_CODE_DISPENSE);
+            params.put("positionRemoved", positionRemoved);
+            nextActivityFinishingCurrent(PatientPanelActivity.class,params);
+        }
     }
 
     @Override
     public void doOnConfirmed() {
-        if (getApplicationStep().isApplicationStepSave()) {
+        if (getApplicationStep().isApplicationStepSave() || getApplicationStep().isApplicationStepRemove()) {
             doAfterReturnSave();
         }else {
             doOnDeny();

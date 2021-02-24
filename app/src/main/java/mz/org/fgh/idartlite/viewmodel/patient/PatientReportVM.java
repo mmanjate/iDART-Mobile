@@ -53,11 +53,11 @@ public class PatientReportVM extends BaseViewModel {
 
     }
 
-    public int countNewPatientByPeriod(Date start, Date end){
+    public int countNewPatientByPeriod(Date start, Date end, String sanitaryUnit){
 
         int p = 0;
         try {
-            p = patientService.countNewPatientsByPeriod(start, end);
+            p = patientService.countNewPatientsByPeriod(start, end, sanitaryUnit);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -123,5 +123,16 @@ public class PatientReportVM extends BaseViewModel {
         }
 
         return datesBetween;
+    }
+
+    public List<String> getSanitaryUnityListOnPeriod(Date start, Date end) {
+        List<String> sanitaryUnits = null;
+        try {
+            sanitaryUnits = patientService.getSanitaryUnitsWithRecordsOnPeriod(start, end);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return sanitaryUnits;
     }
 }

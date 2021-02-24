@@ -9,15 +9,20 @@ import androidx.collection.ArrayMap;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLException;
 import java.util.Map;
 
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.user.UserService;
 import mz.org.fgh.idartlite.util.Utilities;
 
 public class RestUserService extends BaseRestService {
@@ -104,6 +109,39 @@ public class RestUserService extends BaseRestService {
 
         }
         return result[0];
+    }
+
+    public static void restPostUser(User user) {
+
+        String url = BaseRestService.baseUrl + "/sync_temp_episode";
+
+        UserService userService = new UserService(getApp());
+        getRestServiceExecutor().execute(() -> {
+            RESTServiceHandler handler = new RESTServiceHandler();
+
+            Gson g = new Gson();
+            String restObject = g.toJson(user);
+
+            handler.addHeader("Content-Type", "application/json");
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(restObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            handler.objectRequest(url, Request.Method.POST, jsonObject, Object.class, response -> {
+                Log.d(TAG, "onResponse: Utilizador enviado" + response);
+                try {
+                    user.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+                    userService.saveUser(user);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }, error -> Log.d(TAG, "onErrorResponse: Erro no POST :" +generateErrorMsg(error)));
+
+
+        });
     }
     
 }

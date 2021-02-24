@@ -1,7 +1,6 @@
 package mz.org.fgh.idartlite.viewmodel.splash;
 
 import android.app.Application;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -14,7 +13,6 @@ import java.util.Map;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
-import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
@@ -32,9 +30,6 @@ import mz.org.fgh.idartlite.view.splash.SplashActivity;
 
 public class SplashVM extends BaseViewModel implements RestResponseListener<Clinic> {
 
-    private List<Clinic> clinicList;
-
-
     public SplashVM(@NonNull Application application) {
         super(application);
     }
@@ -51,7 +46,6 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     @Override
     protected void initFormData() {
-        clinicList = new ArrayList<Clinic>();
 
         try {
             this.systemSettings = getRelatedService().getAllSettings();
@@ -72,9 +66,6 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     @Override
     public void preInit() {
-
-
-
     }
 
     public void requestConfiguration() {
@@ -98,31 +89,24 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     public void saveSettings(String s) {
 
-        if (RESTServiceHandler.getServerStatus(s)) {
+        List<AppSettings> settings = new ArrayList<>();
 
-            List<AppSettings> settings = new ArrayList<>();
+        settings.add(AppSettings.generateUrlSetting(s));
+        settings.add(AppSettings.generateDataSyncSetting(AppSettings.DEFAULT_DATA_SYNC_PERIOD_SETTING));
+        settings.add(AppSettings.generateMetadataSyncSetting(AppSettings.DEFAULT_METADATA_SYNC_PERIOD_SETTING));
+        settings.add(AppSettings.generateDataRemotionSetting(AppSettings.DEFAULT_DATA_REMOTION_PERIOD));
 
-            settings.add(AppSettings.generateUrlSetting(s));
-            settings.add(AppSettings.generateDataSyncSetting(AppSettings.DEFAULT_DATA_SYNC_PERIOD_SETTING));
-            settings.add(AppSettings.generateMetadataSyncSetting(AppSettings.DEFAULT_METADATA_SYNC_PERIOD_SETTING));
-            settings.add(AppSettings.generateDataRemotionSetting(AppSettings.DEFAULT_DATA_REMOTION_PERIOD));
+        try {
+            getRelatedService().saveAppSettings(settings);
 
-            try {
-                getRelatedService().saveAppSettings(settings);
+            BaseRestService.setBaseUrl(getRelatedService().getCentralServerSettings().getValue());
 
-                BaseRestService.setBaseUrl(getRelatedService().getCentralServerSettings().getValue());
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-
-            syncApp();
-
-        }else {
-            Toast.makeText(getRelatedActivity(), "Sync error", Toast.LENGTH_LONG).show();
-            //Utilities.displayAlertDialog(getRelatedActivity(), "A aplicação não conseguiu ligar-se ao servidor central, por favor verifique a configuração informada ou a configuração de rede do dispositivo.").show();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+
+        syncApp();
     }
 
 
@@ -180,16 +164,6 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
         Map<String, Object> params = new HashMap<>();
         params.put("clinicList", objects);
         getRelatedActivity().nextActivityFinishingCurrent(LoginActivity.class, params);
-    }
-
-    @Override
-    public boolean registRunningService(ServiceWatcher serviceWatcher) {
-        return false;
-    }
-
-    @Override
-    public void updateServiceStatus(ServiceWatcher serviceWatcher) {
-
     }
 
     @Override

@@ -12,6 +12,7 @@ import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
+import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.service.stock.DestroyedStockDrugService;
 import mz.org.fgh.idartlite.view.stock.panel.DestroiedStockListFragment;
 import mz.org.fgh.idartlite.view.stock.panel.StockActivity;
@@ -76,6 +77,11 @@ public class DestroiedStockListingVM extends SearchVM<DestroyedDrug> {
     @Override
     public void displaySearchResults() {
         getRelatedFragment().displaySearchResult();
+    }
+
+    @Override
+    public AbstractSearchParams<DestroyedDrug> initSearchParams() {
+        return null;
     }
 
     public void deleteRecord(DestroyedDrug selectedRecord) throws SQLException {

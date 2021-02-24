@@ -16,6 +16,8 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
+import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
+import mz.org.fgh.idartlite.searchparams.PatientSearchParams;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
 import mz.org.fgh.idartlite.service.patient.IPatientService;
@@ -29,15 +31,6 @@ public class NewPatientSearchVM extends SearchVM<Patient> {
     private Patient patient;
     private IPatientService patientService;
     private IEpisodeService episodeService;
-
-
-    private String searchNid;
-
-    private String searchName;
-
-    private String searchSurname;
-
-
 
     public NewPatientSearchVM(@NonNull Application application) {
         super(application);
@@ -113,14 +106,10 @@ public class NewPatientSearchVM extends SearchVM<Patient> {
 
     @Override
     public void initSearch(){
-        if(!Utilities.stringHasValue(searchNid) && !Utilities.stringHasValue(searchName) && !Utilities.stringHasValue(searchSurname)) {
+        if(!Utilities.stringHasValue(getSearchParams().getNid()) && !Utilities.stringHasValue(getSearchParams().getName()) && !Utilities.stringHasValue(getSearchParams().getSurName())) {
             Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.nid_or_name_is_mandatory)).show();
         }else {
-            try {
-                super.initSearch();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            super.initSearch();
         }
     }
 
@@ -131,7 +120,7 @@ public class NewPatientSearchVM extends SearchVM<Patient> {
        // if(getRelatedActivity().)
       //  Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.would_like_create_patient), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), ((NewPatientSearchActivity)getRelatedActivity())).show();
 
-      RestPatientService.restGetPatientByNidOrNameOrSurname(searchNid, searchName, searchSurname, this.getRelatedActivity());
+      RestPatientService.restGetPatientByNidOrNameOrSurname(getSearchParams().getNid(), getSearchParams().getName(), getSearchParams().getSurName(), this.getRelatedActivity());
 
 
     //    displaySearchResults();
@@ -145,9 +134,19 @@ public class NewPatientSearchVM extends SearchVM<Patient> {
     }
 
     @Override
+    public PatientSearchParams getSearchParams() {
+        return (PatientSearchParams) super.getSearchParams();
+    }
+
+    @Override
+    public AbstractSearchParams<Patient> initSearchParams() {
+        return new PatientSearchParams();
+    }
+
+    @Override
     public List<Patient> doSearch(long offset, long limit) throws SQLException {
 
-        return searchPatient(this.searchNid !=null? this.searchNid.trim():null ,this.searchName !=null? this.searchName.trim():null,this.searchSurname !=null? this.searchSurname.trim():null, offset, limit);
+        return searchPatient(getSearchParams().getNid()!=null? getSearchParams().getNid().trim():null ,getSearchParams().getName()!=null? getSearchParams().getName().trim():null,getSearchParams().getSurName() !=null? getSearchParams().getSurName().trim():null, offset, limit);
     }
 
     public List<Patient> getAllPatient() throws SQLException {
@@ -180,28 +179,28 @@ public class NewPatientSearchVM extends SearchVM<Patient> {
 
     @Bindable
     public String getSearchNid() {
-        return searchNid;
+        return getSearchParams().getNid();
     }
 
     public void setSearchNid(String searchNid) {
-        this.searchNid = searchNid;
+        getSearchParams().setNid(searchNid);
     }
 
     @Bindable
     public String getSearchName() {
-        return searchName;
+        return getSearchParams().getName();
     }
 
     public void setSearchName(String searchName) {
-        this.searchName = searchName;
+        getSearchParams().setName(searchName);
     }
 
     @Bindable
     public String getSearchSurname() {
-        return searchSurname;
+        return getSearchParams().getSurName();
     }
 
     public void setSearchSurname(String searchSurname) {
-        this.searchSurname = searchSurname;
+        getSearchParams().setSurName(searchSurname);
     }
 }

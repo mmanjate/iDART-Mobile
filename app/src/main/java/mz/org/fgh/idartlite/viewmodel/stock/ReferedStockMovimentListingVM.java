@@ -12,6 +12,7 @@ import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.model.ReferedStockMoviment;
+import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.service.stock.IReferedStockService;
 import mz.org.fgh.idartlite.service.stock.ReferedStockMovimentServiceImpl;
 import mz.org.fgh.idartlite.view.stock.panel.StockReferenceFragment;
@@ -60,6 +61,11 @@ public class ReferedStockMovimentListingVM extends SearchVM<ReferedStockMoviment
     @Override
     public void displaySearchResults() {
         getRelatedFragment().displaySearchResult();
+    }
+
+    @Override
+    public AbstractSearchParams<ReferedStockMoviment> initSearchParams() {
+        return null;
     }
 
     @Override

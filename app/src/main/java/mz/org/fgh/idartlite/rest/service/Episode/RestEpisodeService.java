@@ -254,12 +254,6 @@ public class RestEpisodeService extends BaseRestService {
 
             String url = BaseRestService.baseUrl + "/sync_temp_episode?clinicuuid=eq."+clinic.getUuid();
 
-            ServiceWatcher serviceWatcher = ServiceWatcher.fastCreate(TAG, url);
-
-            serviceWatcher.setServiceAsRunning();
-
-            if (listener != null) listener.registRunningService(serviceWatcher);
-
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
 

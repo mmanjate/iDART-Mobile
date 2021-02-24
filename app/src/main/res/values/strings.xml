@@ -427,10 +427,14 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="new_dispense_types">Novo(s) Tipos de Dispensa</string>
     <string name="new_regimens">Novo(s) Regimes Terapéuticos</string>
     <string name="new_lines">Nova(s) Linhas Terapéuricas</string>
-    <string name="new_patients">Novo(s) Pacientes</string>
+    <string name="new_patients">Novo(s) Paciente(s) referidos.</string>
     <string name="new_episodes">Novo(s) Episódios</string>
     <string name="no_selected_drug">Por favor seleccione pelo menos um medicamento.</string>
     <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
+    <string name="app_cant_connect_to_server">A aplicação não conseguiu ligar-se ao servidor central, por favor verifique a URL informada ou a configuração de rede do dispositivo.</string>
+    <string name="central_server_url_mandatory">Por favor indicar a URL do servidor central.</string>
+
+
 
     <string name="awaiting_patients_report">Pacientes Esperados no Periodo</string>
     <string name="title_activity_patients_awaiting_statistics" translatable="false">PatientsAwaitingStatisticsActivity</string>
@@ -439,4 +443,8 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="dispensa_trimestral_dt" translatable="false">Dispensa Trimestral (DT)</string>
     <string name="dispensa_semestral" translatable="false">Dispensa Semestral (DS)</string>
     <string name="total_dispensas">Total Dispensas</string>
+    <string name="absent_patients_report">Pacientes Faltosos no Periodo</string>
+    <string name="date_missed">Data que faltou ao Levantamento</string>
+    <string name="remove_dispense">Remover Dispensa</string>
+    <string name="days_missed">Numero de Dias que faltou</string>
 </resources>

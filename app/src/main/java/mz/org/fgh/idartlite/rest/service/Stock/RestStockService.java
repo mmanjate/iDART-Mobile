@@ -172,8 +172,6 @@ public class RestStockService extends BaseRestService {
 
         stockService = new StockService(getApp(), null);
 
-        if (watcher != null) watcher.setRequestedUrl(url);
-
         try {
             getRestServiceExecutor().execute(() -> {
 
@@ -187,34 +185,18 @@ public class RestStockService extends BaseRestService {
 
                     handler.addHeader("Content-Type", "application/json");
                     JSONObject jsonObject = new JSONObject(restObject);
-                    handler.objectRequest(url, Request.Method.POST, jsonObject, Object.class, new Response.Listener<Map<String, Object>>() {
-
-                        @Override
-                        public void onResponse(Map<String, Object> response) {
-                            Log.d(TAG, "onResponse: Stock enviado " + response.toString());
-                            try {
-                                localStock.setRestId(Integer.parseInt(getValueFromResponse(response, "Location", ".")));
-                                localStock.setSyncStatus("S");
-                                stockService.saveOrUpdateStock(localStock);
-                                restPostStockLevel(localStock);
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-                            if (watcher != null) {
-                                watcher.increaseSentRecords();
-
-                                if (watcher.isAllSent()) {
-                                    watcher.setServiceAsStopped();
-                                    if (listener != null) listener.updateServiceStatus(watcher);
-                                }
-                            }
+                    handler.objectRequest(url, Request.Method.POST, jsonObject, Object.class, (Response.Listener<Map<String, Object>>) response -> {
+                        Log.d(TAG, "onResponse: Stock enviado " + response.toString());
+                        try {
+                            localStock.setRestId(Integer.parseInt(getValueFromResponse(response, "Location", ".")));
+                            localStock.setSyncStatus("S");
+                            stockService.saveOrUpdateStock(localStock);
+                            restPostStockLevel(localStock);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d(TAG, "onErrorResponse: Erro no POST :" + error.getCause());
-                        }
-                    });
+
+                    }, error -> Log.d(TAG, "onErrorResponse: Erro no POST :" + error.getCause()));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

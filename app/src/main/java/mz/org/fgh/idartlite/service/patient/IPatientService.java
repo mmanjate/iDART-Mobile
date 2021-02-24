@@ -11,7 +11,6 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 
 
@@ -23,7 +22,7 @@ public interface IPatientService extends IBaseService<Patient> {
 
     public void  savePatient(Patient patient) throws SQLException ;
 
-    public int countNewPatientsByPeriod(Date start, Date end) throws SQLException ;
+    int countNewPatientsByPeriod(Date start, Date end, String sanitaryUnit) throws SQLException;
 
     public Patient getPatientByUuid(String uuid) throws SQLException ;
 
@@ -39,4 +38,5 @@ public interface IPatientService extends IBaseService<Patient> {
 
     public List<Patient> searchPatientByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit, RestResponseListener listener) throws SQLException;
 
+    List<String> getSanitaryUnitsWithRecordsOnPeriod(Date start, Date end) throws SQLException;
 }

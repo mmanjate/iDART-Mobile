@@ -36,6 +36,9 @@ public class PatientPanelActivity extends BaseActivity {
 
     private String selectedTab;
 
+    private Integer positionRemoved;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,8 @@ public class PatientPanelActivity extends BaseActivity {
                     throw new RuntimeException("Não foi seleccionado um paciente para detalhar.");
                 }
                 this.selectedTab = (String) bundle.getSerializable("requestedFragment");
+
+                positionRemoved= (Integer) bundle.getSerializable("positionRemoved");
             }
         }
         try {
@@ -142,4 +147,11 @@ public class PatientPanelActivity extends BaseActivity {
     }
 
 
+    public Integer getPositionRemoved() {
+        return positionRemoved;
+    }
+
+    public void setPositionRemoved(Integer positionRemoved) {
+        this.positionRemoved = positionRemoved;
+    }
 }

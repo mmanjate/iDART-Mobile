@@ -98,4 +98,20 @@ public class DispenseType extends BaseModel implements Listble {
     public String canBeRemoved(Context context) {
         return null;
     }
+
+    public boolean isMonthlyDispense(){
+        return this.description.equalsIgnoreCase("Dispensa Mensal (DM)");
+    }
+
+    public boolean isThreeMonthsDispense(){
+        return this.description.equalsIgnoreCase("Dispensa Trimestral (DT)");
+    }
+
+    public boolean isSixMonthsDispense(){
+        return this.description.equalsIgnoreCase("Dispensa Semestral (DS)");
+    }
+
+    public boolean isOtherDispense(){
+        return this.description.equalsIgnoreCase("Outro");
+    }
 }

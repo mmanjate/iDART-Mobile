@@ -3,28 +3,26 @@ package mz.org.fgh.idartlite.view.reports;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.highsoft.highcharts.Common.HIChartsClasses.HIChart;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIColumn;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIOptions;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIPlotOptions;
-import com.highsoft.highcharts.Common.HIChartsClasses.HISubtitle;
-import com.highsoft.highcharts.Common.HIChartsClasses.HITitle;
-import com.highsoft.highcharts.Common.HIChartsClasses.HITooltip;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIXAxis;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIYAxis;
-import com.highsoft.highcharts.Core.HIChartView;
-
-import org.joda.time.DateTime;
+import com.highsoft.highcharts.common.hichartsclasses.HIChart;
+import com.highsoft.highcharts.common.hichartsclasses.HIColumn;
+import com.highsoft.highcharts.common.hichartsclasses.HIOptions;
+import com.highsoft.highcharts.common.hichartsclasses.HIPlotOptions;
+import com.highsoft.highcharts.common.hichartsclasses.HISubtitle;
+import com.highsoft.highcharts.common.hichartsclasses.HITitle;
+import com.highsoft.highcharts.common.hichartsclasses.HITooltip;
+import com.highsoft.highcharts.common.hichartsclasses.HIXAxis;
+import com.highsoft.highcharts.common.hichartsclasses.HIYAxis;
+import com.highsoft.highcharts.core.HIChartView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
@@ -55,89 +53,67 @@ public class PatientReportActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         edtStart = findViewById(R.id.start);
         edtEnd = findViewById(R.id.end);
         ImageView search = findViewById(R.id.buttonSearch);
 
-        edtStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int mYear, mMonth, mDay;
+        edtStart.setOnClickListener(view -> {
+            int mYear, mMonth, mDay;
 
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
+            DatePickerDialog datePickerDialog = new DatePickerDialog(PatientReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
+                edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+            }, mYear, mMonth, mDay);
+            datePickerDialog.show();
         });
 
-        edtEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int mYear, mMonth, mDay;
+        edtEnd.setOnClickListener(view -> {
+            int mYear, mMonth, mDay;
 
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
+            DatePickerDialog datePickerDialog = new DatePickerDialog(PatientReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
+                edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+            }, mYear, mMonth, mDay);
+            datePickerDialog.show();
         });
 
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
-                    Utilities.displayAlertDialog(PatientReportActivity.this, "Por favor indicar o período por analisar!").show();
-                }else
-                if (DateUtilities.dateDiff(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
-                    Utilities.displayAlertDialog(PatientReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
-                }else
-                if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
-                    Utilities.displayAlertDialog(PatientReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
-                }
-                else
-                if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
-                    Utilities.displayAlertDialog(PatientReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
-                }else {
-                    Utilities.hideSoftKeyboard(PatientReportActivity.this);
-                    generateGraph(start, end);
-                }
+        search.setOnClickListener(v -> {
+            if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
+                Utilities.displayAlertDialog(PatientReportActivity.this, "Por favor indicar o período por analisar!").show();
+            }else
+            if (DateUtilities.dateDiff(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
+                Utilities.displayAlertDialog(PatientReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
+            }else
+            if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
+                Utilities.displayAlertDialog(PatientReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
+            }
+            else
+            if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
+                Utilities.displayAlertDialog(PatientReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
+            }else {
+                Utilities.hideSoftKeyboard(PatientReportActivity.this);
+                generateGraph(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
             }
         });
     }
 
-    private void generateGraph(String start, String end) {
-        start = edtStart.getText().toString();
-        end = edtEnd.getText().toString();
+    private void generateGraph(Date start, Date end) {
+        start = DateUtilities.createDate(edtStart.getText().toString(), DateUtilities.DATE_FORMAT);
+        end = DateUtilities.createDate(edtEnd.getText().toString(), DateUtilities.DATE_FORMAT);
 
-        List<DateTime> datesBetween = getRelatedViewModel().processPeriods(start, end);
+        List<String> sanitaryUnits = getRelatedViewModel().getSanitaryUnityListOnPeriod(start, end);
 
         HIOptions options = new HIOptions();
 
@@ -147,9 +123,9 @@ public class PatientReportActivity extends BaseActivity {
 
         HITitle title = new HITitle();
 
-        title.setText("Número de Pacientes Referidos da US por "+getRelatedViewModel().getPrerioType());
+        title.setText("Número de Pacientes Referidos por Unidade Sanitária");
         HISubtitle subtitle = new HISubtitle();
-        subtitle.setText(start+" - "+end);
+        subtitle.setText(DateUtilities.formatToDDMMYYYY(start)+" - "+DateUtilities.formatToDDMMYYYY(end));
         options.setTitle(title);
         options.setSubtitle(subtitle);
 
@@ -165,20 +141,9 @@ public class PatientReportActivity extends BaseActivity {
 
         final HIXAxis hixAxis = new HIXAxis();
         ArrayList categories = new ArrayList<>();
-        for (int i = 0; i <= datesBetween.size() - 2; i++){
-            if ( i < datesBetween.size()-2) {
-                int qty = getRelatedViewModel().countNewPatientByPeriod(datesBetween.get(i).toDate(), datesBetween.get(i + 1).minusDays(1).toDate());
-                if (qty > 0) {
-                    categories.add(DateUtilities.formatToDDMMYYYY(datesBetween.get(i).toDate()) + " TO " + DateUtilities.formatToDDMMYYYY(datesBetween.get(i + 1).minusDays(1).toDate()));
-                    serieData.add(qty);
-                }
-            }else {
-                int qty = getRelatedViewModel().countNewPatientByPeriod(datesBetween.get(i).toDate(), datesBetween.get(i + 1).toDate());
-                if (qty > 0) {
-                    categories.add(DateUtilities.formatToDDMMYYYY(datesBetween.get(i).toDate()) + " TO " + DateUtilities.formatToDDMMYYYY(datesBetween.get(i + 1).toDate()));
-                    serieData.add(qty);
-                }
-            }
+        for (String s : sanitaryUnits){
+            categories.add(s);
+            serieData.add(getRelatedViewModel().countNewPatientByPeriod(start, end, s));
         }
 
         patientData.setData(serieData);

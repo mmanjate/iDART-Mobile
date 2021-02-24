@@ -152,7 +152,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("004", "FILA", R.drawable.ic_list, FILAReportActivity.class));
         reports.add(Report.fastCreate("005", "Relatorio de Pacientes Esperados", R.drawable.ic_list, PatientsAwaitingReportActivity.class));
         reports.add(Report.fastCreate("006", "Relatorio Estatístico de Pacientes Esperados por Regime", R.drawable.ic_list, PatientsAwaitingStatisticsActivity.class));
-
+        reports.add(Report.fastCreate("007", "Relatorio de Pacientes Faltosos", R.drawable.ic_list, AbsentPatientsReportActivity.class));
         return reports;
     }
 
@@ -160,6 +160,7 @@ public class ReportTypeActivity extends BaseActivity {
         List<Report> reports= new ArrayList<Report>();
         reports.add(Report.fastCreate("001", "Entrada de Pacientes Referidos", R.drawable.ic_graphic, PatientReportActivity.class));
         reports.add(Report.fastCreate("002", "Dispensas por Regime Terapêutico", R.drawable.ic_graphic, DispensedDrugsReportActivity.class));
+        reports.add(Report.fastCreate("003", "Pacientes Esperados por Regime e Tipo de Dispensa", R.drawable.ic_graphic, AwatingPatientsGraphReportActivity.class));
 
         return reports;
     }

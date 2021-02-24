@@ -156,4 +156,9 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
     public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end,long limit,long offset) throws SQLException {
         return getDataBaseHelper().getEpisodeDao().getAllStartEpisodesBetweenStartDateAndEndDate(start,end,limit,offset);
     }
+
+    @Override
+    public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end) throws SQLException {
+        return getDataBaseHelper().getEpisodeDao().getAllStartEpisodesBetweenStartDateAndEndDate(start,end);
+    }
 }

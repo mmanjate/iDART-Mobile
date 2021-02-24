@@ -31,20 +31,40 @@ public class ReturnedDrugService extends BaseService implements IReturnedDrugSer
     @Override
     public void createReturnedDrug(ReturnedDrug returnedDrug) throws SQLException {
 
+        Dispense dispense=returnedDrug.getDispensedDrug().getDispense();
 
-
-            Stock stock= returnedDrug.getDispensedDrug().getStock();
-            Dispense dispense=returnedDrug.getDispensedDrug().getDispense();
-
-           stock.setStockMoviment(stock.getStockMoviment()+returnedDrug.getQtyToModify());
-
-            stockService.updateStock(stock);
-
+           reStockDrugs(returnedDrug);
             dispense.setReturned(true);
             dispenseService.udpateDispense(dispense);
 
             getDataBaseHelper().getReturnedDrugDao().create(returnedDrug);
 
+
+    }
+
+    @Override
+    public void createRemoveDrug(ReturnedDrug returnedDrug) throws SQLException {
+
+        Dispense dispense=returnedDrug.getDispensedDrug().getDispense();
+
+
+        reStockDrugs(returnedDrug);
+
+        dispense.setVoided(true);
+        dispenseService.udpateDispense(dispense);
+
+        getDataBaseHelper().getReturnedDrugDao().create(returnedDrug);
+
+
+    }
+
+    private void reStockDrugs(ReturnedDrug returnedDrug) throws SQLException {
+
+        Stock stock= returnedDrug.getDispensedDrug().getStock();
+
+        stock.setStockMoviment(stock.getStockMoviment()+returnedDrug.getQtyToModify());
+
+        stockService.updateStock(stock);
 
     }
 }

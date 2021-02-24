@@ -99,7 +99,9 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                         this.prescription = getRelatedViewModel().getLastPatientPrescription(this.getPatient());
 
                         dispenseList = (List<Dispense>) bundle.getSerializable("dispenses");
-                        prescription.setDispenses(dispenseList);
+                       // prescription.setDispenses(dispenseList);
+                        this.prescription.setDispenses(getRelatedViewModel().getAllDispensesByPrescription(this.prescription));
+
                         getRelatedViewModel().getDispense().setPrescription((this.prescription));
 
 

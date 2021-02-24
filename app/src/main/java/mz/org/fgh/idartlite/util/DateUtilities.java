@@ -198,6 +198,9 @@ public class DateUtilities {
             }
 
         }
+
+
+
         /**
          * Se a data estiver no formato yyyy/mm/dd
          */
@@ -227,6 +230,47 @@ public class DateUtilities {
         SimpleDateFormat datetemp = new SimpleDateFormat("dd-MM-yyyy");
         String data = datetemp.format(toParse);
         return data;
+    }
+
+    public static String formatToDDMMYYYY_HHMISS(Date date){
+
+        //DD-Mon-YY HH:MI:SS
+        if (date == null){
+            return "";
+        }
+
+        return Utilities.garantirXCaracterOnNumber(getDayOfMonth(date), 2) + "-" + Utilities.garantirXCaracterOnNumber(getMonth(date), 2) + "-" + getYear(date) + " " + formatToHHMISS(date);
+    }
+
+    /**
+     * @author Jorge Boane
+     * @return Transforma uma data para uma sitring no formato yyyy-mm-dd hh:mi:ss
+     * @param  date
+     *
+     */
+
+    public static String formatToYYYYMMDD_HHMISS(Date date){
+
+        //DD-Mon-YY HH:MI:SS
+        if (date == null){
+            return "";
+        }
+
+        return formatToYYYYMMDD(date) + " " + formatToHHMISS(date);
+    }
+
+    public static String formatToYYYYMMDD(Date date){
+        if (date == null) return null;
+
+        return getYear(date) + "-" +  Utilities.garantirXCaracterOnNumber(getMonth(date), 2) + "-" + Utilities.garantirXCaracterOnNumber(getDayOfMonth(date), 2);
+    }
+
+    public static String formatToHHMISS(Date date){
+        if (date == null){
+            return "";
+        }
+
+        return Utilities.garantirXCaracterOnNumber(getHours(date), 2) + ":" + Utilities.garantirXCaracterOnNumber(getMinutes(date), 2) + ":" + Utilities.garantirXCaracterOnNumber(getSeconds(date), 2);
     }
 
 

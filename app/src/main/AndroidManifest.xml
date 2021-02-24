@@ -23,6 +23,9 @@
             android:name=".view.reports.PatientsAwaitingStatisticsActivity"
             android:label="@string/title_activity_patients_awaiting_statistics"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".view.reports.AwatingPatientsGraphReportActivity"></activity>
+        <activity android:name=".view.reports.PatientsAwaitingReportActivity" />
+        <activity android:name=".view.reports.AbsentPatientsReportActivity"></activity>
         <activity android:name=".view.reports.PatientsAwaitingReportActivity" />
         <activity
             android:name=".view.home.IDartHomeActivity"
