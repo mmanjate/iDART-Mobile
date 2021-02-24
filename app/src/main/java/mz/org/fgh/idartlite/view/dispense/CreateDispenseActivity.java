@@ -99,7 +99,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                         this.prescription = getRelatedViewModel().getLastPatientPrescription(this.getPatient());
 
                         dispenseList = (List<Dispense>) bundle.getSerializable("dispenses");
-                       // prescription.setDispenses(dispenseList);
+                        // prescription.setDispenses(dispenseList);
                         this.prescription.setDispenses(getRelatedViewModel().getAllDispensesByPrescription(this.prescription));
 
                         getRelatedViewModel().getDispense().setPrescription((this.prescription));
@@ -312,12 +312,12 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             }
         });
 
-        if(getRelatedViewModel().getDispense().getPrescription().getTimeLeftInMonths()==0){
+        if (getRelatedViewModel().getDispense().getPrescription().getTimeLeftInMonths() == 0) {
             activityCreateDispenseBinding.prescriptionLabel.setTextColor(Color.RED);
             activityCreateDispenseBinding.prescriptionLabelTimeLeft.setTextColor(Color.RED);
         }
 
-     //   activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getSupply())));
+        //   activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getSupply())));
 
         if (getApplicationStep().isApplicationStepDisplay()) {
             disableAllSpinners();
@@ -403,7 +403,8 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
     private void loadSelectedDispenseToForm() {
 
-        if(getRelatedViewModel().getDispense().getSupply()!=0)  activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getSupply())));
+        if (getRelatedViewModel().getDispense().getSupply() != 0)
+            activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getSupply())));
 
 
         if (getRelatedViewModel().getDispense() != null) {
@@ -464,16 +465,16 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             valorSimplesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             activityCreateDispenseBinding.spnDuration.setAdapter(valorSimplesArrayAdapter);
 
-
-            for (SimpleValue s: durations) {
-             if( s.equals(SimpleValue.fastCreate(getRelatedViewModel().getDispense().getPrescription().getSupply()))) {
-                 activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(s));
-                 break;
-             }
-            }
-
-
-
+                if (getRelatedViewModel().getDispense().getPrescription().getDispenseType().getDescription().contains("DT")) {
+                    SimpleValue s = SimpleValue.fastCreate(12, Prescription.DURATION_THREE_MONTHS);
+                    activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(s));
+                } else if (getRelatedViewModel().getDispense().getPrescription().getDispenseType().getDescription().contains("DS")) {
+                    SimpleValue s = SimpleValue.fastCreate(24, Prescription.DURATION_SIX_MONTHS);
+                    activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(s));
+                } else {
+                    SimpleValue s = SimpleValue.fastCreate(4, Prescription.DURATION_ONE_MONTH);
+                    activityCreateDispenseBinding.spnDuration.setSelection(valorSimplesArrayAdapter.getPosition(s));
+                }
 
         } catch (SQLException e) {
             Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.error_loading_form_data) + e.getMessage());
@@ -669,11 +670,11 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                 remainingSupplyWeeks = prescriptionSupply - totalOfDispenseSupplies;
                 totalOfDispenseSupplies = totalOfDispenseSupplies + currentDispenseSupply;
                 if (currentDispenseSupply > remainingSupplyWeeks)
-                    return "Não pode se aviar medicamentos por um periodo maior que a validade restante da prescrição.\n VALIDADE RESTANTE DA PRESCRIÇÃO: " + Utilities.parseSupplyToLabel(remainingSupplyWeeks);
+                    return "Não pode dispensar medicamentos por um periodo maior que a validade restante da prescrição.\n VALIDADE RESTANTE DA PRESCRIÇÃO: " + Utilities.parseSupplyToLabel(remainingSupplyWeeks);
                 if (currentDispenseSupply > prescriptionSupply)
-                    return "Não pode se aviar medicamentos por um periodo maior que a validade da prescrição. \n VALIDADE DA PRESCRIÇÃO: " + Utilities.parseSupplyToLabel(prescriptionSupply);
+                    return "Não pode dispensar medicamentos por um periodo maior que a validade da prescrição. \n VALIDADE DA PRESCRIÇÃO: " + Utilities.parseSupplyToLabel(prescriptionSupply);
                 else if (totalOfDispenseSupplies > prescriptionSupply)
-                    return "A dispensa só pode ser aviada para " + Utilities.parseSupplyToLabel(remainingSupplyWeeks);
+                    return "A dispensa só pode ser efectuada para " + Utilities.parseSupplyToLabel(remainingSupplyWeeks);
 
                 if (totalOfDispenseSupplies == prescriptionSupply)
                     getRelatedViewModel().getDispense().getPrescription().setExpiryDate(getRelatedViewModel().getDispense().getPickupDate());
@@ -697,7 +698,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             }
         }
         if (emptyStockDrugs.toString().trim().length() != 0)
-            return "Os medicamentos abaixo listados não possuem stock suficiente para a quantidade a aviar:\n\n" + emptyStockDrugs;
+            return "Os medicamentos abaixo listados não possuem stock suficiente para a quantidade a dispensar:\n\n" + emptyStockDrugs;
         else
             return emptyStockDrugs.toString();
     }

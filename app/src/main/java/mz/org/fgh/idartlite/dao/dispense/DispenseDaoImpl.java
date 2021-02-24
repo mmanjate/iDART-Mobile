@@ -93,6 +93,13 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
                 .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false).query();
     }
 
+    @Override
+    public List<Dispense> getDispensesNonSyncBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return queryBuilder().limit(limit)
+                .offset(offset).where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
+                .and()
+                .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false).and().eq(Dispense.COLUMN_SYNC_STATUS, Dispense.SYNC_SATUS_READY).query();
+    }
 
     @Override
     public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException {

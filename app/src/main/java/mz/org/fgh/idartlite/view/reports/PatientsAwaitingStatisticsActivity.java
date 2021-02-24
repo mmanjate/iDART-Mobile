@@ -325,10 +325,10 @@ public class PatientsAwaitingStatisticsActivity extends BaseActivity {
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 16.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
 
-        Paragraph titulo = new Paragraph("Relatorio Estatístico de Pacientes Esperados por Regime \n", g);
+        Paragraph titulo = new Paragraph(" Pacientes Esperados por Regime \n", g);
         titulo.setAlignment(Element.ALIGN_CENTER);
 
-        Paragraph subTitulo = new Paragraph("Período de "+getRelatedViewModel().getSearchParam()+" - "+getRelatedViewModel().getSearchParam2()+ "\n\n", f);
+        Paragraph subTitulo = new Paragraph("Período de "+getRelatedViewModel().getSearchParam()+" à "+getRelatedViewModel().getSearchParam2()+ "\n\n", f);
         subTitulo.setAlignment(Element.ALIGN_CENTER);
 
         document.add(titulo);

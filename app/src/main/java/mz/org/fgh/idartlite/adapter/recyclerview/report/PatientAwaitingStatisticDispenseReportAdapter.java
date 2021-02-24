@@ -29,9 +29,7 @@ public class PatientAwaitingStatisticDispenseReportAdapter extends AbstractRecyc
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        ContentDispensesReportBinding contentDispensesReportBinding;
         ItemLoadingBinding itemLoadingBinding;
-
 
         if (viewType == VIEW_TYPE_ITEM) {
             ContentPatientsAwaitingStatisticsBinding contentPatientsAwaitingStatisticsBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.content_patients_awaiting_statistics, parent, false);
