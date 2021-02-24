@@ -141,11 +141,12 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
     }
 
     public boolean onMenuItemClick(MenuItem item) {
+
+        String editErrors = getRelatedViewModel().patientHasEndingEpisode();
+
         switch (item.getItemId()) {
             case R.id.edit:
                 try {
-                    String editErrors = getRelatedViewModel().patientHasEndingEpisode();
-
                     if (Utilities.stringHasValue(editErrors)) {
                         Utilities.displayAlertDialog(DispenseFragment.this.getContext(), editErrors).show();
                     } else {
@@ -171,16 +172,28 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                 //Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(), DispenseFragment.this.getString(R.string.list_item_delete_msg), dispensePosition, DispenseFragment.this).show();
             //    this.removeDispenseConfirmation();
               //  return true;
-                    Map<String, Object> newParams = new HashMap<>();
-                newParams.put("patient", getMyActivity().getPatient());
-                newParams.put("user", getCurrentUser());
-                newParams.put("clinic", getMyActivity().getCurrentClinic());
-                newParams.put("dispense", getRelatedViewModel().getDispense());
-                newParams.put("step", ApplicationStep.STEP_REMOVE);
-                newParams.put("positionRemoved",dispensePosition);
-                    nextActivity(ReturnDispenseActivity.class, newParams);
-                    return true;
+                if (Utilities.stringHasValue(editErrors)) {
+                    Utilities.displayAlertDialog(DispenseFragment.this.getContext(), editErrors).show();
+                }
+                else {
+                   String errorMsg1 = getRelatedViewModel().checkDispenseRemoveConditions();
+                    if (Utilities.stringHasValue(errorMsg1)) {
+                        Utilities.displayAlertDialog(DispenseFragment.this.getContext(), errorMsg1).show();
+                    }
+                    else {
 
+                        Map<String, Object> newParams = new HashMap<>();
+                        newParams.put("patient", getMyActivity().getPatient());
+                        newParams.put("user", getCurrentUser());
+                        newParams.put("clinic", getMyActivity().getCurrentClinic());
+                        newParams.put("dispense", getRelatedViewModel().getDispense());
+                        newParams.put("step", ApplicationStep.STEP_REMOVE);
+                        newParams.put("positionRemoved", dispensePosition);
+                        nextActivity(ReturnDispenseActivity.class, newParams);
+
+                    }
+                }
+                return true;
             case R.id.viewDetails:
                 Map<String, Object> params = new HashMap<>();
                 params.put("patient", getMyActivity().getPatient());
@@ -192,18 +205,25 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                 return true;
 
             case R.id.refazerFrascos:
-                String returnedErrors = getRelatedViewModel().dispenseCanBeReturned();
-                if (Utilities.stringHasValue(returnedErrors)) {
-                    Utilities.displayAlertDialog(DispenseFragment.this.getContext(), returnedErrors).show();
-                } else {
-                    Map<String, Object> params1 = new HashMap<>();
-                    params1.put("patient", getMyActivity().getPatient());
-                    params1.put("user", getCurrentUser());
-                    params1.put("clinic", getMyActivity().getCurrentClinic());
-                    params1.put("dispense", getRelatedViewModel().getDispense());
-                    nextActivity(ReturnDispenseActivity.class, params1);
-                    return true;
+
+                if (Utilities.stringHasValue(editErrors)) {
+                    Utilities.displayAlertDialog(DispenseFragment.this.getContext(), editErrors).show();
                 }
+                else {
+                    String returnedErrors = getRelatedViewModel().dispenseCanBeReturned();
+                    if (Utilities.stringHasValue(returnedErrors)) {
+                        Utilities.displayAlertDialog(DispenseFragment.this.getContext(), returnedErrors).show();
+                    } else {
+                        Map<String, Object> params1 = new HashMap<>();
+                        params1.put("patient", getMyActivity().getPatient());
+                        params1.put("user", getCurrentUser());
+                        params1.put("clinic", getMyActivity().getCurrentClinic());
+                        params1.put("dispense", getRelatedViewModel().getDispense());
+                        nextActivity(ReturnDispenseActivity.class, params1);
+
+                    }
+                }
+                return true;
             default:
                 return false;
         }
@@ -282,10 +302,11 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
             dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
             displayDataOnRecyclerView(rcvDispences, dispenseAdapter, getContext());
         }
-        else {
+        else
            if(getMyActivity().getPositionRemoved() !=null) {
+               dispenseAdapter = new DispenseAdapter(rcvDispences, this.dispenseList, getMyActivity());
                 dispenseAdapter.notifyItemRangeRemoved(0,dispenseList.size());
-           }
+
            }
     }
 
@@ -297,7 +318,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
         this.dispenseList = dispenseList;
     }
 
-    public void removeDispenseConfirmation() {
+   /* public void removeDispenseConfirmation() {
 
         StringBuilder dispensedDrugsList = new StringBuilder();
 
@@ -326,6 +347,6 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                 + dispensedDrugsList + "\n" + gostariaDeRemoverAdispensaAnterior;
 
         Utilities.displayDeleteConfirmationDialogFromList(DispenseFragment.this.getContext(), removeDispenseConfirmationMessage, dispensePosition, DispenseFragment.this).show();
-    }
+    }*/
 
 }

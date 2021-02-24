@@ -53,7 +53,7 @@ public class ReturnDispenseActivity extends BaseActivity implements IDialogListe
 
     private ListbleRecycleViewAdapter listbleRecycleViewAdapter;
 
-    private int positionRemoved;
+    private Integer positionRemoved;
 
 
     @Override
@@ -73,7 +73,7 @@ public class ReturnDispenseActivity extends BaseActivity implements IDialogListe
                 getRelatedViewModel().setDispense((Dispense) bundle.getSerializable("dispense"));
             }
 
-            positionRemoved= (int) bundle.getSerializable("positionRemoved");
+            positionRemoved= (Integer) bundle.getSerializable("positionRemoved");
         }
 
 
