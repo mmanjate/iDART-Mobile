@@ -122,7 +122,12 @@ public class RestPatientService extends BaseRestService {
                                         continue;
                                     }
                                 }
-                                if (watcher != null && counter > 0) watcher.addUpdates("Tem "+counter + " "+getApp().getString(R.string.new_patients));
+                                if (watcher != null && counter > 0) {
+                                    if (counter > 0){
+                                        watcher.addUpdates("Tem "+counter + " "+getApp().getString(R.string.new_patients));
+                                    }else
+                                        watcher.addUpdates(getApp().getString(R.string.no_new_patientes));
+                                }
                             } else {
                                 Log.w(TAG, "Response Sem Info." + patients.length);
                             }

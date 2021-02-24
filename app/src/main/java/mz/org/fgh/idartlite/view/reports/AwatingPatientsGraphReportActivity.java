@@ -249,7 +249,9 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
         pie.setDataLabels(new HIDataLabels());
         pie.getDataLabels().setEnabled(true);
 
-        options.setSeries(new ArrayList<>(Arrays.asList(cdm, cdt, cds, cdOther, spline, pie)));
+        //options.setSeries(new ArrayList<>(Arrays.asList(cdm, cdt, cds, cdOther, spline, pie)));
+
+        options.setSeries(new ArrayList<>(Arrays.asList(cdm, cdt, cds, cdOther)));
 
         chartView.setOptions(options);
 

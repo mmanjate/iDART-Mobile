@@ -74,11 +74,11 @@ public class DataSyncWorker extends Worker {
 
         try {
             RestPatientService.restGetAllPatient(watcher);
-            RestEpisodeService.restGetAllReadyEpisodes(watcher);
-            RestEpisodeService.restGetAllEpisodes(watcher);
+            RestEpisodeService.restGetAllReadyEpisodes();
+            RestEpisodeService.restGetAllEpisodes();
 
             try {
-                RestStockService.restGetStock(clinicService.getAllClinics().get(0), watcher);
+                RestStockService.restGetStock(clinicService.getAllClinics().get(0));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -166,11 +166,14 @@ public class DataSyncWorker extends Worker {
             return Result.failure();
         }
 
-        try {
-            Thread.sleep(DELAY);
-        } catch (InterruptedException exception) {
-            // ... handle exception
+        while (!watcher.hasUpdates()){
+            try {
+                Thread.sleep(DELAY);
+            } catch (InterruptedException exception) {
+
+            }
         }
+
         Data outputData = new Data.Builder().putString(UPLOAD_MESSAGE_STATUS, watcher.getUpdates()).build();
 
         return Result.success(outputData);
