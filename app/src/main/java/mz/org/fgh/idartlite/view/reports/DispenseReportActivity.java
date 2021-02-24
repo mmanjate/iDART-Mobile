@@ -319,9 +319,17 @@ public class DispenseReportActivity extends BaseActivity {
         document.open();
         document.add(tableImage);
 
-        Font f = new Font(Font.FontFamily.TIMES_ROMAN, 35.0f, Font.UNDERLINE, BaseColor.RED);
+        Font f = new Font(Font.FontFamily.TIMES_ROMAN, 16.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
-        document.add(new Paragraph("Relatorio de Dispensas Da Farmacia \n\n", f));
+
+        Paragraph titulo = new Paragraph("Histórico de Levantamentos \n", g);
+        titulo.setAlignment(Element.ALIGN_CENTER);
+
+        Paragraph subTitulo = new Paragraph("Período de "+DateUtilities.formatToDDMMYYYY(getRelatedViewModel().getSearchParams().getStartdate())+" à "+DateUtilities.formatToDDMMYYYY(getRelatedViewModel().getSearchParams().getEndDate())+ "\n\n", f);
+        subTitulo.setAlignment(Element.ALIGN_CENTER);
+
+        document.add(titulo);
+        document.add(subTitulo);
 
         document.add(table);
 

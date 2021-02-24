@@ -42,10 +42,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingAbsentDispenseReportAdapter;
+import mz.org.fgh.idartlite.adapter.recyclerview.report.DispenseNonSyncReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.databinding.ActivityPatientsAwaitingReportBinding;
+import mz.org.fgh.idartlite.databinding.ActivityDispensesNonSyncReportBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
@@ -53,29 +53,29 @@ import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.viewmodel.dispense.AwatingPatientsReportVM;
+import mz.org.fgh.idartlite.viewmodel.report.DispensesNonSyncReportVM;
 
-public class PatientsAwaitingReportActivity extends BaseActivity {
+public class DispensesNonSyncReportActivity extends BaseActivity {
 
     private RecyclerView recyclerDispenses;
-    private ActivityPatientsAwaitingReportBinding dispenseReportBinding;
-    private PatientAwaitingAbsentDispenseReportAdapter adapter;
+    private ActivityDispensesNonSyncReportBinding activityDispensesNonSyncReportBinding;
+    private DispenseNonSyncReportAdapter adapter;
     private IDispenseService dispenseService;
 
-    private static final String TAG = "PatientsAwaitingReportActivity";
+    private static final String TAG = "DispensesNonSyncReportActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dispenseReportBinding=   DataBindingUtil.setContentView(this, R.layout.activity_patients_awaiting_report);
+        activityDispensesNonSyncReportBinding = DataBindingUtil.setContentView(this, R.layout.activity_dispenses_non_sync_report);
 
         dispenseService= new DispenseService(getApplication(), getCurrentUser());
-        recyclerDispenses = dispenseReportBinding.reyclerPatient;
+        recyclerDispenses = activityDispensesNonSyncReportBinding.reyclerPatient;
 
-        dispenseReportBinding.setViewModel(getRelatedViewModel());
+        activityDispensesNonSyncReportBinding.setViewModel(getRelatedViewModel());
 
-        dispenseReportBinding.executePendingBindings();
+        activityDispensesNonSyncReportBinding.executePendingBindings();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,16 +95,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
         recyclerDispenses.setHasFixedSize(true);
         recyclerDispenses.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
 
-        if (adapter == null) {
-            // try {
-            //  adapter = new ContentListDispenseAdapter(recyclerDispenses, dispenseService.getAllDispenses(), this);
-            // } catch (SQLException e) {
-            //    e.printStackTrace();
-            // }
-            recyclerDispenses.setAdapter(adapter);
-        }
-
-        dispenseReportBinding.edtSearchParam.setOnClickListener(new View.OnClickListener() {
+        activityDispensesNonSyncReportBinding.edtSearchParam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int mYear, mMonth, mDay;
@@ -115,12 +106,12 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensesNonSyncReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                        dispenseReportBinding.edtSearchParam.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        activityDispensesNonSyncReportBinding.edtSearchParam.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -128,7 +119,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
             }
         });
 
-        dispenseReportBinding.edtSearchParam.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        activityDispensesNonSyncReportBinding.edtSearchParam.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
@@ -139,12 +130,12 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(DispensesNonSyncReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                            dispenseReportBinding.edtSearchParam.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            activityDispensesNonSyncReportBinding.edtSearchParam.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                         }
                     }, mYear, mMonth, mDay);
@@ -153,7 +144,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
             }
         });
 
-        dispenseReportBinding.edtSearchParam2.setOnClickListener(new View.OnClickListener() {
+        activityDispensesNonSyncReportBinding.edtSearchParam2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int mYear, mMonth, mDay;
@@ -164,12 +155,12 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensesNonSyncReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                        dispenseReportBinding.edtSearchParam2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        activityDispensesNonSyncReportBinding.edtSearchParam2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -177,7 +168,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
             }
         });
 
-        dispenseReportBinding.edtSearchParam2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        activityDispensesNonSyncReportBinding.edtSearchParam2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
@@ -188,12 +179,12 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientsAwaitingReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(DispensesNonSyncReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                            dispenseReportBinding.edtSearchParam2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            activityDispensesNonSyncReportBinding.edtSearchParam2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                         }
                     }, mYear, mMonth, mDay);
@@ -201,12 +192,10 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
                 }
             }
         });
-
     }
-
     @SuppressLint("RestrictedApi")
     public void generatePdfButton(boolean show){
-        FloatingActionButton generatePdf = dispenseReportBinding.generatePdf;
+        FloatingActionButton generatePdf = activityDispensesNonSyncReportBinding.generatePdf;
         if(show) generatePdf.setVisibility(View.VISIBLE);
         else {generatePdf.setVisibility(View.GONE);}
     }
@@ -229,7 +218,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new PatientAwaitingAbsentDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this,true);
+            adapter = new DispenseNonSyncReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this);
 
             recyclerDispenses.setAdapter(adapter);
         }
@@ -286,7 +275,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
         tableImage.addCell(cell);
 
 
-        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3, 3,3});
+        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3, 3, 3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
@@ -321,10 +310,10 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 16.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
 
-        Paragraph titulo = new Paragraph("Pacientes Esperados para o Levantamento \n", g);
+        Paragraph titulo = new Paragraph("Levantamentos que ainda não foram sincronizados \n", g);
         titulo.setAlignment(Element.ALIGN_CENTER);
 
-        Paragraph subTitulo = new Paragraph("Período de "+DateUtilities.formatToDDMMYYYY(getRelatedViewModel().getSearchParams().getStartdate())+" à "+DateUtilities.formatToDDMMYYYY(getRelatedViewModel().getSearchParams().getEndDate())+ "\n\n", f);
+        Paragraph subTitulo = new Paragraph("Período de "+getRelatedViewModel().getSearchParam()+" - "+getRelatedViewModel().getSearchParam2()+ "\n\n", f);
         subTitulo.setAlignment(Element.ALIGN_CENTER);
 
         document.add(titulo);
@@ -337,14 +326,13 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
         Utilities.previewPdfFiles(this,pdfFile );
     }
 
-
     @Override
     public BaseViewModel initViewModel() {
-        return new ViewModelProvider(this).get(AwatingPatientsReportVM.class);
+        return new ViewModelProvider(this).get(DispensesNonSyncReportVM.class);
     }
 
     @Override
-    public AwatingPatientsReportVM getRelatedViewModel() {
-        return (AwatingPatientsReportVM) super.getRelatedViewModel();
+    public DispensesNonSyncReportVM getRelatedViewModel() {
+        return (DispensesNonSyncReportVM) super.getRelatedViewModel();
     }
 }
