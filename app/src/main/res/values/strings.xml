@@ -447,4 +447,5 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="date_missed">Data que faltou ao Levantamento</string>
     <string name="remove_dispense">Remover Dispensa</string>
     <string name="days_missed">Numero de Dias que faltou</string>
+    <string name="no_new_patientes">Não tem novos pacientes.</string>
 </resources>

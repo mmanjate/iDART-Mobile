@@ -28,4 +28,5 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="dimen_6dp">6dp</dimen>
     <dimen name="dimen_14dp">14dp</dimen>
+    <dimen name="dimen_13dp">13dp</dimen>
 </resources>

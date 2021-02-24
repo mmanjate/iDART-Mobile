@@ -29,6 +29,13 @@ public class RestGetPatientDataWorkerScheduler extends AbstractWorker {
                 Log.d(TAG, "doWork: Sync Patient Data");
                 RestPatientService.restGetAllPatient(watcher);
 
+                while (!watcher.hasUpdates()){
+                    try {
+                        Thread.sleep(4000);
+                    } catch (InterruptedException exception) {
+
+                    }
+                }
                 issueNotification(CHANNEL_1_ID);
             } else {
                 Log.e(TAG, "Response Servidor Offline");

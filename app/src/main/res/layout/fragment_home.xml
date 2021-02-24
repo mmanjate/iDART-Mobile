@@ -209,7 +209,8 @@
                 android:layout_height="@dimen/dimen_0dp"
                 android:layout_weight="1.5"
                 android:paddingTop="@dimen/dimen_10dp"
-                android:textSize="@dimen/dimen_10dp"
+                android:textSize="@dimen/dimen_13dp"
+                android:textColor="@color/logo"
                 android:text="@{viewModel.appLastSyncDate}"
                 android:gravity="top|center"/>
         </LinearLayout>
