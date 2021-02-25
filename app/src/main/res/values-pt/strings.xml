@@ -414,7 +414,7 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="new_dispense_types">Novo(s) Tipos de Dispensa</string>
     <string name="new_regimens">Novo(s )Regimes Terapéuticos</string>
     <string name="new_lines">Nova(s) Linhas Terapéuricas</string>
-    <string name="new_patients">Novo(s) Paciente(s) referidos</string>
+    <string name="new_patients">Novo(s) Paciente(s) referido(s)</string>
     <string name="new_episodes">Novo(s) Episódios</string>
     <string name="no_selected_drug">Por favor seleccione pelo menos um medicamento.</string>
     <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
@@ -427,7 +427,7 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="date_missed">Data que faltou ao Levantamento</string>
 
     <string name="days_missed">Numero de Dias que faltou</string>
-
+    <string name="total_dispensas">Total Dispensas</string>
     <string name="remove_dispense">Remover Dispensa</string>
-    <string name="no_new_patientes">Não tem novos pacientes.</string>
+    <string name="no_new_patientes">Não tem novos pacientes referidos.</string>
 </resources>

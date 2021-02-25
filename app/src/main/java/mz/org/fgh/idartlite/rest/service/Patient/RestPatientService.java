@@ -122,7 +122,7 @@ public class RestPatientService extends BaseRestService {
                                         continue;
                                     }
                                 }
-                                if (watcher != null && counter > 0) {
+                                if (watcher != null) {
                                     if (counter > 0){
                                         watcher.addUpdates("Tem "+counter + " "+getApp().getString(R.string.new_patients));
                                     }else

@@ -301,7 +301,6 @@ public class SettingsVM extends BaseViewModel {
 
         issueNotification("Sincronização de dados iniciada", CHANNEL_1_ID);
 
-
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class).build();
         mWorkManager.enqueue(mRequest);
 
