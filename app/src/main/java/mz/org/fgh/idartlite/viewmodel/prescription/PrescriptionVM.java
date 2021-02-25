@@ -321,7 +321,9 @@ public class PrescriptionVM extends BaseViewModel {
     }
 
     public void save(){
-        getCurrentStep().changeToSave();
+
+        if(getRelatedActivity().getApplicationStep().isApplicationstepCreate()) getCurrentStep().changeToSave();
+
 
         Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.confirm_prescription_save), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
 
@@ -412,7 +414,7 @@ public class PrescriptionVM extends BaseViewModel {
     public void doOnConfirmed() {
         if (getCurrentStep().isApplicationStepInit()) {
             initNewRecord();
-        }else if (getCurrentStep().isApplicationStepSave()){
+        }else if (getCurrentStep().isApplicationStepSave() || getCurrentStep().isApplicationStepEdit()){
             doSave();
         }
     }

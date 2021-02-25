@@ -285,7 +285,7 @@ public class DispenseReportActivity extends BaseActivity {
         tableImage.addCell(cell);
 
 
-        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3, 3,3});
+        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3, 3,3,3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
@@ -297,7 +297,7 @@ public class DispenseReportActivity extends BaseActivity {
         table.addCell(getString(R.string.dt_proximo_levantamento));
         table.addCell(getString(R.string.therapeutic_regimen));
         table.addCell(getString(R.string.dispense_type_report));
-        table.addCell(getString(R.string.unidade_sanit_ria));
+        table.addCell(getString(R.string.unidade_sanit_ria_report));
         table.setHeaderRows(1);
         PdfPCell[] cells = table.getRow(0).getCells();
         for (int j = 0; j < cells.length; j++) {
