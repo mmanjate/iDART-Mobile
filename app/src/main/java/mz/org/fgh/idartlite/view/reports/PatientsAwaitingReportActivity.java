@@ -297,7 +297,7 @@ public class PatientsAwaitingReportActivity extends BaseActivity {
         table.addCell(getString(R.string.dta_marcada_levantamento));
         table.addCell(getString(R.string.therapeutic_regimen));
         table.addCell(getString(R.string.dispense_type_report));
-        table.addCell(getString(R.string.unidade_sanit_ria));
+        table.addCell(getString(R.string.unidade_sanit_ria_report));
         table.setHeaderRows(1);
         PdfPCell[] cells = table.getRow(0).getCells();
         for (int j = 0; j < cells.length; j++) {
