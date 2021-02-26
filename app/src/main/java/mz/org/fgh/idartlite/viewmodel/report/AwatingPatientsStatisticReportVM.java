@@ -118,6 +118,7 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
                 if (getAllDisplyedRecords().size() > 0) {
                     getRelatedActivity().generatePdfButton(true);
                 } else {
+                    Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
                     getRelatedActivity().generatePdfButton(false);
                 }
 

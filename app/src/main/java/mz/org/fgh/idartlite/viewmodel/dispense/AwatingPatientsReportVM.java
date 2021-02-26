@@ -5,8 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
-import com.itextpdf.text.DocumentException;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -74,13 +72,14 @@ public class AwatingPatientsReportVM extends SearchVM<Dispense> {
             ((PatientsAwaitingReportActivity)getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (DocumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     protected void doOnNoRecordFound() {
+        Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
     }
 
 

@@ -141,6 +141,7 @@ public class PatientReportActivity extends BaseActivity {
 
         final HIXAxis hixAxis = new HIXAxis();
         ArrayList categories = new ArrayList<>();
+        if(sanitaryUnits != null)
         for (String s : sanitaryUnits){
             categories.add(s);
             serieData.add(getRelatedViewModel().countNewPatientByPeriod(start, end, s));

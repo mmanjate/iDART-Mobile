@@ -146,7 +146,7 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         }
 
         if (map == null || map.isEmpty() || map.size() == 0){
-            Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Não foram encontrados registos para o período informado!").show();
+            Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Não foram encontrados resultados para a sua pesquisa!").show();
             return;
         }
 
