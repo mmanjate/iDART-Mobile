@@ -5,8 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
-import com.itextpdf.text.DocumentException;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -24,7 +22,6 @@ import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.reports.AbsentPatientsReportActivity;
-import mz.org.fgh.idartlite.view.reports.DispensedDrugsReportActivity;
 
 public class AbsentPatientsReportVM extends SearchVM<Dispense> {
 
@@ -82,14 +79,14 @@ public class AbsentPatientsReportVM extends SearchVM<Dispense> {
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (DocumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     protected void doOnNoRecordFound() {
-
+        Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
     }
 
 

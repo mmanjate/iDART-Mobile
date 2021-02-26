@@ -29,7 +29,6 @@ import mz.org.fgh.idartlite.service.dispense.IReturnedDrugService;
 import mz.org.fgh.idartlite.service.dispense.ReturnedDrugService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.dispense.ReturnDispenseActivity;
-import mz.org.fgh.idartlite.view.patientPanel.DispenseFragment;
 
 public class ReturnDispenseVM extends BaseViewModel implements IDialogListener {
 

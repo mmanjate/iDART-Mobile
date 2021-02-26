@@ -5,8 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
-import com.itextpdf.text.DocumentException;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -61,7 +59,7 @@ public class DispenseReportVM extends SearchVM<Dispense> {
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (DocumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -73,6 +71,7 @@ public class DispenseReportVM extends SearchVM<Dispense> {
             getRelatedActivity().generatePdfButton(true);
         }
         else {
+            Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
             getRelatedActivity().generatePdfButton(false);
         }
 

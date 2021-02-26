@@ -322,7 +322,7 @@ public class AbsentPatientsReportActivity extends BaseActivity {
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getFullName()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getPhone()));
             table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getNextPickupDate())));
-            table.addCell(String.valueOf(DateUtilities.getDaysBetween(DateUtilities.getCurrentDate(), dispense.getNextPickupDate())));
+            table.addCell(String.valueOf(DateUtilities.getDaysBetween(dispense.getNextPickupDate(), DateUtilities.getCurrentDate())));
 
         }
 
