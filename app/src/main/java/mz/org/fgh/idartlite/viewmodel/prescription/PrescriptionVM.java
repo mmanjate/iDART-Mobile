@@ -451,6 +451,23 @@ public class PrescriptionVM extends BaseViewModel {
         }
     }
 
+    public void checkInEditIfPrescriptionMustBeSpecial() {
+
+        Prescription oldClosedPrescription= null;
+        try {
+            oldClosedPrescription = prescriptionService.getLastClosedPrescriptionByPatient(this.prescription.getPatient());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if(oldClosedPrescription!= null){
+            newPrescriptionMustBeEspetial = true;
+            urgentPrescription=true;
+        }
+
+    }
+
+
     public void setPrescriptionSupply(Listble supply){
         getPrescription().setSupply(supply.getId());
         notifyPropertyChanged(BR.prescriptionSupply);

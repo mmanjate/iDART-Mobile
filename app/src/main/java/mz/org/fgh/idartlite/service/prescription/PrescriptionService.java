@@ -140,4 +140,9 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
         return getDataBaseHelper().getPrescriptionDao().checkIfPatientHasPrescriptions(patient);
     }
 
+    @Override
+    public Prescription getLastClosedPrescriptionByPatient(Patient patient) throws SQLException {
+        return getDataBaseHelper().getPrescriptionDao().getLastClosedPrescriptionByPatient(patient);
+    }
+
 }
