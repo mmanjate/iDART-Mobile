@@ -33,4 +33,6 @@ public interface IPrescriptionService extends IBaseService<Prescription> {
 
     public boolean checkIfPatientHasPrescriptions(Patient patient) throws SQLException;
 
+    public Prescription getLastClosedPrescriptionByPatient(Patient patient) throws SQLException;
+
 }

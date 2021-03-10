@@ -118,7 +118,7 @@ public class IventoryActivity extends BaseActivity {
     }
 
     public void changeFormSectionVisibility(View view) {
-        if (view.equals(iventoryBinding.initialData)) {
+      /*  if (view.equals(iventoryBinding.initialData)) {
             if (iventoryBinding.initialDataLyt.getVisibility() == View.VISIBLE){
                 iventoryBinding.ibtnInitialData.animate().setDuration(200).rotation(180);
                 Utilities.collapse(iventoryBinding.initialDataLyt);
@@ -126,7 +126,7 @@ public class IventoryActivity extends BaseActivity {
                 iventoryBinding.ibtnInitialData.animate().setDuration(200).rotation(0);
                 Utilities.expand(iventoryBinding.initialDataLyt);
             }
-        }
+        }*/
     }
 
     public void displaySelectedDrugsForSelection(){

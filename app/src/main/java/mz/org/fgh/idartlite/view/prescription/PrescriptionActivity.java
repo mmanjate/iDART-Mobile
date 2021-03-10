@@ -103,6 +103,10 @@ public class PrescriptionActivity extends BaseActivity implements IDialogListene
         if (getApplicationStep().isApplicationstepCreate() || getApplicationStep().isApplicationStepEdit()){
             getRelatedViewModel().setViewListRemoveButton(true);
         }
+        if(getApplicationStep().isApplicationStepEdit())
+        {
+            this.getRelatedViewModel().checkInEditIfPrescriptionMustBeSpecial();
+        }
 
         if (getApplicationStep().isApplicationstepCreate() && !getRelatedViewModel().checkIfPatientHasPrescriptions()){
             try {

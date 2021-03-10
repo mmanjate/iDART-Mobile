@@ -44,6 +44,16 @@ public class PrescriptionDaoImpl extends GenericDaoImpl<Prescription, Integer> i
     }
 
     @Override
+    public Prescription getLastClosedPrescriptionByPatient(Patient patient) throws SQLException {
+        QueryBuilder<Prescription, Integer> prescriptionQb = queryBuilder();
+
+        prescriptionQb.where().eq(Prescription.COLUMN_PATIENT_ID, patient.getId()).and().isNotNull(Prescription.COLUMN_EXPIRY_DATE);
+
+        return prescriptionQb.orderBy("id", false).queryForFirst();
+
+    }
+
+    @Override
     public void closePrescription(Prescription prescription) throws SQLException {
         prescription.setExpiryDate(DateUtilities.getCurrentDate());
         update(prescription);

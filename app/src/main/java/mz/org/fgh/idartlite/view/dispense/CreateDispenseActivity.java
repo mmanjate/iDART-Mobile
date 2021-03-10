@@ -664,8 +664,11 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
                 for (Dispense dispense : prescriptionDispenses
                 ) {
-                    totalOfDispenseSupplies = totalOfDispenseSupplies + dispense.getSupply();
-                }
+
+                    if(dispense.getId()!=getRelatedViewModel().getDispense().getId()) {
+                        totalOfDispenseSupplies = totalOfDispenseSupplies + dispense.getSupply();
+                    }
+                    }
 
                 remainingSupplyWeeks = prescriptionSupply - totalOfDispenseSupplies;
                 totalOfDispenseSupplies = totalOfDispenseSupplies + currentDispenseSupply;

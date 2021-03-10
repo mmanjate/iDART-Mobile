@@ -68,7 +68,7 @@
                         android:background="@drawable/shape_normal"
                         android:layout_margin="@dimen/dimen_4dp"
                         android:padding="3dp"
-                        android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+
                         android:orientation="horizontal">
 
                         <TextView

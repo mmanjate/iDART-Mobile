@@ -8,9 +8,11 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
+import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.ReturnedDrug;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 
 public class ReturnedDrugService extends BaseService implements IReturnedDrugService {
@@ -18,10 +20,13 @@ public class ReturnedDrugService extends BaseService implements IReturnedDrugSer
 
     private StockService stockService;
     private DispenseService dispenseService;
+
+    private PrescriptionService prescriptionService;
     public ReturnedDrugService(Application application, User currUser) {
 
         super(application, currUser);
         stockService=new StockService(application,currUser);
+        this.prescriptionService = new PrescriptionService(application, currUser);
         dispenseService=new DispenseService(application,currUser);
     }
 
@@ -54,6 +59,12 @@ public class ReturnedDrugService extends BaseService implements IReturnedDrugSer
         dispenseService.udpateDispense(dispense);
 
         getDataBaseHelper().getReturnedDrugDao().create(returnedDrug);
+
+        Prescription prescription = dispense.getPrescription();
+        if (prescription.getExpiryDate() != null) {
+            prescription.setExpiryDate(null);
+            this.prescriptionService.updatePrescriptionEntity(prescription);
+        }
 
 
     }
