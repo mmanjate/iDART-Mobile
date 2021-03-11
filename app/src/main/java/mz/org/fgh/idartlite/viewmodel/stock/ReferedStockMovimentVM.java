@@ -110,7 +110,9 @@ public class ReferedStockMovimentVM extends BaseViewModel {
 
         try {
             if (getCurrentStep().isApplicationStepRemove()){
-                getRelatedService().delete((ReferedStockMoviment) selectedListble);
+
+                if (selectedListble.getId() > 0) getRelatedService().delete((ReferedStockMoviment) selectedListble);
+
                 if (Utilities.listHasElements(referedStockMovimentList)){
                     getCurrentStep().changeToList();
                 }else getRelatedActivity().finish();
