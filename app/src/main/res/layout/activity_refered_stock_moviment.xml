@@ -16,9 +16,10 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         tools:context=".view.stock.referedstock.ReferedStockMovimentActivity">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -28,9 +29,7 @@
             android:layout_marginBottom="1dp"
             app:elevation="6dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            >
 
             <include layout="@layout/app_bar" />
 
@@ -41,18 +40,15 @@
 
         <LinearLayout
             android:id="@+id/linearLayout4"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginLeft="1dp"
             android:layout_marginEnd="1dp"
             android:layout_marginRight="1dp"
             android:layout_marginBottom="1dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
+            >
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -302,8 +298,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_4dp"
                         android:visibility="@{viewModel.hideList ? View.GONE : View.VISIBLE}"
-                        android:background="@drawable/listble_shape"
-                        android:scrollbars="vertical"/>
+                        android:background="@drawable/listble_shape"/>
                 </LinearLayout>
 
                     <RelativeLayout
@@ -364,6 +359,5 @@
 
         </LinearLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

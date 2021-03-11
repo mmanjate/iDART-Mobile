@@ -11,7 +11,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Calendar;
@@ -24,6 +23,7 @@ import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityReferedStockMovimentBinding;
 import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.LinearLayoutManagerWrapper;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.stock.ReferedStockMovimentVM;
 
@@ -159,17 +159,14 @@ public class ReferedStockMovimentActivity extends BaseActivity {
     }
 
     public void displayReferedStockMoviments(){
-        if (listbleRecycleViewAdapter != null) {
-            listbleRecycleViewAdapter.notifyDataSetChanged();
-        }else {
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-            rcvReferedStockMoviment.setLayoutManager(mLayoutManager);
-            rcvReferedStockMoviment.setItemAnimator(new DefaultItemAnimator());
-            rcvReferedStockMoviment.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 0));
 
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManagerWrapper(this);
+        rcvReferedStockMoviment.setLayoutManager(mLayoutManager);
+        rcvReferedStockMoviment.setItemAnimator(new DefaultItemAnimator());
+        rcvReferedStockMoviment.addItemDecoration(new DividerItemDecoration(this, 0));
 
-            listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvReferedStockMoviment, getRelatedViewModel().getReferedStockMovimentList(), this);
-            rcvReferedStockMoviment.setAdapter(listbleRecycleViewAdapter);
-        }
+        listbleRecycleViewAdapter = new ListbleRecycleViewAdapter(rcvReferedStockMoviment, getRelatedViewModel().getReferedStockMovimentList(), this);
+        rcvReferedStockMoviment.setAdapter(listbleRecycleViewAdapter);
+
     }
 }
