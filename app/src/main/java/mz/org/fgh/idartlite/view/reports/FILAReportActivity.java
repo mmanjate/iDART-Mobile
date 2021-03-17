@@ -247,7 +247,7 @@ public class FILAReportActivity extends BaseActivity {
             docsFolder.mkdir();
             Log.i(TAG, getString(R.string.criar_no_directorio));
         }
-        String pdfname = "filaReport.pdf";
+        String pdfname = "FILA_NID_"+patient.getNid()+".pdf";
         File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);

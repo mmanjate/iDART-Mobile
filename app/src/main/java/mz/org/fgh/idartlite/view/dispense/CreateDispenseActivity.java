@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
@@ -136,6 +137,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                 int mYear, mMonth, mDay;
 
                 final Calendar c = Calendar.getInstance();
+                c.setTime(DateUtilities.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(),DateUtilities.DATE_FORMAT));
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -166,6 +168,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                     int mYear, mMonth, mDay;
 
                     final Calendar c = Calendar.getInstance();
+                    c.setTime(DateUtilities.createDate(activityCreateDispenseBinding.dispenseDate.getText().toString(),DateUtilities.DATE_FORMAT));
                     mYear = c.get(Calendar.YEAR);
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -195,7 +198,8 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             public void onClick(View view) {
                 int mYear, mMonth, mDay;
 
-                final Calendar c = Calendar.getInstance();
+                Calendar c = Calendar.getInstance();
+                c.setTime(DateUtilities.createDate(activityCreateDispenseBinding.nextPickupDate.getText().toString(),DateUtilities.DATE_FORMAT));
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -219,7 +223,8 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                 if (b) {
                     int mYear, mMonth, mDay;
 
-                    final Calendar c = Calendar.getInstance();
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(DateUtilities.createDate(activityCreateDispenseBinding.nextPickupDate.getText().toString(),DateUtilities.DATE_FORMAT));
                     mYear = c.get(Calendar.YEAR);
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -632,12 +637,12 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             supplyPerDugPackSize = supplyPerDugPackSize / 2;
 
         if (supplyPerDugPackSize >= supply) {
-            qtdAdispensar = drug.getPackSize();
+            qtdAdispensar = 1;
         } else {
             if (supplyPerDugPackSize * 2 == supply) {
-                qtdAdispensar = drug.getPackSize() * 2;
+                qtdAdispensar = 2;
             } else if (supplyPerDugPackSize * 2 < supply)
-                qtdAdispensar = (supply / 4) * drug.getPackSize();
+                qtdAdispensar = (supply / 4);
         }
 
         return qtdAdispensar;
