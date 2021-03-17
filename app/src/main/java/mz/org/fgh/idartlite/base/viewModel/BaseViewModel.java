@@ -71,6 +71,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private boolean viewListEditButton;
     private boolean viewListRemoveButton;
 
+    protected boolean reportGenerationOnProgress;
+
     private Listble selectedListble;
     protected User currentUser;
     protected Clinic currentClinic;
@@ -356,6 +358,22 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public String getAppLastSyncDate(){
         return "Última Sincronização: "+getSettingsData(APP_LAST_SYNC_DATE);
+    }
+
+    public boolean isReportGenerationOnProgress() {
+        return reportGenerationOnProgress;
+    }
+
+    public void setReportGenerationOnProgress(boolean reportGenerationOnProgress) {
+        this.reportGenerationOnProgress = reportGenerationOnProgress;
+    }
+
+    public void setReportGenerationStarted() {
+        setReportGenerationOnProgress(true);
+    }
+
+    public void setReportGenerationFinished() {
+        setReportGenerationOnProgress(false);
     }
 
     public void generatePDFFile(String fileTitle, HashMap<String, HashMap<String, Float>> dataMap, String fileName) throws IOException, DocumentException {

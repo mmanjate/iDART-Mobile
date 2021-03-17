@@ -99,9 +99,55 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
             datePickerDialog.show();
         });
 
+        edtStart.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    int mYear, mMonth, mDay;
+
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(AwatingPatientsGraphReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
+                        edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        start = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        getRelatedViewModel().getSearchParams().setStartdate(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT));
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+                }
+            }
+        });
+
+        edtEnd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    int mYear, mMonth, mDay;
+
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(AwatingPatientsGraphReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
+                        edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        getRelatedViewModel().getSearchParams().setEndDate(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+                }
+            }
+        });
 
         search.setOnClickListener(v -> {
+            if (getRelatedViewModel().isReportGenerationOnProgress()){
+                Utilities.displayAlertDialog(AwatingPatientsGraphReportActivity.this, "Por favor aguarde o resultado do relatório já solicitado.").show();
+                return;
+            }
 
+            getRelatedViewModel().setReportGenerationStarted();
             Utilities.hideSoftKeyboard(AwatingPatientsGraphReportActivity.this);
             getRelatedViewModel().initSearch();
         });
@@ -256,6 +302,8 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
         chartView.setOptions(options);
 
         chartView.setVisibility(View.VISIBLE);
+
+
     }
 
     @Override
@@ -271,5 +319,7 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
     public void displaySearchResult() {
 
         generateGraph(getRelatedViewModel().getAllDisplyedRecords());
+
+        getRelatedViewModel().setReportGenerationFinished();
     }
 }

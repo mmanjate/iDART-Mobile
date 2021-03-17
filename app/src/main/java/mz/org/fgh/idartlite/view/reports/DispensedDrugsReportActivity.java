@@ -3,7 +3,6 @@ package mz.org.fgh.idartlite.view.reports;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -42,6 +41,7 @@ public class DispensedDrugsReportActivity extends BaseActivity {
     private EditText edtStart;
     private EditText edtEnd;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,37 +55,25 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         edtStart = findViewById(R.id.start);
         edtEnd = findViewById(R.id.end);
         ImageView search = findViewById(R.id.buttonSearch);
 
-        edtStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int mYear, mMonth, mDay;
+        edtStart.setOnClickListener(view -> {
+            int mYear, mMonth, mDay;
 
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
+            DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
+                edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+            }, mYear, mMonth, mDay);
+            datePickerDialog.show();
         });
 
         edtEnd.setOnClickListener(new View.OnClickListener() {
@@ -98,37 +86,73 @@ public class DispensedDrugsReportActivity extends BaseActivity {
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                    }
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
+                    edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
         });
 
-        search.setOnClickListener(new View.OnClickListener() {
+        edtStart.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
-                    Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Por favor indicar o período por analisar!").show();
-                }else
-                if (DateUtilities.dateDiff(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
-                    Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
-                }else
-                if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
-                    Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    int mYear, mMonth, mDay;
+
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, (view, year, monthOfYear, dayOfMonth) -> {
+                        edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        start = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
                 }
-                else
-                if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
-                    Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
-                }else {
-                    Utilities.hideSoftKeyboard(DispensedDrugsReportActivity.this);
-                    generateGraph(start, end);
-                }
+            }
+        });
+
+        edtEnd.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                int mYear, mMonth, mDay;
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, (view, year, monthOfYear, dayOfMonth) -> {
+                    edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
+        search.setOnClickListener(v -> {
+            if (getRelatedViewModel().isReportGenerationOnProgress()){
+                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Por favor aguarde o resultado do relatório já solicitado.").show();
+                return;
+            }
+
+            if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
+                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Por favor indicar o período por analisar!").show();
+            }else
+            if (DateUtilities.dateDiff(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
+                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
+            }else
+            if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
+                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
+            }
+            else
+            if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
+                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
+            }else {
+                Utilities.hideSoftKeyboard(DispensedDrugsReportActivity.this);
+                getRelatedViewModel().setReportGenerationStarted();
+                generateGraph(start, end);
             }
         });
     }
@@ -147,6 +171,7 @@ public class DispensedDrugsReportActivity extends BaseActivity {
 
         if (map == null || map.isEmpty() || map.size() == 0){
             Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Não foram encontrados resultados para a sua pesquisa!").show();
+            getRelatedViewModel().setReportGenerationFinished();
             return;
         }
 
@@ -201,6 +226,8 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         chartView.reload();
 
         chartView.setVisibility(View.VISIBLE);
+
+        getRelatedViewModel().setReportGenerationFinished();
     }
 
     @Override
