@@ -632,12 +632,12 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
             supplyPerDugPackSize = supplyPerDugPackSize / 2;
 
         if (supplyPerDugPackSize >= supply) {
-            qtdAdispensar = drug.getPackSize();
+            qtdAdispensar = 1;
         } else {
             if (supplyPerDugPackSize * 2 == supply) {
-                qtdAdispensar = drug.getPackSize() * 2;
+                qtdAdispensar = 2;
             } else if (supplyPerDugPackSize * 2 < supply)
-                qtdAdispensar = (supply / 4) * drug.getPackSize();
+                qtdAdispensar = (supply / 4);
         }
 
         return qtdAdispensar;

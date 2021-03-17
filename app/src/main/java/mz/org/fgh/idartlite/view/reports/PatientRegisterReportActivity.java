@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
@@ -258,11 +259,11 @@ public class PatientRegisterReportActivity extends BaseActivity {
 
     @SuppressLint("LongLogTag")
     private void createPdf(List<Patient> patients) throws IOException, DocumentException {
-        File docsFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/dir");
+        File docsFolder = new File(Environment.getExternalStorageDirectory() + "/sdcard");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
         }
-        String pdfname = "patientReport.pdf";
+        String pdfname = "PacientesReferidosDE"+DateUtilities.formatToDDMMYYYY(new Date())+".pdf";
         File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);

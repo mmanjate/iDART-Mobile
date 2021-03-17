@@ -362,7 +362,7 @@ public class Prescription extends BaseModel {
 	public String getPrescriptionAsString(){
 		String prescriptionData = "";
 
-		prescriptionData = Utilities.concatStrings(prescriptionData, "Este paciente contém uma Prescrição anterior válida com o id "+this.getUiId() +" (detalhes abaixo).", "\n\n");
+		prescriptionData = Utilities.concatStrings(prescriptionData, "Este paciente contém uma Prescrição anterior válida/sem duração com o id "+this.getUiId() +" (detalhes abaixo).", "\n\n");
 
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Regime: "+this.therapeuticRegimen.getDescription(), "\n");
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Duração: "+getDurationToUserUI(), "\n");
