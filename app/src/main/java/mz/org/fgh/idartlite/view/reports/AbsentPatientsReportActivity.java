@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
@@ -268,7 +269,7 @@ public class AbsentPatientsReportActivity extends BaseActivity {
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
         }
-        String pdfname = "AbsentReport.pdf";
+        String pdfname = "FaltososAoLevantamento"+DateUtilities.formatToDDMMYYYY(new Date())+".pdf";
         File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);
