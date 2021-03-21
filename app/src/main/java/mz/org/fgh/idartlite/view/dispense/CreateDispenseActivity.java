@@ -273,27 +273,32 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                     Listble listble = selectedDrug;
 
                     Drug drug = (Drug) listble;
-                    final int qtdADispensar = getQuantidadeADispensar(drug);
-                    drug.setQuantity(qtdADispensar);
-                    listble = drug;
 
-                    if (!verifyIfExistStockToDispense(drug)) {
-                        Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.stock_menor)).show();
-                        return;
+                    if (drug != null) {
+                        final int qtdADispensar = getQuantidadeADispensar(drug);
+                        drug.setQuantity(qtdADispensar);
+                        listble = drug;
+
+                        if (!verifyIfExistStockToDispense(drug)) {
+                            Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.stock_menor)).show();
+                            return;
+                        }
+                        if (!selectedDrugs.contains(listble)) {
+                            listble.setListPosition(selectedDrugs.size() + 1);
+                            selectedDrug.setListType(Listble.DISPENSE_DRUG_LISTING);
+                            selectedDrugs.add(listble);
+                            Collections.sort(selectedDrugs);
+
+                            displaySelectedDrugs();
+                            activityCreateDispenseBinding.autCmpDrugs.setText("");
+                        } else {
+
+                            Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.drug_data_duplication_msg)).show();
+                        }
+
+                    }else{
+                        Utilities.displayAlertDialog(CreateDispenseActivity.this,"O medicamento não existe. Por favor, seleccione um medicamento para adicionar à lista.").show();
                     }
-                    if (!selectedDrugs.contains(listble)) {
-                        listble.setListPosition(selectedDrugs.size() + 1);
-                        selectedDrug.setListType(Listble.DISPENSE_DRUG_LISTING);
-                        selectedDrugs.add(listble);
-                        Collections.sort(selectedDrugs);
-
-                        displaySelectedDrugs();
-                        activityCreateDispenseBinding.autCmpDrugs.setText("");
-                    } else {
-
-                        Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.drug_data_duplication_msg)).show();
-                    }
-
                 }
             }
         });

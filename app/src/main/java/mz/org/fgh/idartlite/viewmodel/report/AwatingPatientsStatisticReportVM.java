@@ -76,16 +76,22 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
             int totalDM = 0;
             int totalDT = 0;
             int totalDS = 0;
+            int totalOutros = 0;
 
             for (Dispense dispense : dispenseList) {
 
                 if (dispense.getPrescription().getTherapeuticRegimen().getCode().equals(regimen.getCode())) {
-                    if (dispense.getPrescription().getDispenseType().getDescription().contains("DM"))
-                        totalDM += 1;
-                    else if (dispense.getPrescription().getDispenseType().getDescription().contains("DT"))
-                        totalDT += 1;
-                    else if (dispense.getPrescription().getDispenseType().getDescription().contains("DS"))
-                        totalDS += 1;
+
+                    if (dispense.getPrescription().getDispenseType() != null) {
+                        if (dispense.getPrescription().getDispenseType().getDescription().contains("DM"))
+                            totalDM += 1;
+                        else if (dispense.getPrescription().getDispenseType().getDescription().contains("DT"))
+                            totalDT += 1;
+                        else if (dispense.getPrescription().getDispenseType().getDescription().contains("DS"))
+                            totalDS += 1;
+                    }else{
+                        totalOutros += 1;
+                    }
                 }
 
             }
@@ -94,7 +100,7 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
             map.put("totalGeralDM", totalDM);
             map.put("totalGeralDT", totalDT);
             map.put("totalGeralDS", totalDS);
-            map.put("totalGeral", totalDM + totalDT + totalDS);
+            map.put("totalGeral", totalDM + totalDT + totalDS + totalOutros);
 
             if ((totalDM + totalDT + totalDS) > 0)
                 list.add(map);
