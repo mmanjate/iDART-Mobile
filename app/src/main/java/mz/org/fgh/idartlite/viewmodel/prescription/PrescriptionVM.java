@@ -531,6 +531,7 @@ public class PrescriptionVM extends BaseViewModel {
     public void addSelectedDrug(){
         if (selectedDrugs == null) selectedDrugs = new ArrayList<>();
 
+        if(selectedDrug != null){
             if (!selectedDrugs.contains(selectedDrug)) {
                 selectedDrug.setListPosition(selectedDrugs.size()+1);
                 selectedDrug.setListType(Listble.PRESCRIPTION_DRUG_LISTING);
@@ -545,6 +546,11 @@ public class PrescriptionVM extends BaseViewModel {
             }else {
                 Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.drug_data_duplication_msg)).show();
             }
+        }else{
+            Utilities.displayAlertDialog(getRelatedActivity(),"Campo medicamento está vazio. Por favor, seleccione um medicamento para adicionar à lista.").show();
+        }
+
+
     }
 
     public List<Listble> getSelectedDrugs() {

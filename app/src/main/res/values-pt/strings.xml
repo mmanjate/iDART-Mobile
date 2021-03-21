@@ -49,7 +49,7 @@
     <string name="data_de_referencia">data_de_referencia</string>
     <string name="data_prox_levantamento">data_prox_levantamento</string>
     <string name="notas">notas</string>
-    <string name="regime_terapeutico">regime_terapeutico</string>
+    <string name="regime_terapeutico">Regime Terapêutico</string>
     <string name="linha">regime_terapeutico</string>
     <string name="data">data</string>
     <string name="dados_pessoais">Dados Pessoais</string>
