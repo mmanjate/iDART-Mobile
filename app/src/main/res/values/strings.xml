@@ -449,4 +449,6 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="title_activity_dispenses_non_sync_report">DispensesNonSyncReportActivity</string>
     <string name="lista_de_levantamentos_n_o_sincronizados">Lista de Levantamentos não sincronizados</string>
     <string name="no_new_patientes">Não tem novos pacientes referidos.</string>
+
+    <string name="estatistica_dispensas_por_medicamento" translatable="false">Estatistica de Dispensas Por Medicamento</string>
 </resources>
