@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.reports.DispenseDrugStatisticReportActivity"></activity>
+        <activity android:name=".view.reports.DispenseDrugGraphStatisticReportActivity"></activity>
+        <activity android:name=".view.reports.DispenseDrugStatisticReportActivity" />
         <activity
             android:name=".view.reports.DispensesNonSyncReportActivity"
             android:label="@string/title_activity_dispenses_non_sync_report"

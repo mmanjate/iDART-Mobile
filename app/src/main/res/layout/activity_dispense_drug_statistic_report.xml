@@ -8,6 +8,7 @@
             name="viewModel"
             type="mz.org.fgh.idartlite.viewmodel.report.DispenseDrugStatisticReportVM" />
         <import type="android.view.View"/>
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
     </data>
 
     <LinearLayout
@@ -78,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:padding="5dp"
                         android:background="@color/white"
-                        android:text="@={viewModel.searchParam}"
+                        android:text="@={viewModel.startDate}"
                         android:inputType="text"/>
 
 
@@ -102,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:padding="5dp"
                         android:background="@color/white"
-                        android:text="@={viewModel.searchParam2}"
+                        android:text="@={viewModel.endDate}"
                         android:inputType="text"/>
 
 
@@ -152,7 +153,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{() -> viewModel.generatePDF()}"
-            android:visibility="@{View.GONE}"
+            android:visibility="@{Utilities.listHasElements(viewModel.allDisplyedRecords) ? View.VISIBLE : View.GONE}"
             android:src="@drawable/ic_baseline_picture_as_pdf_24"
             app:backgroundTint="@color/colorPrimary"
             app:elevation="6dp"

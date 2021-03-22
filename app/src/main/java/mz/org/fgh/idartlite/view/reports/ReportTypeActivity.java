@@ -154,7 +154,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("006", "Relatorio Resumo de Pacientes Esperados por Regime", R.drawable.ic_list, PatientsAwaitingStatisticsActivity.class));
         reports.add(Report.fastCreate("007", "Relatorio de Pacientes Faltosos", R.drawable.ic_list, AbsentPatientsReportActivity.class));
         reports.add(Report.fastCreate("008", "Relatorio de Dispensas Não Sincronizadas", R.drawable.ic_list, DispensesNonSyncReportActivity.class));
-        reports.add(Report.fastCreate("009", "Relatorio de Estatistico de Dispensas por Medicamentos", R.drawable.ic_list, DispenseDrugStatisticReportActivity.class));
+        reports.add(Report.fastCreate("009", "Relatorio de Estatistico de Dispensas por Frascos", R.drawable.ic_list, DispenseDrugStatisticReportActivity.class));
         return reports;
     }
 
@@ -163,7 +163,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("001", "Entrada de Pacientes Referidos", R.drawable.ic_graphic, PatientReportActivity.class));
         reports.add(Report.fastCreate("002", "Dispensas por Regime Terapêutico", R.drawable.ic_graphic, DispensedDrugsReportActivity.class));
         reports.add(Report.fastCreate("003", "Pacientes Esperados por Regime e Tipo de Dispensa", R.drawable.ic_graphic, AwatingPatientsGraphReportActivity.class));
-
+        reports.add(Report.fastCreate("004", "Estatistica de Dispensas por Frascos", R.drawable.ic_graphic, DispenseDrugGraphStatisticReportActivity.class));
         return reports;
     }
 

@@ -1,12 +1,5 @@
 package mz.org.fgh.idartlite.view.reports;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -19,6 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
@@ -45,7 +45,6 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.report.DispenseDrugStatisticsReportAdapter;
-
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityDispenseDrugStatisticReportBinding;
@@ -320,7 +319,7 @@ public class DispenseDrugStatisticReportActivity extends BaseActivity {
         Paragraph titulo = new Paragraph(" Dispensas Por Medicamento \n", g);
         titulo.setAlignment(Element.ALIGN_CENTER);
 
-        Paragraph subTitulo = new Paragraph("Período de "+getRelatedViewModel().getSearchParam()+" à "+getRelatedViewModel().getSearchParam2()+ "\n\n", f);
+        Paragraph subTitulo = new Paragraph("Período de "+getRelatedViewModel().getStartDate()+" à "+getRelatedViewModel().getEndDate()+ "\n\n", f);
         subTitulo.setAlignment(Element.ALIGN_CENTER);
 
         document.add(titulo);

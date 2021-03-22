@@ -168,7 +168,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
                     adapter.setLoaded();
 
                 }
-            }, 3000);
+            }, 8000);
         }
     }
 
