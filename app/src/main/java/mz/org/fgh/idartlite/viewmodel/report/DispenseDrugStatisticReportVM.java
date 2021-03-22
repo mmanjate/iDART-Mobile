@@ -86,29 +86,38 @@ public class DispenseDrugStatisticReportVM extends SearchVM<Dispense> {
         List<DispensedDrug> dispensedDrugs = dispenseDrugService.getDispensedDrugsByDispenses(dispenseList);
 
 
-        Map<Drug,List<Dispense>> drugsMap=new HashMap<>();
+        Map<Drug,List<DispensedDrug>> drugsMap=new HashMap<>();
 
 
         for (int i=0;i<dispensedDrugs.size();i++){
 
             Drug    value = dispensedDrugs.get(i).getStock().getDrug();
 
-            List<Dispense> al = drugsMap.get(value);
+            List<DispensedDrug> al = drugsMap.get(value);
 
             if (al == null)
             {
-                drugsMap.put(value, (List<Dispense>) (al = new ArrayList<Dispense>()));
+                drugsMap.put(value, (List<DispensedDrug>) (al = new ArrayList<DispensedDrug>()));
             }
 
-            al.add(dispensedDrugs.get(i).getDispense());
+            al.add(dispensedDrugs.get(i));
         }
-
 
         for (Drug drug: drugsMap.keySet()) {
 
+
+            List<DispensedDrug> dispenseDrugs= drugsMap.get(drug);
+            int quantityDispensed=0;
+            for (DispensedDrug dispenseD:
+                    dispenseDrugs) {
+
+                quantityDispensed+=dispenseD.getQuantitySupplied();
+
+            }
+
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("nomeMedicamento", drug.getDescription());
-            map.put("totalGeral", drugsMap.get(drug).size());
+            map.put("totalFrascosDispensados", quantityDispensed);
 
             list.add(map);
         }
