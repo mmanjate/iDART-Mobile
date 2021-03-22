@@ -235,7 +235,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
             stockReport.setDrugDescription(drug.getDescription());
             List<DispensedDrug> dispenseDrugs= drugsMap.get(drug);
-            int quantityDispensed=0;
+            int quantityDispensed=0; // same as maxConsumption
             int totalUnits=0;
             for (DispensedDrug dispenseD:
                     dispenseDrugs) {
@@ -262,22 +262,22 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
                 totalUnits=dispenseDrugs.get(0).getStock().getUnitsReceived();
             }
             totalUnits-=quantityDispensed;
-            int maxConsumption= quantityDispensed/drug.getPackSize();
+          //  int maxConsumption= quantityDispensed;
 
 
             int stockActual=totalUnits;
 
-            int validStock=maxConsumption/3;
+            int validStock=quantityDispensed/3;
 
 
-            stockReport.setMaximumConsumption(Integer.toString(maxConsumption));
+            stockReport.setMaximumConsumption(Integer.toString(quantityDispensed));
             stockReport.setActualStock(Integer.toString(stockActual));
             stockReport.setValidStock(Integer.toString(validStock));
 
             if(validStock >= stockActual) {
                 stockReport.setStockDescription("Ruptura de Stock");
             }
-            else if(maxConsumption >= stockActual) {
+            else if(quantityDispensed >= stockActual) {
                 stockReport.setStockDescription("Stock Baixo");
             }
             else if(validStock < stockActual) {
