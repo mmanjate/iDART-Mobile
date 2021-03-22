@@ -451,4 +451,5 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="no_new_patientes">Não tem novos pacientes referidos.</string>
 
     <string name="estatistica_dispensas_por_medicamento" translatable="false">Estatistica de Dispensas Por Medicamento</string>
+    <string name="total_frascos_dispensas" translatable="false">Total de Frascos Dispensados</string>
 </resources>
