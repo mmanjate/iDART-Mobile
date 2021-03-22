@@ -293,6 +293,7 @@ public class SettingsVM extends BaseViewModel {
                 }else if (workInfo.getState() == WorkInfo.State.FAILED){
                     issueNotification("Sincronização não efectuada, por favor tente mais tarde.", notificationChannel);
                 }
+
             }
         });
     }
