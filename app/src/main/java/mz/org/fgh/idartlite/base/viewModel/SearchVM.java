@@ -20,7 +20,7 @@ import mz.org.fgh.idartlite.util.Utilities;
 
 public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implements SearchPaginator<T> {
 
-    public static final int PAGE_SIZE = 4;
+    public static final int PAGE_SIZE = 20;
 
     public static final int RECORDS_PER_SEARCH = 100;
 
@@ -168,7 +168,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
                     adapter.setLoaded();
 
                 }
-            }, 3000);
+            }, 8000);
         }
     }
 

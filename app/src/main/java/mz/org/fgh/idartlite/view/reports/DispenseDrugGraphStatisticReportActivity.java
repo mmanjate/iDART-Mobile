@@ -22,8 +22,7 @@ import com.highsoft.highcharts.core.HIChartView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
@@ -70,6 +69,7 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
             DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseDrugGraphStatisticReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
                 edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                 start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                getRelatedViewModel().getSearchParams().setStartdate(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT));
             }, mYear, mMonth, mDay);
             datePickerDialog.show();
         });
@@ -85,6 +85,7 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
             DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseDrugGraphStatisticReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
                 edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                 end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                getRelatedViewModel().getSearchParams().setEndDate(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
             }, mYear, mMonth, mDay);
             datePickerDialog.show();
         });
@@ -103,6 +104,7 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
                     DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseDrugGraphStatisticReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
                         edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                         start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        getRelatedViewModel().getSearchParams().setStartdate(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT));
                     }, mYear, mMonth, mDay);
                     datePickerDialog.show();
                 }
@@ -123,6 +125,7 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
                     DatePickerDialog datePickerDialog = new DatePickerDialog(DispenseDrugGraphStatisticReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
                         edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                         end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        getRelatedViewModel().getSearchParams().setEndDate(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
                     }, mYear, mMonth, mDay);
                     datePickerDialog.show();
                 }
@@ -148,8 +151,7 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
                 Utilities.displayAlertDialog(DispenseDrugGraphStatisticReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
             }else {
                 getRelatedViewModel().setReportGenerationStarted();
-                Utilities.hideSoftKeyboard(DispenseDrugGraphStatisticReportActivity.this);
-                generateGraph(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
+                getRelatedViewModel().initSearch();
             }
         });
     }
@@ -164,11 +166,8 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
         return new ViewModelProvider(this).get(DispenseDrugGraphStatisticReportVM.class);
     }
 
-    private void generateGraph(Date start, Date end) {
-        start = DateUtilities.createDate(edtStart.getText().toString(), DateUtilities.DATE_FORMAT);
-        end = DateUtilities.createDate(edtEnd.getText().toString(), DateUtilities.DATE_FORMAT);
+    private void generateGraph() {
 
-        List<String> sanitaryUnits = getRelatedViewModel().getSanitaryUnityListOnPeriod(start, end);
 
         HIOptions options = new HIOptions();
 
@@ -178,7 +177,7 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
 
         HITitle title = new HITitle();
 
-        title.setText("Número de Pacientes Referidos por Unidade Sanitária");
+        title.setText("Dispensas por Frascos");
         HISubtitle subtitle = new HISubtitle();
         subtitle.setText(DateUtilities.formatToDDMMYYYY(start)+" - "+DateUtilities.formatToDDMMYYYY(end));
         options.setTitle(title);
@@ -187,20 +186,25 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
         final HIYAxis hiyAxis = new HIYAxis();
         hiyAxis.setMin(0);
         hiyAxis.setTitle(new HITitle());
-        hiyAxis.getTitle().setText("Quantidade");
+        hiyAxis.getTitle().setText("Nr. Dispensas");
         options.setYAxis(new ArrayList(){{add(hiyAxis);}});
 
         HIColumn patientData = new HIColumn();
-        patientData.setName("Pacientes");
+        patientData.setName("Medicamento");
         ArrayList serieData = new ArrayList<>();
 
         final HIXAxis hixAxis = new HIXAxis();
         ArrayList categories = new ArrayList<>();
-        if(sanitaryUnits != null)
-            for (String s : sanitaryUnits){
-                categories.add(s);
-                serieData.add(getRelatedViewModel().countNewPatientByPeriod(start, end, s));
-            }
+
+        for (Object dispense : getRelatedViewModel().getAllDisplyedRecords()){
+
+            HashMap<String, Object> itemresult = (HashMap<String, Object>) (Object) dispense;
+
+            categories.add(String.valueOf(itemresult.get("nomeMedicamento")));
+            serieData.add(Integer.parseInt(itemresult.get("totalFrascosDispensados").toString()));
+
+        }
+
 
         patientData.setData(serieData);
 
@@ -231,6 +235,13 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
         chartView.reload();
 
         chartView.setVisibility(View.VISIBLE);
+
+        getRelatedViewModel().setReportGenerationFinished();
+    }
+
+    public void displaySearchResult() {
+
+        generateGraph();
 
         getRelatedViewModel().setReportGenerationFinished();
     }
