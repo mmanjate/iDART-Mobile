@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="dispenseStatistic"
+            type="java.util.HashMap" />
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:padding="@dimen/dimen_10dp">
+
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_report_main" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/nid_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/linearDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <RelativeLayout
+                        android:id="@+id/nid_data1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+
+                        <TextView
+                            android:id="@+id/regime_thera"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/dimen_50dp"
+                            android:text="@{(String) dispenseStatistic.get(`nomeMedicamento`)}" />
+
+
+
+                        <TextView
+                            android:id="@+id/emptyspace"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/regime_thera"
+                            android:gravity="right"
+                            android:text="   " />
+
+                        <TextView
+                            android:id="@+id/lbl_dispense_type_Total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/emptyspace"
+                            android:layout_toLeftOf="@+id/dispense_type_Total"
+                            android:gravity="left"
+                            android:textSize="16sp"
+                            android:text="@string/total_dispensas"
+                            android:textStyle="bold" />
+
+
+
+                        <TextView
+                            android:id="@+id/dispense_type_Total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/emptyspace"
+                            android:layout_alignParentRight="true"
+                            android:gravity="left"
+                            android:paddingLeft="@dimen/dimen_50dp"
+                            android:text="@{String.valueOf(dispenseStatistic.get(`totalGeral`))}" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

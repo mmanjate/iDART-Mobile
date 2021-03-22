@@ -20,4 +20,6 @@ public interface IDispenseDrugService extends IBaseService<DispensedDrug> {
 
     public boolean checkStockIsDispensedDrug(Stock stock) throws SQLException;
 
+    public List<DispensedDrug> getDispensedDrugsByDispenses(List<Dispense> dispenses) throws SQLException;
+
 }

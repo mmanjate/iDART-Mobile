@@ -19,10 +19,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".view.reports.DispenseDrugStatisticReportActivity"></activity>
         <activity
             android:name=".view.reports.DispensesNonSyncReportActivity"
             android:label="@string/title_activity_dispenses_non_sync_report"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.reports.PatientsAwaitingStatisticsActivity"
             android:label="@string/title_activity_patients_awaiting_statistics"

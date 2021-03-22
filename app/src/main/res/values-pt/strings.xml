@@ -430,4 +430,6 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="total_dispensas">Total Dispensas</string>
     <string name="remove_dispense">Remover Dispensa</string>
     <string name="no_new_patientes">Não tem novos pacientes referidos.</string>
+
+    <string name="estatistica_dispensas_por_medicamento" translatable="false">Estatistica de Dispensas Por Medicamento</string>
 </resources>
