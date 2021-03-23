@@ -294,7 +294,7 @@ public class DispenseDrugStatisticReportActivity extends BaseActivity {
         table.setWidthPercentage(100);
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(getString(R.string.drug));
-        table.addCell(getString(R.string.total_dispensas));
+        table.addCell(getString(R.string.total_frascos_dispensas));
         table.setHeaderRows(1);
 
         PdfPCell[] cells = table.getRow(0).getCells();
@@ -307,7 +307,7 @@ public class DispenseDrugStatisticReportActivity extends BaseActivity {
             HashMap<String, Object> itemresult = (HashMap<String, Object>) (Object) dispense;
 
             table.addCell(String.valueOf(itemresult.get("nomeMedicamento")));
-            table.addCell(String.valueOf(itemresult.get("totalGeral")));
+            table.addCell(String.valueOf(itemresult.get("totalFrascosDispensados")));
         }
 
         PdfWriter.getInstance(document, output);
