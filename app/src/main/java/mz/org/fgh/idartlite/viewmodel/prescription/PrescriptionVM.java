@@ -169,8 +169,6 @@ public class PrescriptionVM extends BaseViewModel {
                         this.prescription.setPrescribedDrugs(prescribedDrugService.getAllByPrescription(this.prescription));
 
                         newPrescriptionMustBeEspetial = true;
-
-                        //Utilities.displayConfirmationDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.new_prescription_creation), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
                         Utilities.displayConfirmationDialog(getRelatedActivity(), this.prescription.getPrescriptionAsString(), getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PrescriptionVM.this).show();
                     } else {
                         doOnConfirmed();
@@ -363,6 +361,8 @@ public class PrescriptionVM extends BaseViewModel {
 
     public void loadLastPatientPrescription() throws SQLException {
         this.prescription = prescriptionService.getLastPatientPrescription(this.prescription.getPatient());
+        this.prescription.setUrgentNotes(null);
+        this.prescription.setUrgentPrescription(null);
         this.prescription.setPrescribedDrugs(prescribedDrugService.getAllByPrescription(this.prescription));
         this.prescription.setId(0);
     }
