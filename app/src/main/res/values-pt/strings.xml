@@ -370,7 +370,7 @@
 
     <string name="tb_pregnancy_screening">Rastreio de Gravidez</string>
     <string name="patient_is_pregnant">Está gravida ?</string>
-    <string name="patient_menstruated_last_two_months">Não teve menstruação nos ultimos meses?</string>
+    <string name="patient_menstruated_last_two_months">Teve menstruação nos ultimos meses?</string>
 
     <string name="has_fatigue_or_tiredness_last_two_weeks">Teve cansaço ou fadiga nas ultimas duas semanas?</string>
 
