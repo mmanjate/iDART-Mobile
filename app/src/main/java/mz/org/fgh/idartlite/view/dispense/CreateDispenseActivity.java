@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
@@ -45,6 +47,8 @@ import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.patientPanel.DispenseFragment;
+import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 import mz.org.fgh.idartlite.viewmodel.dispense.DispenseVM;
 
 public class CreateDispenseActivity extends BaseActivity implements IDialogListener {
@@ -597,12 +601,12 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
     @Override
     public void doOnConfirmed() {
-/*        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("patient", getRelatedViewModel().getDispense().getPrescription().getPatient());
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("requestedFragment", DispenseFragment.FRAGMENT_CODE_DISPENSE);
-        nextActivity(PatientActivity.class, params);*/
+        nextActivity(PatientPanelActivity.class, params);
         finish();
     }
 
