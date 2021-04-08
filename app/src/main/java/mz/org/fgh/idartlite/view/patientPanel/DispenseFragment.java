@@ -99,6 +99,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                     bundle.putSerializable("patient", patient);
                     bundle.putSerializable("dispenses", (Serializable) dispensesList);
                     bundle.putSerializable("step", ApplicationStep.STEP_CREATE);
+                    bundle.putSerializable("comingFromPrescription", false);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 } else
@@ -161,6 +162,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                             params.put("clinic", getMyActivity().getCurrentClinic());
                             params.put("dispense", getRelatedViewModel().getDispense());
                             params.put("step", ApplicationStep.STEP_EDIT);
+                            params.put("comingFromPrescription", false);
                             nextActivity(CreateDispenseActivity.class, params);
                         }
                     }
@@ -201,6 +203,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                 params.put("clinic", getMyActivity().getCurrentClinic());
                 params.put("dispense", getRelatedViewModel().getDispense());
                 params.put("step", ApplicationStep.STEP_DISPLAY);
+                params.put("comingFromPrescription", false);
                 nextActivity(CreateDispenseActivity.class, params);
                 return true;
 
