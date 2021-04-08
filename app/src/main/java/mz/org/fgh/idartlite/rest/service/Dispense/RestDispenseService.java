@@ -153,6 +153,7 @@ public class RestDispenseService extends BaseRestService {
 
         dispenseService = new DispenseService(getApp(), null);
         dispenseDrugService = new DispenseDrugService(getApp(), null);
+        prescriptionService = new PrescriptionService(getApp(), null);
 
         try {
             getRestServiceExecutor().execute(() -> {
@@ -178,6 +179,11 @@ public class RestDispenseService extends BaseRestService {
                             public void onResponse(Object response) {
                                 Log.d(TAG, "onResponse: Dispensa enviada" + response);
                                 try {
+
+                                    Prescription prescription = dispense.getPrescription();
+
+                                       prescription.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+                                    prescriptionService.updatePrescriptionEntity(prescription);
                                     dispense.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
                                     dispenseService.udpateDispense(dispense);
                                 } catch (SQLException e) {

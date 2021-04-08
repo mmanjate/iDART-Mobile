@@ -47,6 +47,7 @@ import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.home.PatientHomeActivity;
 import mz.org.fgh.idartlite.view.patientPanel.DispenseFragment;
 import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 import mz.org.fgh.idartlite.viewmodel.dispense.DispenseVM;
@@ -73,6 +74,8 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
     private List<Dispense> dispenseList;
 
+    private boolean comingFromPrescription;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +97,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                 activityCreateDispenseBinding.setViewModel(getRelatedViewModel());
 
                 this.prescription = getRelatedViewModel().getDispense().getPrescription();
-
+                comingFromPrescription= (boolean) bundle.getSerializable("comingFromPrescription");
 
                 if (prescription == null) {
 
@@ -104,6 +107,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                         this.prescription = getRelatedViewModel().getLastPatientPrescription(this.getPatient());
 
                         dispenseList = (List<Dispense>) bundle.getSerializable("dispenses");
+
                         // prescription.setDispenses(dispenseList);
                         this.prescription.setDispenses(getRelatedViewModel().getAllDispensesByPrescription(this.prescription));
 
@@ -601,13 +605,17 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
     @Override
     public void doOnConfirmed() {
-        Map<String, Object> params = new HashMap<>();
-        params.put("patient", getRelatedViewModel().getDispense().getPrescription().getPatient());
-        params.put("user", getCurrentUser());
-        params.put("clinic", getCurrentClinic());
-        params.put("requestedFragment", DispenseFragment.FRAGMENT_CODE_DISPENSE);
-        nextActivity(PatientPanelActivity.class, params);
-        finish();
+        if(comingFromPrescription){
+            Map<String, Object> params = new HashMap<>();
+            params.put("patient", getRelatedViewModel().getDispense().getPrescription().getPatient());
+            params.put("user", getCurrentUser());
+            params.put("clinic", getCurrentClinic());
+            params.put("requestedFragment", DispenseFragment.FRAGMENT_CODE_DISPENSE);
+            nextActivity(PatientPanelActivity.class, params);
+        }
+        else {
+            finish();
+        }
     }
 
     @Override

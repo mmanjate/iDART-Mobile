@@ -463,10 +463,10 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
 
     private String getImcValue(double weight,double height) {
 
-        double imc= weight/(height*height);
-        DecimalFormat df = new DecimalFormat("#.####");
-        df.setRoundingMode(RoundingMode.CEILING);
-        return String.valueOf(df.format(imc));
+        double imc= (weight/(height*height))*100;
+    //    DecimalFormat df = new DecimalFormat("#.####");
+      //  df.setRoundingMode(RoundingMode.CEILING);
+        return String.valueOf(imc);
     }
 
 
