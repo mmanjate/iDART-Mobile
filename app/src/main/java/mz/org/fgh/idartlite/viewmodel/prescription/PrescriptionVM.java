@@ -524,6 +524,7 @@ public class PrescriptionVM extends BaseViewModel {
     public void setPrescriptionRegimen(Listble regimen){
         this.prescription.setTherapeuticRegimen((TherapeuticRegimen) regimen);
         notifyPropertyChanged(BR.prescriptionRegimen);
+        loadDrugs();
     }
 
     @Bindable

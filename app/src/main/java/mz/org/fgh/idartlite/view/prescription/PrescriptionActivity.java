@@ -324,6 +324,7 @@ public class PrescriptionActivity extends BaseActivity implements IDialogListene
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
         params.put("step", ApplicationStep.STEP_CREATE);
+        params.put("comingFromPrescription", true);
         nextActivityFinishingCurrent(CreateDispenseActivity.class,params);
     }
 

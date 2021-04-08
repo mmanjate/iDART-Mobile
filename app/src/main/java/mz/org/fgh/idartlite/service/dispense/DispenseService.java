@@ -124,7 +124,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
         if (dispense.getPrescription().getExpiryDate() != null) {
             Prescription prescription = dispense.getPrescription();
             prescription.setExpiryDate(dispense.getPickupDate());
-            prescription.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+        //    prescription.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
             this.prescriptionService.updatePrescriptionEntity(prescription);
         }
     }
@@ -225,7 +225,9 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
                 drugsMap.put(value, (List<DispensedDrug>) (al = new ArrayList<DispensedDrug>()));
             }
 
-            al.add(dispensedDrugs.get(i));
+
+                al.add(dispensedDrugs.get(i));
+
         }
 
         Set<Drug> drugs=drugsMap.keySet();
@@ -236,7 +238,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
             stockReport.setDrugDescription(drug.getDescription());
             List<DispensedDrug> dispenseDrugs= drugsMap.get(drug);
             int quantityDispensed=0; // same as maxConsumption
-            int totalUnits=0;
+            int stockActual=0;
             for (DispensedDrug dispenseD:
                     dispenseDrugs) {
 
@@ -250,7 +252,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
                 if( drug.equals(stock.getDrug())){
 
-                    totalUnits +=  stock.getUnitsReceived();
+                    stockActual +=  stock.getStockMoviment();
 
                 }
 
@@ -258,14 +260,11 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
             }
 
 
-            if(totalUnits==0){
-                totalUnits=dispenseDrugs.get(0).getStock().getUnitsReceived();
+            if(stockActual==0){
+                stockActual=dispenseDrugs.get(0).getStock().getStockMoviment();
             }
-            totalUnits-=quantityDispensed;
-          //  int maxConsumption= quantityDispensed;
+            stockActual-=quantityDispensed;
 
-
-            int stockActual=totalUnits;
 
             int validStock=quantityDispensed/3;
 
