@@ -104,7 +104,7 @@ public class InventoryVM extends BaseViewModel {
                             if (Utilities.listHasElements(drugStocks)) {
                                 for (Stock stock : drugStocks) {
 
-                                    drug.setAjustmentInfo(new ArrayList<>());
+                                    if (drug.getAjustmentInfo() == null) drug.setAjustmentInfo(new ArrayList<>());
                                     drug.getAjustmentInfo().add(initNewStockAjustment(stock));
                                     getRelatedService().saveAjustment(drug.getAjustmentInfo().get(drug.getAjustmentInfo().size()-1));
                                 }
@@ -175,6 +175,8 @@ public class InventoryVM extends BaseViewModel {
     }
 
     public void setSelectedDrug(Drug selectedDrug) {
+        if (!Utilities.listHasElements(selectedDrug.getAjustmentInfo())) return;
+
         this.selectedDrug = selectedDrug;
 
         currentSelectedDrugPosition = this.drugs.indexOf(selectedDrug);

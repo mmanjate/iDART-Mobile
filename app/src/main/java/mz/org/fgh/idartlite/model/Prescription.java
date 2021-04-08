@@ -342,11 +342,16 @@ public class Prescription extends BaseModel {
 
 	public void generateNextSeq() {
 		long lastSeq = 0;
-		if (Utilities.stringHasValue(this.prescriptionSeq)){
-			lastSeq = Long.parseLong(this.prescriptionSeq);
-		}else {
-			lastSeq = 0;
+		try{
+			if (Utilities.stringHasValue(this.prescriptionSeq)){
+				lastSeq = Long.parseLong(this.prescriptionSeq);
+			}else {
+				lastSeq = 0;
+			}
+		}catch (Exception e){
+			e.printStackTrace();
 		}
+
 
 		setPrescriptionSeq(String.valueOf(Utilities.garantirXCaracterOnNumber(lastSeq+1, 4)));
 	}
