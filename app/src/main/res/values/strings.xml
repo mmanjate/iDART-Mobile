@@ -338,7 +338,7 @@
     <string name="treatment_tb">Está em tratamento de tuberculose(TB)?</string>
 
     <string name="signs_syntoms_tb">Sinais e sintomas sugestivos a TB</string>
-    <string name="cough_last_two_weeks">Está com tosse a duas semanas ou mais ?</string>
+    <string name="cough_last_two_weeks">Está com tosse ?</string>
     <string name="fever_last_two_weeks">Teve febres nas ultimas duas semanas ?</string>
     <string name="lost_weight_last_month">Perdeu peso >1.5 kg no ultimo mês?</string>
     <string name="sweat_in_the_night">Tem suado muito a noite?</string>
