@@ -319,46 +319,6 @@
                         android:padding="@dimen/dimen_4dp">
 
                         <TextView
-                            android:id="@+id/tpiQuestion"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/profilatic_treatment_tpi"
-                            android:textColor="@color/black"
-                            android:textColorHighlight="@color/black" />
-
-                        <RadioGroup
-                            android:id="@+id/tpiAnswers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/radioTpiYes1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:onClick="@{()->viewModel.clinicInformation.setTreatmentTPI(true)}"
-                                android:checked="@{viewModel.clinicInformation.treatmentTPI}"
-                                android:layout_weight="1" />
-
-                            <RadioButton
-                                android:id="@+id/radioTpiNo1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:onClick="@{()->viewModel.clinicInformation.setTreatmentTPI(false)}"
-                                android:checked="@{viewModel.clinicInformation.treatmentTPI== false ? true :viewModel.clinicInformation.treatmentTPI}"
-                                android:layout_weight="1" />
-                        </RadioGroup>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/dimen_4dp">
-
-                        <TextView
                             android:id="@+id/tbQuestion"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
