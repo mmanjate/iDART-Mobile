@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.service.clinicInfo;
 
+import android.app.Application;
+
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.sql.SQLException;
@@ -24,6 +26,8 @@ public interface IClinicInfoService extends IBaseService<ClinicInformation> {
     public List<ClinicInformation> getAllClinicInfosByPatient(Patient patient) throws SQLException;
 
     public List<ClinicInformation> getAllClinicInfoByStatus(String status) throws SQLException;
+
+    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException;
 
 
 

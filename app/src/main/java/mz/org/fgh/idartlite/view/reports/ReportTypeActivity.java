@@ -23,6 +23,7 @@ import mz.org.fgh.idartlite.databinding.ActivityReportTypeBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.model.Report;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.viewmodel.clinicInfo.PregnantPatientReportVM;
 import mz.org.fgh.idartlite.viewmodel.report.ReportTypeVM;
 
 public class ReportTypeActivity extends BaseActivity {
@@ -155,6 +156,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("007", "Relatorio de Pacientes Faltosos", R.drawable.ic_list, AbsentPatientsReportActivity.class));
         reports.add(Report.fastCreate("008", "Relatorio de Dispensas Não Sincronizadas", R.drawable.ic_list, DispensesNonSyncReportActivity.class));
         reports.add(Report.fastCreate("009", "Relatorio de Estatistico de Dispensas por Frascos", R.drawable.ic_list, DispenseDrugStatisticReportActivity.class));
+        reports.add(Report.fastCreate("013", "Relatorio de de Pacientes Gravidass", R.drawable.ic_list, PregnantPatientReportActivity.class));
         return reports;
     }
 
