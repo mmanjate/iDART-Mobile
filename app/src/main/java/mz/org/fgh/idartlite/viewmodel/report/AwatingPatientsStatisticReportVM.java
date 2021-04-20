@@ -28,6 +28,7 @@ import mz.org.fgh.idartlite.service.drug.ITherapheuticRegimenService;
 import mz.org.fgh.idartlite.service.drug.TherapheuticRegimenService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.reports.DispenseDrugStatisticReportActivity;
 import mz.org.fgh.idartlite.view.reports.PatientsAwaitingStatisticsActivity;
 
 public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
