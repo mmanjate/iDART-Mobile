@@ -26,6 +26,7 @@ import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.Report;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.viewmodel.clinicInfo.PregnantPatientReportVM;
 import mz.org.fgh.idartlite.viewmodel.report.ReportTypeVM;
 
 public class ReportTypeActivity extends BaseActivity {
@@ -169,6 +170,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("007", "Relatorio de Pacientes Faltosos", R.drawable.ic_list, AbsentPatientsReportActivity.class));
         reports.add(Report.fastCreate("008", "Relatorio de Dispensas Não Sincronizadas", R.drawable.ic_list, DispensesNonSyncReportActivity.class));
         reports.add(Report.fastCreate("009", "Relatorio de Estatistico de Dispensas por Frascos", R.drawable.ic_list, DispenseDrugStatisticReportActivity.class));
+        reports.add(Report.fastCreate("013", "Relatorio de de Pacientes Gravidass", R.drawable.ic_list, PregnantPatientReportActivity.class));
         reports.add(Report.fastCreate("010", "Lista de Pacientes Rastreados pelos RAMs", R.drawable.ic_list, AdverseReactionReportActivity.class, createParams(ClinicInformation.PARAM_RAM_STATUS, ClinicInformation.PARAM_RAM_STATUS_ALL)));
         reports.add(Report.fastCreate("011", "Lista de Pacientes Com RAM", R.drawable.ic_list, AdverseReactionReportActivity.class, createParams(ClinicInformation.PARAM_RAM_STATUS, ClinicInformation.PARAM_RAM_STATUS_POSETIVE)));
         reports.add(Report.fastCreate("010", "Lista/número dos Pacientes monitorados pela adesão", R.drawable.ic_list, PatientTreatmentFollowUpReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_ALL)));

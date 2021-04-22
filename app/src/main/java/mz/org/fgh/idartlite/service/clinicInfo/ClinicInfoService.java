@@ -111,4 +111,9 @@ public class ClinicInfoService extends BaseService<ClinicInformation> implements
     public long countOfPeriod(Date start, Date end) throws SQLException {
         return getDataBaseHelper().getClinicInfoDao().countOfPeriod(start, end);
     }
+
+    @Override
+    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return getDataBaseHelper().getClinicInfoDao().getPregnantPatientWithStartDateAndEndDateWithLimit(application,startDate,endDate,offset,limit);
+    }
 }

@@ -2,6 +2,9 @@ package mz.org.fgh.idartlite.dao.clinicInfo;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
+import android.app.Application;
+
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
@@ -9,10 +12,15 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.model.Prescription;
+
+import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
 
 public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer> implements IClinicInfoDao {
 
@@ -63,6 +71,31 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
     @Override
     public List<ClinicInformation> getAllClinicInfoByStatus(String status) throws SQLException {
         return queryBuilder().where().eq(ClinicInformation.COLUMN_SYNC_STATUS, status).query();
+    }
+
+    @Override
+    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Application application, Date startDate, Date endDate, long offset, long limit) throws SQLException {
+
+        QueryBuilder<Episode, Integer> episodeQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
+
+        episodeQb.where().isNotNull(Episode.COLUMN_STOP_REASON);
+        QueryBuilder<Patient, Integer> patientQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
+        patientQb.where().not().in(Patient.COLUMN_ID,episodeQb.selectRaw("patient_id"));
+        QueryBuilder<ClinicInformation, Integer> clinicInformationQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getClinicInfoDao().queryBuilder();
+        QueryBuilder<ClinicInformation, Integer> clinicInformationQb1 =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getClinicInfoDao().queryBuilder();
+        QueryBuilder<Patient, Integer> patientInnerQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
+
+
+        clinicInformationQb1.groupBy(ClinicInformation.COLUMN_PATIENT_ID).join(patientInnerQb);
+
+     //   dispenseQb1.join(prescriptionInnerQb);
+        clinicInformationQb.orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
+                .offset(offset).where().eq(ClinicInformation.COLUMN_IS_PREGNANT,true).and().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
+                .and()
+                .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
+        System.out.println(clinicInformationQb.prepareStatementString());
+
+        return clinicInformationQb.query();
     }
 
     @Override
