@@ -1,14 +1,11 @@
 package mz.org.fgh.idartlite.service.clinicInfo;
 
-import com.google.gson.internal.LinkedTreeMap;
-
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 
 
@@ -26,6 +23,11 @@ public interface IClinicInfoService extends IBaseService<ClinicInformation> {
     public List<ClinicInformation> getAllClinicInfoByStatus(String status) throws SQLException;
 
 
+    List<ClinicInformation> getPatientTratmentFollowUpByPeriod(Date start, Date end, long offset, long limit, String reportType) throws SQLException;
+
+    List<ClinicInformation> getRAMsByPeriod(Date start, Date end, long offset, long limit, String reportType) throws SQLException;
+
+    long countOfPeriod(Date start, Date end) throws SQLException;
 
 
 }
