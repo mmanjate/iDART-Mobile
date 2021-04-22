@@ -20,4 +20,8 @@ public interface IClinicInfoDao extends IGenericDao<ClinicInformation, Integer> 
     public List<ClinicInformation> getAllClinicInfoByStatus(String status) throws SQLException;
 
     public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Application application, Date startDate, Date endDate, long offset, long limit) throws SQLException;
+
+    public List<ClinicInformation> getTBSuspectPatientWithStartDateAndEndDateWithLimit(Application application, Date startDate, Date endDate, long offset, long limit) throws SQLException;
+
+    public List<ClinicInformation> getTracedPatientsWithStartDateAndEndDateWithLimit(Application application, Date startDate, Date endDate, long offset, long limit) throws SQLException;
 }
