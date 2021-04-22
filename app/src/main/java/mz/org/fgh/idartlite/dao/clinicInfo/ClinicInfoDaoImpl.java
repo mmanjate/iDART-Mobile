@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.dao.clinicInfo;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import android.app.Application;
 
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -14,9 +16,8 @@ import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.model.Prescription;
 
 import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
@@ -37,6 +38,30 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
         super(connectionSource, tableConfig);
     }
 
+    @Override
+    public List<ClinicInformation> getRAMsByPeriod(Date start, Date end, long offset, long limit, String reportType) throws SQLException {
+        Where<ClinicInformation, Integer> queryBuilder = queryBuilder().limit(limit)
+                .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, start)
+                .and()
+                .le(ClinicInformation.COLUMN_REGISTER_DATE, end);
+
+        if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.PARAM_RAM_STATUS_POSETIVE))){
+            queryBuilder.and().eq(ClinicInformation.COLUMN_ADVERSE_REACTION_MEDICINE, true);
+        }else if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.PARAM_RAM_STATUS_NEGATIVE))){
+            queryBuilder.and().eq(ClinicInformation.COLUMN_ADVERSE_REACTION_MEDICINE, false);
+        }
+
+        return queryBuilder.query();
+
+    }
+
+    @Override
+    public long countOfPeriod(Date start, Date end) throws SQLException {
+        return queryBuilder().distinct().where().ge(ClinicInformation.COLUMN_REGISTER_DATE, start)
+                .and()
+                .le(ClinicInformation.COLUMN_REGISTER_DATE, end).countOf();
+
+    }
 
     @Override
     public List<ClinicInformation> getAllByPatient(Patient patient) throws SQLException {
@@ -71,6 +96,22 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
         System.out.println(clinicInformationQb.prepareStatementString());
 
         return clinicInformationQb.query();
+    }
+
+    @Override
+    public List<ClinicInformation> getPatientTratmentFollowUpByPeriod(Date start, Date end, long offset, long limit, String reportType) throws SQLException {
+        Where<ClinicInformation, Integer> queryBuilder = queryBuilder().limit(limit)
+                .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, start)
+                .and()
+                .le(ClinicInformation.COLUMN_REGISTER_DATE, end);
+
+        if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.PARAM_FOLLOW_STATUS_WITH_LATE_DAYS))){
+            queryBuilder.and().eq(ClinicInformation.COLUMN_HAS_PATIENT_CAME_CORRECT_DATE, false)
+            .and()
+            .ge(ClinicInformation.COLUMN_LATE_DAYS, 7);
+        }
+
+        return queryBuilder.query();
     }
 
 }

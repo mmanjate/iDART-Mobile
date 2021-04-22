@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 
@@ -17,7 +18,7 @@ public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends Re
 
     protected final int VIEW_TYPE_ITEM = 0;
     protected final int VIEW_TYPE_LOADING = 1;
-    protected Activity activity;
+    protected BaseActivity activity;
     protected IOnLoadMoreListener onLoadMoreListener;
     protected boolean isLoading;
     protected int visibleThreshold = 5;
@@ -25,7 +26,7 @@ public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends Re
 
     public AbstractRecycleViewAdapter(RecyclerView recyclerView, List<T> records, Activity activity) {
         this.records = records;
-        this.activity = activity;
+        this.activity = (BaseActivity) activity;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
