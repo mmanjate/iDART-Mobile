@@ -418,8 +418,8 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
         createClinicInfoBinding.imc.setEnabled(false);
         createClinicInfoBinding.distole.setEnabled(false);
         createClinicInfoBinding.systole.setEnabled(false);
-        createClinicInfoBinding.radioTpiYes1.setEnabled(false);
-        createClinicInfoBinding.radioTpiNo1.setEnabled(false);
+//        createClinicInfoBinding.radioTpiYes1.setEnabled(false);
+//        createClinicInfoBinding.radioTpiNo1.setEnabled(false);
         createClinicInfoBinding.radioTbYes1.setEnabled(false);
         createClinicInfoBinding.radioTbNo1.setEnabled(false);
         createClinicInfoBinding.radioCoughYes.setEnabled(false);
@@ -458,15 +458,19 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
     }
 
     public void getWeightFromView(){
-        getRelatedViewModel().getClinicInformation().setWeight(Double.parseDouble(createClinicInfoBinding.weight.getText().toString()));
+
+        if(createClinicInfoBinding.weight.getText().toString().trim().length() > 0)
+            getRelatedViewModel().getClinicInformation().setWeight(Double.parseDouble(createClinicInfoBinding.weight.getText().toString()));
     }
 
-    private String getImcValue(double weight,double height) {
+    private String getImcValue(double weight, double height) {
 
-        double imc= (weight/(height*height))*100;
-    //    DecimalFormat df = new DecimalFormat("#.####");
-      //  df.setRoundingMode(RoundingMode.CEILING);
-        return String.valueOf(imc);
+        double imc = 0.0;
+
+        if(height != 0.0)
+            imc = weight/((height/100)*(height/100));
+
+        return String.valueOf(Math.round(imc * 100.0) / 100.0);
     }
 
 
@@ -594,7 +598,7 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
         String error="Por Favor Verifique se Respondeu a todas as Perguntas do Questionario";
         int emptyRadio=-1;
 
-        if(createClinicInfoBinding.tpiAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+//        if(createClinicInfoBinding.tpiAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
         if(createClinicInfoBinding.tbAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
         if(createClinicInfoBinding.coughAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
         if(createClinicInfoBinding.feverAnswers.getCheckedRadioButtonId()==emptyRadio) return error;

@@ -7,6 +7,8 @@ import androidx.annotation.RequiresApi;
 
 import com.j256.ormlite.field.DatabaseField;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
@@ -23,6 +25,8 @@ public class Report<T extends BaseActivity> extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_DESCRIPTION)
     private String description;
+
+    private Map<String, Object> params;
 
     private Class<T> displayActivity;
 
@@ -42,6 +46,14 @@ public class Report<T extends BaseActivity> extends BaseModel {
     }
 
     public Report() {
+    }
+
+    public Report(String code, String description, Class displayActivity, int icon, Map<String, Object> params) {
+        this.code = code;
+        this.description = description;
+        this.displayActivity = displayActivity;
+        this.icon = icon;
+        this.params = params;
     }
 
     public String getCode() {
@@ -91,12 +103,28 @@ public class Report<T extends BaseActivity> extends BaseModel {
                 '}';
     }
 
+    public Map<String, Object> getParams() {
+        return params;
+    }
+
+    public void addParam(String key, Object object){
+        this.params.put(key, object);
+    }
+
+    public Object getParam(String key){
+        return this.params.get(key);
+    }
+
     public static Report fastCreate(String code, String description, int icon){
         return new Report(code, description, icon);
     }
 
     public static Report fastCreate(String code, String description, int icon, Class displayActivity){
         return new Report(code, description, displayActivity, icon);
+    }
+
+    public static Report fastCreate(String code, String description, int icon, Class displayActivity, Map<String, Object> params){
+        return new Report(code, description, displayActivity, icon, params);
     }
 
     public Class<T> getDisplayActivity() {

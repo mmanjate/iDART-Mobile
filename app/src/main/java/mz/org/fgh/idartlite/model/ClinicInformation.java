@@ -50,6 +50,14 @@ public class ClinicInformation extends BaseModel {
     public static final String COLUMN_HAS_FATIGUE_OR_TIREDNESS_LAST_TWO_WEEKS = "has_fatigue_or_tiredness_last_two_weeks";
     public static final String COLUMN_START_TREATMENT_DATE = "start_treatment_date";
 
+    public static final String PARAM_RAM_STATUS = "RAM_STATUS";
+    public static final String PARAM_RAM_STATUS_POSETIVE = "RAM_STATUS_POSETIVE ";
+    public static final String PARAM_RAM_STATUS_NEGATIVE = "RAM_STATUS_NEGATIVE";
+    public static final String PARAM_RAM_STATUS_ALL = "RAM_STATUS_ALL";
+
+    public static final String PARAM_FOLLOW_STATUS = "FOLLOW_STATUS";
+    public static final String PARAM_FOLLOW_STATUS_WITH_LATE_DAYS = "FOLLOW_STATUS_WITH_LATE_DAYS";
+    public static final String PARAM_FOLLOW_STATUS_ALL = "FOLLOW_STATUS_ALL";
 
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;

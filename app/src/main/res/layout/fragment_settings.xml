@@ -212,7 +212,7 @@
                             android:layout_alignParentRight="true"
                             android:onClick="@{() -> viewModel.syncDataNow()}"
                             android:drawableLeft="@drawable/ic_baseline_sync_green"
-                            android:text="Sincronizar gora"/>
+                            android:text="Sincronizar Agora"/>
 
 
                     </RelativeLayout>
@@ -299,7 +299,7 @@
                         android:layout_alignParentRight="true"
                         android:onClick="@{() -> viewModel.syncMetadataNow()}"
                         android:drawableLeft="@drawable/ic_baseline_cloud_download_24"
-                        android:text="Actualizar gora"/>
+                        android:text="Actualizar Agora"/>
 
 
                 </RelativeLayout>
