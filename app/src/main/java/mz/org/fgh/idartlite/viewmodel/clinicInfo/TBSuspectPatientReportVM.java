@@ -22,15 +22,14 @@ import mz.org.fgh.idartlite.service.clinicInfo.IClinicInfoService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.reports.PregnantPatientReportActivity;
+import mz.org.fgh.idartlite.view.reports.TBSuspectPatientReportActivity;
 
-public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
-
-
+public class TBSuspectPatientReportVM extends SearchVM<ClinicInformation> {
 
 
     private IClinicInfoService clinicInfoService;
 
-    public PregnantPatientReportVM(@NonNull Application application) {
+    public TBSuspectPatientReportVM(@NonNull Application application) {
         super(application);
         clinicInfoService = new ClinicInfoService(application, getCurrentUser());
 
@@ -52,9 +51,8 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
 
     }
 
-    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDate(Date startDate,Date endDate, long offset, long limit) throws SQLException {
-
-        return clinicInfoService.getPregnantPatientWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit,this.getRelatedActivity().getReportType());
+    public List<ClinicInformation> getTBSuspectPatientWithStartDateAndEndDate(Date startDate,Date endDate, long offset, long limit) throws SQLException {
+        return clinicInfoService.getTBSuspectPatientWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
     }
 
     public void generatePDF() {
@@ -82,7 +80,7 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
 
 
     public List<ClinicInformation> doSearch(long offset, long limit) throws SQLException {
-        return getPregnantPatientWithStartDateAndEndDate(getSearchParams().getStartdate(), getSearchParams().getEndDate(),offset,limit);
+        return getTBSuspectPatientWithStartDateAndEndDate(getSearchParams().getStartdate(), getSearchParams().getEndDate(),offset,limit);
     }
 
     @Override
@@ -124,8 +122,8 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
     }
 
 
-    public PregnantPatientReportActivity getRelatedActivity() {
-        return (PregnantPatientReportActivity) super.getRelatedActivity();
+    public TBSuspectPatientReportActivity getRelatedActivity() {
+        return (TBSuspectPatientReportActivity) super.getRelatedActivity();
     }
 
 

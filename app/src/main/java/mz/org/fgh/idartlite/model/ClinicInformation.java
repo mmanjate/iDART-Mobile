@@ -55,6 +55,10 @@ public class ClinicInformation extends BaseModel {
     public static final String PARAM_RAM_STATUS_NEGATIVE = "RAM_STATUS_NEGATIVE";
     public static final String PARAM_RAM_STATUS_ALL = "RAM_STATUS_ALL";
 
+    public static final String CLINIC_INFO_STATUS = "CLINIC_INFO_STATUS";
+    public static final String PREGNANT_STATUS_POSITIVE = "PREGNANT_STATUS_POSITIVE";
+    public static final String PREGNANT_STATUS_ALL = "PREGNANT_STATUS_ALL";
+
     public static final String PARAM_FOLLOW_STATUS = "FOLLOW_STATUS";
     public static final String PARAM_FOLLOW_STATUS_WITH_LATE_DAYS = "FOLLOW_STATUS_WITH_LATE_DAYS";
     public static final String PARAM_FOLLOW_STATUS_ALL = "FOLLOW_STATUS_ALL";

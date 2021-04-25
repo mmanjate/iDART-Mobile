@@ -41,57 +41,40 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.clinicInfo.PatientClinicInfoReportAdapter;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.PatientAwaitingAbsentDispenseReportAdapter;
-import mz.org.fgh.idartlite.adapter.recyclerview.patient.ContentListPatientAdapter;
-import mz.org.fgh.idartlite.adapter.recyclerview.report.PatientAwaitingStatisticDispenseReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.databinding.ActivityPatientRegisterReportBinding;
 import mz.org.fgh.idartlite.databinding.ActivityPregnantPatientReportBinding;
-import mz.org.fgh.idartlite.databinding.ContentClinicInfoReportBinding;
+import mz.org.fgh.idartlite.databinding.ActivityTbSuspectPatientBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.clinicInfo.PregnantPatientReportVM;
-import mz.org.fgh.idartlite.viewmodel.report.AwatingPatientsStatisticReportVM;
+import mz.org.fgh.idartlite.viewmodel.clinicInfo.TBSuspectPatientReportVM;
 
-public class  PregnantPatientReportActivity extends BaseActivity {
+public class TBSuspectPatientReportActivity extends BaseActivity {
 
 
     private RecyclerView reyclerClinicInfo;
-    private ActivityPregnantPatientReportBinding pregnantPatientReportBinding;
+    private ActivityTbSuspectPatientBinding tBSuspectPatientReportBinding;
 
     private PatientClinicInfoReportAdapter adapter;
 
-    private String reportType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
-        Intent intent = this.getIntent();
-        if(intent != null){
-            Bundle bundle = intent.getExtras();
-            if(bundle != null) {
-                reportType=(String) bundle.getSerializable(ClinicInformation.CLINIC_INFO_STATUS);
-            }
-        }
+        tBSuspectPatientReportBinding=   DataBindingUtil.setContentView(this, R.layout.activity_tb_suspect_patient);
+        reyclerClinicInfo = tBSuspectPatientReportBinding.reyclerClinicInfo;
 
-        pregnantPatientReportBinding=   DataBindingUtil.setContentView(this, R.layout.activity_pregnant_patient_report);
-        reyclerClinicInfo = pregnantPatientReportBinding.reyclerClinicInfo;
+        tBSuspectPatientReportBinding.setViewModel(getRelatedViewModel());
 
-        pregnantPatientReportBinding.setViewModel(getRelatedViewModel());
-
-        pregnantPatientReportBinding.executePendingBindings();
+        tBSuspectPatientReportBinding.executePendingBindings();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -111,7 +94,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
             }
         });
 
-        pregnantPatientReportBinding.startDate.setOnClickListener(new View.OnClickListener() {
+        tBSuspectPatientReportBinding.startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int mYear, mMonth, mDay;
@@ -122,12 +105,12 @@ public class  PregnantPatientReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PregnantPatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(TBSuspectPatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                        pregnantPatientReportBinding.startDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        tBSuspectPatientReportBinding.startDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -135,7 +118,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
             }
         });
 
-        pregnantPatientReportBinding.startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        tBSuspectPatientReportBinding.startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
@@ -146,12 +129,12 @@ public class  PregnantPatientReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(PregnantPatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(TBSuspectPatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                            pregnantPatientReportBinding.startDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            tBSuspectPatientReportBinding.startDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                         }
                     }, mYear, mMonth, mDay);
@@ -160,7 +143,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
             }
         });
 
-        pregnantPatientReportBinding.endDate.setOnClickListener(new View.OnClickListener() {
+        tBSuspectPatientReportBinding.endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int mYear, mMonth, mDay;
@@ -171,12 +154,12 @@ public class  PregnantPatientReportActivity extends BaseActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PregnantPatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(TBSuspectPatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                        pregnantPatientReportBinding.endDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        tBSuspectPatientReportBinding.endDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                     }
                 }, mYear, mMonth, mDay);
@@ -184,7 +167,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
             }
         });
 
-        pregnantPatientReportBinding.endDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        tBSuspectPatientReportBinding.endDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
@@ -195,12 +178,12 @@ public class  PregnantPatientReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(PregnantPatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(TBSuspectPatientReportActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                            pregnantPatientReportBinding.endDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            tBSuspectPatientReportBinding.endDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                         }
                     }, mYear, mMonth, mDay);
@@ -213,7 +196,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
 
     @SuppressLint("RestrictedApi")
     public void generatePdfButton(boolean show){
-        FloatingActionButton generatePdf = pregnantPatientReportBinding.generatePdf;
+        FloatingActionButton generatePdf = tBSuspectPatientReportBinding.generatePdf;
         if(show) generatePdf.setVisibility(View.VISIBLE);
         else {generatePdf.setVisibility(View.GONE);}
     }
@@ -263,7 +246,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
         }
-        String pdfname = "PacientesGravidas"+ DateUtilities.formatToDDMMYYYY(new Date())+".pdf";
+        String pdfname = "PacientesSuspeitosTb"+ DateUtilities.formatToDDMMYYYY(new Date())+".pdf";
         File pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);
@@ -324,7 +307,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 16.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
 
-        Paragraph titulo = new Paragraph(getReportTitle() +" \n", g);
+        Paragraph titulo = new Paragraph(" Pacientes Suspeitos de TB\n", g);
         titulo.setAlignment(Element.ALIGN_CENTER);
 
         Paragraph subTitulo = new Paragraph("Período de "+getRelatedViewModel().getStartDate()+" à "+getRelatedViewModel().getEndDate()+ "\n\n", f);
@@ -340,38 +323,14 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         Utilities.previewPdfFiles(this,pdfFile );
     }
 
-    public String getReportType() {
-        return reportType;
-    }
-
-    public void setReportType(String reportType) {
-        this.reportType = reportType;
-    }
-
-
-    public String getReportTitle(){
-        if (reportType.equals(ClinicInformation.PREGNANT_STATUS_POSITIVE)) return getString(R.string.pacientes_gravidas_report_title);
-        else if (reportType.equals(ClinicInformation.PREGNANT_STATUS_ALL)) return getString(R.string.pacientes_rastreadas_gravidez_report_title);
-
-        return null;
-    }
-
-    public String getReportTableTitle(){
-        if (reportType.equals(ClinicInformation.PREGNANT_STATUS_POSITIVE)) return getString(R.string.pacientes_gravidas);
-        else if (reportType.equals(ClinicInformation.PREGNANT_STATUS_ALL)) return getString(R.string.pacientes_rastreadas_gravidez);
-
-        return null;
-    }
-
-
     @Override
     public BaseViewModel initViewModel() {
-        return new ViewModelProvider(this).get(PregnantPatientReportVM.class);
+        return new ViewModelProvider(this).get(TBSuspectPatientReportVM.class);
     }
 
     @Override
-    public PregnantPatientReportVM getRelatedViewModel() {
-        return (PregnantPatientReportVM) super.getRelatedViewModel();
+    public TBSuspectPatientReportVM getRelatedViewModel() {
+        return (TBSuspectPatientReportVM) super.getRelatedViewModel();
     }
 
     @Override
