@@ -26,7 +26,7 @@ public interface IClinicInfoService extends IBaseService<ClinicInformation> {
 
     public List<ClinicInformation> getAllClinicInfoByStatus(String status) throws SQLException;
 
-    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException;
+    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit, String reportType) throws SQLException;
 
     public List<ClinicInformation> getTBSuspectPatientWithStartDateAndEndDateWithLimit( Date startDate, Date endDate, long offset, long limit) throws SQLException;
 

@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.report.ReportListAdapter;
@@ -72,20 +74,26 @@ public class ReportTypeActivity extends BaseActivity {
             reyclerReports.setAdapter(reportListAdapter);
 
 
-        reyclerReports.addOnItemTouchListener(
-                new ClickListener(getApplicationContext(), reyclerReports, new ClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        nextActivityWithGenericParams(reportListAdapter.getItemAtPosition(position).getDisplayActivity());
+            reyclerReports.addOnItemTouchListener(
+                    new ClickListener(getApplicationContext(), reyclerReports, new ClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            if (reportListAdapter.getItemAtPosition(position).getParams() != null){
+                                reportListAdapter.getItemAtPosition(position).addParam("user", getCurrentUser());
+                                reportListAdapter.getItemAtPosition(position).addParam("clinic", getCurrentClinic());
+                                nextActivity(reportListAdapter.getItemAtPosition(position).getDisplayActivity(), reportListAdapter.getItemAtPosition(position).getParams());
+                            }else
+                                nextActivityWithGenericParams(reportListAdapter.getItemAtPosition(position).getDisplayActivity());
+
+                        }
+
+                        @Override
+                        public void onLongItemClick(View view, int position) { }
+
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) { }
                     }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) { }
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) { }
-                }
-                ));
+                    ));
         }
 
         reyclerGraphs.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -157,13 +165,15 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("007", "Relatorio de Pacientes Faltosos", R.drawable.ic_list, AbsentPatientsReportActivity.class));
         reports.add(Report.fastCreate("008", "Relatorio de Dispensas Não Sincronizadas", R.drawable.ic_list, DispensesNonSyncReportActivity.class));
         reports.add(Report.fastCreate("009", "Relatorio de Estatistico de Dispensas por Frascos", R.drawable.ic_list, DispenseDrugStatisticReportActivity.class));
-        reports.add(Report.fastCreate("013", "Relatorio de de Pacientes Gravidass", R.drawable.ic_list, PregnantPatientReportActivity.class));
         reports.add(Report.fastCreate("010", "Lista de Pacientes Rastreados pelos RAMs", R.drawable.ic_list, AdverseReactionReportActivity.class, createParams(ClinicInformation.PARAM_RAM_STATUS, ClinicInformation.PARAM_RAM_STATUS_ALL)));
         reports.add(Report.fastCreate("011", "Lista de Pacientes Com RAM", R.drawable.ic_list, AdverseReactionReportActivity.class, createParams(ClinicInformation.PARAM_RAM_STATUS, ClinicInformation.PARAM_RAM_STATUS_POSETIVE)));
         reports.add(Report.fastCreate("010", "Lista/número dos Pacientes monitorados pela adesão", R.drawable.ic_list, PatientTreatmentFollowUpReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_ALL)));
-        reports.add(Report.fastCreate("011", "Pacientes que atrasaram nos levantamentos mais de 7 dias", R.drawable.ic_list, PatientTreatmentFollowUpReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_WIT
-                reports.add(Report.fastCreate("010", "Relatorio de Pacientes rastreados pelo TB ", R.drawable.ic_list, TBTracedPatientReportActivity.class));
-        reports.add(Report.fastCreate("011", "Relatorio de Pacientes com TB suspeito ", R.drawable.ic_list, TBSuspectPatientReportActivity.class));
+        reports.add(Report.fastCreate("011", "Pacientes que atrasaram nos levantamentos mais de 7 dias", R.drawable.ic_list, PatientTreatmentFollowUpReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_WITH_LATE_DAYS)));
+        reports.add(Report.fastCreate("012", "Relatorio de Pacientes com TB suspeito ", R.drawable.ic_list, TBSuspectPatientReportActivity.class));
+        reports.add(Report.fastCreate("013", "Relatorio de Pacientes que rastrearam para TB ", R.drawable.ic_list, TBTracedPatientReportActivity.class));
+        reports.add(Report.fastCreate("014", "Relatorio de pacientes rastreado pela gravidez", R.drawable.ic_list, PregnantPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.PREGNANT_STATUS_ALL)));
+        reports.add(Report.fastCreate("014", "Relatorio de de Pacientes Gravidas", R.drawable.ic_list, PregnantPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.PREGNANT_STATUS_POSITIVE)));
+
         return reports;
     }
 
@@ -175,5 +185,14 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("004", "Estatistica de Dispensas por Frascos", R.drawable.ic_graphic, DispenseDrugGraphStatisticReportActivity.class));
         return reports;
     }
+
+
+    private Map<String, Object> createParams(String key, Object value) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(key, value);
+
+        return map;
+    }
+
 
 }

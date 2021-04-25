@@ -75,7 +75,7 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
     }
 
     @Override
-    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Application application, Date startDate, Date endDate, long offset, long limit) throws SQLException {
+    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Application application, Date startDate, Date endDate, long offset, long limit, String reportType) throws SQLException {
 
         QueryBuilder<Episode, Integer> episodeQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
 
@@ -87,14 +87,21 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
         QueryBuilder<Patient, Integer> patientInnerQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
 
 
-        clinicInformationQb1.groupBy(ClinicInformation.COLUMN_PATIENT_ID).join(patientInnerQb);
+        clinicInformationQb1.where().raw(" `clinic_information`.`patient_id` = `patient`.`id`  group by `clinic_information`.`patient_id`");
 
-     //   dispenseQb1.join(prescriptionInnerQb);
-        clinicInformationQb.orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
-                .offset(offset).where().eq(ClinicInformation.COLUMN_IS_PREGNANT,true).and().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
-                .and()
-                .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
-        System.out.println(clinicInformationQb.prepareStatementString());
+
+        if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.PREGNANT_STATUS_POSITIVE))){
+            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
+                    .offset(offset).where().eq(ClinicInformation.COLUMN_IS_PREGNANT,true).and().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
+                    .and()
+                    .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
+        }else if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.PREGNANT_STATUS_ALL))){
+            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
+                    .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
+                    .and()
+                    .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
+        }
+
 
         return clinicInformationQb.query();
     }
@@ -137,9 +144,10 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
         QueryBuilder<Patient, Integer> patientInnerQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
 
 
-        clinicInformationQb1.groupBy(ClinicInformation.COLUMN_PATIENT_ID).join(patientInnerQb);
+        //clinicInformationQb1.where().rawComparison("patient_id","="," `patient`.`id`" );
+        clinicInformationQb1.where().raw(" `clinic_information`.`patient_id` = `patient`.`id`  group by `clinic_information`.`patient_id`");
 
-        clinicInformationQb.orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
+        clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
                 .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
                 .and()
                 .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));

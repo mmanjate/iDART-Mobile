@@ -26,6 +26,8 @@ import mz.org.fgh.idartlite.view.reports.PregnantPatientReportActivity;
 public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
 
 
+
+
     private IClinicInfoService clinicInfoService;
 
     public PregnantPatientReportVM(@NonNull Application application) {
@@ -51,7 +53,8 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
     }
 
     public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDate(Date startDate,Date endDate, long offset, long limit) throws SQLException {
-        return clinicInfoService.getPregnantPatientWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
+
+        return clinicInfoService.getPregnantPatientWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit,this.getRelatedActivity().getReportType());
     }
 
     public void generatePDF() {

@@ -71,11 +71,21 @@ public class  PregnantPatientReportActivity extends BaseActivity {
 
     private PatientClinicInfoReportAdapter adapter;
 
+    private String reportType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
+        Intent intent = this.getIntent();
+        if(intent != null){
+            Bundle bundle = intent.getExtras();
+            if(bundle != null) {
+                reportType=(String) bundle.getSerializable(ClinicInformation.CLINIC_INFO_STATUS);
+            }
+        }
+
         pregnantPatientReportBinding=   DataBindingUtil.setContentView(this, R.layout.activity_pregnant_patient_report);
         reyclerClinicInfo = pregnantPatientReportBinding.reyclerClinicInfo;
 
@@ -314,7 +324,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 16.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
 
-        Paragraph titulo = new Paragraph(" Pacientes Gravidas\n", g);
+        Paragraph titulo = new Paragraph(getReportTitle() +" \n", g);
         titulo.setAlignment(Element.ALIGN_CENTER);
 
         Paragraph subTitulo = new Paragraph("Período de "+getRelatedViewModel().getStartDate()+" à "+getRelatedViewModel().getEndDate()+ "\n\n", f);
@@ -330,6 +340,28 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         Utilities.previewPdfFiles(this,pdfFile );
     }
 
+    public String getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(String reportType) {
+        this.reportType = reportType;
+    }
+
+
+    public String getReportTitle(){
+        if (reportType.equals(ClinicInformation.PREGNANT_STATUS_POSITIVE)) return getString(R.string.pacientes_gravidas_report_title);
+        else if (reportType.equals(ClinicInformation.PREGNANT_STATUS_ALL)) return getString(R.string.pacientes_rastreadas_gravidez_report_title);
+
+        return null;
+    }
+
+    public String getReportTableTitle(){
+        if (reportType.equals(ClinicInformation.PREGNANT_STATUS_POSITIVE)) return getString(R.string.pacientes_gravidas);
+        else if (reportType.equals(ClinicInformation.PREGNANT_STATUS_ALL)) return getString(R.string.pacientes_rastreadas_gravidez);
+
+        return null;
+    }
 
 
     @Override
