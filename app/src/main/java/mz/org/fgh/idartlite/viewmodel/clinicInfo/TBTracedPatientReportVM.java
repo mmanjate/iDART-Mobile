@@ -16,21 +16,20 @@ import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
-import mz.org.fgh.idartlite.searchparams.ClinicInformationSearchParams;
+import mz.org.fgh.idartlite.searchparams.ClinicInfoSearchParams;
 import mz.org.fgh.idartlite.service.clinicInfo.ClinicInfoService;
 import mz.org.fgh.idartlite.service.clinicInfo.IClinicInfoService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.reports.PregnantPatientReportActivity;
+import mz.org.fgh.idartlite.view.reports.TBSuspectPatientReportActivity;
+import mz.org.fgh.idartlite.view.reports.TBTracedPatientReportActivity;
 
-public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
-
-
+public class TBTracedPatientReportVM extends SearchVM<ClinicInformation> {
 
 
     private IClinicInfoService clinicInfoService;
 
-    public PregnantPatientReportVM(@NonNull Application application) {
+    public TBTracedPatientReportVM(@NonNull Application application) {
         super(application);
         clinicInfoService = new ClinicInfoService(application, getCurrentUser());
 
@@ -52,9 +51,8 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
 
     }
 
-    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDate(Date startDate,Date endDate, long offset, long limit) throws SQLException {
-
-        return clinicInfoService.getPregnantPatientWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit,this.getRelatedActivity().getReportType());
+    public List<ClinicInformation> getTracedPatientsWithStartDateAndEndDateWithLimit(Date startDate,Date endDate, long offset, long limit) throws SQLException {
+        return clinicInfoService.getTracedPatientsWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
     }
 
     public void generatePDF() {
@@ -70,19 +68,13 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
     @Override
     protected void doOnNoRecordFound() {
 
-        if(getAllDisplyedRecords().size()>0){
-            getRelatedActivity().generatePdfButton(true);
-        }
-        else {
-            Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
-            getRelatedActivity().generatePdfButton(false);
-        }
+        Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
 
     }
 
 
     public List<ClinicInformation> doSearch(long offset, long limit) throws SQLException {
-        return getPregnantPatientWithStartDateAndEndDate(getSearchParams().getStartdate(), getSearchParams().getEndDate(),offset,limit);
+        return getTracedPatientsWithStartDateAndEndDateWithLimit(getSearchParams().getStartdate(), getSearchParams().getEndDate(),offset,limit);
     }
 
     @Override
@@ -112,20 +104,20 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
 
     @Override
     public AbstractSearchParams<ClinicInformation> initSearchParams() {
-        return new ClinicInformationSearchParams();
+        return new ClinicInfoSearchParams();
     }
 
     @Override
     public void preInit() {}
 
     @Override
-    public ClinicInformationSearchParams getSearchParams() {
-        return (ClinicInformationSearchParams) super.getSearchParams();
+    public ClinicInfoSearchParams getSearchParams() {
+        return (ClinicInfoSearchParams) super.getSearchParams();
     }
 
 
-    public PregnantPatientReportActivity getRelatedActivity() {
-        return (PregnantPatientReportActivity) super.getRelatedActivity();
+    public TBTracedPatientReportActivity getRelatedActivity() {
+        return (TBTracedPatientReportActivity) super.getRelatedActivity();
     }
 
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.clinicInfo.PregnantPatientReportVM" />
+            type="mz.org.fgh.idartlite.viewmodel.clinicInfo.TBSuspectPatientReportVM" />
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="android.view.View"/>
     </data>
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".view.reports.PregnantPatientReportActivity" >
+        tools:context=".view.reports.TBSuspectPatientReportActivity" >
 
         <include layout="@layout/app_bar" />
 
@@ -131,7 +131,7 @@
             android:id="@+id/initial_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.relatedActivity.reportTableTitle}"
+            android:text="@string/pacientes_suspeitos_tb"
             android:background="@drawable/shape_normal"
             android:textColor="@color/white"
             android:textSize="15sp"

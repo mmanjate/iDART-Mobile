@@ -115,7 +115,17 @@ public class ClinicInfoService extends BaseService<ClinicInformation> implements
     }
 
     @Override
-    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
-        return getDataBaseHelper().getClinicInfoDao().getPregnantPatientWithStartDateAndEndDateWithLimit(application,startDate,endDate,offset,limit);
+    public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit,String reportType) throws SQLException {
+        return getDataBaseHelper().getClinicInfoDao().getPregnantPatientWithStartDateAndEndDateWithLimit(application,startDate,endDate,offset,limit,reportType);
+    }
+
+    @Override
+    public List<ClinicInformation> getTBSuspectPatientWithStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return getDataBaseHelper().getClinicInfoDao().getTBSuspectPatientWithStartDateAndEndDateWithLimit(application,startDate,endDate,offset,limit);
+    }
+
+    @Override
+    public List<ClinicInformation> getTracedPatientsWithStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        return getDataBaseHelper().getClinicInfoDao().getTracedPatientsWithStartDateAndEndDateWithLimit(application,startDate,endDate,offset,limit);
     }
 }
