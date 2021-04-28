@@ -174,7 +174,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("010", "Lista de Pacientes Rastreados pelos RAMs", R.drawable.ic_list, AdverseReactionReportActivity.class, createParams(ClinicInformation.PARAM_RAM_STATUS, ClinicInformation.PARAM_RAM_STATUS_ALL)));
         reports.add(Report.fastCreate("011", "Lista de Pacientes Com RAM", R.drawable.ic_list, AdverseReactionReportActivity.class, createParams(ClinicInformation.PARAM_RAM_STATUS, ClinicInformation.PARAM_RAM_STATUS_POSETIVE)));
         reports.add(Report.fastCreate("010", "Lista/número dos Pacientes monitorados pela adesão", R.drawable.ic_list, PatientTreatmentFollowUpReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_ALL)));
-        reports.add(Report.fastCreate("011", "Pacientes que atrasaram nos levantamentos mais de 7 dias", R.drawable.ic_list, PatientTreatmentFollowUpReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_WITH_LATE_DAYS)));
+        reports.add(Report.fastCreate("012", "Pacientes que atrasaram nos levantamentos mais de 7 dias", R.drawable.ic_list, PatientTreatmentFollowUpReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_WITH_LATE_DAYS)));
         return reports;
     }
 
@@ -191,6 +191,8 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("002", "Dispensas por Regime Terapêutico", R.drawable.ic_graphic, DispensedDrugsReportActivity.class));
         reports.add(Report.fastCreate("003", "Pacientes Esperados por Regime e Tipo de Dispensa", R.drawable.ic_graphic, AwatingPatientsGraphReportActivity.class));
         reports.add(Report.fastCreate("004", "Estatistica de Dispensas por Frascos", R.drawable.ic_graphic, DispenseDrugGraphStatisticReportActivity.class));
+        reports.add(Report.fastCreate("005", "Pacientes Rastreados pelos RAMs", R.drawable.ic_graphic, PatientTreatmentFollowUpGraphicReportActivity.class, createParams(ClinicInformation.PARAM_RAM_STATUS, ClinicInformation.PARAM_RAM_STATUS_ALL)));
+        reports.add(Report.fastCreate("006", "Pacientes monitorados pela adesão", R.drawable.ic_graphic, PatientTreatmentFollowUpGraphicReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_ALL)));
         return reports;
     }
 

@@ -130,10 +130,7 @@ public class PatientReportActivity extends BaseActivity {
         });
 
         search.setOnClickListener(v -> {
-            if (getRelatedViewModel().isReportGenerationOnProgress()){
-                Utilities.displayAlertDialog(PatientReportActivity.this, "Por favor aguarde o resultado do relatório já solicitado.").show();
-                return;
-            }
+
             if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
                 Utilities.displayAlertDialog(PatientReportActivity.this, "Por favor indicar o período por analisar!").show();
             }else
@@ -147,7 +144,7 @@ public class PatientReportActivity extends BaseActivity {
             if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
                 Utilities.displayAlertDialog(PatientReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
             }else {
-                getRelatedViewModel().setReportGenerationStarted();
+
                 Utilities.hideSoftKeyboard(PatientReportActivity.this);
                 generateGraph(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
             }
@@ -221,8 +218,6 @@ public class PatientReportActivity extends BaseActivity {
         chartView.reload();
 
         chartView.setVisibility(View.VISIBLE);
-
-        getRelatedViewModel().setReportGenerationFinished();
     }
 
     @Override

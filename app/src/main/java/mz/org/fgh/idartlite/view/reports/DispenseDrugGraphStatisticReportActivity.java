@@ -133,10 +133,7 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
         });
 
         search.setOnClickListener(v -> {
-            if (getRelatedViewModel().isReportGenerationOnProgress()){
-                Utilities.displayAlertDialog(DispenseDrugGraphStatisticReportActivity.this, "Por favor aguarde o resultado do relatório já solicitado.").show();
-                return;
-            }
+
             if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
                 Utilities.displayAlertDialog(DispenseDrugGraphStatisticReportActivity.this, "Por favor indicar o período por analisar!").show();
             }else
@@ -150,7 +147,6 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
             if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
                 Utilities.displayAlertDialog(DispenseDrugGraphStatisticReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
             }else {
-                getRelatedViewModel().setReportGenerationStarted();
                 getRelatedViewModel().initSearch();
             }
         });
@@ -236,13 +232,11 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
 
         chartView.setVisibility(View.VISIBLE);
 
-        getRelatedViewModel().setReportGenerationFinished();
     }
 
     public void displaySearchResult() {
 
         generateGraph();
 
-        getRelatedViewModel().setReportGenerationFinished();
     }
 }

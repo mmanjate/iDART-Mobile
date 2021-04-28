@@ -59,6 +59,8 @@ public class ClinicInfoService extends BaseService<ClinicInformation> implements
         List<ClinicInformation> toReturn = new ArrayList<>();
 
         for (ClinicInformation info : fectedList){
+            info.getPatient().setEpisodes(getDataBaseHelper().getEpisodeDao().getAllByPatient(info.getPatient()));
+
             if (!Utilities.listHasElements(toReturn)) toReturn.add(info);
 
             if (!patientHasRecord(toReturn, info)) {

@@ -132,10 +132,6 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         });
 
         search.setOnClickListener(v -> {
-            if (getRelatedViewModel().isReportGenerationOnProgress()){
-                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Por favor aguarde o resultado do relatório já solicitado.").show();
-                return;
-            }
 
             if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
                 Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Por favor indicar o período por analisar!").show();
@@ -151,7 +147,6 @@ public class DispensedDrugsReportActivity extends BaseActivity {
                 Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
             }else {
                 Utilities.hideSoftKeyboard(DispensedDrugsReportActivity.this);
-                getRelatedViewModel().setReportGenerationStarted();
                 generateGraph(start, end);
             }
         });
@@ -171,7 +166,6 @@ public class DispensedDrugsReportActivity extends BaseActivity {
 
         if (map == null || map.isEmpty() || map.size() == 0){
             Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Não foram encontrados resultados para a sua pesquisa!").show();
-            getRelatedViewModel().setReportGenerationFinished();
             return;
         }
 
@@ -227,7 +221,6 @@ public class DispensedDrugsReportActivity extends BaseActivity {
 
         chartView.setVisibility(View.VISIBLE);
 
-        getRelatedViewModel().setReportGenerationFinished();
     }
 
     @Override

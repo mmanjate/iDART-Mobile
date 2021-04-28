@@ -15,7 +15,6 @@ public class AwatingPatientsGraphReportVM extends AwatingPatientsReportVM {
 
     @Override
     protected void doOnNoRecordFound() {
-        setReportGenerationFinished();
         Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
     }
 
