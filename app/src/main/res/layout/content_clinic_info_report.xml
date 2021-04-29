@@ -80,8 +80,68 @@
                     android:layout_alignParentRight="true"
                     android:text="@{clinicInformation.patient.fullName}"
                     android:layout_alignParentEnd="true" />
+                <TextView
+                    android:id="@+id/genero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/emptyspace"
+                    android:gravity="right"
+                    android:text="@string/genero"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/emptyspace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/pacient_genero"
+                    android:gravity="right"
+                    android:text="   " />
 
+                <TextView
+                    android:id="@+id/pacient_genero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/emptyspace2"
+                    android:text="@{clinicInformation.patient.gender}" />
+
+                <TextView
+                    android:id="@+id/emptyspace2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/idade"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/idade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_name"
+                    android:layout_toLeftOf="@+id/emptyspace3"
+                    android:gravity="right"
+                    android:text="@string/idade"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emptyspace3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/pacient_idade"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/pacient_idade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_name"
+                    android:layout_alignParentRight="true"
+                    android:text="@{clinicInformation.patient.ageToString}"/>
 
 
 
@@ -91,7 +151,7 @@
                     android:id="@+id/linearDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/pacient_name"
+                    android:layout_below="@id/pacient_idade"
                     android:layout_marginTop="0dp"
                     android:orientation="vertical">
 
@@ -106,7 +166,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toLeftOf="@+id/register_date"
                             android:gravity="right"
-                            android:text="@string/encounter_date"
+                            android:text="@string/register_date"
                             android:textStyle="bold" />
 
 
