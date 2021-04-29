@@ -446,8 +446,8 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="date_missed">Data que faltou ao Levantamento</string>
     <string name="remove_dispense">Remover Dispensa</string>
     <string name="days_missed">Numero de Dias que faltou</string>
-    <string name="title_activity_dispenses_non_sync_report">DispensesNonSyncReportActivity</string>
-    <string name="lista_de_levantamentos_n_o_sincronizados">Lista de Levantamentos não sincronizados</string>
+    <string name="title_activity_dispenses_non_sync_report" translatable="false">DispensesNonSyncReportActivity</string>
+    <string name="lista_de_levantamentos_n_o_sincronizados" translatable="false">Lista de Levantamentos não sincronizados</string>
     <string name="no_new_patientes">Não tem novos pacientes referidos.</string>
 
     <string name="estatistica_dispensas_por_medicamento" translatable="false">Estatistica de Dispensas Por Medicamento</string>
@@ -458,6 +458,9 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
 
     <string name="pacientes_rastreadas_gravidez_report_title" translatable="false"> Relatorio de pacientes rastreado pela gravidez</string>
     <string name="pacientes_rastreadas_gravidez" translatable="false">Lista de Pacientes rastreados pela gravidez</string>
+
+    <string name="pacientes_suspeitos_tb_report_title" translatable="false"> Relatorio de pacientes Suspeitos TB</string>
+    <string name="pacientes_rastreados_tb_report_title" translatable="false">Lista de Pacientes Rastreados TB</string>
 
     <string name="pacientes_suspeitos_tb" translatable="false">Lista de Suspeitos TB</string>
     <string name="pacientes_rastreados_tb" translatable="false">Lista de Pacientes Rastreados TB</string>

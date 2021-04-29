@@ -85,7 +85,7 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
         patientQb.where().not().in(Patient.COLUMN_ID,episodeQb.selectRaw("patient_id"));
         QueryBuilder<ClinicInformation, Integer> clinicInformationQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getClinicInfoDao().queryBuilder();
         QueryBuilder<ClinicInformation, Integer> clinicInformationQb1 =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getClinicInfoDao().queryBuilder();
-        QueryBuilder<Patient, Integer> patientInnerQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
+       // QueryBuilder<Patient, Integer> patientInnerQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
 
 
         clinicInformationQb1.where().raw(" `clinic_information`.`patient_id` = `patient`.`id`  group by `clinic_information`.`patient_id`");
@@ -107,33 +107,9 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
         return clinicInformationQb.query();
     }
 
-    @Override
-    public List<ClinicInformation> getTBSuspectPatientWithStartDateAndEndDateWithLimit(Application application, Date startDate, Date endDate, long offset, long limit) throws SQLException {
-        QueryBuilder<Episode, Integer> episodeQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
-
-        episodeQb.where().isNotNull(Episode.COLUMN_STOP_REASON);
-        QueryBuilder<Patient, Integer> patientQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
-        patientQb.where().not().in(Patient.COLUMN_ID,episodeQb.selectRaw("patient_id"));
-        QueryBuilder<ClinicInformation, Integer> clinicInformationQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getClinicInfoDao().queryBuilder();
-        QueryBuilder<ClinicInformation, Integer> clinicInformationQb1 =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getClinicInfoDao().queryBuilder();
-        QueryBuilder<Patient, Integer> patientInnerQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
-
-
-        clinicInformationQb1.groupBy(ClinicInformation.COLUMN_PATIENT_ID).join(patientInnerQb);
-
-        clinicInformationQb.orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
-                .offset(offset).where().eq(ClinicInformation.COLUMN_IS_FEVER,true).or().eq(ClinicInformation.COLUMN_IS_COUGH,true).
-                or().eq(ClinicInformation.COLUMN_IS_LOST_WEIGHT,true).or().eq(ClinicInformation.COLUMN_IS_SWEATING,true).
-                or().eq(ClinicInformation.COLUMN_HAS_FATIGUE_OR_TIREDNESS_LAST_TWO_WEEKS,true).and().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
-                .and()
-                .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
-        System.out.println(clinicInformationQb.prepareStatementString());
-
-        return clinicInformationQb.query();
-    }
 
     @Override
-    public List<ClinicInformation> getTracedPatientsWithStartDateAndEndDateWithLimit(Application application, Date startDate, Date endDate, long offset, long limit) throws SQLException {
+    public List<ClinicInformation> getTracedPatientsWithStartDateAndEndDateWithLimit(Application application, Date startDate, Date endDate, long offset, long limit, String reportType) throws SQLException {
 
         QueryBuilder<Episode, Integer> episodeQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
 
@@ -148,10 +124,29 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
         //clinicInformationQb1.where().rawComparison("patient_id","="," `patient`.`id`" );
         clinicInformationQb1.where().raw(" `clinic_information`.`patient_id` = `patient`.`id`  group by `clinic_information`.`patient_id`");
 
-        clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
+     /*   clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
                 .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
                 .and()
-                .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
+                .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));*/
+
+
+
+        if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.TB_STATUS_SUSPECT))){
+            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
+                    .offset(offset).where().eq(ClinicInformation.COLUMN_IS_FEVER,true).or().eq(ClinicInformation.COLUMN_IS_COUGH,true).
+                    or().eq(ClinicInformation.COLUMN_IS_LOST_WEIGHT,true).or().eq(ClinicInformation.COLUMN_IS_SWEATING,true).
+                    or().eq(ClinicInformation.COLUMN_HAS_FATIGUE_OR_TIREDNESS_LAST_TWO_WEEKS,true).and().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
+                    .and()
+                    .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
+        }else if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.TB_STATUS_ALL))){
+            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
+                    .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
+                    .and()
+                    .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
+        }
+
+
+
         System.out.println(clinicInformationQb.prepareStatementString());
 
         return clinicInformationQb.query();

@@ -63,6 +63,10 @@ public class ClinicInformation extends BaseModel {
     public static final String PARAM_FOLLOW_STATUS_WITH_LATE_DAYS = "FOLLOW_STATUS_WITH_LATE_DAYS";
     public static final String PARAM_FOLLOW_STATUS_ALL = "FOLLOW_STATUS_ALL";
 
+
+    public static final String TB_STATUS_SUSPECT = "TB_STATUS_SUSPECT";
+    public static final String TB_STATUS_ALL = "TB_STATUS_ALL";
+
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
 
@@ -470,6 +474,16 @@ public class ClinicInformation extends BaseModel {
     public boolean getCheckPregnancy(){
         return (this.isPregnant ||
                 this.hasHadMenstruationLastTwoMonths);
+    }
+
+
+    public boolean getTbSuspectReport(){
+        return (this.isFever ||
+                this.isCough ||
+                this.isLostWeight ||
+                this.isSweating ||
+                this.hasParentTBTreatment ||
+                this.hasFatigueOrTirednesLastTwoWeeks);
     }
 
     public boolean hasSevenOrMoreLateDays(){

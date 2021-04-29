@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.view.reports;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,7 +20,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -47,14 +45,12 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.clinicInfo.PatientClinicInfoReportAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.databinding.ActivityTbSuspectPatientBinding;
 import mz.org.fgh.idartlite.databinding.ActivityTbTracedPatientReportBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.viewmodel.clinicInfo.TBSuspectPatientReportVM;
 import mz.org.fgh.idartlite.viewmodel.clinicInfo.TBTracedPatientReportVM;
 
 public class TBTracedPatientReportActivity extends BaseActivity {
@@ -68,6 +64,15 @@ public class TBTracedPatientReportActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tBTracedPatientReportBinding = DataBindingUtil.setContentView(this, R.layout.activity_tb_traced_patient_report);
+
+
+        Intent intent = this.getIntent();
+        if(intent != null){
+            Bundle bundle = intent.getExtras();
+            if(bundle != null) {
+                getRelatedViewModel().setReportType((String) bundle.getSerializable(ClinicInformation.CLINIC_INFO_STATUS));
+            }
+        }
         reyclerClinicInfo = tBTracedPatientReportBinding.reyclerClinicInfo;
 
         tBTracedPatientReportBinding.setViewModel(getRelatedViewModel());
@@ -304,7 +309,7 @@ public class TBTracedPatientReportActivity extends BaseActivity {
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 16.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
 
-        Paragraph titulo = new Paragraph(" Pacientes Rastreados de TB\n", g);
+        Paragraph titulo = new Paragraph(getRelatedViewModel().getReportTitle() +" \n", g);
         titulo.setAlignment(Element.ALIGN_CENTER);
 
         Paragraph subTitulo = new Paragraph("Período de "+getRelatedViewModel().getStartDate()+" à "+getRelatedViewModel().getEndDate()+ "\n\n", f);

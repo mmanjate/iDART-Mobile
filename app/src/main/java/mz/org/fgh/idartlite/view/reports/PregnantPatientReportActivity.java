@@ -71,7 +71,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
 
     private PatientClinicInfoReportAdapter adapter;
 
-    private String reportType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
-                reportType=(String) bundle.getSerializable(ClinicInformation.CLINIC_INFO_STATUS);
+                getRelatedViewModel().setReportType((String) bundle.getSerializable(ClinicInformation.CLINIC_INFO_STATUS));
             }
         }
 
@@ -292,7 +292,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         cell.setPadding(2f);
         tableImage.addCell(cell);
 
-        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3});
+        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3,3,3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
@@ -300,7 +300,9 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(getString(R.string.nid_report));
         table.addCell(getString(R.string.name_report));
-        table.addCell(getString(R.string.encounter_date));
+        table.addCell(getString(R.string.genero));
+        table.addCell(getString(R.string.idade));
+        table.addCell(getString(R.string.register_date));
         table.addCell(getString(R.string.unidade_sanit_ria_report));
         table.setHeaderRows(1);
 
@@ -313,6 +315,8 @@ public class  PregnantPatientReportActivity extends BaseActivity {
 
             table.addCell(String.valueOf(clinicInformation.getPatient().getNid()));
             table.addCell(String.valueOf(clinicInformation.getPatient().getFullName()));
+            table.addCell(String.valueOf(clinicInformation.getPatient().getGender()));
+            table.addCell(String.valueOf(clinicInformation.getPatient().getAge()));
             table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(clinicInformation.getRegisterDate())));
             table.addCell(String.valueOf(clinicInformation.getPatient().getEpisodes1().iterator().next().getSanitaryUnit()));
         }
@@ -324,7 +328,7 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 16.0f, Font.UNDERLINE, BaseColor.RED);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.RED);
 
-        Paragraph titulo = new Paragraph(getReportTitle() +" \n", g);
+        Paragraph titulo = new Paragraph(getRelatedViewModel().getReportTitle() +" \n", g);
         titulo.setAlignment(Element.ALIGN_CENTER);
 
         Paragraph subTitulo = new Paragraph("Período de "+getRelatedViewModel().getStartDate()+" à "+getRelatedViewModel().getEndDate()+ "\n\n", f);
@@ -340,28 +344,10 @@ public class  PregnantPatientReportActivity extends BaseActivity {
         Utilities.previewPdfFiles(this,pdfFile );
     }
 
-    public String getReportType() {
-        return reportType;
-    }
-
-    public void setReportType(String reportType) {
-        this.reportType = reportType;
-    }
 
 
-    public String getReportTitle(){
-        if (reportType.equals(ClinicInformation.PREGNANT_STATUS_POSITIVE)) return getString(R.string.pacientes_gravidas_report_title);
-        else if (reportType.equals(ClinicInformation.PREGNANT_STATUS_ALL)) return getString(R.string.pacientes_rastreadas_gravidez_report_title);
 
-        return null;
-    }
 
-    public String getReportTableTitle(){
-        if (reportType.equals(ClinicInformation.PREGNANT_STATUS_POSITIVE)) return getString(R.string.pacientes_gravidas);
-        else if (reportType.equals(ClinicInformation.PREGNANT_STATUS_ALL)) return getString(R.string.pacientes_rastreadas_gravidez);
-
-        return null;
-    }
 
 
     @Override
