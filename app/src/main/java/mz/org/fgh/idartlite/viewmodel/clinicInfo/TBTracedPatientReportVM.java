@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
@@ -21,12 +22,15 @@ import mz.org.fgh.idartlite.service.clinicInfo.ClinicInfoService;
 import mz.org.fgh.idartlite.service.clinicInfo.IClinicInfoService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.reports.PregnantPatientReportActivity;
 import mz.org.fgh.idartlite.view.reports.TBTracedPatientReportActivity;
 
 public class TBTracedPatientReportVM extends SearchVM<ClinicInformation> {
 
 
     private IClinicInfoService clinicInfoService;
+
+    private String reportType;
 
     public TBTracedPatientReportVM(@NonNull Application application) {
         super(application);
@@ -51,12 +55,12 @@ public class TBTracedPatientReportVM extends SearchVM<ClinicInformation> {
     }
 
     public List<ClinicInformation> getTracedPatientsWithStartDateAndEndDateWithLimit(Date startDate,Date endDate, long offset, long limit) throws SQLException {
-        return clinicInfoService.getTracedPatientsWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
+        return clinicInfoService.getTracedPatientsWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit,reportType);
     }
 
     public void generatePDF() {
         try {
-            this.getRelatedActivity().createPdfDocument();
+            ((TBTracedPatientReportActivity)getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -98,7 +102,7 @@ public class TBTracedPatientReportVM extends SearchVM<ClinicInformation> {
     public void displaySearchResults() {
         Utilities.hideSoftKeyboard(getRelatedActivity());
 
-        getRelatedActivity().displaySearchResult();
+        ((TBTracedPatientReportActivity)getRelatedActivity()).displaySearchResult();
     }
 
     @Override
@@ -115,10 +119,33 @@ public class TBTracedPatientReportVM extends SearchVM<ClinicInformation> {
     }
 
 
-    public TBTracedPatientReportActivity getRelatedActivity() {
+  /*  public TBTracedPatientReportActivity getRelatedActivity() {
         return (TBTracedPatientReportActivity) super.getRelatedActivity();
+    }*/
+
+
+
+    public String getReportType() {
+        return reportType;
     }
 
+    public void setReportType(String reportType) {
+        this.reportType = reportType;
+    }
+
+    public String getReportTitle(){
+        if (getReportType().equals(ClinicInformation.TB_STATUS_SUSPECT)) return getRelatedActivity().getString(R.string.pacientes_suspeitos_tb_report_title);
+        else if (getReportType().equals(ClinicInformation.TB_STATUS_ALL)) return getRelatedActivity().getString(R.string.pacientes_rastreados_tb_report_title);
+
+        return null;
+    }
+
+    public String getReportTableTitle(){
+        if (reportType.equals(ClinicInformation.TB_STATUS_SUSPECT)) return getRelatedActivity().getString(R.string.pacientes_suspeitos_tb);
+        else if (reportType.equals(ClinicInformation.TB_STATUS_ALL)) return getRelatedActivity().getString(R.string.pacientes_rastreados_tb);
+
+        return null;
+    }
 
 
     @Bindable

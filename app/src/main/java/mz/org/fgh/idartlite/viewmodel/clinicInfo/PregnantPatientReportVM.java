@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
@@ -21,6 +22,7 @@ import mz.org.fgh.idartlite.service.clinicInfo.ClinicInfoService;
 import mz.org.fgh.idartlite.service.clinicInfo.IClinicInfoService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.reports.DispenseDrugStatisticReportActivity;
 import mz.org.fgh.idartlite.view.reports.PregnantPatientReportActivity;
 
 public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
@@ -29,6 +31,8 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
 
 
     private IClinicInfoService clinicInfoService;
+
+    private String reportType;
 
     public PregnantPatientReportVM(@NonNull Application application) {
         super(application);
@@ -54,12 +58,12 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
 
     public List<ClinicInformation> getPregnantPatientWithStartDateAndEndDate(Date startDate,Date endDate, long offset, long limit) throws SQLException {
 
-        return clinicInfoService.getPregnantPatientWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit,this.getRelatedActivity().getReportType());
+        return clinicInfoService.getPregnantPatientWithStartDateAndEndDateWithLimit(startDate, endDate,offset,limit,getReportType());
     }
 
     public void generatePDF() {
         try {
-            this.getRelatedActivity().createPdfDocument();
+            ((PregnantPatientReportActivity)getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -70,13 +74,9 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
     @Override
     protected void doOnNoRecordFound() {
 
-        if(getAllDisplyedRecords().size()>0){
-            getRelatedActivity().generatePdfButton(true);
-        }
-        else {
-            Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
-            getRelatedActivity().generatePdfButton(false);
-        }
+
+        Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
+
 
     }
 
@@ -107,7 +107,7 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
     public void displaySearchResults() {
         Utilities.hideSoftKeyboard(getRelatedActivity());
 
-        getRelatedActivity().displaySearchResult();
+        ((PregnantPatientReportActivity)getRelatedActivity()).displaySearchResult();
     }
 
     @Override
@@ -124,10 +124,33 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
     }
 
 
-    public PregnantPatientReportActivity getRelatedActivity() {
-        return (PregnantPatientReportActivity) super.getRelatedActivity();
+
+  /*  public PregnantPatientReportActivity getRelatedActivity() {
+        return  ((PregnantPatientReportActivity)getRelatedActivity());
+    }*/
+
+
+    public String getReportType() {
+        return reportType;
     }
 
+    public void setReportType(String reportType) {
+        this.reportType = reportType;
+    }
+
+    public String getReportTitle(){
+        if (getReportType().equals(ClinicInformation.PREGNANT_STATUS_POSITIVE)) return getRelatedActivity().getString(R.string.pacientes_gravidas_report_title);
+        else if (getReportType().equals(ClinicInformation.PREGNANT_STATUS_ALL)) return getRelatedActivity().getString(R.string.pacientes_rastreadas_gravidez_report_title);
+
+        return null;
+    }
+
+    public String getReportTableTitle(){
+        if (reportType.equals(ClinicInformation.PREGNANT_STATUS_POSITIVE)) return getRelatedActivity().getString(R.string.pacientes_gravidas);
+        else if (reportType.equals(ClinicInformation.PREGNANT_STATUS_ALL)) return getRelatedActivity().getString(R.string.pacientes_rastreadas_gravidez);
+
+        return null;
+    }
 
 
     @Bindable

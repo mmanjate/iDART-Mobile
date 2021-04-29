@@ -131,7 +131,7 @@
             android:id="@+id/initial_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.relatedActivity.reportTableTitle}"
+            android:text="@{viewModel.reportTitle}"
             android:background="@drawable/shape_normal"
             android:textColor="@color/white"
             android:textSize="15sp"
