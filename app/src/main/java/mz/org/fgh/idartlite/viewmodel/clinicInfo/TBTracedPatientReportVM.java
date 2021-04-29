@@ -16,12 +16,11 @@ import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
-import mz.org.fgh.idartlite.searchparams.ClinicInfoSearchParams;
+import mz.org.fgh.idartlite.searchparams.ClinicInformationSearchParams;
 import mz.org.fgh.idartlite.service.clinicInfo.ClinicInfoService;
 import mz.org.fgh.idartlite.service.clinicInfo.IClinicInfoService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.reports.TBSuspectPatientReportActivity;
 import mz.org.fgh.idartlite.view.reports.TBTracedPatientReportActivity;
 
 public class TBTracedPatientReportVM extends SearchVM<ClinicInformation> {
@@ -104,15 +103,15 @@ public class TBTracedPatientReportVM extends SearchVM<ClinicInformation> {
 
     @Override
     public AbstractSearchParams<ClinicInformation> initSearchParams() {
-        return new ClinicInfoSearchParams();
+        return new ClinicInformationSearchParams();
     }
 
     @Override
     public void preInit() {}
 
     @Override
-    public ClinicInfoSearchParams getSearchParams() {
-        return (ClinicInfoSearchParams) super.getSearchParams();
+    public ClinicInformationSearchParams getSearchParams() {
+        return (ClinicInformationSearchParams) super.getSearchParams();
     }
 
 
