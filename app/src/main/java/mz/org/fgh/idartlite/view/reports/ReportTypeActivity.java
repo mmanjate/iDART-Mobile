@@ -179,7 +179,6 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("014", "Relatorio de pacientes rastreado pela gravidez", R.drawable.ic_list, PregnantPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.PREGNANT_STATUS_ALL)));
         reports.add(Report.fastCreate("014", "Relatorio de de Pacientes Gravidas", R.drawable.ic_list, PregnantPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.PREGNANT_STATUS_POSITIVE)));
 
-        reports.add(Report.fastCreate("012", "Pacientes que atrasaram nos levantamentos mais de 7 dias", R.drawable.ic_list, PatientTreatmentFollowUpReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_WITH_LATE_DAYS)));
         return reports;
     }
 
