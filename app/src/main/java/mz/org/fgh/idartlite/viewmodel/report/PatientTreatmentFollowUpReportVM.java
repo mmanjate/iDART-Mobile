@@ -22,7 +22,7 @@ import mz.org.fgh.idartlite.view.reports.PatientTreatmentFollowUpReportActivity;
 
 public class PatientTreatmentFollowUpReportVM extends SearchVM<ClinicInformation> {
 
-    private String reportType;
+    protected String reportType;
 
     public PatientTreatmentFollowUpReportVM(@NonNull Application application) {
         super(application);
@@ -81,21 +81,17 @@ public class PatientTreatmentFollowUpReportVM extends SearchVM<ClinicInformation
         return null;
     }
 
-    @Override
-    public PatientTreatmentFollowUpReportActivity getRelatedActivity() {
-        return (PatientTreatmentFollowUpReportActivity) super.getRelatedActivity();
-    }
 
     @Override
     public void displaySearchResults() {
         Utilities.hideSoftKeyboard(getRelatedActivity());
 
-        getRelatedActivity().displaySearchResult();
+        ((PatientTreatmentFollowUpReportActivity) getRelatedActivity()).displaySearchResult();
     }
 
     public void generatePDF() {
         try {
-            this.getRelatedActivity().createPdfDocument();
+            ((PatientTreatmentFollowUpReportActivity)this.getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

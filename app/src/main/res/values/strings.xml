@@ -35,7 +35,7 @@
     <string name="name">Nome: </string>
     <string name="nid">NID: </string>
     <string name="last_name">Apelido: </string>
-    <string name="button_ok">Ok</string>
+    <string name="button_ok">OK</string>
     <string name="unidade_sanit_ria">Unidade Sanitária: </string>
     <string name="genero">Gênero:</string>
     <string name="idade">Idade:</string>
@@ -121,8 +121,8 @@
     <string name="cant_edit_prescription_msg">Não pode efectuar alterações sobre esta prescrição pois a mesma ja possui levantamentos registados.</string>
     <string name="cant_edit_synced_prescription">Não pode efectuar alterações sobre esta prescrição pois a mesma ja foi sincronizada com o iDART central.</string>
     <string name="save_error_msg_episode">\"Ocorreu um erro ao gravar o Episodio. \"</string>
-    <string name="loading">\" Por favor, aguarde ...\"</string>
-    <string name="authenticate">Autenticando ...</string>
+    <string name="loading">\" Por favor, aguarde …\"</string>
+    <string name="authenticate">Autenticando …</string>
     <string name="prescription_date_mandatory">A data da prescrição é obrigatória</string>
     <string name="prescription_date_not_correct">A data da prescrição não pode ser maior que a data corrente.</string>
     <string name="prescription_durationmandatory">A duração da prescrição deve ser indicada.</string>
@@ -461,4 +461,6 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
 
     <string name="pacientes_suspeitos_tb" translatable="false">Lista de Suspeitos TB</string>
     <string name="pacientes_rastreados_tb" translatable="false">Lista de Pacientes Rastreados TB</string>
+
+    <string name="encounter_date">Data da Consulta</string>
 </resources>

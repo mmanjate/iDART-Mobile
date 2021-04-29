@@ -1,11 +1,13 @@
 package mz.org.fgh.idartlite.view.reports;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -34,25 +36,37 @@ import java.util.List;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.viewmodel.dispense.AwatingPatientsGraphReportVM;
+import mz.org.fgh.idartlite.viewmodel.report.PatientTreatmentFollowUpGraphicReportVM;
 
-public class AwatingPatientsGraphReportActivity extends BaseActivity {
+public class PatientTreatmentFollowUpGraphicReportActivity extends BaseActivity {
 
     private String start;
     private String end;
     private HIChartView chartView;
     private EditText edtStart;
     private EditText edtEnd;
-
+    
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patients_per_regimen_report);
 
-        setContentView(R.layout.activity_report);
+        Intent intent = this.getIntent();
+        if(intent != null){
+            Bundle bundle = intent.getExtras();
+            if(bundle != null) {
+                String reportType = Utilities.stringHasValue((String) bundle.getSerializable(ClinicInformation.PARAM_FOLLOW_STATUS)) ? (String) bundle.getSerializable(ClinicInformation.PARAM_FOLLOW_STATUS) : (String) bundle.getSerializable(ClinicInformation.PARAM_RAM_STATUS);
+                getRelatedViewModel().setReportType(reportType);
+            }
+        }
+
+        setContentView(R.layout.activity_patient_treatment_follow_up_graph_report);
+
         chartView = (HIChartView) findViewById(R.id.hc_view);
 
         chartView.setVisibility(View.GONE);
@@ -75,7 +89,7 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
             mMonth = c.get(Calendar.MONTH);
             mDay = c.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(AwatingPatientsGraphReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(PatientTreatmentFollowUpGraphicReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
                 edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                 start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                 getRelatedViewModel().getSearchParams().setStartdate(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT));
@@ -91,7 +105,7 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
             mMonth = c.get(Calendar.MONTH);
             mDay = c.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(AwatingPatientsGraphReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(PatientTreatmentFollowUpGraphicReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
                 edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                 end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                 getRelatedViewModel().getSearchParams().setEndDate(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
@@ -102,7 +116,7 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
         edtStart.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
+                if (hasFocus){
                     int mYear, mMonth, mDay;
 
                     final Calendar c = Calendar.getInstance();
@@ -110,9 +124,9 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(AwatingPatientsGraphReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientTreatmentFollowUpGraphicReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
                         edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        start = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                         getRelatedViewModel().getSearchParams().setStartdate(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT));
                     }, mYear, mMonth, mDay);
                     datePickerDialog.show();
@@ -123,7 +137,7 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
         edtEnd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
+                if (hasFocus){
                     int mYear, mMonth, mDay;
 
                     final Calendar c = Calendar.getInstance();
@@ -131,7 +145,7 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
                     mMonth = c.get(Calendar.MONTH);
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(AwatingPatientsGraphReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(PatientTreatmentFollowUpGraphicReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
                         edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                         end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                         getRelatedViewModel().getSearchParams().setEndDate(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
@@ -143,23 +157,46 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
 
         search.setOnClickListener(v -> {
 
-            Utilities.hideSoftKeyboard(AwatingPatientsGraphReportActivity.this);
-            getRelatedViewModel().initSearch();
+            if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
+                Utilities.displayAlertDialog(PatientTreatmentFollowUpGraphicReportActivity.this, "Por favor indicar o período por analisar!").show();
+            }else
+            if (DateUtilities.dateDiff(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
+                Utilities.displayAlertDialog(PatientTreatmentFollowUpGraphicReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
+            }else
+            if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
+                Utilities.displayAlertDialog(PatientTreatmentFollowUpGraphicReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
+            }
+            else
+            if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
+                Utilities.displayAlertDialog(PatientTreatmentFollowUpGraphicReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
+            }else {
+                getRelatedViewModel().initSearch();
+            }
         });
     }
 
+    @Override
+    public PatientTreatmentFollowUpGraphicReportVM getRelatedViewModel() {
+        return (PatientTreatmentFollowUpGraphicReportVM) super.getRelatedViewModel();
+    }
 
-    public void generateGraph(List<Dispense> dispenseList) {
+    @Override
+    public BaseViewModel initViewModel() {
+        return new ViewModelProvider(this).get(PatientTreatmentFollowUpGraphicReportVM.class);
+    }
+
+    public void generateGraph(List<ClinicInformation> clinicInformationList) {
         HIOptions options = new HIOptions();
 
         HITitle title = new HITitle();
-        title.setText("Gráfico de pacientes esperados");
+        title.setText(getRelatedViewModel().getReportTitle());
         options.setTitle(title);
 
         List<String> categories = new ArrayList<>();
-        for (Dispense dispense : dispenseList){
-            if (!categories.contains(dispense.getPrescription().getTherapeuticRegimen().getDescription())) {
-                categories.add(dispense.getPrescription().getTherapeuticRegimen().getDescription());
+
+        for (ClinicInformation information : clinicInformationList){
+            if (!categories.contains(information.getPatient().getReferenceEpisode().getSanitaryUnit())) {
+                categories.add(information.getPatient().getReferenceEpisode().getSanitaryUnit());
             }
         }
 
@@ -170,149 +207,54 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
         final HIYAxis hiyAxis = new HIYAxis();
         hiyAxis.setMin(0);
         hiyAxis.setTitle(new HITitle());
-        hiyAxis.getTitle().setText("Quantidade");
+        hiyAxis.getTitle().setText("Número");
         options.setYAxis(new ArrayList(){{add(hiyAxis);}});
 
-        HIItems item = new HIItems();
-        item.setHtml("Total por Tipo de Dispensa");
-        item.setStyle(new HICSSObject());
-        item.getStyle().setTop("18px");
-        item.getStyle().setColor("black");
+        HIColumn cdTotal = new HIColumn();
+        cdTotal.setName("Total Rastreado");
+        Number[] totalData = new Number[categories.size()];
 
-        HILabels labels = new HILabels();
-        labels.setItems(new ArrayList<>(Collections.singletonList(item)));
-        options.setLabels(labels);
+        HIColumn cdSuspeito = new HIColumn();
+        cdSuspeito.setName(getRelatedViewModel().getReportPosetiveBarTitle());
+        Number[] suspectData = new Number[categories.size()];
 
 
-        HIColumn cdm = new HIColumn();
-        cdm.setName("Mensal");
-        Number[] dmData = new Number[categories.size()];
-
-        HIColumn cdt = new HIColumn();
-        cdt.setName("Trimestral");
-        Number[] dtData = new Number[categories.size()];
-
-        HIColumn cds = new HIColumn();
-        cds.setName("Semestral");
-        Number[] dsData = new Number[categories.size()];
-
-        HIColumn cdOther = new HIColumn();
-        cdOther.setName("Outro");
-        Number[] otherData = new Number[categories.size()];
-
-        Number[] splineData = new Number[categories.size()];
-
-        int dm;
-        int dt;
-        int ds;
-        int other;
-
-        int sumdm = 0;
-        int sumdt = 0;
-        int sumds = 0;
-        int sumother = 0;
+        int countTotal;
+        int countSuspeito;
 
         int i = 0;
-        for (String regimen : categories){
+        for (String us : categories){
 
-            dm = 0;
-            dt = 0;
-            ds = 0;
-            other = 0;
+            countTotal = 0;
+            countSuspeito = 0;
 
-            for (Dispense dispense : dispenseList){
-                if (dispense.getPrescription().getTherapeuticRegimen().getDescription().equals(regimen)){
-                    if (dispense.getPrescription().getDispenseType().isMonthlyDispense()) dm ++;
-                    if (dispense.getPrescription().getDispenseType().isThreeMonthsDispense()) dt ++;
-                    if (dispense.getPrescription().getDispenseType().isSixMonthsDispense()) ds ++;
-                    if (dispense.getPrescription().getDispenseType().isOtherDispense()) other ++;
+            for (ClinicInformation clinicInformation : clinicInformationList){
+                if (clinicInformation.getPatient().getReferenceEpisode().getSanitaryUnit().equals(us)){
+                    countTotal ++;
+
+                    if (getRelatedViewModel().isRAMReport() && clinicInformation.isAdverseReactionOfMedicine()) countSuspeito ++;
+
+                    else if (getRelatedViewModel().isFollowReport() && clinicInformation.hasSevenOrMoreLateDays()) countSuspeito ++;
 
                 }
             }
-            dmData[i] = dm;
-            dtData[i] = dt;
-            dsData[i] = ds;
-            otherData[i] = other;
-
-            sumdm = sumdm+dm;
-            sumdt = sumdt+dt;
-            sumds = sumds+ds;
-            sumother = sumother+other;
-
-            splineData[i] = dm+dt+ds+other;
+            totalData[i] = countTotal;
+            suspectData[i] = countSuspeito;
 
             i++;
         }
 
-        cdm.setData(new ArrayList<>(Arrays.asList(dmData)));
-        cdt.setData(new ArrayList<>(Arrays.asList(dtData)));
-        cds.setData(new ArrayList<>(Arrays.asList(dsData)));
-        cdOther.setData(new ArrayList<>(Arrays.asList(otherData)));
+        cdTotal.setData(new ArrayList<>(Arrays.asList(totalData)));
+        cdSuspeito.setData(new ArrayList<>(Arrays.asList(suspectData)));
 
-
-        HISpline spline = new HISpline();
-        spline.setName("Total");
-        spline.setData(new ArrayList<>(Arrays.asList(splineData)));
-        spline.setMarker(new HIMarker());
-        spline.getMarker().setLineWidth(2);
-        spline.getMarker().setFillColor(HIColor.initWithName("white"));
-        spline.getMarker().setLineColor(HIColor.initWithHexValue("f7a35c"));
-
-        HIPie pie = new HIPie();
-        pie.setName("Total");
-        HashMap<String, Object> map1 = new HashMap<>();
-        map1.put("name", "Mensal");
-        map1.put("y", sumdm);
-        map1.put("color", "#7cb5ec");
-        HashMap<String, Object> map2 = new HashMap<>();
-        map2.put("name", "Trimestral");
-        map2.put("y", sumdt);
-        map2.put("color", "#434348");
-        HashMap<String, Object> map3 = new HashMap<>();
-        map3.put("name", "Semestral");
-        map3.put("y", sumds);
-        map3.put("color", "#90ed7d");
-        HashMap<String, Object> map4 = new HashMap<>();
-        map4.put("name", "Outro");
-        map4.put("y", sumother);
-        map4.put("color", "#ffcc7d");
-
-        List<HashMap<String, Object>> totalmapList = new ArrayList<>();
-        if (sumdm > 0) totalmapList.add(map1);
-        if (sumdt > 0) totalmapList.add(map2);
-        if (sumds > 0) totalmapList.add(map3);
-        if (sumother > 0) totalmapList.add(map4);
-
-        pie.setData(new ArrayList<>(totalmapList));
-        pie.setCenter(new ArrayList<>(Arrays.asList(100, 80)));
-        pie.setSize("100");
-        pie.setShowInLegend(false);
-        pie.setDataLabels(new HIDataLabels());
-        pie.getDataLabels().setEnabled(true);
-
-        //options.setSeries(new ArrayList<>(Arrays.asList(cdm, cdt, cds, cdOther, spline, pie)));
-
-        options.setSeries(new ArrayList<>(Arrays.asList(cdm, cdt, cds, cdOther)));
+        options.setSeries(new ArrayList<>(Arrays.asList(cdTotal, cdSuspeito)));
 
         chartView.setOptions(options);
 
         chartView.setVisibility(View.VISIBLE);
-
-
-    }
-
-    @Override
-    public AwatingPatientsGraphReportVM getRelatedViewModel() {
-        return (AwatingPatientsGraphReportVM) super.getRelatedViewModel();
-    }
-
-    @Override
-    public BaseViewModel initViewModel() {
-        return new ViewModelProvider(this).get(AwatingPatientsGraphReportVM.class);
     }
 
     public void displaySearchResult() {
-
         generateGraph(getRelatedViewModel().getAllDisplyedRecords());
     }
 }

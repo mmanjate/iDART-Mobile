@@ -24,6 +24,7 @@
         <activity android:name=".view.reports.TBSuspectPatientReportActivity" />
         <activity android:name=".view.reports.PatientTreatmentFollowUpReportActivity" />
         <activity android:name=".view.reports.AdverseReactionReportActivity" />
+        <activity android:name=".view.reports.PatientTreatmentFollowUpGraphicReportActivity" />
         <activity android:name=".view.reports.DispenseDrugGraphStatisticReportActivity" />
         <activity android:name=".view.reports.PregnantPatientReportActivity" />
         <activity android:name=".view.reports.DispenseDrugStatisticReportActivity" />

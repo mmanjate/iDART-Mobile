@@ -472,6 +472,10 @@ public class ClinicInformation extends BaseModel {
                 this.hasHadMenstruationLastTwoMonths);
     }
 
+    public boolean hasSevenOrMoreLateDays(){
+        return lateDays >= 7;
+    }
+
     @Override
     public String isValid(Context context) {
         return null;
