@@ -122,8 +122,8 @@ public class AdverseReactionReportVM extends SearchVM<ClinicInformation> {
     }
 
     public String getReportTitle(){
-        if (this.reportType.equals(ClinicInformation.PARAM_RAM_STATUS_ALL)) return "Lista/Número dos Pacientes Rastreado pelos RAMs";
-        else if (this.reportType.equals(ClinicInformation.PARAM_RAM_STATUS_POSETIVE)) return "Lista de Pacientes Com RAMs";
+        if (this.reportType.equals(ClinicInformation.PARAM_RAM_STATUS_ALL)) return "Relatorio de Pacientes que rastrearam para RAMs";
+        else if (this.reportType.equals(ClinicInformation.PARAM_RAM_STATUS_POSETIVE)) return "Relatorio de Pacientes com RAMs";
 
         return null;
     }

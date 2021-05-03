@@ -26,8 +26,8 @@ public class PatientTreatmentFollowUpGraphicReportVM extends PatientTreatmentFol
     }
 
     public String getReportTitle(){
-        if (this.reportType.equals(ClinicInformation.PARAM_RAM_STATUS_ALL)) return "Número dos Pacientes Rastreados para RAM por Unidade Sanitária";
-        else if (this.reportType.equals(ClinicInformation.PARAM_FOLLOW_STATUS_ALL)) return "Pacientes Monitorados Pela Adesão por Unidade Sanitária";
+        if (this.reportType.equals(ClinicInformation.PARAM_RAM_STATUS_ALL)) return "Número dos Pacientes Rastreados e Identificados para RAM por Unidade Sanitária";
+        else if (this.reportType.equals(ClinicInformation.PARAM_FOLLOW_STATUS_ALL)) return "Número dos Pacientes Identificados e Monitorados para Adesão por Unidade Sanitária";
 
         return null;
     }

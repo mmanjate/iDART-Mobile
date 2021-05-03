@@ -453,17 +453,17 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="estatistica_dispensas_por_medicamento" translatable="false">Estatistica de Dispensas Por Medicamento</string>
     <string name="total_frascos_dispensas" translatable="false">Total de Frascos Dispensados</string>
 
-    <string name="pacientes_gravidas_report_title" translatable="false">Lista de Pacientes Grávidas</string>
-    <string name="pacientes_gravidas" translatable="false">Lista de Pacientes Grávidas</string>
+    <string name="pacientes_gravidas_report_title" translatable="false">Relatorio de Pacientes indentificados como Grávidas</string>
+    <string name="pacientes_gravidas" translatable="false">Relatorio de Pacientes indentificados como Grávidas</string>
 
-    <string name="pacientes_rastreadas_gravidez_report_title" translatable="false"> Relatorio de pacientes rastreado pela gravidez</string>
-    <string name="pacientes_rastreadas_gravidez" translatable="false">Lista de Pacientes rastreados pela gravidez</string>
+    <string name="pacientes_rastreadas_gravidez_report_title" translatable="false"> Número de pacientes rastreados e identificados para gravidez</string>
+    <string name="pacientes_rastreadas_gravidez" translatable="false">Número de Pacientes rastreados e identificados para gravidez</string>
 
-    <string name="pacientes_suspeitos_tb_report_title" translatable="false"> Relatorio de pacientes Suspeitos TB</string>
-    <string name="pacientes_rastreados_tb_report_title" translatable="false">Lista de Pacientes Rastreados TB</string>
+    <string name="pacientes_suspeitos_tb_report_title" translatable="false"> Relatorio de pacientes Suspeitos de TB</string>
+    <string name="pacientes_rastreados_tb_report_title" translatable="false">Relatorio de Pacientes Rastreados e Identificados para TB</string>
 
-    <string name="pacientes_suspeitos_tb" translatable="false">Lista de Suspeitos TB</string>
-    <string name="pacientes_rastreados_tb" translatable="false">Lista de Pacientes Rastreados TB</string>
+    <string name="pacientes_suspeitos_tb" translatable="false">Relatorio de Suspeitos de TB</string>
+    <string name="pacientes_rastreados_tb" translatable="false">Relatorio de Pacientes Rastreados para TB</string>
 
     <string name="encounter_date">Data da Consulta</string>
 </resources>
