@@ -118,7 +118,7 @@ public class PatientTreatmentFollowUpReportVM extends SearchVM<ClinicInformation
     }
 
     public String getReportTitle(){
-        if (this.reportType.equals(ClinicInformation.PARAM_FOLLOW_STATUS_ALL)) return "Lista/número dos Pacientes monitorados pela adesão";
+        if (this.reportType.equals(ClinicInformation.PARAM_FOLLOW_STATUS_ALL)) return "Relatorio de Pacientes monitorados pela adesão";
         else if (this.reportType.equals(ClinicInformation.PARAM_FOLLOW_STATUS_WITH_LATE_DAYS)) return "Pacientes que atrasaram nos levantamentos mais de 7 dias";
 
         return null;
