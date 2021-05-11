@@ -156,7 +156,7 @@ public class RestEpisodeService extends BaseRestService {
 
                                 for (Object episode : episodes) {
                                     Log.i(TAG, "onResponse: " + episode);
-                                    try {
+                                      try {
                                         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) episode;
                                         if(!episodeService.checkEpisodeExists(itemresult)){
                                             episodeService.saveOnEpisodeEnding(itemresult);
