@@ -29,7 +29,7 @@ public class PrescriptionDaoImpl extends GenericDaoImpl<Prescription, Integer> i
 
     @Override
     public List<Prescription> getAllByPatient(Patient patient) throws SQLException {
-        return queryBuilder().where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).query();
+        return queryBuilder().orderBy(Prescription.COLUMN_PRESCRIPTION_DATE, false).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).query();
     }
 
     @Override
