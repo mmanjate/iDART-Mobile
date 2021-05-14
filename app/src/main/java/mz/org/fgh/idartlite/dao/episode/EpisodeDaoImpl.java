@@ -36,12 +36,12 @@ public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements 
 
     @Override
     public Episode getLatestByPatient(Patient patient) throws SQLException {
-        return queryBuilder().orderBy(Episode.COLUMN_EPISODE_DATE,false).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).queryForFirst();
+        return queryBuilder().orderBy(Episode.COLUMN_ID,false).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).queryForFirst();
     }
 
     @Override
     public Episode findEpisodeWithStopReasonByPatient(Patient patient) throws SQLException {
-        return queryBuilder().orderBy(Episode.COLUMN_EPISODE_DATE,true).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).and().isNotNull(Episode.COLUMN_STOP_REASON).queryForFirst();
+        return queryBuilder().orderBy(Episode.COLUMN_EPISODE_DATE,false).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).and().isNotNull(Episode.COLUMN_STOP_REASON).queryForFirst();
     }
 
     public List<Episode> getAllEpisodeByStatus(String status) throws SQLException {
@@ -72,5 +72,7 @@ public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements 
                 .and()
                 .le(Episode.COLUMN_EPISODE_DATE, end).query();
     }
+
+
 
 }
