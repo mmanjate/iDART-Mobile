@@ -128,7 +128,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
             localPatient.setNid(Objects.requireNonNull(patient.get("patientid")).toString());
             localPatient.setPhone(Objects.requireNonNull(patient.get("workphone")).toString());
             localPatient.setUuid(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
-            
+
             if(patient.get("datainiciotarv") != null)
                 if(!patient.get("datainiciotarv").toString().equalsIgnoreCase("null"))
                     localPatient.setStartARVDate(getSqlDateFromString(Objects.requireNonNull(patient.get("datainiciotarv")).toString(), "dd MMM yyyy"));
