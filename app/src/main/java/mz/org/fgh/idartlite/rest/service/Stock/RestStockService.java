@@ -137,7 +137,7 @@ public class RestStockService extends BaseRestService {
                                 if (itemresult != null) {
                                     Stock localStock = getNewLocalStock(itemresult, finalClinic);
                                     if (localStock != null) {
-                                        stockService.saveOrUpdateStock(localStock);
+                                        stockService.saveOrUpdateViaRest(localStock);
                                         counter++;
                                     }
                                 } else {
@@ -190,7 +190,7 @@ public class RestStockService extends BaseRestService {
                         try {
                             localStock.setRestId(Integer.parseInt(getValueFromResponse(response, "Location", ".")));
                             localStock.setSyncStatus("S");
-                            stockService.saveOrUpdateStock(localStock);
+                            stockService.saveOrUpdateViaRest(localStock);
                             restPostStockLevel(localStock);
                         } catch (SQLException e) {
                             e.printStackTrace();
@@ -277,9 +277,9 @@ public class RestStockService extends BaseRestService {
                             try {
                                 LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) stocklevel;
                                 if (itemresult.get("fullcontainersremaining") != null) {
-                                    stock.setStockMoviment((int) Float.parseFloat(itemresult.get("fullcontainersremaining").toString()) - stock.getStockMoviment());
+                               //     stock.setStockMoviment((int) Float.parseFloat(itemresult.get("fullcontainersremaining").toString()) - stock.getStockMoviment());
                                     stock.setSyncStatus("S");
-                                    stockService.saveOrUpdateStock(stock);
+                                   stockService.saveOrUpdateViaRest(stock);
                                     restPatchStockLevel(stock);
                                 } else {
                                     Log.e(TAG, "onResponse: " + stock + " Nao tem referencia no servidor central");
@@ -349,7 +349,7 @@ public class RestStockService extends BaseRestService {
 
         for(Stock stock: stockList){
             if(stock.getBatchNumber().equalsIgnoreCase(itemresult.get("batchnumber").toString()))
-                return localStock;
+                return stock;
         }
 
         if (stocklevel.size() != 0) {

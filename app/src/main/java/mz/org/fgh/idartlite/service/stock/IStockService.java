@@ -28,4 +28,6 @@ public interface IStockService extends IBaseService<Stock> {
     public List<Stock> getAllStocksByDrug(Drug drug) throws SQLException ;
 
     public void updateStock(Stock stock) throws SQLException ;
+
+    public void saveOrUpdateViaRest(Stock stock) throws SQLException ;
 }
