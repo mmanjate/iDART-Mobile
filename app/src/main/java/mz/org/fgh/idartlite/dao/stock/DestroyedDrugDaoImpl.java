@@ -47,7 +47,7 @@ public class DestroyedDrugDaoImpl extends GenericDaoImpl<DestroyedDrug, Integer>
         destroyedQb.join(stockQb);
         destroyedQb.orderBy(DestroyedDrug.COLUMN_DATE, true);
         destroyedQb.groupBy(DestroyedDrug.COLUMN_DATE);
-        destroyedQb.offset(offset).limit(limit);
+        if (offset > 0 && limit > 0) destroyedQb.offset(offset).limit(limit);
 
         return destroyedQb.query();
 

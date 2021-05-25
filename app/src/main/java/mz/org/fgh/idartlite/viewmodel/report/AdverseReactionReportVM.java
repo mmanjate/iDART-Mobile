@@ -4,6 +4,8 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
+import com.itextpdf.text.DocumentException;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -105,12 +107,16 @@ public class AdverseReactionReportVM extends SearchVM<ClinicInformation> {
 
     public void generatePDF() {
         try {
+            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
     }
 
     public String getReportType() {

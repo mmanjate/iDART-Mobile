@@ -87,16 +87,18 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
 
     @Override
     public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
-        return queryBuilder().limit(limit)
-                .offset(offset).where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
+        QueryBuilder<Dispense, Integer> qb = queryBuilder();
+        if (limit > 0 && offset > 0) qb.limit(limit).offset(offset);
+        return qb.where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
                 .and()
                 .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false).query();
     }
 
     @Override
     public List<Dispense> getDispensesNonSyncBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
-        return queryBuilder().limit(limit)
-                .offset(offset).where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
+        QueryBuilder<Dispense, Integer> qb = queryBuilder();
+        if (limit > 0 && offset > 0)  qb.limit(limit).offset(offset);
+        return qb.where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
                 .and()
                 .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false).and().eq(Dispense.COLUMN_SYNC_STATUS, Dispense.SYNC_SATUS_READY).query();
     }
@@ -131,8 +133,9 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
 
         prescriptionQb.groupBy(Prescription.COLUMN_PATIENT_ID).join(patientQb);
         dispenseQb.join(prescriptionQb);
-        dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,true).limit(limit)
-                .offset(offset).where().ge(Dispense.COLUMN_NEXT_PICKUP_DATE, startDate)
+        dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,true);
+        if (limit > 0 && offset > 0) dispenseQb.limit(limit).offset(offset);
+        dispenseQb.where().ge(Dispense.COLUMN_NEXT_PICKUP_DATE, startDate)
                 .and()
                 .le(Dispense.COLUMN_NEXT_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false);
         return dispenseQb.query();
@@ -155,8 +158,9 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
         prescriptionInnerQb.groupBy(Prescription.COLUMN_PATIENT_ID).join(patientInnerQb);
         dispenseQb.join(prescriptionQb);
         dispenseQb1.join(prescriptionInnerQb);
-        dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,true).limit(limit)
-                .offset(offset).where().ge(Dispense.COLUMN_NEXT_PICKUP_DATE, startDate)
+        dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,true);
+        if (limit > 0 && offset > 0) dispenseQb.limit(limit).offset(offset);
+        dispenseQb.where().ge(Dispense.COLUMN_NEXT_PICKUP_DATE, startDate)
                 .and()
                 .le(Dispense.COLUMN_NEXT_PICKUP_DATE, endDate).and().in(Dispense.COLUMN_NEXT_PICKUP_DATE,dispenseQb1.selectRaw("max(next_pickup_date)")).and().eq(Dispense.COLUMN_VOIDED,false);
         System.out.println(dispenseQb.prepareStatementString());

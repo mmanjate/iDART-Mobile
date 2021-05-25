@@ -76,6 +76,7 @@ public class AbsentPatientsReportVM extends SearchVM<Dispense> {
 
     public void generatePDF() {
         try {
+            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

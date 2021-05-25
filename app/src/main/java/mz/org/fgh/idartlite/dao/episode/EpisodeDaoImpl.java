@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.dao.episode;
 
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
@@ -57,12 +58,13 @@ public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements 
 
     @Override
     public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end, long offset, long limit) throws SQLException {
-        return queryBuilder()
-                .limit(limit)
-                .offset(offset)
-                .where().isNotNull(Episode.COLUMN_START_REASON).and().isNull(Episode.COLUMN_STOP_REASON).and().ge(Episode.COLUMN_EPISODE_DATE, start)
+        QueryBuilder<Episode, Integer> qb = queryBuilder();
+        if (offset > 0 && limit > 0) qb.limit(limit).offset(offset);
+        qb.where().isNotNull(Episode.COLUMN_START_REASON).and().isNull(Episode.COLUMN_STOP_REASON).and().ge(Episode.COLUMN_EPISODE_DATE, start)
                 .and()
-                .le(Episode.COLUMN_EPISODE_DATE, end).query();
+                .le(Episode.COLUMN_EPISODE_DATE, end);
+
+        return qb.query();
     }
 
     @Override

@@ -11,6 +11,7 @@ public class AwatingPatientsGraphReportVM extends AwatingPatientsReportVM {
 
     public AwatingPatientsGraphReportVM(@NonNull Application application) {
         super(application);
+        deActivatePaginatedSearch();
     }
 
     @Override

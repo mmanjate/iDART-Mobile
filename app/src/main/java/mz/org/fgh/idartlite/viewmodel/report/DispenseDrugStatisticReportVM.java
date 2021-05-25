@@ -130,6 +130,7 @@ public class DispenseDrugStatisticReportVM extends SearchVM<Dispense> {
 
     public void generatePDF() {
         try {
+            super.generatePDF();
             ((DispenseDrugStatisticReportActivity)getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

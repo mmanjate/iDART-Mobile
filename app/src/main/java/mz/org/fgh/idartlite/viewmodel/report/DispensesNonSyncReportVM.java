@@ -90,6 +90,7 @@ public class DispensesNonSyncReportVM extends SearchVM<Dispense> {
 
     public void generatePDF() {
         try {
+            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

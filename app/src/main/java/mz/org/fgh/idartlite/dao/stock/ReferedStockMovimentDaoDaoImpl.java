@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.dao.stock;
 
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
@@ -25,6 +26,8 @@ public class ReferedStockMovimentDaoDaoImpl extends GenericDaoImpl<ReferedStockM
 
     @Override
     public List<ReferedStockMoviment> searchRecords(long offset, long limit) throws SQLException {
-        return queryBuilder().offset(offset).limit(limit).orderBy(ReferedStockMoviment.COLUMN_ORDER_NUMBER, true).groupBy(ReferedStockMoviment.COLUMN_ORDER_NUMBER).query();
+        QueryBuilder<ReferedStockMoviment, Integer> queryBuilder = queryBuilder();
+        if (offset > 0 && limit > 0) queryBuilder.offset(offset).limit(limit);
+        return queryBuilder.orderBy(ReferedStockMoviment.COLUMN_ORDER_NUMBER, true).groupBy(ReferedStockMoviment.COLUMN_ORDER_NUMBER).query();
     }
 }

@@ -63,6 +63,7 @@ public class PregnantPatientReportVM extends SearchVM<ClinicInformation> {
 
     public void generatePDF() {
         try {
+            super.generatePDF();
             ((PregnantPatientReportActivity)getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

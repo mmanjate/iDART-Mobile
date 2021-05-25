@@ -31,15 +31,14 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
     }
 
     public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic, long offset, long limit) throws SQLException {
-        List<Patient> recs = queryBuilder().limit(limit)
-                                            .offset(offset)
-                                            .where()
-                                            .like(Patient.COLUMN_NID, "%" + param + "%")
-                                            .or().like(Patient.COLUMN_FIRST_NAME, "%" + param + "%")
-                                            .or().like(Patient.COLUMN_LAST_NAME, "%" + param + "%")
-                                            .and()
-                                            .eq(Patient.COLUMN_CLINIC_ID, clinic.getId()).query();
-        return recs;
+        QueryBuilder<Patient, Integer> qb = queryBuilder();
+        if (offset > 0 && limit > 0) qb.limit(limit).offset(offset);
+        return qb.where()
+                .like(Patient.COLUMN_NID, "%" + param + "%")
+                .or().like(Patient.COLUMN_FIRST_NAME, "%" + param + "%")
+                .or().like(Patient.COLUMN_LAST_NAME, "%" + param + "%")
+                .and()
+                .eq(Patient.COLUMN_CLINIC_ID, clinic.getId()).query();
     }
 
     @Override
@@ -71,21 +70,19 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
 
     @Override
     public List<Patient> searchPatientByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit) throws SQLException {
-        List<Patient> recs = queryBuilder().limit(limit)
-                .offset(offset)
-                .where()
+        QueryBuilder<Patient, Integer> qb = queryBuilder();
+        if (offset > 0 && limit > 0) qb.limit(limit).offset(offset);
+        return qb.where()
                 .like(Patient.COLUMN_NID, "%" + nid + "%")
                 .or().like(Patient.COLUMN_FIRST_NAME, "%" + name + "%")
                 .or().like(Patient.COLUMN_LAST_NAME, "%" + surname+ "%").query();
-        return recs;
     }
 
     @Override
     public List<Patient> getAllPatientsBetweenStartDateAndEndDate(Application application,Date start, Date end, long offset, long limit) throws SQLException {
         QueryBuilder<Episode, Integer> episodeQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
-        episodeQb.limit(limit)
-                .offset(offset)
-                .where().isNotNull(Episode.COLUMN_START_REASON).and().isNull(Episode.COLUMN_STOP_REASON).and().ge(Episode.COLUMN_EPISODE_DATE, start)
+        if (offset > 0 && limit > 0) episodeQb.limit(limit).offset(offset);
+        episodeQb.where().isNotNull(Episode.COLUMN_START_REASON).and().isNull(Episode.COLUMN_STOP_REASON).and().ge(Episode.COLUMN_EPISODE_DATE, start)
                 .and()
                 .le(Episode.COLUMN_EPISODE_DATE, end);
 
