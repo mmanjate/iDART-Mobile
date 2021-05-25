@@ -13,6 +13,7 @@ public class TBTracedPatientsGraphReportVM extends TBTracedPatientReportVM {
 
     public TBTracedPatientsGraphReportVM(@NonNull Application application) {
         super(application);
+        deActivatePaginatedSearch();
     }
 
     @Override
@@ -21,10 +22,4 @@ public class TBTracedPatientsGraphReportVM extends TBTracedPatientReportVM {
         ((TBTracedPatientGraphReportActivity) getRelatedActivity()).displaySearchResult();
     }
 
-
-
-
-  /*  public PregnantPatientGraphReportActivity getRelatedActivity() {
-        return (PregnantPatientGraphReportActivity) super.getRelatedActivity();
-    }*/
 }

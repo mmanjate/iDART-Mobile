@@ -16,6 +16,7 @@ public class PatientTreatmentFollowUpGraphicReportVM extends PatientTreatmentFol
 
     public PatientTreatmentFollowUpGraphicReportVM(@NonNull Application application) {
         super(application);
+        deActivatePaginatedSearch();
     }
 
     @Override

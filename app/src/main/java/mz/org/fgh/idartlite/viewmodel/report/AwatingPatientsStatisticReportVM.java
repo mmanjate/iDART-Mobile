@@ -47,6 +47,7 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
         super(application);
         dispenseService = new DispenseService(application, getCurrentUser());
         therapheuticRegimenService = new TherapheuticRegimenService(application, getCurrentUser());
+
     }
 
     @Override
@@ -138,6 +139,7 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
 
     public void generatePDF() {
         try {
+            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

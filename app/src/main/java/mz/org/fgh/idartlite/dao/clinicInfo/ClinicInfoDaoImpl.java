@@ -42,10 +42,17 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
 
     @Override
     public List<ClinicInformation> getRAMsByPeriod(Date start, Date end, long offset, long limit, String reportType) throws SQLException {
-        Where<ClinicInformation, Integer> queryBuilder = queryBuilder().limit(limit)
-                .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, start)
-                .and()
-                .le(ClinicInformation.COLUMN_REGISTER_DATE, end);
+        Where<ClinicInformation, Integer> queryBuilder;
+        if (offset > 0 && limit > 0) {
+            queryBuilder = queryBuilder().limit(limit)
+                    .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, start)
+                    .and()
+                    .le(ClinicInformation.COLUMN_REGISTER_DATE, end);
+        }else {
+            queryBuilder = queryBuilder().where().ge(ClinicInformation.COLUMN_REGISTER_DATE, start)
+                    .and()
+                    .le(ClinicInformation.COLUMN_REGISTER_DATE, end);
+        }
 
         if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.PARAM_RAM_STATUS_POSETIVE))){
             queryBuilder.and().eq(ClinicInformation.COLUMN_ADVERSE_REACTION_MEDICINE, true);
@@ -88,13 +95,15 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
 
 
         if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.PREGNANT_STATUS_POSITIVE))){
-            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
-                    .offset(offset).where().eq(ClinicInformation.COLUMN_IS_PREGNANT,true).and().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
+            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true);
+            if (offset > 0 && limit > 0) clinicInformationQb.limit(limit).offset(offset);
+            clinicInformationQb.where().eq(ClinicInformation.COLUMN_IS_PREGNANT,true).and().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
                     .and()
                     .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
         }else if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.PREGNANT_STATUS_ALL))){
-            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
-                    .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
+            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true);
+            if (offset > 0 && limit > 0) clinicInformationQb.limit(limit).offset(offset);
+            clinicInformationQb.where().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
                     .and()
                     .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
         }
@@ -116,15 +125,17 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
 
 
         if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.TB_STATUS_SUSPECT))){
-            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
-                    .offset(offset).where().eq(ClinicInformation.COLUMN_IS_FEVER,true).or().eq(ClinicInformation.COLUMN_IS_COUGH,true).
+            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true);
+            if (offset > 0 && limit > 0) clinicInformationQb.limit(limit).offset(offset);
+            clinicInformationQb.where().eq(ClinicInformation.COLUMN_IS_FEVER,true).or().eq(ClinicInformation.COLUMN_IS_COUGH,true).
                     or().eq(ClinicInformation.COLUMN_IS_LOST_WEIGHT,true).or().eq(ClinicInformation.COLUMN_IS_SWEATING,true).
                     or().eq(ClinicInformation.COLUMN_HAS_FATIGUE_OR_TIREDNESS_LAST_TWO_WEEKS,true).and().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
                     .and()
                     .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
         }else if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.TB_STATUS_ALL))){
-            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true).limit(limit)
-                    .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
+            clinicInformationQb.join(patientQb).orderBy(ClinicInformation.COLUMN_REGISTER_DATE,true);
+            if (offset > 0 && limit > 0) clinicInformationQb.limit(limit).offset(offset);
+            clinicInformationQb.where().ge(ClinicInformation.COLUMN_REGISTER_DATE, startDate)
                     .and()
                     .le(ClinicInformation.COLUMN_REGISTER_DATE, endDate).and().in(ClinicInformation.COLUMN_REGISTER_DATE,clinicInformationQb1.selectRaw("max(register_date)"));
         }
@@ -138,10 +149,21 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
 
     @Override
     public List<ClinicInformation> getPatientTratmentFollowUpByPeriod(Date start, Date end, long offset, long limit, String reportType) throws SQLException {
-        Where<ClinicInformation, Integer> queryBuilder = queryBuilder().limit(limit)
-                .offset(offset).where().ge(ClinicInformation.COLUMN_REGISTER_DATE, start)
-                .and()
-                .le(ClinicInformation.COLUMN_REGISTER_DATE, end);
+        Where<ClinicInformation, Integer> queryBuilder = null;
+
+        if (offset > 0 && limit > 0) {
+            queryBuilder = queryBuilder()
+                    .limit(limit).offset(offset)
+                    .where().ge(ClinicInformation.COLUMN_REGISTER_DATE, start)
+                    .and()
+                    .le(ClinicInformation.COLUMN_REGISTER_DATE, end);
+        }else {
+            queryBuilder = queryBuilder()
+                    .where().ge(ClinicInformation.COLUMN_REGISTER_DATE, start)
+                    .and()
+                    .le(ClinicInformation.COLUMN_REGISTER_DATE, end);
+        }
+
 
         if (Utilities.stringHasValue(reportType) && (reportType.equals(ClinicInformation.PARAM_FOLLOW_STATUS_WITH_LATE_DAYS))){
             queryBuilder.and().eq(ClinicInformation.COLUMN_HAS_PATIENT_CAME_CORRECT_DATE, false)

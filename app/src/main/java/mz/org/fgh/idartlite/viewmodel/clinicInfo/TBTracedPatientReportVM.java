@@ -60,6 +60,7 @@ public class TBTracedPatientReportVM extends SearchVM<ClinicInformation> {
 
     public void generatePDF() {
         try {
+            super.generatePDF();
             ((TBTracedPatientReportActivity)getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

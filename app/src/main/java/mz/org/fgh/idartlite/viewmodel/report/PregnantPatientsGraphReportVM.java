@@ -13,6 +13,7 @@ public class PregnantPatientsGraphReportVM extends PregnantPatientReportVM {
 
     public PregnantPatientsGraphReportVM(@NonNull Application application) {
         super(application);
+        deActivatePaginatedSearch();
     }
 
     @Override
@@ -21,9 +22,4 @@ public class PregnantPatientsGraphReportVM extends PregnantPatientReportVM {
         ((PregnantPatientGraphReportActivity) getRelatedActivity()).displaySearchResult();
     }
 
-
-
-  /*  public PregnantPatientGraphReportActivity getRelatedActivity() {
-        return (PregnantPatientGraphReportActivity) super.getRelatedActivity();
-    }*/
 }

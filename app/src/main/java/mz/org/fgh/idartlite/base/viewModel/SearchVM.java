@@ -24,6 +24,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     public static final int RECORDS_PER_SEARCH = 100;
 
+    protected boolean paginatedSearch;
+
     protected List<T> searchResults;
 
     protected List<T> allDisplyedRecords;
@@ -37,6 +39,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
         this.allDisplyedRecords = new ArrayList<>();
         this.searchResults = new ArrayList<>();
+
+        activatePaginatedSearch();
 
         this.searchParams = initSearchParams();
     }
@@ -53,7 +57,9 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
         this.allDisplyedRecords.clear();
 
+        if (isPaginatedSearch()) {
             this.searchResults = doSearch(0, RECORDS_PER_SEARCH);
+        }else this.searchResults = doSearch(0, 0);
 
         if (Utilities.listHasElements(this.searchResults)) {
             loadFirstPage();
@@ -90,12 +96,17 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     protected abstract void doOnNoRecordFound();
 
     private void loadFirstPage() {
-        if (getSearchResults().size() < pageSize){
-           pageSize = getSearchResults().size();
-        }
+        if (isPaginatedSearch()) {
+            if (getSearchResults().size() < pageSize) {
+                pageSize = getSearchResults().size();
+            }
 
-        for (int i = 0; i <= pageSize -1; i++){
-            getAllDisplyedRecords().add(getSearchResults().get(i));
+            for (int i = 0; i <= pageSize - 1; i++) {
+                getAllDisplyedRecords().add(getSearchResults().get(i));
+            }
+        }else {
+            getAllDisplyedRecords().clear();
+            getAllDisplyedRecords().addAll(getSearchResults());
         }
     }
 
@@ -143,7 +154,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     }
 
     public void loadMoreRecords(RecyclerView rv, AbstractRecycleViewAdapter adapter) {
-        if (getAllDisplyedRecords().size() < getSearchResults().size()){
+        if (isPaginatedSearch() && getAllDisplyedRecords().size() < getSearchResults().size()){
             getAllDisplyedRecords().add(null);
             rv.post(new Runnable() {
                 @Override
@@ -190,5 +201,27 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     public void setEndDate(String endDate) {
         getSearchParams().setEndDate(DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT));
         notifyPropertyChanged(BR.endDate);
+    }
+
+    public void deActivatePaginatedSearch(){
+        this.paginatedSearch = false;
+    }
+
+    public void activatePaginatedSearch(){
+        this.paginatedSearch = true;
+    }
+
+    public boolean isPaginatedSearch(){
+        return this.paginatedSearch;
+    }
+
+    public void generatePDF() throws SQLException {
+        deActivatePaginatedSearch();
+        getSearchResults().clear();
+        this.searchResults = doSearch(0, 0);
+        getAllDisplyedRecords().clear();
+        getAllDisplyedRecords().addAll(getSearchResults());
+
+        activatePaginatedSearch();
     }
 }

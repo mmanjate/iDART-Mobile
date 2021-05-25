@@ -62,11 +62,14 @@ public class PatientRegisterReportVM extends SearchVM<Patient> {
 
     public void generatePDF() {
         try {
+            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DocumentException e) {
             e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
