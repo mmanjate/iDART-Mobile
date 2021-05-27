@@ -84,7 +84,7 @@ public class PatientReportActivity extends BaseActivity {
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(PatientReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
                 edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year+" "+DateUtilities.END_DAY_TIME;
             }, mYear, mMonth, mDay);
             datePickerDialog.show();
         });
@@ -122,7 +122,7 @@ public class PatientReportActivity extends BaseActivity {
 
                     DatePickerDialog datePickerDialog = new DatePickerDialog(PatientReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
                         edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year+" "+DateUtilities.END_DAY_TIME;
                     }, mYear, mMonth, mDay);
                     datePickerDialog.show();
                 }
@@ -146,14 +146,14 @@ public class PatientReportActivity extends BaseActivity {
             }else {
 
                 Utilities.hideSoftKeyboard(PatientReportActivity.this);
-                generateGraph(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
+                generateGraph(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDate(end, DateUtilities.DATE_TIME_FORMAT));
             }
         });
     }
 
     private void generateGraph(Date start, Date end) {
         start = DateUtilities.createDate(edtStart.getText().toString(), DateUtilities.DATE_FORMAT);
-        end = DateUtilities.createDate(edtEnd.getText().toString(), DateUtilities.DATE_FORMAT);
+        end = DateUtilities.createDateWithTime(edtEnd.getText().toString(), DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT);
 
         List<String> sanitaryUnits = getRelatedViewModel().getSanitaryUnityListOnPeriod(start, end);
 

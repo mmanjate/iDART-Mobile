@@ -108,7 +108,7 @@ public class PatientTreatmentFollowUpGraphicReportActivity extends BaseActivity 
             DatePickerDialog datePickerDialog = new DatePickerDialog(PatientTreatmentFollowUpGraphicReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
                 edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                 end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                getRelatedViewModel().getSearchParams().setEndDate(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
+                getRelatedViewModel().getSearchParams().setEndDate(DateUtilities.createDateWithTime(end, DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT));
             }, mYear, mMonth, mDay);
             datePickerDialog.show();
         });
@@ -148,7 +148,7 @@ public class PatientTreatmentFollowUpGraphicReportActivity extends BaseActivity 
                     DatePickerDialog datePickerDialog = new DatePickerDialog(PatientTreatmentFollowUpGraphicReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
                         edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                         end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                        getRelatedViewModel().getSearchParams().setEndDate(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
+                        getRelatedViewModel().getSearchParams().setEndDate(DateUtilities.createDateWithTime(end, DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT));
                     }, mYear, mMonth, mDay);
                     datePickerDialog.show();
                 }
