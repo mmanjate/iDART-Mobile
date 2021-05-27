@@ -84,4 +84,9 @@ public class StockService extends BaseService<Stock> implements IStockService {
         getDataBaseHelper().getStockDao().update(stock);
     }
 
+    @Override
+    public void saveOrUpdateViaRest(Stock stock) throws SQLException {
+        getDataBaseHelper().getStockDao().createOrUpdate(stock);
+    }
+
 }
