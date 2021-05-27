@@ -26,6 +26,8 @@ public class DateUtilities {
     public static final String MINUTE_FORMAT="mm";
     public static final String MILLISECOND_FORMAT="SSS";
     public static final String DATE_FORMAT="dd-MM-yyyy";
+    public static final String DATE_TIME_FORMAT="dd-MM-yyyy HH:mm:ss";
+    public static final String END_DAY_TIME="23:59:59";
 
     public static int getDayOfMonth(Date date){
         Calendar d = Calendar.getInstance();
@@ -125,6 +127,17 @@ public class DateUtilities {
         try {
             SimpleDateFormat sDate = new SimpleDateFormat(dateFormat);
             Date date = sDate.parse(stringDate);
+
+            return date;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Date createDateWithTime(String stringDate, String time, String dateFormat) {
+        try {
+            SimpleDateFormat sDate = new SimpleDateFormat(dateFormat);
+            Date date = sDate.parse(stringDate+" "+time);
 
             return date;
         } catch (ParseException e) {

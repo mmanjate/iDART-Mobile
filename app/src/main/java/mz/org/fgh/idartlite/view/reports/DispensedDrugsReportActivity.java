@@ -159,7 +159,7 @@ public class DispensedDrugsReportActivity extends BaseActivity {
 
         Map<String, Double> map = new HashMap<>();
         try {
-            map = getRelatedViewModel().search(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT));
+            map = getRelatedViewModel().search(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDateWithTime(end, DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT));
         } catch (SQLException e) {
             e.printStackTrace();
         }

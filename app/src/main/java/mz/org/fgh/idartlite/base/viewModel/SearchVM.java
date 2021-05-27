@@ -199,7 +199,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     }
 
     public void setEndDate(String endDate) {
-        getSearchParams().setEndDate(DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT));
+        getSearchParams().setEndDate(DateUtilities.createDateWithTime(endDate, DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT));
         notifyPropertyChanged(BR.endDate);
     }
 
