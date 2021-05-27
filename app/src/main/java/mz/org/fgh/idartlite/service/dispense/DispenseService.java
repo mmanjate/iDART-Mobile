@@ -263,7 +263,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
             if(stockActual==0){
                 stockActual=dispenseDrugs.get(0).getStock().getStockMoviment();
             }
-        //    stockActual-=quantityDispensed;
+            stockActual-=quantityDispensed;
 
 
             int validStock=quantityDispensed/3;
