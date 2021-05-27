@@ -114,6 +114,7 @@ public class RestPatientService extends BaseRestService {
                                             patientService.saveOnPatient(itemresult);
                                             counter++;
                                         } else {
+                                            patientService.updateOnPatientViaRest(itemresult);
                                             Log.i(TAG, "onResponse: " + patient + " Ja Existe");
                                         }
                                     } catch (Exception e) {
@@ -125,6 +126,7 @@ public class RestPatientService extends BaseRestService {
                                 if (watcher != null) {
                                     if (counter > 0){
                                         watcher.addUpdates("Tem "+counter + " "+getApp().getString(R.string.new_patients));
+
                                     }else
                                         watcher.addUpdates(getApp().getString(R.string.no_new_patientes));
                                 }

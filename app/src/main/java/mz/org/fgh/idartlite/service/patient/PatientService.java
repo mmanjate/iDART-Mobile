@@ -110,37 +110,20 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
 
     public void saveOnPatient(LinkedTreeMap<String, Object> patient) {
 
-        Patient localPatient = new Patient();
+        Patient localPatient;
         try {
 
-            Clinic clinic = clinicService.getClinicByUuid(Objects.requireNonNull(patient.get("clinicuuid")).toString());
-
-            String concatAdrees = getFullAdreess(Objects.requireNonNull(patient.get("address1")).toString(),
-                    Objects.requireNonNull(patient.get("address2")).toString(),
-                    Objects.requireNonNull(patient.get("address3")).toString());
-
-            localPatient.setAddress(concatAdrees);
-            localPatient.setBirthDate(getSqlDateFromString(Objects.requireNonNull(patient.get("dateofbirth")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
-            localPatient.setClinic(clinic);
-            localPatient.setFirstName(Objects.requireNonNull(patient.get("firstnames")).toString());
-            localPatient.setLastName(Objects.requireNonNull(patient.get("lastname")).toString());
-            localPatient.setGender(Objects.requireNonNull(patient.get("sex")).toString());
-            localPatient.setNid(Objects.requireNonNull(patient.get("patientid")).toString());
-            localPatient.setPhone(Objects.requireNonNull(patient.get("workphone")).toString());
-            localPatient.setUuid(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
-
-            if(patient.get("datainiciotarv") != null)
-                if(!patient.get("datainiciotarv").toString().equalsIgnoreCase("null"))
-                    localPatient.setStartARVDate(getSqlDateFromString(Objects.requireNonNull(patient.get("datainiciotarv")).toString(), "dd MMM yyyy"));
+            localPatient= setPatientFromRest(patient);
 
             savePatient(localPatient);
             episodeService.saveEpisodeFromRest(patient, localPatient);
             prescriptionService.saveLastPrescriptionFromRest(patient, localPatient);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void updatePatient(Patient patient) throws SQLException {
@@ -196,9 +179,69 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         return usLits;
     }
 
+    @Override
+    public void updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) {
+        Patient localPatient = new Patient();
+        try {
+
+            localPatient= setPatientFromRest(patient);
+
+            updatePatient(localPatient);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private String getFullAdreess(String address1, String address2, String address3) {
         return address1 + " " + address2 + " " + address3;
+    }
+
+
+    private Patient setPatientFromRest(LinkedTreeMap<String, Object> patient){
+
+        Patient localPatient = null;
+        try {
+            localPatient= getPatientByUuid(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        if(localPatient==null){
+          localPatient=new Patient();
+      }
+
+
+        try {
+
+            Clinic clinic = clinicService.getClinicByUuid(Objects.requireNonNull(patient.get("clinicuuid")).toString());
+
+            String concatAdrees = getFullAdreess(Objects.requireNonNull(patient.get("address1")).toString(),
+                    Objects.requireNonNull(patient.get("address2")).toString(),
+                    Objects.requireNonNull(patient.get("address3")).toString());
+
+            localPatient.setAddress(concatAdrees);
+            localPatient.setBirthDate(getSqlDateFromString(Objects.requireNonNull(patient.get("dateofbirth")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+            localPatient.setClinic(clinic);
+            localPatient.setFirstName(Objects.requireNonNull(patient.get("firstnames")).toString());
+            localPatient.setLastName(Objects.requireNonNull(patient.get("lastname")).toString());
+            localPatient.setGender(Objects.requireNonNull(patient.get("sex")).toString());
+            localPatient.setNid(Objects.requireNonNull(patient.get("patientid")).toString());
+            localPatient.setPhone(Objects.requireNonNull(patient.get("cellphone")).toString());
+            localPatient.setUuid(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
+
+            if(patient.get("datainiciotarv") != null)
+                if(!patient.get("datainiciotarv").toString().equalsIgnoreCase("null"))
+                    localPatient.setStartARVDate(getSqlDateFromString(Objects.requireNonNull(patient.get("datainiciotarv")).toString(), "dd MMM yyyy"));
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return localPatient;
     }
 
 }

@@ -39,4 +39,6 @@ public interface IPatientService extends IBaseService<Patient> {
     public List<Patient> searchPatientByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit, RestResponseListener listener) throws SQLException;
 
     List<String> getSanitaryUnitsWithRecordsOnPeriod(Date start, Date end) throws SQLException;
+
+    public void updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) ;
 }
