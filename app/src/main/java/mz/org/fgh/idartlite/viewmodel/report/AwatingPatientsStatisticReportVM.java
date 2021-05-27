@@ -69,6 +69,7 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
 
         ArrayList list = new ArrayList();
 
+
         List<Dispense> dispenseList = dispenseService.getDispensesBetweenNextPickupDateStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
 
         List<TherapeuticRegimen> therapeuticRegimenList = therapheuticRegimenService.getAll();
@@ -156,7 +157,7 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
 
     public List doSearch(long offset, long limit) throws SQLException {
 
-        return getDispensesByDates(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT), offset, limit);
+        return getDispensesByDates(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDateWithTime(endDate,DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT), offset, limit);
     }
 
 

@@ -107,7 +107,7 @@ public class DispensesNonSyncReportVM extends SearchVM<Dispense> {
 
     public List<Dispense> doSearch(long offset, long limit) throws SQLException {
 
-        return getDispensesByDates(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT), offset, limit);
+        return getDispensesByDates(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDateWithTime(endDate,DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT), offset, limit);
     }
 
 
