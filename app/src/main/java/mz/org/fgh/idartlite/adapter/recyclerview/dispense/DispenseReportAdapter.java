@@ -49,28 +49,30 @@ public class DispenseReportAdapter extends AbstractRecycleViewAdapter<Dispense> 
         if (viewHolder instanceof DispenseViewHolder){
             Dispense dispense = (Dispense) records.get(position);
             ((DispenseViewHolder) viewHolder).contentDispensesReportBinding.setDispense(dispense);
+
+            ((DispenseViewHolder) viewHolder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    //   toggleLayout(true,v,((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails);
+
+                    if(((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails.getVisibility()==View.VISIBLE){
+                        ((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails.setVisibility(View.GONE);
+                    }
+                    else  if(((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails.getVisibility()==View.GONE){
+                        ((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails.setVisibility(View.VISIBLE);
+                    }
+
+
+
+                }
+            });
         }else
         if (viewHolder instanceof LoadingViewHolder){
             showLoadingView((LoadingViewHolder) viewHolder, position);
         }
-        ((DispenseViewHolder) viewHolder).itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-             //   toggleLayout(true,v,((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails);
-
-                if(((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails.getVisibility()==View.VISIBLE){
-                    ((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails.setVisibility(View.GONE);
-                }
-                else  if(((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails.getVisibility()==View.GONE){
-                    ((DispenseViewHolder) viewHolder).contentDispensesReportBinding.linearDetails.setVisibility(View.VISIBLE);
-                }
 
 
-               /* boolean show = toggleLayout(!personList.get(i).isExpanded(), v, holder.bi.layoutExpand);
-                personList.get(i).setExpanded(show);*/
-            }
-        });
 
 
     }

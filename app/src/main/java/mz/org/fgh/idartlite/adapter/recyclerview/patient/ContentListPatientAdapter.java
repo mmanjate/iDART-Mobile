@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.recyclerview.dispense.DispenseReportAdapter;
 import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.databinding.ContentPatientBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
