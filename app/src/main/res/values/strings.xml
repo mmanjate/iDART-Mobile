@@ -466,4 +466,8 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="pacientes_rastreados_tb" translatable="false">Relatorio de Pacientes Rastreados para TB</string>
 
     <string name="encounter_date">Data da Consulta</string>
+
+    <string name="updated_patients" translatable="false"> Paciente(s) Actualizado(s).</string>
+
+    <string name="estatistica_dispensas_por_regime_terapeutico_e_tipo_dispensa" translatable="false">Estatistica de Dispensas por Tipo de Dispensa e Regime</string>
 </resources>
