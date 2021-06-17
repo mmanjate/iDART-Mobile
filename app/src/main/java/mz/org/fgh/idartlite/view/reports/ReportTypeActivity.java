@@ -178,6 +178,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("015", "Relatorio de Pacientes que rastrearam para TB ", R.drawable.ic_list, TBTracedPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.TB_STATUS_ALL)));
         reports.add(Report.fastCreate("016", "Relatorio de Pacientes que rastrearam para gravidez", R.drawable.ic_list, PregnantPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.PREGNANT_STATUS_ALL)));
         reports.add(Report.fastCreate("017", "Relatorio de Pacientes identificadas como Gravidas", R.drawable.ic_list, PregnantPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.PREGNANT_STATUS_POSITIVE)));
+        reports.add(Report.fastCreate("018", "Relatorio de Estatistico de Dispensas por Tipo de Dispensa e Regime", R.drawable.ic_list, DispenseByDispenseTypeReportActivity.class));
 
         return reports;
     }

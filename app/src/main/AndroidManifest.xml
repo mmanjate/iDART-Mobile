@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.reports.TBTracedPatientGraphReportActivity"></activity>
+        <activity android:name=".view.reports.DispenseByDispenseTypeReportActivity"></activity>
+        <activity android:name=".view.reports.TBTracedPatientGraphReportActivity" />
         <activity android:name=".view.reports.PregnantPatientGraphReportActivity" />
         <activity android:name=".view.reports.TBTracedPatientReportActivity" />
         <activity android:name=".view.reports.PatientTreatmentFollowUpReportActivity" />
