@@ -98,15 +98,9 @@ public class DispenseDrugStatisticReportVM extends SearchVM<Dispense> {
             int quantityDispensed=0;
             for (DispensedDrug dispenseD:
                     dispenseDrugs) {
-                int newQuantityDispensed;
-                if(dispenseD.getQuantitySupplied() > 6 ){
-                    newQuantityDispensed=dispenseD.getQuantitySupplied() / dispenseD.getStock().getDrug().getPackSize();
-                    quantityDispensed += newQuantityDispensed;
-                }
-                else {
 
-                    quantityDispensed += dispenseD.getQuantitySupplied();
-                }
+                quantityDispensed+=dispenseD.getQuantitySupplied();
+
             }
 
             Map<String, Object> map = new HashMap<String, Object>();
