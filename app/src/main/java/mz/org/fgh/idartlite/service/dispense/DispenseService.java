@@ -188,7 +188,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
     }
 
     public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException{
-        return getDataBaseHelper().getDispenseDao().getDispensesBetweenStartDateAndEndDateWithLimit(startDate,endDate,offset,limit);
+        return getDataBaseHelper().getDispenseDao().getDispensesBetweenStartDateAndEndDateWithLimit(getApplication(),startDate,endDate,offset,limit);
     }
 
     public List<Dispense> getDispensesNonSyncBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException{
@@ -196,7 +196,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
     }
 
     public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException{
-        return getDataBaseHelper().getDispenseDao().getDispensesBetweenStartDateAndEndDate(startDate,endDate);
+        return getDataBaseHelper().getDispenseDao().getDispensesBetweenStartDateAndEndDate(getApplication(),startDate,endDate);
     }
 
 
