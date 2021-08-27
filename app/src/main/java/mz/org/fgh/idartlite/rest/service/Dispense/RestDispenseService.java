@@ -267,8 +267,9 @@ public class RestDispenseService extends BaseRestService {
         Clinic clinic = clinicService.getAllClinics().get(0);
         Drug localDrug = drugService.getDrugByDescription(itemresult.get("drugname").toString());
         String inHand = itemresult.get("qtyinhand").toString();
+       
         if (!inHand.isEmpty())
-            inHand = inHand.replace('(', ' ').replace(')', ' ');
+            inHand = inHand.replace('(', ' ').replace(')', ' ').replaceAll("\\s+","");
         else
             inHand = "0";
 
@@ -277,7 +278,13 @@ public class RestDispenseService extends BaseRestService {
             List<Stock> stockList = stockService.getAllStocksByClinicAndDrug(clinic, localDrug);
 
             dispensedDrug.setDispense(dispensed);
-            dispensedDrug.setQuantitySupplied(Integer.parseInt(inHand.trim()));
+            int quantity=Integer.parseInt(inHand);
+            if(quantity>0 && quantity<12){
+                dispensedDrug.setQuantitySupplied(quantity);
+            }
+            else {
+                dispensedDrug.setQuantitySupplied(0);
+            }
             if (!stockList.isEmpty())
                 dispensedDrug.setStock(stockList.get(0));
             dispensedDrug.setSyncStatus(BaseModel.SYNC_SATUS_SENT);

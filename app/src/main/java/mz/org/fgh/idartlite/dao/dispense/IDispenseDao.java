@@ -21,11 +21,11 @@ public interface IDispenseDao extends IGenericDao<Dispense, Integer> {
 
     public Dispense getLastDispensePrescription(Prescription prescription)  throws SQLException;
 
-    public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate,long offset, long limit) throws SQLException;
+    public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Application application,Date startDate, Date endDate,long offset, long limit) throws SQLException;
 
     public List<Dispense> getDispensesNonSyncBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate,long offset, long limit) throws SQLException;
 
-    public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException;
+    public List<Dispense> getDispensesBetweenStartDateAndEndDate(Application application,Date startDate, Date endDate) throws SQLException;
 
     public List<Dispense> getAllDispensesByStatus(String status) throws SQLException;
 

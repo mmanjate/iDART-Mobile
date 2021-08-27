@@ -18,6 +18,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
@@ -86,12 +87,19 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
     }
 
     @Override
-    public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+    public List<Dispense> getDispensesBetweenStartDateAndEndDateWithLimit(Application application,Date startDate, Date endDate, long offset, long limit) throws SQLException {
         QueryBuilder<Dispense, Integer> qb = queryBuilder();
+        QueryBuilder<DispensedDrug, Integer> dispensedDrugQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDispensedDrugDao().queryBuilder();
+        dispensedDrugQb.where().gt(DispensedDrug.COLUMN_QUANTITY_SUPPLIED,0).and().lt(DispensedDrug.COLUMN_QUANTITY_SUPPLIED,12);
+
+        qb.join(dispensedDrugQb);
         if (limit > 0 && offset > 0) qb.limit(limit).offset(offset);
-        return qb.where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
+         qb.where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
                 .and()
-                .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false).query();
+                .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false);
+
+        System.out.println(qb.prepareStatementString());
+        return qb.query();
     }
 
     @Override
@@ -104,10 +112,18 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
     }
 
     @Override
-    public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException {
-        return queryBuilder().where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
+    public List<Dispense> getDispensesBetweenStartDateAndEndDate(Application application,Date startDate, Date endDate) throws SQLException {
+        QueryBuilder<Dispense, Integer> qb = queryBuilder();
+        QueryBuilder<DispensedDrug, Integer> dispensedDrugQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDispensedDrugDao().queryBuilder();
+        dispensedDrugQb.where().gt(DispensedDrug.COLUMN_QUANTITY_SUPPLIED,0).and().lt(DispensedDrug.COLUMN_QUANTITY_SUPPLIED,12);
+
+        qb.join(dispensedDrugQb);
+        qb.where().ge(Dispense.COLUMN_PICKUP_DATE, startDate)
                 .and()
-                .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false).query();
+                .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false);
+
+        System.out.println(qb.prepareStatementString());
+        return qb.query();
     }
 
     @Override
