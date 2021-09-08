@@ -349,7 +349,7 @@ public class RestStockService extends BaseRestService {
 
         for(Stock stock: stockList){
             if(stock.getBatchNumber().equalsIgnoreCase(itemresult.get("batchnumber").toString()))
-                return stock;
+                return null;
         }
 
         if (stocklevel.size() != 0) {
