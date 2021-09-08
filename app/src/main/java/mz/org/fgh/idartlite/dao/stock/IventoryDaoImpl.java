@@ -37,6 +37,11 @@ public class IventoryDaoImpl extends GenericDaoImpl<Iventory, Integer> implement
     }
 
     @Override
+    public List<Iventory> searchRecords(long offset, long limit) throws SQLException {
+        return queryBuilder().limit(limit).offset(offset).orderBy(Iventory.COLUMN_ID, false).query();
+    }
+
+    @Override
     public Iventory getInventoryAfterDate(Date date) throws SQLException {
         QueryBuilder<Iventory, Integer> queryBuilder = queryBuilder();
 
