@@ -375,7 +375,7 @@ public class DateUtilities {
     }
 
     public static Date getSqlDateFromString(String stringDate, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ROOT);
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
         try {
             Date date = (Date) format.parse(stringDate);
             return date;
@@ -387,7 +387,7 @@ public class DateUtilities {
     }
 
     public static Date getUtilDateFromString(String stringDate, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern,Locale.ROOT);
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
         try {
             Date date = (Date) format.parse(stringDate);
             return date;
@@ -399,7 +399,7 @@ public class DateUtilities {
     }
 
     public static String getStringDateFromDate(Date date, String pattern) {
-        SimpleDateFormat datetemp = new SimpleDateFormat(pattern,Locale.ROOT);
+        SimpleDateFormat datetemp = new SimpleDateFormat(pattern, Locale.getDefault());
         String data = datetemp.format(date);
         return data;
 
