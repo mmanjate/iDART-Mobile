@@ -34,6 +34,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     protected int pageSize;
 
+    protected boolean onlineSearch;
+
     public SearchVM(@NonNull Application application) {
         super(application);
 
@@ -43,6 +45,20 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         activatePaginatedSearch();
 
         this.searchParams = initSearchParams();
+    }
+
+    @Bindable
+    public boolean isOnlineSearch() {
+        return onlineSearch;
+    }
+
+    public void setOnlineSearch(boolean onlineSearch) {
+        this.onlineSearch = onlineSearch;
+        notifyPropertyChanged(BR.onlineSearch);
+    }
+
+    public void changeReportSearchMode() {
+        this.setOnlineSearch(!isOnlineSearch());
     }
 
     public void initSearch() {
