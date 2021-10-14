@@ -14,4 +14,8 @@ public interface SearchPaginator<T extends BaseModel>{
 
     AbstractSearchParams<T> initSearchParams();
 
+    default List<T> doOnlineSearch(long offset, long limit) throws SQLException {
+        return null;
+    }
+
 }
