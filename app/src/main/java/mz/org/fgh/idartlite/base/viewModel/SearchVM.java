@@ -60,10 +60,10 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     public void changeReportSearchMode(String searchType) {
         if (searchType.equals(getApplication().getString(R.string.local))) {
-            this.setOnlineSearch(true);
+            this.setOnlineSearch(false);
         }
         else {
-            setOnlineSearch(false);
+            setOnlineSearch(true);
         }
     }
 
