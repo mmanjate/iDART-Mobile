@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
@@ -34,6 +35,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     protected int pageSize;
 
+    protected boolean onlineSearch;
+
     public SearchVM(@NonNull Application application) {
         super(application);
 
@@ -43,6 +46,25 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         activatePaginatedSearch();
 
         this.searchParams = initSearchParams();
+    }
+
+    @Bindable
+    public boolean isOnlineSearch() {
+        return onlineSearch;
+    }
+
+    public void setOnlineSearch(boolean onlineSearch) {
+        this.onlineSearch = onlineSearch;
+        notifyPropertyChanged(BR.onlineSearch);
+    }
+
+    public void changeReportSearchMode(String searchType) {
+        if (searchType.equals(getApplication().getString(R.string.local))) {
+            this.setOnlineSearch(true);
+        }
+        else {
+            setOnlineSearch(false);
+        }
     }
 
     public void initSearch() {
@@ -58,8 +80,15 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         this.allDisplyedRecords.clear();
 
         if (isPaginatedSearch()) {
-            this.searchResults = doSearch(0, RECORDS_PER_SEARCH);
-        }else this.searchResults = doSearch(0, 0);
+            if (isOnlineSearch()) {
+                doOnlineSearch(0, RECORDS_PER_SEARCH);
+            } else this.searchResults = doSearch(0, RECORDS_PER_SEARCH);
+        }else {
+            if (isOnlineSearch()) {
+                doOnlineSearch(0, 0);
+            } else this.searchResults = doSearch(0, 0);
+
+        }
 
         if (Utilities.listHasElements(this.searchResults)) {
             loadFirstPage();
@@ -119,7 +148,10 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         int end;
 
         if ((allDisplyedRecords.size()+pageSize) > this.searchResults.size()){
-            List<T> recs = doSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
+            List<T> recs = new ArrayList<>();
+            if (isOnlineSearch()) {
+                recs = doSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
+            } else recs = doOnlineSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
 
             if (Utilities.listHasElements(recs)){
                 this.searchResults.addAll(recs);
@@ -179,8 +211,14 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
                     adapter.setLoaded();
 
                 }
-            }, 8000);
+            }, getDelayMillis());
         }
+    }
+
+    private int getDelayMillis() {
+        if (isOnlineSearch()) return 10000;
+
+        return 6000;
     }
 
     @Bindable

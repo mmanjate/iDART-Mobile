@@ -435,4 +435,5 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="encounter_date">Data da Consulta</string>
 
     <string name="pacientes_suspeitos_tb" translatable="false">Lista de Suspeitos TB</string>
+    <string name="include_online_info">Incluir Informação online?</string>
 </resources>

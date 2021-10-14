@@ -100,6 +100,10 @@ public class FILAReportVM extends SearchVM<Patient> {
         return searchPatient(getSearchParam().trim(), getCurrentClinic(), offset, limit);
     }
 
+    @Override
+    public List<Patient> doOnlineSearch(long offset, long limit) throws SQLException {
+        return null;
+    }
 
     public Patient getPatient() {
         return patient;
