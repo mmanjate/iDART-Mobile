@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.service.stock;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.IBaseService;
@@ -28,4 +29,8 @@ public interface IIventoryService extends IBaseService<Iventory> {
     List<Drug> getAllDrugsOnInventory(Iventory selectedRecord) throws SQLException;
 
     void saveAjustment(StockAjustment listble) throws SQLException;
+
+    List<Iventory> getPastInventoryToRemove(Date date) throws SQLException;
+
+    void removeInventoryAndStockAdjusment (Iventory iventory) throws SQLException;
 }

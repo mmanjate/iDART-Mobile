@@ -11,4 +11,6 @@ public interface IStockAjustmentService extends IBaseService<StockAjustment> {
     List<StockAjustment> getAllOfInventory(Iventory iventory) throws SQLException;
 
     void saveOrUpdateMany(List<StockAjustment> ajustmentList) throws SQLException;
+
+    void deleteStockAjustments(List<StockAjustment> ajustmentList) throws SQLException;
 }

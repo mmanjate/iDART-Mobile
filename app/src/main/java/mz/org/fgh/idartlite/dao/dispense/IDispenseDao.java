@@ -27,7 +27,7 @@ public interface IDispenseDao extends IGenericDao<Dispense, Integer> {
 
     public List<Dispense> getDispensesBetweenStartDateAndEndDate(Application application,Date startDate, Date endDate) throws SQLException;
 
-    public List<Dispense> getAllDispensesByStatus(String status) throws SQLException;
+    public List<Dispense> getAllDispensesByStatusAndNotVoided(String status) throws SQLException;
 
     public List<Dispense> getDispensesBetweenNextPickppDateStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException;
 
@@ -35,4 +35,5 @@ public interface IDispenseDao extends IGenericDao<Dispense, Integer> {
 
     public List<Dispense> getAbsentPatientsBetweenNextPickppDateStartDateAndEndDateWithLimit(Application application,Date startDate, Date endDate, long offset, long limit) throws SQLException;
 
+    public List<Dispense> getAllDispensesToRemoveByDates(Date dateToRemove) throws SQLException;
 }

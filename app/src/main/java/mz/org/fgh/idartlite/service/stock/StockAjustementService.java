@@ -56,4 +56,9 @@ public class StockAjustementService extends BaseService<StockAjustment> implemen
         }
     }
 
+    @Override
+    public void deleteStockAjustments(List<StockAjustment> ajustmentList) throws SQLException {
+         getDataBaseHelper().getStockAjustmentDao().delete(ajustmentList);
+    }
+
 }

@@ -140,7 +140,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
     public List<Dispense> getAllDispensesByStatus(String status) throws SQLException {
 
-        List<Dispense> typeList = getDataBaseHelper().getDispenseDao().queryForEq(COLUMN_SYNC_STATUS, status);
+        List<Dispense> typeList = getDataBaseHelper().getDispenseDao().getAllDispensesByStatusAndNotVoided(status);
 
         if (typeList != null)
             if (!typeList.isEmpty())
@@ -301,5 +301,20 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
         return getDataBaseHelper().getDispenseDao().getAbsentPatientsBetweenNextPickppDateStartDateAndEndDateWithLimit(getApplication(),startDate,endDate,offset,limit);
     }
+
+    @Override
+    public List<Dispense> getAllDispensesToRemoveByDates(Date dateToRemove) throws SQLException {
+        return getDataBaseHelper().getDispenseDao().getAllDispensesToRemoveByDates(dateToRemove);
+    }
+
+    @Override
+    public void deleteDispenseAndDispensedDrugs(Dispense dispense) throws SQLException {
+
+        List<DispensedDrug> dispensedDrugs = this.dispenseDrugService.findDispensedDrugByDispenseId(dispense.getId());
+       this.dispenseDrugService.deleteDispensedDrugs(dispensedDrugs);
+        getDataBaseHelper().getDispenseDao().delete(dispense);
+
+    }
+
 
 }

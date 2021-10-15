@@ -22,4 +22,6 @@ public interface IDispenseDrugService extends IBaseService<DispensedDrug> {
 
     public List<DispensedDrug> getDispensedDrugsByDispenses(List<Dispense> dispenses) throws SQLException;
 
+    public void deleteDispensedDrugs(List <DispensedDrug> dispenseDrugs)throws SQLException;
+
 }

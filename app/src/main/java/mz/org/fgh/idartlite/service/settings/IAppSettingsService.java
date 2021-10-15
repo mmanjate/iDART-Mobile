@@ -13,6 +13,8 @@ public interface IAppSettingsService extends IBaseService<AppSettings> {
 
     void saveSetting(AppSettings record) throws SQLException;
 
+    AppSettings getRemovalDataSettings() throws SQLException;
+
     void runDataSync();
 
     void runMetadataSync();

@@ -51,6 +51,11 @@ public class AppSettingsService extends BaseService<AppSettings> implements IApp
     }
 
     @Override
+    public AppSettings getRemovalDataSettings() throws SQLException {
+        return getDataBaseHelper().getAppSettingsDao().getDataRemovalPeriod();
+    }
+
+    @Override
     public void runDataSync() {
 
     }

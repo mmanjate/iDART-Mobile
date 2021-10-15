@@ -6,11 +6,14 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
@@ -143,6 +146,20 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
     @Override
     public Prescription getLastClosedPrescriptionByPatient(Patient patient) throws SQLException {
         return getDataBaseHelper().getPrescriptionDao().getLastClosedPrescriptionByPatient(patient);
+    }
+
+    @Override
+    public List<Prescription> getAllPrescriptionToRemoveByDate(Date dateToRemove) throws SQLException {
+        return getDataBaseHelper().getPrescriptionDao().getAllPrescriptionToRemoveByDate(dateToRemove);
+    }
+
+    @Override
+    public void deletePrescriptionAndPrescribedDrugs(Prescription prescription) throws SQLException {
+
+        List<PrescribedDrug> prescribedDrugs = this.prescribedDrugService.getAllByPrescription(prescription);
+        this.prescribedDrugService.deletePrescribedDrugs(prescribedDrugs);
+        getDataBaseHelper().getPrescriptionDao().delete(prescription);
+
     }
 
 }

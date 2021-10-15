@@ -7,4 +7,6 @@ import mz.org.fgh.idartlite.model.AppSettings;
 
 public interface IAppSettingsDao extends IGenericDao<AppSettings, Integer> {
     AppSettings getCentralServerUrl() throws SQLException;
+
+    AppSettings getDataRemovalPeriod() throws SQLException;
 }
