@@ -37,6 +37,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     protected boolean onlineSearch;
 
+    protected String onlineRequestError;
+
     public SearchVM(@NonNull Application application) {
         super(application);
 
@@ -215,7 +217,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         }
     }
 
-    private int getDelayMillis() {
+    protected int getDelayMillis() {
         if (isOnlineSearch()) return 10000;
 
         return 6000;

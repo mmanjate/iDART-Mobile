@@ -32,6 +32,11 @@ public abstract class BaseRestService {
 
     public static Application app;
 
+    public static final String REQUEST_SUCESS = "REQUEST_SUCESS";
+    public static final String REQUEST_ERROR = "REQUEST_ERROR";
+    public static final String REQUEST_NO_DATA = "REQUEST_NO_DATA";
+
+
     private IAppSettingsService appSettingsService;
 
     protected static ServiceProvider serviceFactory;

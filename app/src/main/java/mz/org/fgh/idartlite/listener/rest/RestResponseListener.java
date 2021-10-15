@@ -13,4 +13,8 @@ public interface RestResponseListener<T extends BaseModel> {
     void doOnRestSucessResponseObject(String flag, T object);
 
    void doOnRestSucessResponseObjects(String flag, List<T> objects);
+
+    default void doOnResponse(String flag, List<T> objects) {
+
+    }
 }
