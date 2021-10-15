@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.service.stock;
 import android.app.Application;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
@@ -81,6 +82,22 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
     }
 
     @Override
+    public List<Iventory> getPastInventoryToRemove(Date date) throws SQLException {
+         return   getDataBaseHelper().getIventoryDao().getPastInventoryToRemove(date);
+    }
+
+    @Override
+    public void removeInventoryAndStockAdjusment(Iventory iventory) throws SQLException {
+
+       List<StockAjustment> stockAjustments = getAllStockAjustmentsOfInventory(iventory);
+
+       ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).deleteStockAjustments(stockAjustments);
+
+       this.delete(iventory);
+
+    }
+
+    @Override
     public void initInventory(Iventory record) throws SQLException {
         Iventory lastInventoryRecord = getDataBaseHelper().getIventoryDao().getLastInventory();
 
@@ -141,12 +158,6 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
     @Override
     public void delete(Iventory record) throws SQLException {
         super.delete(record);
-
-        List<StockAjustment> ajustmentsOnDb =  ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).getAllOfInventory(record);
-
-        for (StockAjustment ajustment : ajustmentsOnDb){
-            ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class).delete(ajustment);
-        }
 
         getDataBaseHelper().getIventoryDao().delete(record);
     }

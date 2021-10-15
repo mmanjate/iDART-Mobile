@@ -51,4 +51,11 @@ public class IventoryDaoImpl extends GenericDaoImpl<Iventory, Integer> implement
 
         return null;
     }
+
+    @Override
+    public List<Iventory> getPastInventoryToRemove(Date date) throws SQLException {
+        QueryBuilder<Iventory, Integer> queryBuilder = queryBuilder();
+
+        return queryBuilder.where().le(Iventory.COLUMN_START_DATE, date).query();
+    }
 }

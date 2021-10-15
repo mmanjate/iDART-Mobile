@@ -78,6 +78,12 @@ public class PrescribedDrugService extends BaseService<PrescribedDrug> implement
         return getDataBaseHelper().getPrescribedDrugDao().getAllByPrescription(prescription);
     }
 
+        @Override
+        public void deletePrescribedDrugs(List<PrescribedDrug> prescribedDrugs) throws SQLException {
+            getDataBaseHelper().getPrescribedDrugDao().delete(prescribedDrugs);
+        }
+
+
     private List getListofObjectFromString(String stringJsonObject){
         List masterList = new ArrayList();
         String[] lines = stringJsonObject.replace("},{","}\n{").split("\\n");

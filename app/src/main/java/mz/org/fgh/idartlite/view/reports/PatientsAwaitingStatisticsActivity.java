@@ -62,6 +62,8 @@ import mz.org.fgh.idartlite.viewmodel.report.AwatingPatientsStatisticReportVM;
 
 public class PatientsAwaitingStatisticsActivity extends BaseActivity {
 
+
+    String end;
     private RecyclerView recyclerDispenses;
     private ActivityPatientsAwaitingStatisticsBinding dispenseStatisticReportBinding;
     private PatientAwaitingStatisticDispenseReportAdapter adapter;
@@ -151,6 +153,7 @@ public class PatientsAwaitingStatisticsActivity extends BaseActivity {
 
                             dispenseStatisticReportBinding.edtSearchParam.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
+
                         }
                     }, mYear, mMonth, mDay);
                     datePickerDialog.show();
@@ -176,6 +179,7 @@ public class PatientsAwaitingStatisticsActivity extends BaseActivity {
 
                         dispenseStatisticReportBinding.edtSearchParam2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
+
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -199,6 +203,8 @@ public class PatientsAwaitingStatisticsActivity extends BaseActivity {
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
                             dispenseStatisticReportBinding.edtSearchParam2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+
 
                         }
                     }, mYear, mMonth, mDay);

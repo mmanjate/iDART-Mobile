@@ -68,5 +68,10 @@ public class DispenseDrugService extends BaseService<DispensedDrug> implements I
         return getDataBaseHelper().getDispensedDrugDao().getDispensedDrugsByDispenses(dispenses);
     }
 
+    @Override
+    public void deleteDispensedDrugs(List<DispensedDrug> dispenseDrugs) throws SQLException {
+        getDataBaseHelper().getDispensedDrugDao().delete(dispenseDrugs);
+    }
+
 
 }

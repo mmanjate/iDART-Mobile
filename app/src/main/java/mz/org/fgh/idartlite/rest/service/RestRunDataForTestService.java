@@ -153,11 +153,17 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
             if (dispenseList != null)
                 if (dispenseList.size() > 0) {
                     for (Dispense dispense : dispenseList) {
-                        RestDispenseService.restPostDispense(dispense);
+                        try {
+                            RestDispenseService.restPostDispense(dispense);
+                        }
+                        catch(Exception e){
+                            //Do Nothing continue
+                        }
                     }
                 }
         } catch (SQLException e) {
-            e.printStackTrace();
+             e.printStackTrace();
+            //continue();
         }
 
         try {

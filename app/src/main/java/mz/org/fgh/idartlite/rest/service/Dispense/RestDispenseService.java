@@ -269,7 +269,7 @@ public class RestDispenseService extends BaseRestService {
         Clinic clinic = clinicService.getAllClinics().get(0);
         Drug localDrug = drugService.getDrugByDescription(itemresult.get("drugname").toString());
         String inHand = itemresult.get("qtyinhand").toString();
-       
+
         if (!inHand.isEmpty())
             inHand = inHand.replace('(', ' ').replace(')', ' ').replaceAll("\\s+","");
         else

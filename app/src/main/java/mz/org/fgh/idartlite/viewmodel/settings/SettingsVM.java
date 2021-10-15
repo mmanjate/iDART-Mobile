@@ -21,11 +21,13 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
+import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment;
 import mz.org.fgh.idartlite.workSchedule.work.DataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.MetaDataSyncWorker;
+import mz.org.fgh.idartlite.workSchedule.work.RemoveDataSyncWorker;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
@@ -319,11 +321,26 @@ public class SettingsVM extends BaseViewModel {
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(MetaDataSyncWorker.class).build();
         mWorkManager.enqueue(mRequest);
 
+
         observeRunningSync(mRequest, CHANNEL_2_ID);
     }
 
     public void initDataRemotionNow(){
-        getRelatedService().runDataRemotion();
+
+
+        issueNotification("Remoção de dados iniciada", CHANNEL_2_ID);
+
+
+        OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(RemoveDataSyncWorker.class).build();
+        mWorkManager.enqueue(mRequest);
+
+
+        observeRunningSync(mRequest, CHANNEL_2_ID);
+
+
+    // if()
+
+    //    getRelatedService().runDataRemotion();
     }
 
 }

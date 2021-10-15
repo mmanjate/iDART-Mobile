@@ -4,13 +4,16 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
+import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.util.DateUtilities;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class PrescriptionDaoImpl extends GenericDaoImpl<Prescription, Integer> implements IPrescriptionDao {
@@ -62,5 +65,10 @@ public class PrescriptionDaoImpl extends GenericDaoImpl<Prescription, Integer> i
     @Override
     public boolean checkIfPatientHasPrescriptions(Patient patient) throws SQLException  {
         return queryBuilder().where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).query().isEmpty();
+    }
+
+    @Override
+    public List<Prescription> getAllPrescriptionToRemoveByDate(Date dateToRemove) throws SQLException {
+        return queryBuilder().where().le(Prescription.COLUMN_PRESCRIPTION_DATE, dateToRemove).and().eq(Prescription.COLUMN_SYNC_STATUS, BaseModel.SYNC_SATUS_SENT).or().eq(Prescription.COLUMN_SYNC_STATUS, BaseModel.SYNC_SATUS_UPDATED).query();
     }
 }

@@ -26,4 +26,11 @@ public class AppSettingsDaoImpl extends GenericDaoImpl<AppSettings, Integer> imp
     public AppSettings getCentralServerUrl() throws SQLException {
         return queryBuilder().where().eq(AppSettings.COLUMN_SETTING_CODE, AppSettings.SERVER_URL_SETTING).queryForFirst();
     }
+
+    @Override
+    public AppSettings getDataRemovalPeriod() throws SQLException {
+        return queryBuilder().where().eq(AppSettings.COLUMN_SETTING_CODE, AppSettings.DATA_REMOTION_PERIOD).queryForFirst();
+    }
+
+
 }
