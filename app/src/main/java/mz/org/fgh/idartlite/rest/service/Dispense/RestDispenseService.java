@@ -13,11 +13,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
@@ -398,5 +400,61 @@ public class RestDispenseService extends BaseRestService {
         }
         return syncDispense;
 
+    }
+
+    public static void restGetAllDispenseByPatient(Patient patient, RestResponseListener listener) throws SQLException {
+
+        episodeService = new EpisodeService(getApp(), null);
+
+        episodeList = episodeService.getAllEpisodesByPatient(patient);
+
+        Episode episode = episodeList.get(episodeList.size() - 1);
+
+        if (episode != null) {
+
+            String url = BaseRestService.baseUrl + "/sync_temp_dispense?uuidopenmrs=eq." + patient.getUuid() + "&mainclinicuuid=eq." + episode.getUsUuid() + "&order=pickupdate.desc";
+
+            try {
+                getRestServiceExecutor().execute(() -> {
+
+                    RESTServiceHandler handler = new RESTServiceHandler();
+
+                    try {
+                        handler.addHeader("Content-Type", "application/json");
+                        handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
+
+                            @Override
+                            public void onResponse(Object[] dispenses) {
+                                try {
+                                    List<Dispense> dispenseList = new ArrayList<>();
+                                    if (dispenses.length > 0) {
+                                        for (Object dispense : dispenses) {
+                                            Log.d(TAG, "onResponse: Dispensa " + dispense);
+                                            Prescription newPrescription = getPrescroptionRest(dispense, patient);
+                                            dispenseList.add(getDispenseOnRest(dispense, newPrescription));
+                                        }
+                                        listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
+                                    } else listener.doOnResponse(REQUEST_NO_DATA, null);
+                                } catch (Exception e) {
+                                    listener.doOnResponse(e.getMessage(), null);
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                listener.doOnResponse(generateErrorMsg(error), null);
+                                Log.d(TAG, "onErrorResponse: Erro no GET :" + generateErrorMsg(error));
+                            }
+                        });
+                    } catch (Exception e) {
+                        listener.doOnResponse(e.getMessage(), null);
+                        e.printStackTrace();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
