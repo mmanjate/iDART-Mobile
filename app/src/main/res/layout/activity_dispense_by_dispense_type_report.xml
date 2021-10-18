@@ -126,7 +126,43 @@
                     app:srcCompat="@drawable/ic_search"/>
 
             </LinearLayout>
-            <include layout="@layout/report_search_mode_opts" bind:viewModel="@{viewModel}" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/rdgSearchType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:checkedButton="@+id/rdLocal">
+
+                    <RadioButton
+                        android:id="@+id/rdLocal"
+                        android:layout_weight="2"
+                        android:textColor="@color/white"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:checked="@{!viewModel.onlineSearch}"
+                        android:onClick="@{() -> viewModel.changeReportSearchMode(@string/local)}"
+                        android:layout_height="wrap_content"
+                        android:text="Relatório local" />
+
+                    <RadioButton
+                        android:id="@+id/rdOnline"
+                        android:layout_weight="2"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:textColor="@color/white"
+                        android:checked="@{viewModel.onlineSearch}"
+                        android:onClick="@{() -> viewModel.changeReportSearchMode(@string/online)}"
+                        android:layout_height="wrap_content"
+                        android:text="Relatório online" />
+                    <View
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+                </RadioGroup>
+            </LinearLayout>
         </LinearLayout>
         <TextView
             android:id="@+id/initial_data"
