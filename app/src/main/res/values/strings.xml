@@ -471,4 +471,5 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
 
     <string name="estatistica_dispensas_por_regime_terapeutico_e_tipo_dispensa" translatable="false">Estatistica de Dispensas por Tipo de Dispensa e Regime</string>
     <string name="include_online_info">Incluir Informação online?</string>
+    <string name="online">online</string>
 </resources>
