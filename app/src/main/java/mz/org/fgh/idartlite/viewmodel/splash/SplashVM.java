@@ -155,11 +155,6 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
     }
 
     @Override
-    public void doOnRestSucessResponseObject(String flag, Clinic object) {
-
-    }
-
-    @Override
     public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {
         Map<String, Object> params = new HashMap<>();
         params.put("clinicList", objects);

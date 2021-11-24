@@ -279,7 +279,7 @@ public class LoginVM extends BaseViewModel {
 
     public void setAuthenticating(boolean authenticating) {
         this.authenticating = authenticating;
-        notifyPropertyChanged(BR.authenticating);
+        notifyChange();
     }
 
     @Bindable

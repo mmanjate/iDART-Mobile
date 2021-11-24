@@ -38,7 +38,7 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements ISto
 
         QueryBuilder<Stock, Integer> stockQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getStockDao().queryBuilder();
         if (offset > 0 && limit > 0) stockQb.offset(offset).limit(limit);
-        stockQb.orderBy(Stock.COLUMN_ORDER_NUMBER, true).groupBy(Stock.COLUMN_ORDER_NUMBER);
+        stockQb.orderBy(Stock.COLUMN_DATE_RECEIVED, false).groupBy(Stock.COLUMN_ORDER_NUMBER);
         stockQb.where().eq(Stock.COLUMN_CLINIC, clinic.getId()).and().not().exists(referedQb);
 
         return stockQb.query();

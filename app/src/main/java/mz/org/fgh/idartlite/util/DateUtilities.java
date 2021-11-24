@@ -26,6 +26,7 @@ public class DateUtilities {
     public static final String MINUTE_FORMAT="mm";
     public static final String MILLISECOND_FORMAT="SSS";
     public static final String DATE_FORMAT="dd-MM-yyyy";
+    public static final String MONTH_DATE_FORMAT="MM-dd-yyyy";
     public static final String DATE_TIME_FORMAT="dd-MM-yyyy HH:mm:ss";
     public static final String END_DAY_TIME="23:59:59";
 
@@ -156,6 +157,17 @@ public class DateUtilities {
             return "";
         }
         return garantirXCaracterOnNumber(getDayOfMonth(date), 2) + separator + garantirXCaracterOnNumber(getMonth(date), 2) + separator + getYear(date);
+    }
+
+    public static String formatToMMDDYYYY(Date date, String separator){
+        if (date == null){
+            return "";
+        }
+        return  garantirXCaracterOnNumber(getMonth(date), 2) + separator + garantirXCaracterOnNumber(getDayOfMonth(date), 2) + separator + getYear(date);
+    }
+
+    public static String formatToMMDDYYYY(Date date){
+        return  formatToMMDDYYYY(date, "/");
     }
 
     public static String garantirXCaracterOnNumber(long number, int x){

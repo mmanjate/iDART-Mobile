@@ -14,11 +14,14 @@ import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
@@ -456,5 +459,101 @@ public class RestDispenseService extends BaseRestService {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void restGetAllDispenseByPeriod(Date startDate, Date endDate, String clinicUUID, long offset, long limit, RestResponseListener listener) throws SQLException {
+
+
+            /*String url = BaseRestService.baseUrl + "/sync_temp_dispense_vw?pickupdate=gte." + DateUtilities.formatToYYYYMMDD(startDate) +
+                                                                        "&pickupdate=lte." + DateUtilities.formatToYYYYMMDD(endDate) +
+                                                                        "&clinicuuid=eq." + clinicUUID +
+                                                                        "&offset=" + offset +
+                                                                        "&limit=" + limit +
+                                                                        "&order=pickupdate.desc";*/
+        String url = BaseRestService.baseUrl + "/sync_temp_dispense_vw?clinicuuid=eq." + clinicUUID +
+                "&offset=" + offset +
+                "&limit=" + limit +
+                "&order=pickupdate.desc";
+
+            try {
+                getRestServiceExecutor().execute(() -> {
+
+                    RESTServiceHandler handler = new RESTServiceHandler();
+
+                    try {
+                        handler.addHeader("Content-Type", "application/json");
+                        handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
+
+                            @Override
+                            public void onResponse(Object[] dispenses) {
+                                try {
+                                    List<Dispense> dispenseList = new ArrayList<>();
+                                    if (dispenses.length > 0) {
+                                        for (Object dispense : dispenses) {
+                                            Log.d(TAG, "onResponse: Dispensa " + dispense);
+                                            Prescription newPrescription = getPrescroptionRest(dispense, null);
+                                            Dispense d = getDispenseOnRest(dispense, newPrescription);
+                                            //d.getPrescription().setPatient();
+                                            dispenseList.add(d);
+                                        }
+                                        listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
+                                    } else listener.doOnResponse(REQUEST_NO_DATA, null);
+                                } catch (Exception e) {
+                                    listener.doOnResponse(e.getMessage(), null);
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, error -> {
+                            listener.doOnResponse(generateErrorMsg(error), null);
+                            Log.d(TAG, "onErrorResponse: Erro no GET :" + generateErrorMsg(error));
+                        });
+                    } catch (Exception e) {
+                        listener.doOnResponse(e.getMessage(), null);
+                        e.printStackTrace();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+
+    public static void getAllTherapeuticRegimen(String clinicUUID, RestResponseListener listener) {
+
+        String url = BaseRestService.baseUrl + "/sync_temp_dispense_vw?clinicuuid=eq.045ee9e5-d1f6-4429-bb5d-ac05f97a8d62"+
+                "&offset=0" +
+                "&limit=10";
+
+        getRestServiceExecutor().execute(() -> {
+
+            RESTServiceHandler handler = new RESTServiceHandler();
+            handler.addHeader("Content-Type", "Application/json");
+
+            handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
+                @Override
+                public void onResponse(Object[] dispenses) {
+
+                    try {
+                        List<Dispense> dispenseList = new ArrayList<>();
+                        if (dispenses.length > 0) {
+                            for (Object dispense : dispenses) {
+                                Log.d(TAG, "onResponse: Dispensa " + dispense);
+                                Prescription newPrescription = getPrescroptionRest(dispense, null);
+                                Dispense d = getDispenseOnRest(dispense, newPrescription);
+                                //d.getPrescription().setPatient();
+                                dispenseList.add(d);
+                            }
+                            listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
+                        } else listener.doOnResponse(REQUEST_NO_DATA, null);
+                    } catch (Exception e) {
+                        listener.doOnResponse(e.getMessage(), null);
+                        e.printStackTrace();
+                    }
+
+                }
+            }, error -> {
+                listener.doOnResponse(generateErrorMsg(error), null);
+                Log.d(TAG, "onErrorResponse: Erro no GET :" + generateErrorMsg(error));
+            });
+        });
     }
 }

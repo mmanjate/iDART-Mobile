@@ -144,11 +144,6 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
     public void doOnRestErrorResponse(String errormsg) {}
 
     @Override
-    public void doOnRestSucessResponseObject(String flag, Clinic object) {
-
-    }
-
-    @Override
     public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {
 
     }

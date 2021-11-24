@@ -7,14 +7,18 @@ import androidx.databinding.Bindable;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseService;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.searchparams.DispenseSearchParams;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
@@ -25,14 +29,11 @@ import mz.org.fgh.idartlite.view.reports.DispenseReportActivity;
 
 public class DispenseReportVM extends SearchVM<Dispense> {
 
-
     private IDispenseService dispenseService;
 
     public DispenseReportVM(@NonNull Application application) {
         super(application);
         dispenseService = new DispenseService(application, getCurrentUser());
-
-
     }
 
     @Override
@@ -68,11 +69,15 @@ public class DispenseReportVM extends SearchVM<Dispense> {
     @Override
     protected void doOnNoRecordFound() {
 
-        if(getAllDisplyedRecords().size()>0){
-            getRelatedActivity().generatePdfButton(true);
-        }
-        else {
-            Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
+        if (!isOnlineSearch()) {
+            if (getAllDisplyedRecords().size() > 0) {
+                getRelatedActivity().generatePdfButton(true);
+            } else {
+                Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
+                getRelatedActivity().generatePdfButton(false);
+            }
+        } else {
+            Utilities.displayAlertDialog(getRelatedActivity(), onlineRequestError).show();
             getRelatedActivity().generatePdfButton(false);
         }
 
@@ -81,6 +86,14 @@ public class DispenseReportVM extends SearchVM<Dispense> {
 
     public List<Dispense> doSearch(long offset, long limit) throws SQLException {
         return getDispensesByDates(getSearchParams().getStartdate(), getSearchParams().getEndDate(),offset,limit);
+    }
+
+    @Override
+    public List<Dispense> doOnlineSearch(long offset, long limit) throws SQLException {
+        if (!Utilities.listHasElements(getSearchResults())) changeSearchStatusToPerforming();
+        else changeSearchStatusToLoadingMore();
+        RestDispenseService.restGetAllDispenseByPeriod(getSearchParams().getStartdate(), getSearchParams().getEndDate(), getCurrentClinic().getUuid() ,offset,limit, this);
+        return null;
     }
 
     @Override
@@ -131,5 +144,4 @@ public class DispenseReportVM extends SearchVM<Dispense> {
     public Clinic getClinic(){
         return getCurrentClinic();
     }
-
 }

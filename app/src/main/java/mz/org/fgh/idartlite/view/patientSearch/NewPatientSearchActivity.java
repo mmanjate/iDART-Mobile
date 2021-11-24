@@ -211,11 +211,6 @@ public class NewPatientSearchActivity extends BaseActivity implements RestRespon
     }
 
     @Override
-    public void doOnRestSucessResponseObject(String flag, Patient object) {
-
-    }
-
-    @Override
     public void doOnRestSucessResponseObjects(String flag, List<Patient> newPatients) {
 
         this.getRelatedViewModel().getSearchResults().clear();
