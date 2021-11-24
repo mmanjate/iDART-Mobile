@@ -29,7 +29,7 @@ import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.reports.FILAReportActivity;
 
-public class FILAReportVM extends SearchVM<Patient> implements RestResponseListener<Dispense> {
+public class FILAReportVM extends SearchVM<Patient>{
 
     private Patient patient;
     private IPatientService patientService;
@@ -71,7 +71,7 @@ public class FILAReportVM extends SearchVM<Patient> implements RestResponseListe
         if (this.isOnlineSearch()) {
             RestDispenseService.restGetAllDispenseByPatient(patient, this);
 
-            while (!Utilities.stringHasValue(this.onlineRequestError) || Utilities.listHasElements(this.dispenseList)) {
+            while (!Utilities.stringHasValue(this.onlineRequestError) && !Utilities.listHasElements(this.dispenseList)) {
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
@@ -159,36 +159,5 @@ public class FILAReportVM extends SearchVM<Patient> implements RestResponseListe
     public void setSearchParam(String searchParam) {
         getSearchParams().setSearchParam(searchParam);
         notifyPropertyChanged(BR.searchParam);
-    }
-
-    @Override
-    public void doOnRestSucessResponse(String flag) {
-
-    }
-
-    @Override
-    public void doOnRestErrorResponse(String errormsg) {
-
-    }
-
-    @Override
-    public void doOnRestSucessResponseObject(String flag, Dispense object) {
-
-    }
-
-    @Override
-    public void doOnRestSucessResponseObjects(String flag, List<Dispense> objects) {
-
-    }
-
-    @Override
-    public void doOnResponse(String flag, List<Dispense> objects) {
-        if (flag.equals(BaseRestService.REQUEST_SUCESS)) {
-            this.dispenseList = objects;
-        } else if (flag.equals(BaseRestService.REQUEST_NO_DATA)) {
-            this.onlineRequestError = "Não foram encontrados registos de levantamentos deste paciente.";
-        } else {
-            this.onlineRequestError = flag;
-        }
     }
 }

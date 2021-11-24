@@ -10,9 +10,7 @@ public interface RestResponseListener<T extends BaseModel> {
 
     void doOnRestErrorResponse(String errormsg);
 
-    void doOnRestSucessResponseObject(String flag, T object);
-
-   void doOnRestSucessResponseObjects(String flag, List<T> objects);
+    void doOnRestSucessResponseObjects(String flag, List<T> objects);
 
     default void doOnResponse(String flag, List<T> objects) {
 

@@ -90,11 +90,6 @@ public class SecondSplashVM extends BaseViewModel implements RestResponseListene
     }
 
     @Override
-    public void doOnRestSucessResponseObject(String flag, Clinic object) {
-
-    }
-
-    @Override
     public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {
 
     }

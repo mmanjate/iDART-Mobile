@@ -251,11 +251,6 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
     }
 
     @Override
-    public void doOnRestSucessResponseObject(String flag, BaseModel object) {
-
-    }
-
-    @Override
     public void doOnRestSucessResponseObjects(String flag, List objects) {
 
     }

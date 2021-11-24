@@ -15,15 +15,25 @@ import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
+import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implements SearchPaginator<T> {
+public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implements SearchPaginator<T>, RestResponseListener<T> {
 
-    public static final int PAGE_SIZE = 20;
+    public static final int PAGE_SIZE = 5;
 
-    public static final int RECORDS_PER_SEARCH = 100;
+    public static final int RECORDS_PER_SEARCH = 10;
+
+    public static final String PREPARING_SEARCH = "PREPARING_SEARCH";
+
+    public static final String PERFORMING_SEARCH = "PERFORMING_SEARCH";
+
+    public static final String LOADING_MORE_RECORDS = "LOADING_MORE_RECORDS";
+
+    public static final String SEARCH_FINISHED = "SEARCH_FINISHED";
 
     protected boolean paginatedSearch;
 
@@ -39,8 +49,14 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     protected String onlineRequestError;
 
+    protected String searchStatus;
+
+    private AbstractRecycleViewAdapter adapter;
+
     public SearchVM(@NonNull Application application) {
         super(application);
+
+        this.searchStatus = PREPARING_SEARCH;
 
         this.allDisplyedRecords = new ArrayList<>();
         this.searchResults = new ArrayList<>();
@@ -71,37 +87,47 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     public void initSearch() {
         try {
-        String errors = validateBeforeSearch();
-        if (Utilities.stringHasValue(errors)) {
-            displayErrors(errors);
-            return;
-        }
+            String errors = validateBeforeSearch();
+            if (Utilities.stringHasValue(errors)) {
+                displayErrors(errors);
+                return;
+            }
 
-        this.pageSize = getPageSize();
+            this.pageSize = getPageSize();
 
-        this.allDisplyedRecords.clear();
+            this.allDisplyedRecords.clear();
+            this.searchResults.clear();
 
-        if (isPaginatedSearch()) {
-            if (isOnlineSearch()) {
-                doOnlineSearch(0, RECORDS_PER_SEARCH);
-            } else this.searchResults = doSearch(0, RECORDS_PER_SEARCH);
-        }else {
-            if (isOnlineSearch()) {
-                doOnlineSearch(0, 0);
-            } else this.searchResults = doSearch(0, 0);
 
-        }
+            if (isPaginatedSearch()) {
+                if (isOnlineSearch()) {
+                    doOnlineSearch(0, RECORDS_PER_SEARCH);
+                } else this.searchResults = doSearch(0, RECORDS_PER_SEARCH);
+            }else {
+                if (isOnlineSearch()) {
+                    doOnlineSearch(0, 0);
+                } else this.searchResults = doSearch(0, 0);
 
-        if (Utilities.listHasElements(this.searchResults)) {
-            loadFirstPage();
-
-            displaySearchResults();
-        }else {
-            doOnNoRecordFound();
-        }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        if (!isOnlineSearch()) {
+            if (Utilities.listHasElements(this.searchResults)) {
+                loadFirstPage();
+
+                displaySearchResults();
+            } else {
+                doOnNoRecordFound();
+            }
+
+            notifyChange();
+        }
+    }
+
+    protected void doAfterFirstOnlineSearch() {
+        loadFirstPage();
+        displaySearchResults();
         notifyChange();
     }
 
@@ -145,33 +171,70 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         return searchParams;
     }
 
-    private void getNextRecordsToDisplay() throws SQLException {
+    protected void fullLoadRecords() throws SQLException {
+        List<T> recs = getNextRecordsToDisplay();
 
-        int end;
+        while (Utilities.listHasElements(recs)) {
+            recs = getNextRecordsToDisplay();
+        }
+    }
+
+    private List<T> getNextRecordsToDisplay() throws SQLException {
+
+        int end = 0;
+        List<T> recs = null;
 
         if ((allDisplyedRecords.size()+pageSize) > this.searchResults.size()){
-            List<T> recs = new ArrayList<>();
             if (isOnlineSearch()) {
-                recs = doSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
-            } else recs = doOnlineSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
+                doOnlineSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
+            } else recs = doSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
 
-            if (Utilities.listHasElements(recs)){
-                this.searchResults.addAll(recs);
-                if ((allDisplyedRecords.size()+pageSize) > this.searchResults.size()){
+            if (!onlineSearch) {
+                if (Utilities.listHasElements(recs)) {
+                    this.searchResults.addAll(recs);
+                    if ((allDisplyedRecords.size() + pageSize) > this.searchResults.size()) {
+                        end = this.searchResults.size() - 1;
+                    } else {
+                        end = allDisplyedRecords.size() + pageSize - 1;
+                    }
+                } else {
                     end = this.searchResults.size() - 1;
-                }else {
-                    end = allDisplyedRecords.size()+pageSize-1;
                 }
-            } else {
-                end = this.searchResults.size() - 1;
             }
         }else {
             end = allDisplyedRecords.size()+pageSize-1;
+            if (onlineSearch) loadNewRecords(end);
         }
 
-        for (int i = allDisplyedRecords.size(); i <= end; i++){
+        if (!onlineSearch) loadNewRecords(end);
+        return recs;
+    }
+
+    private void loadNewRecords(int end) {
+        for (int i = allDisplyedRecords.size(); i <= end; i++) {
             allDisplyedRecords.add(this.searchResults.get(i));
         }
+    }
+
+    private void doAfterOnlineLoadMoreRecords(List<T> newRecs) {
+        int end;
+
+        if (Utilities.listHasElements(newRecs)){
+            if ((allDisplyedRecords.size()+pageSize) > this.searchResults.size()){
+                end = this.searchResults.size() - 1;
+            }else {
+                end = allDisplyedRecords.size()+pageSize-1;
+            }
+        } else {
+            end = this.searchResults.size() - 1;
+        }
+        getAllDisplyedRecords().remove(getAllDisplyedRecords().size() - 1);
+        adapter.notifyItemRemoved(getAllDisplyedRecords().size());
+
+        loadNewRecords(end);
+
+        adapter.notifyDataSetChanged();
+        adapter.setLoaded();
     }
 
     public List<T> getSearchResults() {
@@ -187,8 +250,14 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         return PAGE_SIZE;
     }
 
+    private boolean mustSearchMore() {
+        return (allDisplyedRecords.size()+pageSize) > this.searchResults.size();
+    }
+
     public void loadMoreRecords(RecyclerView rv, AbstractRecycleViewAdapter adapter) {
-        if (isPaginatedSearch() && getAllDisplyedRecords().size() < getSearchResults().size()){
+        this.adapter = adapter;
+
+        if (isPaginatedSearch() && getAllDisplyedRecords().size() <= getSearchResults().size()){
             getAllDisplyedRecords().add(null);
             rv.post(new Runnable() {
                 @Override
@@ -200,15 +269,17 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getAllDisplyedRecords().remove(getAllDisplyedRecords().size() - 1);
-                    adapter.notifyItemRemoved(getAllDisplyedRecords().size());
+                    if (!isOnlineSearch() || !mustSearchMore()) {
+                        getAllDisplyedRecords().remove(getAllDisplyedRecords().size() - 1);
+                        adapter.notifyItemRemoved(getAllDisplyedRecords().size());
+                    }
+
 
                     try {
                         getNextRecordsToDisplay();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-
                     adapter.notifyDataSetChanged();
                     adapter.setLoaded();
 
@@ -218,7 +289,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     }
 
     protected int getDelayMillis() {
-        if (isOnlineSearch()) return 10000;
+        if (isOnlineSearch()) return 12000;
 
         return 6000;
     }
@@ -256,12 +327,76 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     }
 
     public void generatePDF() throws SQLException {
-        deActivatePaginatedSearch();
+        /*deActivatePaginatedSearch();
         getSearchResults().clear();
         this.searchResults = doSearch(0, 0);
         getAllDisplyedRecords().clear();
         getAllDisplyedRecords().addAll(getSearchResults());
 
-        activatePaginatedSearch();
+        activatePaginatedSearch();*/
+        fullLoadRecords();
+    }
+
+    @Override
+    public void doOnResponse(String flag, List<T> objects) {
+        if (flag.equals(BaseRestService.REQUEST_SUCESS)) {
+            this.searchResults.addAll(objects);
+        } else if (flag.equals(BaseRestService.REQUEST_NO_DATA)) {
+            this.onlineRequestError = "Não foram encontrados registos de levantamentos neste período.";
+        } else {
+            this.onlineRequestError = flag;
+        }
+        changeSearchStatusToFinished();
+
+        if (!Utilities.listHasElements(objects) && !Utilities.listHasElements(this.searchResults)) {
+            doOnNoRecordFound();
+        } else if ((!Utilities.listHasElements(objects) && Utilities.listHasElements(this.searchResults)) || (Utilities.listHasElements(objects) && this.searchResults.size() > RECORDS_PER_SEARCH)) {
+            doAfterOnlineLoadMoreRecords(objects);
+        } else if (Utilities.listHasElements(objects) || this.searchResults.size() <= RECORDS_PER_SEARCH) {
+            doAfterFirstOnlineSearch();
+        }
+    }
+
+    protected void changeSearchStatusToPerforming () {
+        this.searchStatus = PERFORMING_SEARCH;
+        notifyChange();
+    }
+
+    protected void changeSearchStatusToFinished() {
+        this.searchStatus = SEARCH_FINISHED;
+        notifyChange();
+    }
+
+    protected void changeSearchStatusToLoadingMore() {
+        this.searchStatus = LOADING_MORE_RECORDS;
+        notifyChange();
+    }
+
+    public boolean isSearchOnLoadingMore () {
+        return this.searchStatus.equals(LOADING_MORE_RECORDS);
+    }
+
+    public boolean isSearchOnProgress () {
+        return this.searchStatus.equals(PERFORMING_SEARCH);
+    }
+
+    public boolean isSearchOnFinished () {
+        return this.searchStatus.equals(SEARCH_FINISHED);
+    }
+
+
+    @Override
+    public void doOnRestSucessResponse(String flag) {
+
+    }
+
+    @Override
+    public void doOnRestErrorResponse(String errormsg) {
+
+    }
+
+    @Override
+    public void doOnRestSucessResponseObjects(String flag, List<T> objects) {
+
     }
 }
