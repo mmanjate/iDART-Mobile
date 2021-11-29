@@ -8,6 +8,7 @@ import androidx.databinding.Bindable;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseService;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
@@ -47,7 +49,7 @@ public class DispenseByDispenseTypeStatisticReportVM extends SearchVM<Dispense> 
         super(application);
         dispenseService = new DispenseService(application, getCurrentUser());
         therapheuticRegimenService = new TherapheuticRegimenService(application, getCurrentUser());
-
+        setFullLoad(true);
     }
 
     @Override
@@ -66,13 +68,80 @@ public class DispenseByDispenseTypeStatisticReportVM extends SearchVM<Dispense> 
     }
 
     public List getDispensesByDates(Date startDate, Date endDate, long offset, long limit) throws SQLException {
+        List<Dispense> dispenseList = dispenseService.getDispensesBetweenStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
+        return doBeforeDisplay(dispenseList);
+    }
 
+    @Override
+    public String validateBeforeSearch() {
+        if (!Utilities.stringHasValue(startDate) || !Utilities.stringHasValue(endDate)) {
+            return getRelatedActivity().getString(R.string.start_end_date_is_mandatory);
+        } else if (DateUtilities.dateDiff(DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0) {
+            return "A data inicio deve ser menor que a data fim.";
+        } else if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0) {
+            return "A data inicio deve ser menor ou igual que a data corrente.";
+        } else return null;
+    }
+
+    @Override
+    public void createPdfDocument() {
+        try {
+            this.getRelatedActivity().createPdfDocument();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void doOnNoRecordFound() {
+        if (!isOnlineSearch()) {
+            if (getAllDisplyedRecords().size() > 0) {
+                getRelatedActivity().generatePdfButton(true);
+            } else {
+                Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
+                getRelatedActivity().generatePdfButton(false);
+            }
+        } else {
+            Utilities.displayAlertDialog(getRelatedActivity(), onlineRequestError).show();
+            getRelatedActivity().generatePdfButton(false);
+        }
+    }
+
+
+    public List doSearch(long offset, long limit) throws SQLException {
+        return getDispensesByDates(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDateWithTime(endDate,DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT), offset, limit);
+    }
+
+    @Override
+    public void doOnlineSearch(long offset, long limit) throws SQLException {
+        super.doOnlineSearch(offset, limit);
+        RestDispenseService.restGetAllDispenseByPeriod(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDateWithTime(endDate,DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT), getCurrentClinic().getUuid() ,offset,limit, this);
+
+    }
+
+    @Override
+    public void displaySearchResults() {
+
+        Utilities.hideSoftKeyboard(getRelatedActivity());
+
+        getRelatedActivity().displaySearchResult();
+    }
+
+    @Override
+    public List doBeforeDisplay(List<Dispense> objects) {
         ArrayList list = new ArrayList();
 
 
-        List<Dispense> dispenseList = dispenseService.getDispensesBetweenStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
+        List<Dispense> dispenseList = objects;
 
-        List<TherapeuticRegimen> therapeuticRegimenList = therapheuticRegimenService.getAll();
+        List<TherapeuticRegimen> therapeuticRegimenList = null;
+        try {
+            therapeuticRegimenList = therapheuticRegimenService.getAll();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         for (TherapeuticRegimen regimen : therapeuticRegimenList) {
 
@@ -109,63 +178,6 @@ public class DispenseByDispenseTypeStatisticReportVM extends SearchVM<Dispense> 
                 list.add(map);
         }
         return list;
-    }
-
-
-    @Override
-    public void initSearch() {
-        if (!Utilities.stringHasValue(startDate) || !Utilities.stringHasValue(endDate)) {
-            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.start_end_date_is_mandatory)).show();
-        } else if (DateUtilities.dateDiff(DateUtilities.createDate(endDate, DateUtilities.DATE_FORMAT), DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0) {
-            Utilities.displayAlertDialog(getRelatedActivity(), "A data inicio deve ser menor que a data fim.").show();
-        } else if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0) {
-            Utilities.displayAlertDialog(getRelatedActivity(), "A data inicio deve ser menor ou igual que a data corrente.").show();
-        } else {
-
-            try {
-                super.initSearch();
-                if (getAllDisplyedRecords().size() > 0) {
-                    getRelatedActivity().generatePdfButton(true);
-                } else {
-                    Utilities.displayAlertDialog(getRelatedActivity(), "Não foram encontrados resultados para a sua pesquisa").show();
-                    getRelatedActivity().generatePdfButton(false);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    public void generatePDF() {
-        try {
-            super.generatePDF();
-            this.getRelatedActivity().createPdfDocument();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void doOnNoRecordFound() {
-
-    }
-
-
-    public List doSearch(long offset, long limit) throws SQLException {
-
-        return getDispensesByDates(DateUtilities.createDate(startDate, DateUtilities.DATE_FORMAT), DateUtilities.createDateWithTime(endDate,DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT), offset, limit);
-    }
-
-
-    @Override
-    public void displaySearchResults() {
-        Utilities.hideSoftKeyboard(getRelatedActivity());
-
-        getRelatedActivity().displaySearchResult();
     }
 
     @Override

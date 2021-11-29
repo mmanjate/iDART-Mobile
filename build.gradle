@@ -17,7 +17,7 @@ allprojects {
         google()
         jcenter()
         maven {
-            url "https://highsoft.bintray.com/Highcharts"
+            url "https://jitpack.io"
         }
     }
 }

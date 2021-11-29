@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
@@ -38,6 +39,8 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
     private HIChartView chartView;
     private EditText edtStart;
     private EditText edtEnd;
+    private RadioButton rdOnline;
+    private RadioButton rdLocal;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,24 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
         edtStart = findViewById(R.id.start);
         edtEnd = findViewById(R.id.end);
         ImageView search = findViewById(R.id.buttonSearch);
+        rdOnline = findViewById(R.id.rdOnline);
+        rdLocal = findViewById(R.id.rdLocal);
+        rdLocal.setChecked(true);
+
+        rdOnline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getRelatedViewModel().changeReportSearchMode(getString(R.string.online));
+            }
+        });
+
+        rdLocal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getRelatedViewModel().changeReportSearchMode(getString(R.string.local));
+            }
+        });
+
 
         edtStart.setOnClickListener(view -> {
             int mYear, mMonth, mDay;

@@ -54,6 +54,7 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.LoadingDialog;
 import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
 
@@ -91,6 +92,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     protected SecurePreferences settingsPreferences;
 
     private NotificationManagerCompat notificationManager;
+
+    LoadingDialog loadingDialog;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
@@ -448,5 +451,13 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
         Utilities.previewPdfFiles(getApplication(),pdfFile);
 
+    }
+
+    public void initLoadingDialog() {
+        this.loadingDialog = new LoadingDialog(getRelatedActivity());
+    }
+
+    public LoadingDialog getLoadingDialog() {
+        return loadingDialog;
     }
 }

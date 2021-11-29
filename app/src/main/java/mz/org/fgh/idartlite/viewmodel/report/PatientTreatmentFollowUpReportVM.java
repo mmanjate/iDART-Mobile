@@ -89,9 +89,9 @@ public class PatientTreatmentFollowUpReportVM extends SearchVM<ClinicInformation
         ((PatientTreatmentFollowUpReportActivity) getRelatedActivity()).displaySearchResult();
     }
 
-    public void generatePDF() {
+    @Override
+    public void createPdfDocument() {
         try {
-            super.generatePDF();
             ((PatientTreatmentFollowUpReportActivity)this.getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

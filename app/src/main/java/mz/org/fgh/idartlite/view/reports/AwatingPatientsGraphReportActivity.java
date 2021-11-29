@@ -13,13 +13,15 @@ import com.highsoft.highcharts.common.HIColor;
 import com.highsoft.highcharts.common.hichartsclasses.HICSSObject;
 import com.highsoft.highcharts.common.hichartsclasses.HIColumn;
 import com.highsoft.highcharts.common.hichartsclasses.HIDataLabels;
-import com.highsoft.highcharts.common.hichartsclasses.HIItems;
+import com.highsoft.highcharts.common.hichartsclasses.HIItem;
 import com.highsoft.highcharts.common.hichartsclasses.HILabels;
 import com.highsoft.highcharts.common.hichartsclasses.HIMarker;
 import com.highsoft.highcharts.common.hichartsclasses.HIOptions;
 import com.highsoft.highcharts.common.hichartsclasses.HIPie;
+import com.highsoft.highcharts.common.hichartsclasses.HIPlotOptions;
 import com.highsoft.highcharts.common.hichartsclasses.HISpline;
 import com.highsoft.highcharts.common.hichartsclasses.HITitle;
+import com.highsoft.highcharts.common.hichartsclasses.HITooltip;
 import com.highsoft.highcharts.common.hichartsclasses.HIXAxis;
 import com.highsoft.highcharts.common.hichartsclasses.HIYAxis;
 import com.highsoft.highcharts.core.HIChartView;
@@ -173,7 +175,7 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
         hiyAxis.getTitle().setText("Quantidade");
         options.setYAxis(new ArrayList(){{add(hiyAxis);}});
 
-        HIItems item = new HIItems();
+        /*HIItem item = new HIItem();
         item.setHtml("Total por Tipo de Dispensa");
         item.setStyle(new HICSSObject());
         item.getStyle().setTop("18px");
@@ -181,7 +183,21 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
 
         HILabels labels = new HILabels();
         labels.setItems(new ArrayList<>(Collections.singletonList(item)));
-        options.setLabels(labels);
+        options.setLabels(labels);*/
+
+        HITooltip tooltip = new HITooltip();
+        tooltip.setHeaderFormat("<span style=\"font-size:10px\">{point.key}</span><table>");
+        tooltip.setPointFormat("<tr><td style=\"color:{series.color};padding:0\">{series.name}: </td><td style=\"padding:0\"><b>{point.y:.1f} mm</b></td></tr>");
+        tooltip.setFooterFormat("</table>");
+        tooltip.setShared(true);
+        tooltip.setUseHTML(true);
+        options.setTooltip(tooltip);
+
+        HIPlotOptions plotOptions = new HIPlotOptions();
+        plotOptions.setColumn(new HIColumn());
+        plotOptions.getColumn().setPointPadding(0.2);
+        plotOptions.getColumn().setBorderWidth(0);
+        options.setPlotOptions(plotOptions);
 
 
         HIColumn cdm = new HIColumn();
@@ -248,49 +264,6 @@ public class AwatingPatientsGraphReportActivity extends BaseActivity {
         cdt.setData(new ArrayList<>(Arrays.asList(dtData)));
         cds.setData(new ArrayList<>(Arrays.asList(dsData)));
         cdOther.setData(new ArrayList<>(Arrays.asList(otherData)));
-
-
-        HISpline spline = new HISpline();
-        spline.setName("Total");
-        spline.setData(new ArrayList<>(Arrays.asList(splineData)));
-        spline.setMarker(new HIMarker());
-        spline.getMarker().setLineWidth(2);
-        spline.getMarker().setFillColor(HIColor.initWithName("white"));
-        spline.getMarker().setLineColor(HIColor.initWithHexValue("f7a35c"));
-
-        HIPie pie = new HIPie();
-        pie.setName("Total");
-        HashMap<String, Object> map1 = new HashMap<>();
-        map1.put("name", "Mensal");
-        map1.put("y", sumdm);
-        map1.put("color", "#7cb5ec");
-        HashMap<String, Object> map2 = new HashMap<>();
-        map2.put("name", "Trimestral");
-        map2.put("y", sumdt);
-        map2.put("color", "#434348");
-        HashMap<String, Object> map3 = new HashMap<>();
-        map3.put("name", "Semestral");
-        map3.put("y", sumds);
-        map3.put("color", "#90ed7d");
-        HashMap<String, Object> map4 = new HashMap<>();
-        map4.put("name", "Outro");
-        map4.put("y", sumother);
-        map4.put("color", "#ffcc7d");
-
-        List<HashMap<String, Object>> totalmapList = new ArrayList<>();
-        if (sumdm > 0) totalmapList.add(map1);
-        if (sumdt > 0) totalmapList.add(map2);
-        if (sumds > 0) totalmapList.add(map3);
-        if (sumother > 0) totalmapList.add(map4);
-
-        pie.setData(new ArrayList<>(totalmapList));
-        pie.setCenter(new ArrayList<>(Arrays.asList(100, 80)));
-        pie.setSize("100");
-        pie.setShowInLegend(false);
-        pie.setDataLabels(new HIDataLabels());
-        pie.getDataLabels().setEnabled(true);
-
-        //options.setSeries(new ArrayList<>(Arrays.asList(cdm, cdt, cds, cdOther, spline, pie)));
 
         options.setSeries(new ArrayList<>(Arrays.asList(cdm, cdt, cds, cdOther)));
 

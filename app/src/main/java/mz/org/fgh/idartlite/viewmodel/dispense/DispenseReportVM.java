@@ -5,9 +5,12 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import com.itextpdf.text.DocumentException;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -55,16 +58,17 @@ public class DispenseReportVM extends SearchVM<Dispense> {
         return dispenseService.getDispensesBetweenStartDateAndEndDateWithLimit(startDate, endDate,offset,limit);
     }
 
-    public void generatePDF() {
+    @Override
+    public void createPdfDocument() {
         try {
-            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (Exception e) {
+        } catch (DocumentException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     protected void doOnNoRecordFound() {
@@ -89,11 +93,9 @@ public class DispenseReportVM extends SearchVM<Dispense> {
     }
 
     @Override
-    public List<Dispense> doOnlineSearch(long offset, long limit) throws SQLException {
-        if (!Utilities.listHasElements(getSearchResults())) changeSearchStatusToPerforming();
-        else changeSearchStatusToLoadingMore();
+    public void doOnlineSearch(long offset, long limit) throws SQLException {
+        super.doOnlineSearch(offset, limit);
         RestDispenseService.restGetAllDispenseByPeriod(getSearchParams().getStartdate(), getSearchParams().getEndDate(), getCurrentClinic().getUuid() ,offset,limit, this);
-        return null;
     }
 
     @Override

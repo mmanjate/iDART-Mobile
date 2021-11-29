@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
@@ -23,9 +24,9 @@ import mz.org.fgh.idartlite.util.Utilities;
 
 public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implements SearchPaginator<T>, RestResponseListener<T> {
 
-    public static final int PAGE_SIZE = 5;
+    public static final int PAGE_SIZE = 20;
 
-    public static final int RECORDS_PER_SEARCH = 10;
+    public static final int RECORDS_PER_SEARCH = 100;
 
     public static final String PREPARING_SEARCH = "PREPARING_SEARCH";
 
@@ -50,6 +51,11 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     protected String onlineRequestError;
 
     protected String searchStatus;
+
+    protected boolean isPdfGeneration;
+
+    protected boolean isFullLoad;
+
 
     private AbstractRecycleViewAdapter adapter;
 
@@ -100,11 +106,11 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
 
             if (isPaginatedSearch()) {
-                if (isOnlineSearch()) {
+                if (isOnlineSearch() && !canDisplayRecsAfterInitSearch()) {
                     doOnlineSearch(0, RECORDS_PER_SEARCH);
                 } else this.searchResults = doSearch(0, RECORDS_PER_SEARCH);
             }else {
-                if (isOnlineSearch()) {
+                if (isOnlineSearch() && !canDisplayRecsAfterInitSearch()) {
                     doOnlineSearch(0, 0);
                 } else this.searchResults = doSearch(0, 0);
 
@@ -112,7 +118,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (!isOnlineSearch()) {
+        if (!isOnlineSearch() || canDisplayRecsAfterInitSearch()) {
             if (Utilities.listHasElements(this.searchResults)) {
                 loadFirstPage();
 
@@ -125,10 +131,20 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         }
     }
 
+    protected boolean canDisplayRecsAfterInitSearch() {
+        return false;
+    }
+
     protected void doAfterFirstOnlineSearch() {
-        loadFirstPage();
+        if (!isFullLoad) loadFirstPage();
         displaySearchResults();
         notifyChange();
+    }
+
+    @Override
+    public void doOnlineSearch(long offset, long limit) throws SQLException {
+        if (!Utilities.listHasElements(getSearchResults())) changeSearchStatusToPerforming();
+        else changeSearchStatusToLoadingMore();
     }
 
     public String validateBeforeSearch(){
@@ -172,10 +188,24 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     }
 
     protected void fullLoadRecords() throws SQLException {
-        List<T> recs = getNextRecordsToDisplay();
+        if (!isOnlineSearch()) {
+            List<T> recs = getNextRecordsToDisplay();
 
-        while (Utilities.listHasElements(recs)) {
-            recs = getNextRecordsToDisplay();
+            while (Utilities.listHasElements(recs)) {
+                recs = getNextRecordsToDisplay();
+            }
+            changeSearchStatusToFinished();
+
+            if (isPdfGeneration) {
+                setPdfGeneration(false);
+                getLoadingDialog().dismisDialog();
+                createPdfDocument();
+            }
+        } else {
+            getAllDisplyedRecords().clear();
+            getAllDisplyedRecords().addAll(getSearchResults());
+
+            getNextRecordsToDisplay();
         }
     }
 
@@ -217,24 +247,45 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     }
 
     private void doAfterOnlineLoadMoreRecords(List<T> newRecs) {
-        int end;
-
-        if (Utilities.listHasElements(newRecs)){
-            if ((allDisplyedRecords.size()+pageSize) > this.searchResults.size()){
-                end = this.searchResults.size() - 1;
-            }else {
-                end = allDisplyedRecords.size()+pageSize-1;
+        if (isPdfGeneration || isFullLoad) {
+            if (Utilities.listHasElements(newRecs)) {
+                getAllDisplyedRecords().addAll(newRecs);
+                try {
+                    getNextRecordsToDisplay();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            } else {
+                changeSearchStatusToFinished();
+                if (isPdfGeneration) {
+                    setPdfGeneration(false);
+                    getLoadingDialog().dismisDialog();
+                    createPdfDocument();
+                } else {
+                    getAllDisplyedRecords().clear();
+                    getAllDisplyedRecords().addAll(doBeforeDisplay(getSearchResults()));
+                    doAfterFirstOnlineSearch();
+                }
             }
         } else {
-            end = this.searchResults.size() - 1;
+            int end;
+            if (Utilities.listHasElements(newRecs)) {
+                if ((allDisplyedRecords.size() + pageSize) > this.searchResults.size()) {
+                    end = this.searchResults.size() - 1;
+                } else {
+                    end = allDisplyedRecords.size() + pageSize - 1;
+                }
+            } else {
+                end = this.searchResults.size() - 1;
+            }
+            getAllDisplyedRecords().remove(getAllDisplyedRecords().size() - 1);
+            adapter.notifyItemRemoved(getAllDisplyedRecords().size());
+
+            loadNewRecords(end);
+
+            adapter.notifyDataSetChanged();
+            adapter.setLoaded();
         }
-        getAllDisplyedRecords().remove(getAllDisplyedRecords().size() - 1);
-        adapter.notifyItemRemoved(getAllDisplyedRecords().size());
-
-        loadNewRecords(end);
-
-        adapter.notifyDataSetChanged();
-        adapter.setLoaded();
     }
 
     public List<T> getSearchResults() {
@@ -257,7 +308,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     public void loadMoreRecords(RecyclerView rv, AbstractRecycleViewAdapter adapter) {
         this.adapter = adapter;
 
-        if (isPaginatedSearch() && getAllDisplyedRecords().size() <= getSearchResults().size()){
+        if (isPaginatedSearch() && getAllDisplyedRecords().size() <= getSearchResults().size() && getSearchResults().size() >= PAGE_SIZE){
             getAllDisplyedRecords().add(null);
             rv.post(new Runnable() {
                 @Override
@@ -273,7 +324,6 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
                         getAllDisplyedRecords().remove(getAllDisplyedRecords().size() - 1);
                         adapter.notifyItemRemoved(getAllDisplyedRecords().size());
                     }
-
 
                     try {
                         getNextRecordsToDisplay();
@@ -326,23 +376,32 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         return this.paginatedSearch;
     }
 
-    public void generatePDF() throws SQLException {
-        /*deActivatePaginatedSearch();
-        getSearchResults().clear();
-        this.searchResults = doSearch(0, 0);
-        getAllDisplyedRecords().clear();
-        getAllDisplyedRecords().addAll(getSearchResults());
+    public void generatePDF() {
 
-        activatePaginatedSearch();*/
-        fullLoadRecords();
+        getLoadingDialog().startLoadingDialog();
+
+        changeSearchStatusToPerforming();
+
+        setPdfGeneration(true);
+
+        try {
+            fullLoadRecords();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
     public void doOnResponse(String flag, List<T> objects) {
         if (flag.equals(BaseRestService.REQUEST_SUCESS)) {
-            this.searchResults.addAll(objects);
+            if (!isFullLoad) {
+                this.searchResults.addAll(doBeforeDisplay(objects));
+            }else {
+                this.searchResults.addAll(objects);
+            }
+
         } else if (flag.equals(BaseRestService.REQUEST_NO_DATA)) {
-            this.onlineRequestError = "Não foram encontrados registos de levantamentos neste período.";
+            this.onlineRequestError = "Não foram encontrados registos para o período indicado.";
         } else {
             this.onlineRequestError = flag;
         }
@@ -350,11 +409,24 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
         if (!Utilities.listHasElements(objects) && !Utilities.listHasElements(this.searchResults)) {
             doOnNoRecordFound();
-        } else if ((!Utilities.listHasElements(objects) && Utilities.listHasElements(this.searchResults)) || (Utilities.listHasElements(objects) && this.searchResults.size() > RECORDS_PER_SEARCH)) {
+        } else if (isFullLoad || ((!Utilities.listHasElements(objects) && Utilities.listHasElements(this.searchResults)) || (Utilities.listHasElements(objects) && this.searchResults.size() > RECORDS_PER_SEARCH))) {
             doAfterOnlineLoadMoreRecords(objects);
-        } else if (Utilities.listHasElements(objects) || this.searchResults.size() <= RECORDS_PER_SEARCH) {
+        } else if ((Utilities.listHasElements(objects) || this.searchResults.size() <= RECORDS_PER_SEARCH) && !isFullLoad) {
             doAfterFirstOnlineSearch();
         }
+    }
+
+    public boolean isFullLoad() {
+        return isFullLoad;
+    }
+
+    public void setFullLoad(boolean fullLoad) {
+        isFullLoad = fullLoad;
+    }
+
+    @Override
+    public Collection<? extends T> doBeforeDisplay(List<T> objects) {
+        return objects;
     }
 
     protected void changeSearchStatusToPerforming () {
@@ -369,6 +441,15 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     protected void changeSearchStatusToLoadingMore() {
         this.searchStatus = LOADING_MORE_RECORDS;
+        notifyChange();
+    }
+
+    public boolean isPdfGeneration() {
+        return isPdfGeneration;
+    }
+
+    public void setPdfGeneration(boolean pdfGeneration) {
+        isPdfGeneration = pdfGeneration;
         notifyChange();
     }
 

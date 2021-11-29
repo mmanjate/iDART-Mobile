@@ -8,6 +8,7 @@ import androidx.databinding.Bindable;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
+import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseService;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.searchparams.DispenseSearchParams;
 import mz.org.fgh.idartlite.service.dispense.DispenseDrugService;
@@ -31,6 +33,7 @@ import mz.org.fgh.idartlite.service.drug.ITherapheuticRegimenService;
 import mz.org.fgh.idartlite.service.drug.TherapheuticRegimenService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.reports.DispenseDrugGraphStatisticReportActivity;
 import mz.org.fgh.idartlite.view.reports.DispenseDrugStatisticReportActivity;
 
 public class DispenseDrugStatisticReportVM extends SearchVM<Dispense> {
@@ -47,6 +50,7 @@ public class DispenseDrugStatisticReportVM extends SearchVM<Dispense> {
         dispenseService = new DispenseService(application, getCurrentUser());
         therapheuticRegimenService = new TherapheuticRegimenService(application, getCurrentUser());
         dispenseDrugService = new DispenseDrugService(application, getCurrentUser());
+        setFullLoad(true);
     }
 
     @Override
@@ -127,10 +131,9 @@ public class DispenseDrugStatisticReportVM extends SearchVM<Dispense> {
         return null;
     }
 
-
-    public void generatePDF() {
+    @Override
+    public void createPdfDocument() {
         try {
-            super.generatePDF();
             ((DispenseDrugStatisticReportActivity)getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,15 +149,76 @@ public class DispenseDrugStatisticReportVM extends SearchVM<Dispense> {
 
 
     public List doSearch(long offset, long limit) throws SQLException {
-
         return getDispensesByDates(getSearchParams().getStartdate(), getSearchParams().getEndDate(), offset, limit);
+    }
+
+    @Override
+    public void doOnlineSearch(long offset, long limit) throws SQLException {
+        //if (this instanceof DispenseDrugGraphStatisticReportVM) getLoadingDialog().startLoadingDialog();
+        super.doOnlineSearch(offset, limit);
+        RestDispenseService.restGetAllDispenseByPeriod(getSearchParams().getStartdate(), getSearchParams().getEndDate(), getCurrentClinic().getUuid() ,offset,limit, this);
+    }
+
+    @Override
+    public List doBeforeDisplay(List<Dispense> objects) {
+        ArrayList list = new ArrayList();
+
+        List<DispensedDrug> dispensedDrugs = new ArrayList<>();
+
+        for (Dispense dispense : objects) {
+            dispensedDrugs.addAll(dispense.getDispensedDrugs());
+        }
+
+        Map<Drug,List<DispensedDrug>> drugsMap=new HashMap<>();
+
+
+        for (int i=0;i<dispensedDrugs.size();i++){
+
+            Drug    value = dispensedDrugs.get(i).getStock().getDrug();
+
+            List<DispensedDrug> al = drugsMap.get(value);
+
+            if (al == null)
+            {
+                drugsMap.put(value, (List<DispensedDrug>) (al = new ArrayList<DispensedDrug>()));
+            }
+
+            al.add(dispensedDrugs.get(i));
+        }
+
+        for (Drug drug: drugsMap.keySet()) {
+
+
+            List<DispensedDrug> dispenseDrugs= drugsMap.get(drug);
+            int quantityDispensed=0;
+            for (DispensedDrug dispenseD:
+                    dispenseDrugs) {
+
+                quantityDispensed+=dispenseD.getQuantitySupplied();
+
+            }
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("nomeMedicamento", drug.getDescription());
+            map.put("totalFrascosDispensados", quantityDispensed);
+
+            list.add(map);
+        }
+
+
+        return list;
     }
 
     @Override
     public void displaySearchResults() {
         Utilities.hideSoftKeyboard(getRelatedActivity());
 
-        ((DispenseDrugStatisticReportActivity)getRelatedActivity()).displaySearchResult();
+        if (this instanceof  DispenseDrugGraphStatisticReportVM) {
+            //getLoadingDialog().dismisDialog();
+            ((DispenseDrugGraphStatisticReportActivity) getRelatedActivity()).displaySearchResult();
+        } else
+            ((DispenseDrugStatisticReportActivity)getRelatedActivity()).displaySearchResult();
+
     }
 
     @Bindable

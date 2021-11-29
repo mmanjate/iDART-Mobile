@@ -138,9 +138,9 @@ public class AwatingPatientsStatisticReportVM extends SearchVM<Dispense> {
         }
     }
 
-    public void generatePDF() {
+    @Override
+    public void createPdfDocument() {
         try {
-            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

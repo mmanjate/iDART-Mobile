@@ -22,6 +22,7 @@ import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.reports.AbsentPatientsReportActivity;
+import mz.org.fgh.idartlite.view.reports.PatientTreatmentFollowUpReportActivity;
 
 public class AbsentPatientsReportVM extends SearchVM<Dispense> {
 
@@ -74,9 +75,9 @@ public class AbsentPatientsReportVM extends SearchVM<Dispense> {
         return null;
     }
 
-    public void generatePDF() {
+   @Override
+    public void createPdfDocument() {
         try {
-            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
