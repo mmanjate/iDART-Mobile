@@ -11,12 +11,5 @@ public class DispenseDrugGraphStatisticReportVM extends DispenseDrugStatisticRep
 
     public DispenseDrugGraphStatisticReportVM(@NonNull Application application) {
         super(application);
-        deActivatePaginatedSearch();
-    }
-
-    @Override
-    public void displaySearchResults() {
-        Utilities.hideSoftKeyboard(getRelatedActivity());
-        ((DispenseDrugGraphStatisticReportActivity) getRelatedActivity()).displaySearchResult();
     }
 }

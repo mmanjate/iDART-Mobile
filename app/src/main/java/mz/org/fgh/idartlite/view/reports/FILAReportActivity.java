@@ -67,6 +67,9 @@ public class FILAReportActivity extends BaseActivity {
     private ActivityFilaReportBinding filaReportBinding;
     private ContentListPatientAdapter adapter;
     private ListbleReportFilaRecycleViewAdapter listbleReportFilaRecycleViewAdapter;
+    private RecyclerView recyclerDispenses;
+    private ActivityFilaDispenseReportDialogBinding dialogFila;
+    private Dialog dialog;
 
 
     private static final String TAG = "FILAReportActivity";
@@ -165,11 +168,12 @@ public class FILAReportActivity extends BaseActivity {
     }
 
     public void showDialog(Activity activity, Patient patient) {
-        final Dialog dialog = new Dialog(activity);
+        if (getRelatedViewModel().isOnlineSearch()) getRelatedViewModel().showDialog();
+
+        dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
        // dialog.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        ActivityFilaDispenseReportDialogBinding dialogFila =DataBindingUtil.inflate(LayoutInflater.from(activity.getApplicationContext()), R.layout. activity_fila_dispense_report_dialog, null, false);
+        dialogFila =DataBindingUtil.inflate(LayoutInflater.from(activity.getApplicationContext()), R.layout. activity_fila_dispense_report_dialog, null, false);
        // setContentView(dialogFila.getRoot());
       dialog.setContentView(dialogFila.getRoot());
 
@@ -186,7 +190,7 @@ public class FILAReportActivity extends BaseActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity.getApplication());
 
 
-        RecyclerView recyclerDispenses = dialogFila.reyclerDispenses;
+        recyclerDispenses = dialogFila.reyclerDispenses;
 
         recyclerDispenses.setLayoutManager(layoutManager);
         recyclerDispenses.setHasFixedSize(true);
@@ -198,13 +202,21 @@ public class FILAReportActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        listbleReportFilaRecycleViewAdapter = new ListbleReportFilaRecycleViewAdapter(recyclerDispenses, dispenses, (BaseActivity) activity);
+        if (!getRelatedViewModel().isOnlineSearch()) {
+            doAfterSearch(dispenses);
+        }
+
+    }
+
+    public void doAfterSearch (List<Dispense> dispenses) {
+        if (getRelatedViewModel().isOnlineSearch()) getRelatedViewModel().dismisDialog();
+
+        listbleReportFilaRecycleViewAdapter = new ListbleReportFilaRecycleViewAdapter(recyclerDispenses, dispenses, (BaseActivity) FILAReportActivity.this);
         recyclerDispenses.setAdapter(listbleReportFilaRecycleViewAdapter);
 
 
-
-      //  Button ok = (Button) dialog.findViewById(R.id.buttonId);
-        dialogFila.buttonId .setOnClickListener(new View.OnClickListener() {
+        //  Button ok = (Button) dialog.findViewById(R.id.buttonId);
+        dialogFila.buttonId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -215,17 +227,15 @@ public class FILAReportActivity extends BaseActivity {
         dialogFila.buttonPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createPdfDocument(finalDispenses,patient);
+                createPdfDocument(finalDispenses, getRelatedViewModel().getPatient());
             }
         });
 
         if (!dispenses.isEmpty()) {
             dialog.show();
-        }
-        else {
+        } else {
             Utilities.displayAlertDialog(this, getString(R.string.paciente_nao_tem_dispensas)).show();
         }
-
     }
 
     public void createPdfDocument(List<Dispense> dispenses,Patient patient)  {

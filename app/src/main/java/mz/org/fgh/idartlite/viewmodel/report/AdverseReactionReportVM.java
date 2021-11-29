@@ -105,18 +105,15 @@ public class AdverseReactionReportVM extends SearchVM<ClinicInformation> {
         return new ClinicInformationSearchParams();
     }
 
-    public void generatePDF() {
+    @Override
+    public void createPdfDocument() {
         try {
-            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (DocumentException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
         }
-
     }
 
     public String getReportType() {

@@ -67,9 +67,9 @@ public class AwatingPatientsReportVM extends SearchVM<Dispense> {
         return null;
     }
 
-    public void generatePDF() {
+    @Override
+    public void createPdfDocument() {
         try {
-            super.generatePDF();
             ((PatientsAwaitingReportActivity)getRelatedActivity()).createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

@@ -43,7 +43,7 @@ public class FILAReportVM extends SearchVM<Patient>{
         super(application);
         patientService = new PatientService(application, getCurrentUser());
         dispenseService=new DispenseService(application,getCurrentUser());
-
+        setFullLoad(true);
     }
 
     @Override
@@ -65,23 +65,16 @@ public class FILAReportVM extends SearchVM<Patient>{
         return patientService.searchPatientByParamAndClinic(param,clinic, offset, limit);
     }
 
+    public void showDialog () {
+        getLoadingDialog().startLoadingDialog();
+    }
+
     public List<Dispense> getAllDispensesByPatient(Patient patient) throws SQLException {
         this.dispenseList = new ArrayList<>();
 
         if (this.isOnlineSearch()) {
             RestDispenseService.restGetAllDispenseByPatient(patient, this);
-
-            while (!Utilities.stringHasValue(this.onlineRequestError) && !Utilities.listHasElements(this.dispenseList)) {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (!Utilities.stringHasValue(this.onlineRequestError)) return this.dispenseList;
-            else Utilities.displayAlertDialog(getRelatedActivity(), this.onlineRequestError).show();
-        } else   {
+        } else {
             return dispenseService.getAllOfPatient(patient);
         }
         return null;
@@ -98,6 +91,11 @@ public class FILAReportVM extends SearchVM<Patient>{
     }
 
     @Override
+    public void doOnResponse(String flag, List objects) {
+        getRelatedActivity().doAfterSearch(objects);
+    }
+
+    @Override
     protected void doOnNoRecordFound() {
         Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.no_search_results)).show();
     }
@@ -107,6 +105,10 @@ public class FILAReportVM extends SearchVM<Patient>{
         Utilities.hideSoftKeyboard(getRelatedActivity());
 
         getRelatedActivity().displaySearchResult();
+    }
+
+    public void dismisDialog () {
+        getLoadingDialog().dismisDialog();
     }
 
     @Override
@@ -125,8 +127,13 @@ public class FILAReportVM extends SearchVM<Patient>{
     }
 
     @Override
-    public List<Patient> doOnlineSearch(long offset, long limit) throws SQLException {
-        return doSearch(offset, limit);
+    public void doOnlineSearch(long offset, long limit) throws SQLException {
+        doSearch(offset, limit);
+    }
+
+    @Override
+    protected boolean canDisplayRecsAfterInitSearch() {
+        return true;
     }
 
     public Patient getPatient() {

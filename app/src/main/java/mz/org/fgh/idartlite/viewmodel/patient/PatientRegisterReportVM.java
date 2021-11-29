@@ -60,16 +60,14 @@ public class PatientRegisterReportVM extends SearchVM<Patient> {
         return patientService.getPatientsBetweenStartDateAndEndDate(getApplication(),startDate,endDate,offset,limit);
     }
 
-    public void generatePDF() {
+    @Override
+    public void createPdfDocument() {
         try {
-            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (DocumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 

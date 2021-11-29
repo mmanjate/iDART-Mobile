@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.base.viewModel;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
@@ -14,7 +15,11 @@ public interface SearchPaginator<T extends BaseModel>{
 
     AbstractSearchParams<T> initSearchParams();
 
-    default List<T> doOnlineSearch(long offset, long limit) throws SQLException {
+    default void doOnlineSearch(long offset, long limit) throws SQLException {}
+
+    default void createPdfDocument() {}
+
+    default Collection<? extends T> doBeforeDisplay(List<T> objects) {
         return null;
     }
 

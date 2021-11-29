@@ -22,6 +22,7 @@ import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.reports.DispenseDrugStatisticReportActivity;
 import mz.org.fgh.idartlite.view.reports.DispensesNonSyncReportActivity;
 
 public class DispensesNonSyncReportVM extends SearchVM<Dispense> {
@@ -87,10 +88,9 @@ public class DispensesNonSyncReportVM extends SearchVM<Dispense> {
 
         }
     }
-
-    public void generatePDF() {
+    @Override
+    public void createPdfDocument() {
         try {
-            super.generatePDF();
             this.getRelatedActivity().createPdfDocument();
         } catch (IOException e) {
             e.printStackTrace();

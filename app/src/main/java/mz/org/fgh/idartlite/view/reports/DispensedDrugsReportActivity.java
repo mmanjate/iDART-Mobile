@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
@@ -40,6 +41,8 @@ public class DispensedDrugsReportActivity extends BaseActivity {
     private HIChartView chartView;
     private EditText edtStart;
     private EditText edtEnd;
+    private RadioButton rdOnline;
+    private RadioButton rdLocal;
 
 
     @Override
@@ -60,6 +63,23 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         edtStart = findViewById(R.id.start);
         edtEnd = findViewById(R.id.end);
         ImageView search = findViewById(R.id.buttonSearch);
+        rdOnline = findViewById(R.id.rdOnline);
+        rdLocal = findViewById(R.id.rdLocal);
+        rdLocal.setChecked(true);
+
+        rdOnline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getRelatedViewModel().changeReportSearchMode(getString(R.string.online));
+            }
+        });
+
+        rdLocal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getRelatedViewModel().changeReportSearchMode(getString(R.string.local));
+            }
+        });
 
         edtStart.setOnClickListener(view -> {
             int mYear, mMonth, mDay;
@@ -147,26 +167,28 @@ public class DispensedDrugsReportActivity extends BaseActivity {
                 Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
             }else {
                 Utilities.hideSoftKeyboard(DispensedDrugsReportActivity.this);
-                generateGraph(start, end);
+                try {
+                    getRelatedViewModel().doSearch(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDateWithTime(end, DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT));
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
         });
     }
 
-    private void generateGraph(String start, String end) {
+    public void generateGraph() {
 
         start = edtStart.getText().toString();
         end = edtEnd.getText().toString();
+        Map<String, Double> map;
 
-        Map<String, Double> map = new HashMap<>();
-        try {
-            map = getRelatedViewModel().search(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDateWithTime(end, DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        map = getRelatedViewModel().getSearchResults();
 
-        if (map == null || map.isEmpty() || map.size() == 0){
+        if (map == null || map.isEmpty()){
             Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Não foram encontrados resultados para a sua pesquisa!").show();
             return;
+        } else {
+            map.size();
         }
 
         HIOptions options = new HIOptions();
@@ -190,8 +212,8 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         plotOptions.setPie(new HIPie());
         plotOptions.getPie().setAllowPointSelect(true);
         plotOptions.getPie().setCursor("pointer");
-        plotOptions.getPie().setDataLabels(new HIDataLabels());
-        plotOptions.getPie().getDataLabels().setEnabled(false);
+        //plotOptions.getPie().setDataLabels(new HIDataLabels());
+        //plotOptions.getPie().getDataLabels().setEnabled(false);
         plotOptions.getPie().setShowInLegend(true);
         options.setPlotOptions(plotOptions);
 
