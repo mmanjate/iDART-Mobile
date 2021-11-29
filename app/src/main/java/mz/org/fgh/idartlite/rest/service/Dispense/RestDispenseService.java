@@ -473,13 +473,18 @@ public class RestDispenseService extends BaseRestService {
             url = BaseRestService.baseUrl + "/sync_temp_dispense_vw?pickupdate=gte." + DateUtilities.formatToYYYYMMDD(startDate) +
                     "&pickupdate=lte." + DateUtilities.formatToYYYYMMDD(endDate) +
                     "&clinicuuid=eq." + clinicUUID +
+                    "&qtyinhand=neq.(30)" +
+                    "&qtyinhand=neq.(90)" +
                     "&offset=" + offset +
+
                     "&limit=" + limit +
                     "&order=pickupdate.desc";
         }else {
             url = BaseRestService.baseUrl + "/sync_temp_dispense_vw?pickupdate=gte." + DateUtilities.formatToYYYYMMDD(startDate) +
                     "&pickupdate=lte." + DateUtilities.formatToYYYYMMDD(endDate) +
                     "&clinicuuid=eq." + clinicUUID +
+                    "&qtyinhand=neq.(30)" +
+                    "&qtyinhand=neq.(90)" +
                     "&order=pickupdate.desc";
         }
 
@@ -539,6 +544,7 @@ public class RestDispenseService extends BaseRestService {
             dispensedDrug.setDispense(dispense);
             dispensedDrug.setStock(new Stock());
             dispensedDrug.getStock().setDrug(localDrug);
+            dispensedDrug.setQuantitySupplied(Integer.valueOf(itemresult.get("qtyinhand").toString().substring(1,2)));
             if (!Utilities.listHasElements(dispense.getDispensedDrugs())) dispense.setDispensedDrugs(new ArrayList<>());
             dispense.getDispensedDrugs().add(dispensedDrug);
         }

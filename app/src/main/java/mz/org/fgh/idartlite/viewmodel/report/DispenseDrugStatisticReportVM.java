@@ -154,7 +154,7 @@ public class DispenseDrugStatisticReportVM extends SearchVM<Dispense> {
 
     @Override
     public void doOnlineSearch(long offset, long limit) throws SQLException {
-        //if (this instanceof DispenseDrugGraphStatisticReportVM) getLoadingDialog().startLoadingDialog();
+        if (this instanceof DispenseDrugGraphStatisticReportVM) getLoadingDialog().startLoadingDialog();
         super.doOnlineSearch(offset, limit);
         RestDispenseService.restGetAllDispenseByPeriod(getSearchParams().getStartdate(), getSearchParams().getEndDate(), getCurrentClinic().getUuid() ,offset,limit, this);
     }
@@ -214,7 +214,6 @@ public class DispenseDrugStatisticReportVM extends SearchVM<Dispense> {
         Utilities.hideSoftKeyboard(getRelatedActivity());
 
         if (this instanceof  DispenseDrugGraphStatisticReportVM) {
-            //getLoadingDialog().dismisDialog();
             ((DispenseDrugGraphStatisticReportActivity) getRelatedActivity()).displaySearchResult();
         } else
             ((DispenseDrugStatisticReportActivity)getRelatedActivity()).displaySearchResult();
