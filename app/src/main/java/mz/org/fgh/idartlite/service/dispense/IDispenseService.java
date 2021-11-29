@@ -16,7 +16,7 @@ import mz.org.fgh.idartlite.model.StockReportData;
 
 public interface IDispenseService extends IBaseService<Dispense> {
 
-    public List<Dispense> getAllDispenseByPrescription(Prescription prescription) throws SQLException;
+    public List<Dispense> getAllNotVoidedDispenseByPrescription(Prescription prescription) throws SQLException;
 
     public void createDispense(Dispense dispense) throws SQLException;
 
@@ -44,7 +44,7 @@ public interface IDispenseService extends IBaseService<Dispense> {
 
     public List<Dispense> getDispensesBetweenStartDateAndEndDate(Date startDate, Date endDate) throws SQLException;
 
-    public List<StockReportData> getStockAlertReportLastThreeMonthsPeriod() throws SQLException;
+    public List<StockReportData> getStockAlertReportMonthPeriod() throws SQLException;
 
     public List<Dispense> getDispensesBetweenNextPickupDateStartDateAndEndDateWithLimit(Date startDate, Date endDate, long offset, long limit) throws SQLException;
 
@@ -53,4 +53,6 @@ public interface IDispenseService extends IBaseService<Dispense> {
     public List<Dispense> getAllDispensesToRemoveByDates(Date dateToRemove) throws SQLException;
 
     public void deleteDispenseAndDispensedDrugs(Dispense dispense) throws SQLException;
+
+    public List<Dispense> getAllDispensesByPrescription(Prescription prescription) throws SQLException;
 }

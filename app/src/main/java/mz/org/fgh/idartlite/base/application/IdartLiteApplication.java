@@ -19,6 +19,8 @@ public class IdartLiteApplication extends Application {
 
     public static final String CHANNEL_1_ID = "channel1";
     public static final String CHANNEL_2_ID = "channel2";
+    public static final String CHANNEL_3_ID = "channel3";
+
 
 
     private RequestQueue mRequestQueue;
@@ -42,9 +44,13 @@ public class IdartLiteApplication extends Application {
             NotificationChannel channel2 = new NotificationChannel(CHANNEL_2_ID, "channel 2", NotificationManager.IMPORTANCE_HIGH);
             channel2.setDescription("This is Channel 2");
 
+            NotificationChannel channel3 = new NotificationChannel(CHANNEL_3_ID, "channel 3", NotificationManager.IMPORTANCE_HIGH);
+            channel3.setDescription("This is Channel 3");
+
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);
             manager.createNotificationChannel(channel2);
+            manager.createNotificationChannel(channel3);
 
         }
     }

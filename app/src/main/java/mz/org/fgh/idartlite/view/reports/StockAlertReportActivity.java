@@ -54,7 +54,7 @@ public class StockAlertReportActivity extends BaseActivity {
         reyclerStock.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
         List<StockReportData> stockReport=new ArrayList<>();
         try {
-         stockReport= dispenseService.getStockAlertReportLastThreeMonthsPeriod();
+         stockReport= dispenseService.getStockAlertReportMonthPeriod();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,7 +114,7 @@ public class StockAlertReportActivity extends BaseActivity {
         reyclerStock.addItemDecoration(new DividerItemDecoration(activity.getApplication(), LinearLayout.VERTICAL));
         List<StockReportData> stockReport=new ArrayList<>();
         try {
-            stockReport= dispenseService.getStockAlertReportLastThreeMonthsPeriod();
+            stockReport= dispenseService.getStockAlertReportMonthPeriod();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -2,12 +2,16 @@ package mz.org.fgh.idartlite.model;
 
 
 import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
@@ -402,6 +406,22 @@ public class ClinicInformation extends BaseModel {
 
     public String getStringRegisterDate(){
         return DateUtilities.parseDateToDDMMYYYYString(this.registerDate);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClinicInformation that = (ClinicInformation) o;
+        return registerDate.equals(that.registerDate) &&
+                patient.getUuid().equals(that.patient.getUuid()) &&
+                uuid.equals(uuid);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(registerDate, patient, uuid);
     }
 
 

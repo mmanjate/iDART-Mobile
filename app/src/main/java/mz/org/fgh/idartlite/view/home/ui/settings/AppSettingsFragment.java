@@ -23,6 +23,7 @@ public class AppSettingsFragment extends GenericFragment {
 
     public static final String DOWNLOAD_MESSAGE_STATUS = "download_message_status";
     public static final String UPLOAD_MESSAGE_STATUS = "upload_message_status";
+    public static final String REMOVAL_MESSAGE_STATUS = "removal_message_status";
 
     private FragmentSettingsBinding settingsBinding;
 

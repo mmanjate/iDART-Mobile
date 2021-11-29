@@ -43,7 +43,7 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
     }
 
     @Override
-    public List<Dispense> getAllByPrescription(Prescription prescription) throws SQLException {
+    public List<Dispense> getAllNotVoidedByPrescription(Prescription prescription) throws SQLException {
         return queryBuilder().where().eq(Dispense.COLUMN_PRESCRIPTION, prescription.getId()).and().eq(Dispense.COLUMN_VOIDED,false).query();
     }
 
@@ -200,5 +200,11 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
     public List<Dispense> getAllDispensesToRemoveByDates(Date dateToRemove) throws SQLException {
         return queryBuilder().where()
                 .le(Dispense.COLUMN_PICKUP_DATE, dateToRemove).and().eq(Dispense.COLUMN_SYNC_STATUS, BaseModel.SYNC_SATUS_SENT).or().eq(Dispense.COLUMN_SYNC_STATUS, BaseModel.SYNC_SATUS_UPDATED).query();
+
+    }
+
+    @Override
+    public List<Dispense> getAllByPrescription(Prescription prescription) throws SQLException {
+        return queryBuilder().orderBy(Dispense.COLUMN_PICKUP_DATE, false).where().eq(Dispense.COLUMN_PRESCRIPTION, prescription.getId()).query();
     }
 }

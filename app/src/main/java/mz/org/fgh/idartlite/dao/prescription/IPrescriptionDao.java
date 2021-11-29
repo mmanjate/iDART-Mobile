@@ -22,4 +22,6 @@ public interface IPrescriptionDao extends IGenericDao<Prescription, Integer> {
     public boolean checkIfPatientHasPrescriptions(Patient patient) throws SQLException ;
 
     public List<Prescription> getAllPrescriptionToRemoveByDate(Date dateToRemove)throws SQLException;
+
+    public List<Prescription> getAllPrescriptionToRemoveByDateAndPatient(Patient patient,Date dateToRemove) throws SQLException;
 }

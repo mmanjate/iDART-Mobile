@@ -12,7 +12,7 @@ public class ServiceWatcher {
     public static final String SERVICE_STOPPED = "STOPPED";
     public static final String TYPE_DOWNLOAD = "TYPE_DOWNLOAD";
     public static final String TYPE_UPLOAD = "TYPE_UPLOAD";
-
+    public static final String TYPE_REMOVAL = "TYPE_REMOVAL";
     private String serviceStatus;
 
     private String serviceName;

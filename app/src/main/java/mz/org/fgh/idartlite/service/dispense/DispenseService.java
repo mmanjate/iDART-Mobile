@@ -26,8 +26,6 @@ import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 
-import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
-
 public class DispenseService extends BaseService<Dispense> implements IDispenseService {
 
     private StockService stockService;
@@ -59,8 +57,8 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
     }
 
-    public List<Dispense> getAllDispenseByPrescription(Prescription prescription) throws SQLException {
-        return getDataBaseHelper().getDispenseDao().getAllByPrescription(prescription);
+    public List<Dispense> getAllNotVoidedDispenseByPrescription(Prescription prescription) throws SQLException {
+        return getDataBaseHelper().getDispenseDao().getAllNotVoidedByPrescription(prescription);
     }
 
     public void createDispense(Dispense dispense) throws SQLException {
@@ -200,9 +198,9 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
     }
 
 
-    public List<StockReportData> getStockAlertReportLastThreeMonthsPeriod() throws SQLException{
+    public List<StockReportData> getStockAlertReportMonthPeriod() throws SQLException{
 
-        List<Dispense> dispenses= getDispensesBetweenStartDateAndEndDate(DateUtilities.getDateOfPreviousDays(DateUtilities.getCurrentDate(),90), DateUtilities.getCurrentDate());
+        List<Dispense> dispenses= getDispensesBetweenStartDateAndEndDate(DateUtilities.getDateOfPreviousDays(DateUtilities.getCurrentDate(),30), DateUtilities.getCurrentDate());
 
         List<DispensedDrug> dispensedDrugs = getDataBaseHelper().getDispensedDrugDao().getDispensedDrugsByDispenses(dispenses);
 
@@ -255,25 +253,22 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
                     stockActual +=  stock.getStockMoviment();
 
                 }
-
-
             }
-
 
             if(stockActual==0){
                 stockActual=dispenseDrugs.get(0).getStock().getStockMoviment();
             }
           //  stockActual-=quantityDispensed;
+          //  int validStock=quantityDispensed/3;
 
-
-            int validStock=quantityDispensed/3;
+          //  int validStock=quantityDispensed;
 
 
             stockReport.setMaximumConsumption(Integer.toString(quantityDispensed));
             stockReport.setActualStock(Integer.toString(stockActual));
-            stockReport.setValidStock(Integer.toString(validStock));
+            stockReport.setValidStock(Integer.toString(quantityDispensed));
 
-            if(validStock >= stockActual) {
+        /*    if(validStock >= stockActual) {
                 stockReport.setStockDescription("Ruptura de Stock");
             }
             else if(quantityDispensed >= stockActual) {
@@ -281,7 +276,18 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
             }
             else if(validStock < stockActual) {
                 stockReport.setStockDescription(" Acima do Consumo Máximo");
+            }*/
+
+            if(quantityDispensed > stockActual) {
+                stockReport.setStockDescription("Ruptura de Stock");
             }
+            else if(quantityDispensed < stockActual) {
+                stockReport.setStockDescription("Acima do Consumo Máximo");
+            }
+            else if(quantityDispensed == stockActual) {
+                stockReport.setStockDescription("Stock Normal");
+            }
+
             stockReportData.add(stockReport);
         }
 
@@ -314,6 +320,11 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
        this.dispenseDrugService.deleteDispensedDrugs(dispensedDrugs);
         getDataBaseHelper().getDispenseDao().delete(dispense);
 
+    }
+
+    @Override
+    public List<Dispense> getAllDispensesByPrescription(Prescription prescription) throws SQLException {
+        return getDataBaseHelper().getDispenseDao().getAllByPrescription(prescription);
     }
 
 

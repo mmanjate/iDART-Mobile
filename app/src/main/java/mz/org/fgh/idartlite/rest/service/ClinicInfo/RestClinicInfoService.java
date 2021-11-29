@@ -113,7 +113,7 @@ public class RestClinicInfoService extends BaseRestService {
         syncClinicInformation.setPatientuuid(clinicInformation.getPatient().getUuid());
         syncClinicInformation.setUuid(clinicInformation.getUuid());
         syncClinicInformation.setSyncstatus('S');
-        syncClinicInformation.setId(clinicInformation.getId());
+      //  syncClinicInformation.setId((int)Math.floor(Math.random()*(max-min+1)+min));
         syncClinicInformation.setHasfatigueortiredneslasttwoweeks(clinicInformation.isHasFatigueOrTirednesLastTwoWeeks());
         syncClinicInformation.setHashadmenstruationlasttwomonths(clinicInformation.isHasHadMenstruationLastTwoMonths());
         syncClinicInformation.setIspregnant(clinicInformation.isPregnant());

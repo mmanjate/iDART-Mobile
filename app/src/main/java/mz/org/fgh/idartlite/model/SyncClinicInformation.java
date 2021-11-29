@@ -24,7 +24,7 @@ public class SyncClinicInformation {
 
 
 
-    private int id;
+    private Integer id;
 
 
     private Date registerdate;
@@ -73,7 +73,7 @@ public class SyncClinicInformation {
     private boolean hashadmenstruationlasttwomonths;
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

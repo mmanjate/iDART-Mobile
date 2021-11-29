@@ -38,6 +38,8 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
 
     private ActivityClinicInfoBinding createClinicInfoBinding;
 
+    private int latestAge = 45;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +72,9 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
                     if(getApplicationStep().isApplicationStepDisplay()){
 
                       disableFieldsToView();
-
                         //   this.getRelatedViewModel().setAge(String.valueOf(getRelatedViewModel().getPatient().getAge()));
                     }
+                    this.setRadioFalseChecked(this.getRelatedViewModel().getClinicInformation());
                  //   this.getRelatedViewModel().setAge(String.valueOf(getRelatedViewModel().getPatient().getAge()));
                 }
                 else {
@@ -145,29 +147,28 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
                 View radioButton = createClinicInfoBinding.tbAnswers.findViewById(checkedId);
                 int index = createClinicInfoBinding.tbAnswers.indexOfChild(radioButton);
 
+                    switch (index) {
+                        case 0: // first button
 
-                switch (index) {
-                    case 0: // first button
+                            createClinicInfoBinding.editStartTreatmentDate.setClickable(true);
+                            createClinicInfoBinding.editStartTreatmentDate.setEnabled(true);
 
-                        createClinicInfoBinding.editStartTreatmentDate.setClickable(true);
-                        createClinicInfoBinding.editStartTreatmentDate.setEnabled(true);
+                            break;
+                        case 1: // secondbutton
 
-                        break;
-                    case 1: // secondbutton
+                            createClinicInfoBinding.editStartTreatmentDate.setClickable(false);
+                            createClinicInfoBinding.editStartTreatmentDate.setEnabled(false);
+                            createClinicInfoBinding.editStartTreatmentDate.setText(" ");
+                            //       getRelatedViewModel().getClinicInformation().setStartTreatmentDate(null);
+                            //      getRelatedViewModel().setTreatmentStartDate(null);
+                            break;
+                    }
 
-                        createClinicInfoBinding.editStartTreatmentDate.setClickable(false);
-                        createClinicInfoBinding.editStartTreatmentDate.setEnabled(false);
-                        createClinicInfoBinding.editStartTreatmentDate.setText(" ");
-                 //       getRelatedViewModel().getClinicInformation().setStartTreatmentDate(null);
-                  //      getRelatedViewModel().setTreatmentStartDate(null);
-                        break;
-                }
             }
-
         });
 
 
-        createClinicInfoBinding.tbAnswers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+       /* createClinicInfoBinding.tbAnswers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -191,7 +192,7 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
                 }
             }
 
-        });
+        });*/
 
         createClinicInfoBinding.pregnancyAnswers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
@@ -338,23 +339,25 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
             createClinicInfoBinding.editStartTreatmentDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean b) {
-                    if (b) {
-                        int mYear, mMonth, mDay;
+                    if (!getApplicationStep().isApplicationStepDisplay()) {
+                        if (b) {
+                            int mYear, mMonth, mDay;
 
-                        final Calendar c = Calendar.getInstance();
-                        mYear = c.get(Calendar.YEAR);
-                        mMonth = c.get(Calendar.MONTH);
-                        mDay = c.get(Calendar.DAY_OF_MONTH);
+                            final Calendar c = Calendar.getInstance();
+                            mYear = c.get(Calendar.YEAR);
+                            mMonth = c.get(Calendar.MONTH);
+                            mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(ClinicInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            DatePickerDialog datePickerDialog = new DatePickerDialog(ClinicInfoActivity.this, new DatePickerDialog.OnDateSetListener() {
 
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                @Override
+                                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                                getRelatedViewModel().setTreatmentStartDate(DateUtilities.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtilities.DATE_FORMAT));
-                            }
-                        }, mYear, mMonth, mDay);
-                        datePickerDialog.show();
+                                    getRelatedViewModel().setTreatmentStartDate(DateUtilities.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtilities.DATE_FORMAT));
+                                }
+                            }, mYear, mMonth, mDay);
+                            datePickerDialog.show();
+                        }
                     }
                 }
             });
@@ -398,6 +401,12 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
             }
         });
 
+        if(this.getRelatedViewModel().getPatient().isMale() || this.getRelatedViewModel().getPatient().getAge() > this.latestAge) {
+          createClinicInfoBinding.pregnancyScreening.setVisibility(View.GONE);
+            Utilities.collapse(createClinicInfoBinding.pregnancyScreeningList);
+            createClinicInfoBinding.pregnancyScreeningQuestion.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -413,6 +422,8 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
     private void disableFieldsToView(){
         createClinicInfoBinding.registerDate.setEnabled(false);
         createClinicInfoBinding.registerDate.setClickable(false);
+        createClinicInfoBinding.editStartTreatmentDate.setEnabled(false);
+        createClinicInfoBinding.editStartTreatmentDate.setClickable(false);
         createClinicInfoBinding.weight.setEnabled(false);
         createClinicInfoBinding.height.setEnabled(false);
         createClinicInfoBinding.imc.setEnabled(false);
@@ -606,8 +617,12 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
         if(createClinicInfoBinding.sweatingAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
         if(createClinicInfoBinding.parentAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
         if(createClinicInfoBinding.tbReferedAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
-        if(createClinicInfoBinding.pregnancyAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
-        if(createClinicInfoBinding.menstruationAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
+        if(!this.getRelatedViewModel().getPatient().isMale() || this.getRelatedViewModel().getPatient().getAge() > this.latestAge) {
+            if (createClinicInfoBinding.pregnancyAnswers.getCheckedRadioButtonId() == emptyRadio)
+                return error;
+            if (createClinicInfoBinding.menstruationAnswers.getCheckedRadioButtonId() == emptyRadio)
+                return error;
+        }
         if(createClinicInfoBinding.patientCameAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
         if(createClinicInfoBinding.patientHoursWrongAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
         if(createClinicInfoBinding.adversityReactionAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
@@ -617,6 +632,54 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
 
     }
 
+    private void setRadioFalseChecked(ClinicInformation clinicInformation){
+        if(!clinicInformation.isTreatmentTB()){
+            createClinicInfoBinding.radioTbNo1.setChecked(true);
+        }
+        if(!clinicInformation.isCough()){
+            createClinicInfoBinding.radioCoughNo.setChecked(true);
+        }
+        if(!clinicInformation.isFever()){
+            createClinicInfoBinding.radioFeverNo.setChecked(true);
+        }
+        if(!clinicInformation.isHasFatigueOrTirednesLastTwoWeeks()){
+            createClinicInfoBinding.radioFatigueNo.setChecked(true);
+        }
+        if(!clinicInformation.isLostWeight()){
+            createClinicInfoBinding.radioWeightNo.setChecked(true);
+        }
+        if(!clinicInformation.isLostWeight()){
+            createClinicInfoBinding.radioWeightNo.setChecked(true);
+        }
+        if(!clinicInformation.isSweating()){
+            createClinicInfoBinding.radioSweatingNo.setChecked(true);
+        }
+        if(!clinicInformation.isHasParentTBTreatment()){
+            createClinicInfoBinding.radioParentNo.setChecked(true);
+        }
+        if(!clinicInformation.isReferedToUsTB()){
+            createClinicInfoBinding.radioTbReferedNo.setChecked(true);
+        }
+        if(!clinicInformation.isPregnant()){
+            createClinicInfoBinding.radioPregnancyNo.setChecked(true);
+        }
+        if(!clinicInformation.isHasHadMenstruationLastTwoMonths()){
+            createClinicInfoBinding.radioMenstruationNo.setChecked(true);
+        }
+        if(!clinicInformation.isHasPatientCameCorrectDate()){
+            createClinicInfoBinding.radioPatientCameNo.setChecked(true);
+        }
+        if(!clinicInformation.isPatientForgotMedicine()){
+            createClinicInfoBinding.patientHoursWrongNo.setChecked(true);
+        }
+        if(!clinicInformation.isAdverseReactionOfMedicine()){
+            createClinicInfoBinding.adversityReactionNo.setChecked(true);
+        }
+        if(!clinicInformation.isReferedToUsRAM()){
+            createClinicInfoBinding.patientReferedNo.setChecked(true);
+        }
+
+    }
 
     @Override
     public void doOnConfirmed() {
