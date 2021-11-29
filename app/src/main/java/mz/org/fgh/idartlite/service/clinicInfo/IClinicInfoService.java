@@ -37,5 +37,9 @@ public interface IClinicInfoService extends IBaseService<ClinicInformation> {
 
     long countOfPeriod(Date start, Date end) throws SQLException;
 
+    public ClinicInformation getLastPatientClinicInformation(Patient patient) throws SQLException;
+
+    public List<ClinicInformation> getAllClinicInformationToRemoveByDateAndPatient(Patient patient, Date dateToRemove) throws SQLException;
+
 
 }

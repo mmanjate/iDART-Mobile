@@ -73,7 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
 
         if (this.relatedViewModel != null) {
             this.relatedViewModel.setRelatedActivity(this);
-            this.relatedViewModel.initLoadingDialog();
+        //    this.relatedViewModel.initLoadingDialog();
             if (this.relatedViewModel.getCurrentUser() == null) this.relatedViewModel.setCurrentUser(new User());
         }
 

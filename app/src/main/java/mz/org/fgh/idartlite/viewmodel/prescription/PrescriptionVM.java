@@ -162,7 +162,7 @@ public class PrescriptionVM extends BaseViewModel {
 
 
                 if (prescription != null) {
-                    this.prescription.setDispenses(dispenseService.getAllDispenseByPrescription(this.prescription));
+                    this.prescription.setDispenses(dispenseService.getAllNotVoidedDispenseByPrescription(this.prescription));
 
                     if (!this.prescription.isClosed()) {
 
@@ -452,7 +452,7 @@ public class PrescriptionVM extends BaseViewModel {
     public void checkIfMustBeUrgentPrescription() throws SQLException {
         oldPrescription = prescriptionService.getLastPatientPrescription(this.prescription.getPatient());
 
-        oldPrescription.setDispenses(dispenseService.getAllDispenseByPrescription(oldPrescription));
+        oldPrescription.setDispenses(dispenseService.getAllNotVoidedDispenseByPrescription(oldPrescription));
 
         if (!oldPrescription.isClosed()) {
             newPrescriptionMustBeEspetial = true;

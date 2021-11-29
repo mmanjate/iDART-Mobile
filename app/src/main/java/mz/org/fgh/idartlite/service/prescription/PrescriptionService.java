@@ -162,4 +162,9 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
 
     }
 
+    @Override
+    public List<Prescription> getAllPrescriptionToRemoveByDateAndPatient(Patient patient, Date dateToRemove) throws SQLException {
+        return getDataBaseHelper().getPrescriptionDao().getAllPrescriptionToRemoveByDateAndPatient(patient,dateToRemove);
+    }
+
 }

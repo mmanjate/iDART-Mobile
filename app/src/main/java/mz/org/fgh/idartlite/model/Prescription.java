@@ -212,7 +212,6 @@ public class Prescription extends BaseModel {
 		if (o == null || getClass() != o.getClass()) return false;
 		Prescription that = (Prescription) o;
 		return prescriptionDate.equals(that.prescriptionDate) &&
-				expiryDate.equals(that.expiryDate) &&
 				prescriptionSeq.equals(that.prescriptionSeq) &&
 				uuid.equals(that.uuid);
 	}
@@ -256,7 +255,7 @@ public class Prescription extends BaseModel {
 	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 	@Override
 	public int hashCode() {
-		return Objects.hash(prescriptionDate, expiryDate, prescriptionSeq, uuid);
+		return Objects.hash(prescriptionDate, prescriptionSeq, uuid);
 	}
 
 	@Override

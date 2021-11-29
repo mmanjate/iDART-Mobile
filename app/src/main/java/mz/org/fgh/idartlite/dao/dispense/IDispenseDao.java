@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface IDispenseDao extends IGenericDao<Dispense, Integer> {
 
-    List<Dispense> getAllByPrescription(Prescription prescription) throws SQLException;
+    List<Dispense> getAllNotVoidedByPrescription(Prescription prescription) throws SQLException;
 
     long countAllOfPrescription(Prescription prescription) throws SQLException;
 
@@ -36,4 +36,6 @@ public interface IDispenseDao extends IGenericDao<Dispense, Integer> {
     public List<Dispense> getAbsentPatientsBetweenNextPickppDateStartDateAndEndDateWithLimit(Application application,Date startDate, Date endDate, long offset, long limit) throws SQLException;
 
     public List<Dispense> getAllDispensesToRemoveByDates(Date dateToRemove) throws SQLException;
+
+    public List<Dispense> getAllByPrescription(Prescription prescription) throws SQLException;
 }

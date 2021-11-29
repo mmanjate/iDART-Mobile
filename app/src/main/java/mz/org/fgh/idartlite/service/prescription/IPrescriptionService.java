@@ -41,4 +41,6 @@ public interface IPrescriptionService extends IBaseService<Prescription> {
 
     public void deletePrescriptionAndPrescribedDrugs(Prescription prescription) throws SQLException;
 
+    public List<Prescription> getAllPrescriptionToRemoveByDateAndPatient(Patient patient,Date dateToRemove) throws SQLException;
+
 }

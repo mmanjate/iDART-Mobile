@@ -358,4 +358,8 @@ public class Patient extends BaseModel {
 	public String canBeRemoved(Context context) {
 		return null;
 	}
+
+	public boolean isMale() {
+		return this.gender.equalsIgnoreCase("M");
+	}
 }

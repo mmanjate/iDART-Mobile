@@ -33,4 +33,6 @@ public interface IIventoryService extends IBaseService<Iventory> {
     List<Iventory> getPastInventoryToRemove(Date date) throws SQLException;
 
     void removeInventoryAndStockAdjusment (Iventory iventory) throws SQLException;
+
+     Iventory getLastInventory() throws SQLException;
 }

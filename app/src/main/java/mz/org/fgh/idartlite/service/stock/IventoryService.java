@@ -93,8 +93,12 @@ public class IventoryService extends BaseService<Iventory> implements IIventoryS
 
        ((IStockAjustmentService) ServiceProvider.getInstance(getApplication()).get(StockAjustementService.class)).deleteStockAjustments(stockAjustments);
 
-       this.delete(iventory);
+        getDataBaseHelper().getIventoryDao().delete(iventory);
+    }
 
+    @Override
+    public Iventory getLastInventory() throws SQLException {
+       return getDataBaseHelper().getIventoryDao().getLastInventory();
     }
 
     @Override

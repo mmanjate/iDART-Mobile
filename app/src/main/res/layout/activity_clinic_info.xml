@@ -347,7 +347,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:onClick="@{()->viewModel.clinicInformation.setTreatmentTB(false)}"
-                                android:checked="@{viewModel.clinicInformation.treatmentTB== false ? true :viewModel.clinicInformation.treatmentTB}"
                                 android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
@@ -433,7 +432,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:onClick="@{()->viewModel.clinicInformation.setCough(false)}"
-                                    android:checked="@{viewModel.clinicInformation.isCough== false ? true :viewModel.clinicInformation.isCough}"
                                      />
                             </RadioGroup>
                         </LinearLayout>
@@ -472,7 +470,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:onClick="@{()->viewModel.clinicInformation.setFever(false)}"
-                                    android:checked="@{viewModel.clinicInformation.isFever== false ? true :viewModel.clinicInformation.isFever}"
                                     />
                             </RadioGroup>
                         </LinearLayout>
@@ -513,7 +510,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:onClick="@{()->viewModel.clinicInformation.setLostWeight(false)}"
-                                    android:checked="@{viewModel.clinicInformation.isLostWeight== false ? true :viewModel.clinicInformation.isLostWeight}"
                                     />
                             </RadioGroup>
                         </LinearLayout>
@@ -553,7 +549,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:onClick="@{()->viewModel.clinicInformation.setSweating(false)}"
-                                android:checked="@{viewModel.clinicInformation.isSweating== false ? true :viewModel.clinicInformation.isSweating}"
                                 />
                         </RadioGroup>
                     </LinearLayout>
@@ -592,7 +587,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:onClick="@{()->viewModel.clinicInformation.setHasFatigueOrTirednesLastTwoWeeks(false)}"
-                                    android:checked="@{viewModel.clinicInformation.hasFatigueOrTirednesLastTwoWeeks== false ? true :viewModel.clinicInformation.hasFatigueOrTirednesLastTwoWeeks}"
                                     />
                             </RadioGroup>
                         </LinearLayout>
@@ -633,7 +627,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:onClick="@{()->viewModel.clinicInformation.setHasParentTBTreatment(false)}"
-                                    android:checked="@{viewModel.clinicInformation.isHasParentTBTreatment== false ? true :viewModel.clinicInformation.isHasParentTBTreatment}"
                                     />
                             </RadioGroup>
                         </LinearLayout>
@@ -675,7 +668,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:onClick="@{()->viewModel.clinicInformation.setReferedToUsTB(false)}"
-                                android:checked="@{viewModel.clinicInformation.isReferedToUsTB== false ? true :viewModel.clinicInformation.isReferedToUsTB}"
                                 />
                         </RadioGroup>
                     </LinearLayout>
@@ -798,7 +790,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:onClick="@{()->viewModel.clinicInformation.setPregnant(false)}"
-                                android:checked="@{viewModel.clinicInformation.isPregnant== false ? true :viewModel.clinicInformation.isPregnant}"
                                 android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
@@ -837,8 +828,7 @@
                                 android:id="@+id/radioMenstruationNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:onClick="@{()->viewModel.clinicInformation.setPregnant(false)}"
-                                android:checked="@{viewModel.clinicInformation.hasHadMenstruationLastTwoMonths== false ? true :viewModel.clinicInformation.hasHadMenstruationLastTwoMonths}"
+                                android:onClick="@{()->viewModel.clinicInformation.setHasHadMenstruationLastTwoMonths(false)}"
                                 android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
@@ -960,7 +950,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:onClick="@{()->viewModel.clinicInformation.setHasPatientCameCorrectDate(false)}"
-                                android:checked="@{viewModel.clinicInformation.hasPatientCameCorrectDate== false ? true :viewModel.clinicInformation.hasPatientCameCorrectDate}"
                                 android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
@@ -1024,7 +1013,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:onClick="@{()->viewModel.clinicInformation.setPatientForgotMedicine(false)}"
-                                android:checked="@{viewModel.clinicInformation.patientForgotMedicine== false ? true :viewModel.clinicInformation.patientForgotMedicine}"
                                 android:layout_weight="1" />
                         </RadioGroup>
                     </LinearLayout>
@@ -1201,7 +1189,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:onClick="@{()->viewModel.clinicInformation.setAdverseReactionOfMedicine(false)}"
-                                        android:checked="@{viewModel.clinicInformation.adverseReactionOfMedicine== false ? true :viewModel.clinicInformation.adverseReactionOfMedicine}"
                                         android:layout_weight="1" />
                                 </RadioGroup>
                             </LinearLayout>
@@ -1269,7 +1256,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:onClick="@{()->viewModel.clinicInformation.setReferedToUsRAM(false)}"
-                                        android:checked="@{viewModel.clinicInformation.referedToUsRAM== false ? true :viewModel.clinicInformation.referedToUsRAM}"
                                         android:layout_weight="1" />
                                 </RadioGroup>
                             </LinearLayout>

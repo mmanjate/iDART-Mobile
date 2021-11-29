@@ -12,12 +12,9 @@ import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
+import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
-import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.util.Utilities;
@@ -172,6 +169,17 @@ public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer
         }
 
         return queryBuilder.query();
+    }
+
+    @Override
+    public ClinicInformation getLastPatientClinicInformation(Patient patient) throws SQLException {
+        return queryBuilder().orderBy(ClinicInformation.COLUMN_REGISTER_DATE, false).where().eq(ClinicInformation.COLUMN_PATIENT_ID, patient.getId()).queryForFirst();
+    }
+
+    @Override
+    public List<ClinicInformation> getAllClinicInformationToRemoveByDateAndPatient(Patient patient, Date dateToRemove) throws SQLException {
+        return queryBuilder().orderBy(ClinicInformation.COLUMN_REGISTER_DATE, false).where().eq(ClinicInformation.COLUMN_PATIENT_ID, patient.getId())
+                .and().le(ClinicInformation.COLUMN_REGISTER_DATE, dateToRemove).and().ne(Prescription.COLUMN_SYNC_STATUS, BaseModel.SYNC_SATUS_READY).query();
     }
 
 

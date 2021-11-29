@@ -243,7 +243,7 @@ public class DispenseVM extends BaseViewModel {
 
     public List<Dispense> getAllDispensesByPrescription(Prescription prescription) throws SQLException {
 
-        return this.dispenseService.getAllDispenseByPrescription(prescription);
+        return this.dispenseService.getAllNotVoidedDispenseByPrescription(prescription);
     }
 
     public List<PrescribedDrug> getAllPrescribedDrugsByPrescription(Prescription prescription) throws SQLException {

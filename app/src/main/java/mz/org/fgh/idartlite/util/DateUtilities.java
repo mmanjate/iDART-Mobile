@@ -429,6 +429,48 @@ public class DateUtilities {
         return DateUtils.addDays(date, days);
     }
 
+    public static Date getStatisticCalendarDateToRemoveByDate(Date date, int keepMonths) {
+
+        int dateToErase = 20;
+
+
+        int dayOfMonth= DateUtilities.getDayOfMonth(date);
+        int month = DateUtilities.getMonth(date);
+        int statisticMonth=0;
+
+        Date removeDate = null;
+
+        if(((dayOfMonth >= 21 && month == 12)  || (dayOfMonth <= 20 && month == 1))) statisticMonth = 1;
+        if(((dayOfMonth >= 21 && month == 1)  || (dayOfMonth <= 20 && month == 2))) statisticMonth = 2;
+        if(((dayOfMonth >= 21 && month == 2)  || (dayOfMonth <= 20 && month == 3))) statisticMonth = 3;
+        if(((dayOfMonth >= 21 && month == 3)  || (dayOfMonth <= 20 && month == 4))) statisticMonth = 4;
+        if(((dayOfMonth >= 21 && month == 4)  || (dayOfMonth <= 20 && month == 5))) statisticMonth = 5;
+        if(((dayOfMonth >= 21 && month == 5)  || (dayOfMonth <= 20 && month == 6))) statisticMonth = 6;
+        if(((dayOfMonth >= 21 && month == 6)  || (dayOfMonth <= 20 && month == 7))) statisticMonth = 7;
+        if(((dayOfMonth >= 21 && month == 7)  || (dayOfMonth <= 20 && month == 8))) statisticMonth = 8;
+        if(((dayOfMonth >= 21 && month == 8)  || (dayOfMonth <= 20 && month == 9))) statisticMonth = 9;
+        if(((dayOfMonth >= 21 && month == 9)  || (dayOfMonth <= 20 && month == 10)))statisticMonth =10;
+        if(((dayOfMonth >= 21 && month == 10)  || (dayOfMonth <= 20 && month == 11))) statisticMonth = 11;
+        if(((dayOfMonth >= 21 && month == 11)  || (dayOfMonth <= 20 && month == 12))) statisticMonth = 12;
+
+        Date statisticDate = DateUtilities.getDateFromDayAndMonthAndYear(dateToErase,statisticMonth,DateUtilities.getYear(DateUtilities.getCurrentDate()));
+
+        if(keepMonths == 1){
+            removeDate= DateUtilities.getDateOfPreviousDays(statisticDate,30);
+        }else if(keepMonths ==2){
+            removeDate= DateUtilities.getDateOfPreviousDays(statisticDate,60);
+        }
+        else if(keepMonths ==3){
+            removeDate= DateUtilities.getDateOfPreviousDays(statisticDate,90);
+        }
+        else if(keepMonths == 4){
+            removeDate= DateUtilities.getDateOfPreviousDays(statisticDate,120);
+        }
+
+
+        return DateUtilities.getDateFromDayAndMonthAndYear(dateToErase ,DateUtilities.getMonth(removeDate) ,DateUtilities.getYear(removeDate));
+
+    }
 
 
 }

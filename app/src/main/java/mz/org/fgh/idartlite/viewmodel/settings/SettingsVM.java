@@ -8,6 +8,7 @@ import androidx.databinding.Bindable;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,7 +32,9 @@ import mz.org.fgh.idartlite.workSchedule.work.RemoveDataSyncWorker;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_3_ID;
 import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.DOWNLOAD_MESSAGE_STATUS;
+import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.REMOVAL_MESSAGE_STATUS;
 import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.UPLOAD_MESSAGE_STATUS;
 
 public class SettingsVM extends BaseViewModel {
@@ -195,7 +198,7 @@ public class SettingsVM extends BaseViewModel {
         if (dataRemotionPeriod.getId() > 0){
             this.dataRemotionPeriod.setCode(AppSettings.DATA_REMOTION_PERIOD);
 
-            this.dataRemotionPeriod.setDescription("Periodo de remoção de dados da base de dados");
+            this.dataRemotionPeriod.setDescription("Periodo de dados que permaneceram no dispostivo ");
 
             saveSettings(this.dataRemotionPeriod);
         }
@@ -274,6 +277,7 @@ public class SettingsVM extends BaseViewModel {
 
                     workInfo.getOutputData().getString(DOWNLOAD_MESSAGE_STATUS);
                     workInfo.getOutputData().getString(UPLOAD_MESSAGE_STATUS);
+                    workInfo.getOutputData().getString(REMOVAL_MESSAGE_STATUS);
 
                     workInfo.getProgress();
 
@@ -287,7 +291,13 @@ public class SettingsVM extends BaseViewModel {
                         if (!Utilities.stringHasValue(workInfo.getOutputData().getString(UPLOAD_MESSAGE_STATUS))){
                             notificationText = "Sincronização de dados concluída, Não há dados novos.";
                         } else notificationText = workInfo.getOutputData().getString(UPLOAD_MESSAGE_STATUS);
-                    }else throw new RuntimeException("Unknown Notification channel");
+                    }else
+                    if (notificationChannel.equals(CHANNEL_3_ID)){
+                        if (!Utilities.stringHasValue(workInfo.getOutputData().getString(REMOVAL_MESSAGE_STATUS))){
+                            notificationText = "Remoção de dados concluída";
+                        } else notificationText = workInfo.getOutputData().getString(REMOVAL_MESSAGE_STATUS);
+                    }
+                    else throw new RuntimeException("Unknown Notification channel");
 
                     if (!Utilities.stringHasValue(notificationText)) notificationText = "Não foram encontrados dados novos para sincronizar.";
 
@@ -328,14 +338,14 @@ public class SettingsVM extends BaseViewModel {
     public void initDataRemotionNow(){
 
 
-        issueNotification("Remoção de dados iniciada", CHANNEL_2_ID);
+        issueNotification("Remoção de dados iniciada", CHANNEL_3_ID);
 
 
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(RemoveDataSyncWorker.class).build();
         mWorkManager.enqueue(mRequest);
 
 
-        observeRunningSync(mRequest, CHANNEL_2_ID);
+        observeRunningSync(mRequest, CHANNEL_3_ID);
 
 
     // if()
