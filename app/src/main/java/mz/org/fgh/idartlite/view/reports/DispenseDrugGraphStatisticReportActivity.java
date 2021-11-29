@@ -247,6 +247,8 @@ public class DispenseDrugGraphStatisticReportActivity extends BaseActivity {
 
         options.setSeries(series);
 
+        getRelatedViewModel().dismisDialog();
+
         chartView.setOptions(options);
 
         chartView.reload();

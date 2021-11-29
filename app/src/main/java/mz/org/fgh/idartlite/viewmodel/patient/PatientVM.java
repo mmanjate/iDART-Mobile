@@ -83,7 +83,7 @@ public class PatientVM extends SearchVM<Patient> {
     public void displaySearchResults() {
         Utilities.hideSoftKeyboard(getRelatedActivity());
 
-        getRelatedActivity().displaySearchResult();
+        ((SearchPatientActivity)getRelatedActivity()).displaySearchResult();
     }
 
     @Override
@@ -111,10 +111,6 @@ public class PatientVM extends SearchVM<Patient> {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
-    }
-
-    public SearchPatientActivity getRelatedActivity() {
-        return (SearchPatientActivity) super.getRelatedActivity();
     }
 
     @Override

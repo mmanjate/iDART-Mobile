@@ -212,8 +212,6 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         plotOptions.setPie(new HIPie());
         plotOptions.getPie().setAllowPointSelect(true);
         plotOptions.getPie().setCursor("pointer");
-        //plotOptions.getPie().setDataLabels(new HIDataLabels());
-        //plotOptions.getPie().getDataLabels().setEnabled(false);
         plotOptions.getPie().setShowInLegend(true);
         options.setPlotOptions(plotOptions);
 

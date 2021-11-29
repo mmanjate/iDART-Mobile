@@ -100,6 +100,7 @@ public class DispensedDrugsReportVM extends BaseViewModel implements RestRespons
         this.searchResults = percentageMap;
 
         getLoadingDialog().dismisDialog();
+
         getRelatedActivity().generateGraph();
     }
 
