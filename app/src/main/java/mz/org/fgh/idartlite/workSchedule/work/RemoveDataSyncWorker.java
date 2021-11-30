@@ -89,7 +89,10 @@ public class RemoveDataSyncWorker extends Worker {
                    List<Dispense> dispenses= dispenseService.getAllDispensesByPrescription(lastPrescriptionDb);
 
                    int totalPrescriptionSupply = lastPrescriptionDb.getSupply();
-                  if(Utilities.listHasElements(dispenses)) dispenses.remove(0);
+                  if(Utilities.listHasElements(dispenses)){
+                      totalPrescriptionSupply -= dispenses.get(0).getSupply();
+                      dispenses.remove(0);
+                  }
 
                    for (Dispense dispense : dispenses){
                        if(!dispense.isSyncStatusReady(dispense.getSyncStatus()) || dispense.isVoided())
@@ -162,7 +165,7 @@ public class RemoveDataSyncWorker extends Worker {
             e.printStackTrace();
             return Result.failure();
         }
-        watcher.addUpdates("Remocao de Dados Terminada");
+        watcher.addUpdates("Remoção de Dados Terminada");
         while (!watcher.hasUpdates()){
             try {
                 Thread.sleep(DELAY);

@@ -68,9 +68,10 @@ public class AbsentPatientsReportVM extends SearchVM<Dispense> {
             return "A data inicio deve ser menor que a data corrente";
         }
         else
-        if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getStartdate(), DateUtilities.DAY_FORMAT) < 0){
-            return "A data fim deve ser menor que a data corrente.";
+        if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getEndDate(), DateUtilities.DAY_FORMAT) < 0){
+            return "A data fim deve ser menor ou igual que a data corrente.";
         }
+
 
         return null;
     }
