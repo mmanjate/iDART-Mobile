@@ -17,6 +17,7 @@ import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
 import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
 
@@ -70,18 +71,29 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
     public void saveEpisodeFromRest(LinkedTreeMap<String, Object> patient, Patient localPatient) {
 
         try {
-//            Patient localPatient = patientService.getPatient(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
 
-            Episode episode = new Episode();
-            episode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(patient.get("prescriptiondate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
-            episode.setPatient(localPatient);
-            episode.setSanitaryUnit(Objects.requireNonNull(patient.get("mainclinicname")).toString());
-            episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
-            episode.setStartReason("Referido De");
-            episode.setNotes("Referido De");
-            episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
-            episode.setUuid(UUID.randomUUID().toString());
-            createEpisode(episode);
+            Date dataEpisodio = getSqlDateFromString(Objects.requireNonNull(patient.get("prescriptiondate")).toString(), "yyyy-MM-dd'T'HH:mm:ss");
+
+            Episode episode = getLatestByPatient(localPatient);
+
+            if(episode != null){
+                assert dataEpisodio != null;
+                if(episode.getStartReason() == null)
+                    episode.setStartReason("");
+
+                if((int) DateUtilities.dateDiff(dataEpisodio, episode.getEpisodeDate(), DateUtilities.DAY_FORMAT) > 0 && !episode.getStartReason().equalsIgnoreCase("Referido De")) {
+                    buildEpisode(patient,localPatient,dataEpisodio);
+                }else{
+                    episode.setEpisodeDate(dataEpisodio);
+                    episode.setPatient(localPatient);
+                    episode.setSanitaryUnit(Objects.requireNonNull(patient.get("mainclinicname")).toString());
+                    episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
+                    episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+                    udpateEpisode(episode);
+                }
+            }else{
+                buildEpisode(patient, localPatient, dataEpisodio);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,10 +135,12 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
             localEpisode.setUsUuid(Objects.requireNonNull(episode.get("usuuid")).toString());;
             if(Objects.requireNonNull(episode.get("startreason")!=null)) {
                 localEpisode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(episode.get("startdate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
-                localEpisode.setNotes(Objects.requireNonNull(episode.get("startnotes")).toString());
+                if(episode.get("startnotes") != null)
+                localEpisode.setNotes(episode.get("startnotes").toString());
             }
             else {
                 localEpisode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(episode.get("stopdate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+                if(episode.get("stopnotes") != null)
                 localEpisode.setNotes(Objects.requireNonNull(episode.get("stopnotes")).toString());
             }
             localEpisode.setStopReason("Referido para mesma US");
@@ -160,5 +174,19 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
     @Override
     public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end) throws SQLException {
         return getDataBaseHelper().getEpisodeDao().getAllStartEpisodesBetweenStartDateAndEndDate(start,end);
+    }
+
+    public void buildEpisode(LinkedTreeMap<String, Object> patient, Patient localPatient, Date dataEpisodio) throws SQLException {
+       Episode episode = new Episode();
+                episode.setEpisodeDate(dataEpisodio);
+                episode.setPatient(localPatient);
+                episode.setSanitaryUnit(Objects.requireNonNull(patient.get("mainclinicname")).toString());
+                episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
+                episode.setStartReason("Referido De");
+                episode.setNotes("Referido De");
+                episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+                episode.setUuid(UUID.randomUUID().toString());
+                createEpisode(episode);
+
     }
 }
