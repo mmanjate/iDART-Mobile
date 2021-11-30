@@ -230,7 +230,7 @@ public class DispenseDrugStatisticReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new DispenseDrugStatisticsReportAdapter(recyclerDrug, getRelatedViewModel().getAllDisplyedRecords(), this);
+            adapter = new DispenseDrugStatisticsReportAdapter(recyclerDrug, getRelatedViewModel().getProcessedRecs(), this);
 
             recyclerDrug.setAdapter(adapter);
         }
