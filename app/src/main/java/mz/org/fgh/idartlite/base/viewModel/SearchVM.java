@@ -93,6 +93,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     public void initSearch() {
         try {
+            if (isSearchOnProgress()) return;
+
             String errors = validateBeforeSearch();
             if (Utilities.stringHasValue(errors)) {
                 displayErrors(errors);
@@ -121,6 +123,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         if (!isOnlineSearch() || canDisplayRecsAfterInitSearch()) {
             if (Utilities.listHasElements(this.searchResults)) {
                 loadFirstPage();
+
+                changeSearchStatusToFinished();
 
                 displaySearchResults();
             } else {
