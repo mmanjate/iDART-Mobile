@@ -188,7 +188,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
 
             updatePatient(localPatient);
             episodeService.saveEpisodeFromRest(patient, localPatient);
-            prescriptionService.saveLastPrescriptionFromRest(patient, localPatient);
+         //   prescriptionService.saveLastPrescriptionFromRest(patient, localPatient);
 
         } catch (SQLException e) {
             e.printStackTrace();

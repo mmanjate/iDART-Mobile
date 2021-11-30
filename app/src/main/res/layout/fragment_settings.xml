@@ -363,7 +363,7 @@
                         android:id="@+id/txt_remove"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Volume de dados por remover"
+                        android:text="O volume de dados por manter será do(s)"
                         style="@style/input_labels"/>
 
                     <androidx.appcompat.widget.AppCompatSpinner

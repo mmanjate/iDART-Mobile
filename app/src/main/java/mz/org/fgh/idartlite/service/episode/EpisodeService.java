@@ -130,24 +130,32 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
             this.patientService = new PatientService(getApp(), null);
             this.clinicService = new ClinicService(getApp(), null);
             Patient localPatient = patientService.getPatientByUuid(Objects.requireNonNull(episode.get("patientuuid")).toString());
-            localEpisode.setPatient(localPatient);
-            localEpisode.setSanitaryUnit(getLatestByPatient(localPatient).getSanitaryUnit());
-            localEpisode.setUsUuid(Objects.requireNonNull(episode.get("usuuid")).toString());;
-            if(Objects.requireNonNull(episode.get("startreason")!=null)) {
-                localEpisode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(episode.get("startdate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
-                if(episode.get("startnotes") != null)
-                localEpisode.setNotes(episode.get("startnotes").toString());
-            }
-            else {
-                localEpisode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(episode.get("stopdate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
-                if(episode.get("stopnotes") != null)
-                localEpisode.setNotes(Objects.requireNonNull(episode.get("stopnotes")).toString());
-            }
-            localEpisode.setStopReason("Referido para mesma US");
 
-            localEpisode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
-            localEpisode.setUuid(UUID.randomUUID().toString());
-            createEpisode(localEpisode);
+            Episode lastEpisode = getLatestByPatient(localPatient);
+            Date inputEpisodeData = getSqlDateFromString(Objects.requireNonNull(episode.get("startdate")).toString(), "yyyy-MM-dd'T'HH:mm:ss");
+
+            if((int) DateUtilities.dateDiff(inputEpisodeData, lastEpisode.getEpisodeDate(), DateUtilities.DAY_FORMAT) > 0) {
+
+                localEpisode.setPatient(localPatient);
+                localEpisode.setSanitaryUnit(getLatestByPatient(localPatient).getSanitaryUnit());
+                localEpisode.setUsUuid(Objects.requireNonNull(episode.get("usuuid")).toString());
+
+                if (Objects.requireNonNull(episode.get("startreason") != null)) {
+                    localEpisode.setEpisodeDate(inputEpisodeData);
+                    if (episode.get("startnotes") != null)
+                        localEpisode.setNotes(episode.get("startnotes").toString());
+                } else {
+                    localEpisode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(episode.get("stopdate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+                    if (episode.get("stopnotes") != null)
+                        localEpisode.setNotes(Objects.requireNonNull(episode.get("stopnotes")).toString());
+                }
+                localEpisode.setStopReason("Referido para mesma US");
+
+                localEpisode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+                localEpisode.setUuid(UUID.randomUUID().toString());
+                createEpisode(localEpisode);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

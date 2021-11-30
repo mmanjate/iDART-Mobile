@@ -176,6 +176,7 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
             prescription.setDispenseType(dispenseTypeService.getDispenseTypeByDescription("Dispensa Mensal (DM)"));
         createPrescription(prescription);
 
+        if(patient.get("jsonprescribeddrugs") != null)
         prescribedDrugService.savePrescribedDrug(prescription, requireNonNull(patient.get("jsonprescribeddrugs")).toString());
     }
 
