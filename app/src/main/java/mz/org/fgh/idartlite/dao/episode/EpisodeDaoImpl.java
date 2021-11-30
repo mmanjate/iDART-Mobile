@@ -37,7 +37,7 @@ public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements 
 
     @Override
     public Episode getLatestByPatient(Patient patient) throws SQLException {
-        return queryBuilder().orderBy(Episode.COLUMN_ID,false).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).queryForFirst();
+        return queryBuilder().orderBy(Episode.COLUMN_EPISODE_DATE,false).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).queryForFirst();
     }
 
     @Override
