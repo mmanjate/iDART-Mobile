@@ -238,19 +238,19 @@ public class DispenseByDispenseTypeReportActivity extends BaseActivity {
     public void displaySearchResult() {
         if (adapter == null) {
 
-            adapter = new PatientAwaitingStatisticDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getAllDisplyedRecords(), this);
+            adapter = new PatientAwaitingStatisticDispenseReportAdapter(recyclerDispenses, getRelatedViewModel().getProcessedRecs(), this);
 
             recyclerDispenses.setAdapter(adapter);
         }
 
-        if (adapter.getOnLoadMoreListener() == null) {
+        /*if (adapter.getOnLoadMoreListener() == null) {
             adapter.setOnLoadMoreListener(new IOnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
                     getRelatedViewModel().loadMoreRecords(recyclerDispenses, adapter);
                 }
             });
-        }
+        }*/
 
     }
 

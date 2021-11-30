@@ -56,6 +56,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     protected boolean isFullLoad;
 
+    protected List processedRecs;
+
 
     private AbstractRecycleViewAdapter adapter;
 
@@ -66,6 +68,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
         this.allDisplyedRecords = new ArrayList<>();
         this.searchResults = new ArrayList<>();
+        this.processedRecs = new ArrayList();
 
         activatePaginatedSearch();
 
@@ -209,6 +212,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
             getAllDisplyedRecords().clear();
             getAllDisplyedRecords().addAll(getSearchResults());
 
+
             getNextRecordsToDisplay();
         }
     }
@@ -268,6 +272,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
                 } else {
                     getAllDisplyedRecords().clear();
                     getAllDisplyedRecords().addAll(doBeforeDisplay(getSearchResults()));
+
+                    this.processedRecs = (List) doBeforeDisplay(getSearchResults());
                     doAfterFirstOnlineSearch();
                 }
             }
@@ -483,5 +489,13 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     @Override
     public void doOnRestSucessResponseObjects(String flag, List<T> objects) {
 
+    }
+
+    public List getProcessedRecs() {
+        return processedRecs;
+    }
+
+    public void setProcessedRecs(List processedRecs) {
+        this.processedRecs = processedRecs;
     }
 }

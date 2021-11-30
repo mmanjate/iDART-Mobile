@@ -46,7 +46,11 @@ public class PatientAwaitingStatisticDispenseReportAdapter extends AbstractRecyc
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof PatientAwaitingStatisticDispenseReportAdapter.DispenseViewHolder) {
 
-            HashMap map = (HashMap) records.toArray()[position];
+            HashMap map = null;
+
+            if (records.toArray()[position] instanceof HashMap) {
+                map = (HashMap) records.toArray()[position];
+            }
 
             ((PatientAwaitingStatisticDispenseReportAdapter.DispenseViewHolder) viewHolder).contentPatientsAwaitingStatisticsBinding.setDispenseStatistic(map);
         } else if (viewHolder instanceof PatientAwaitingStatisticDispenseReportAdapter.LoadingViewHolder) {
