@@ -187,6 +187,8 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
             localPatient= setPatientFromRest(patient);
 
             updatePatient(localPatient);
+            episodeService.saveEpisodeFromRest(patient, localPatient);
+            prescriptionService.saveLastPrescriptionFromRest(patient, localPatient);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -232,7 +234,9 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
             localPatient.setUuid(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
 
             if(patient.get("datainiciotarv") != null)
-                if(!patient.get("datainiciotarv").toString().equalsIgnoreCase("null"))
+                if(!patient.get("datainiciotarv").toString().equalsIgnoreCase("null") &&
+                        !patient.get("datainiciotarv").toString().equalsIgnoreCase("NA") &&
+                            !patient.get("datainiciotarv").toString().equalsIgnoreCase("N/A"))
                     localPatient.setStartARVDate(getSqlDateFromString(Objects.requireNonNull(patient.get("datainiciotarv")).toString(), "dd MMM yyyy"));
 
 

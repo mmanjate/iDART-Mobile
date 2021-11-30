@@ -314,11 +314,11 @@
     <string name="adherence_monitoring_and_screening">Monitoria e Rastreio de Adesao</string>
     <string name="adverse_reactions">Reacoes Adversas</string>
 
-    <string name="weight">Peso</string>
-    <string name="height">Altura</string>
+    <string name="weight">Peso (kg)</string>
+    <string name="height">Altura (cm)</string>
     <string name="imc">IMC</string>
-    <string name="systole">Sistole</string>
-    <string name="distole">Distole</string>
+    <string name="systole">Sistole (mmHg)</string>
+    <string name="distole">Distole (mmHg)</string>
 
     <string name="tb_screening_questions">Perguntas de Rastreio de Tuberculose</string>
 
