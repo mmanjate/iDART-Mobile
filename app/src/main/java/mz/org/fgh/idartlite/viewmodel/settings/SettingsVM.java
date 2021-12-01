@@ -8,7 +8,6 @@ import androidx.databinding.Bindable;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,13 +21,13 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
-import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment;
 import mz.org.fgh.idartlite.workSchedule.work.DataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.MetaDataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.RemoveDataSyncWorker;
+import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
@@ -112,7 +111,7 @@ public class SettingsVM extends BaseViewModel {
 
     @Override
     public void preInit() {
-        mWorkManager = WorkManager.getInstance();
+        mWorkManager = WorkManager.getInstance(getApplication());
     }
 
     private void loadSyncPeriods(){
@@ -311,15 +310,13 @@ public class SettingsVM extends BaseViewModel {
     }
 
     public void syncDataNow(){
-
-        issueNotification("Sincronização de dados iniciada", CHANNEL_1_ID);
-
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class).build();
-        mWorkManager.enqueue(mRequest);
+        OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).build();
+        mWorkManager.beginWith(mRequest)
+                    .then(patientOneTimeWorkRequest)
+                    .enqueue();
 
-        observeRunningSync(mRequest, CHANNEL_1_ID);
-
-        saveSharedSettings();
+        saveLastSyncDateTime();
 
     }
 

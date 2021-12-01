@@ -345,7 +345,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         this.selectedListbles.remove(listble);
     }
 
-    public void saveSharedSettings(){
+    public void saveLastSyncDateTime(){
         settingsPreferences.put(APP_LAST_SYNC_DATE, DateUtilities.formatToDDMMYYYY_HHMISS(DateUtilities.getCurrentDate()));
     }
 

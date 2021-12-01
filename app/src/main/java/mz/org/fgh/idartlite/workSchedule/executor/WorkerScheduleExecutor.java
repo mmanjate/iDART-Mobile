@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import mz.org.fgh.idartlite.model.AppSettings;
+import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetConfigWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetEpisodeWorkerScheduler;
-import mz.org.fgh.idartlite.workSchedule.work.get.RestGetPatientDataWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetPatientDispensationWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetStockWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.patch.RestPatchStockConfigWorkerScheduler;
@@ -82,7 +82,7 @@ public class WorkerScheduleExecutor {
                 .setRequiresCharging(true)
                 .build();
 
-        PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetPatientDataWorkerScheduler.class, getDataSyncInterval(), TimeUnit.HOURS)
+        PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(PatientWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .setInitialDelay(8,TimeUnit.HOURS)
                 .addTag("PATIENT_ID " + JOB_ID)

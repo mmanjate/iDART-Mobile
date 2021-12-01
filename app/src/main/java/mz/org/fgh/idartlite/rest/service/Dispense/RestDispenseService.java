@@ -476,7 +476,6 @@ public class RestDispenseService extends BaseRestService {
                     "&qtyinhand=neq.(30)" +
                     "&qtyinhand=neq.(90)" +
                     "&offset=" + offset +
-
                     "&limit=" + limit +
                     "&order=pickupdate.desc";
         }else {

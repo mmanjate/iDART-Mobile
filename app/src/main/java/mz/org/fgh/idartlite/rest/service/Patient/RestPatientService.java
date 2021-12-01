@@ -64,24 +64,7 @@ public class RestPatientService extends BaseRestService {
         patientService = new PatientService(getApplication(), null);
     }
 
-    public static void restGetAllPatient()  {
-        getAllPatient(null, null);
-    }
-
-    public static void restGetAllPatient(RestResponseListener listener)  {
-        getAllPatient(listener, null);
-    }
-
-    public static void restGetAllPatient(ServiceWatcher watcher)  {
-        getAllPatient(null, watcher);
-    }
-
-    public static void restGetAllPatient(RestResponseListener listener, ServiceWatcher watcher)  {
-        getAllPatient(listener, watcher);
-    }
-
-
-    public static void getAllPatient(RestResponseListener listener, ServiceWatcher watcher) {
+    public static void getAllPatient(RestResponseListener listener, long offset, long limit) {
 
         try {
             clinicService = new ClinicService(getApp(), null);
@@ -90,7 +73,10 @@ public class RestPatientService extends BaseRestService {
 
             patientService = new PatientService(getApp(), null);
 
-            String url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinic.getUuid() + "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")";
+            String url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinic.getUuid() +
+                                                    "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
+                                                    "&offset=" + offset +
+                                                    "&limit=" + limit;
 
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
@@ -104,7 +90,6 @@ public class RestPatientService extends BaseRestService {
                             Log.d("Response", String.valueOf(patients.length));
 
                             if (patients.length > 0) {
-                                int counter = 0;
 
                                 for (Object patient : patients) {
                                     Log.i(TAG, "onResponse: " + patient);
@@ -112,7 +97,6 @@ public class RestPatientService extends BaseRestService {
                                         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) patient;
                                         if (!patientService.checkPatient(itemresult)) {
                                             patientService.saveOnPatient(itemresult);
-                                            counter++;
                                         } else {
                                             patientService.updateOnPatientViaRest(itemresult);
                                             Log.i(TAG, "onResponse: " + patient + " Ja Existe");
@@ -123,23 +107,17 @@ public class RestPatientService extends BaseRestService {
                                         continue;
                                     }
                                 }
-                                if (watcher != null) {
-                                    if (counter > 0){
-                                        watcher.addUpdates("Tem "+counter + " "+getApp().getString(R.string.new_patients));
-
-                                    }else
-                                        watcher.addUpdates(getApp().getString(R.string.no_new_patientes));
-                                }
+                                listener.doOnResponse(BaseRestService.REQUEST_SUCESS, null);
                             } else {
+                                listener.doOnResponse(REQUEST_NO_DATA, null);
                                 Log.w(TAG, "Response Sem Info." + patients.length);
-                            }
-
-                            if (listener != null) {
-                                listener.doOnRestSucessResponse(null);
                             }
                         }
 
-                    }, error -> Log.e("Response", generateErrorMsg(error)));
+                    }, error -> {
+                        listener.doOnResponse(generateErrorMsg(error), null);
+                        Log.d(TAG, "onErrorResponse: Erro no GET :" + generateErrorMsg(error));
+                    });
                 });
 
             } else {
