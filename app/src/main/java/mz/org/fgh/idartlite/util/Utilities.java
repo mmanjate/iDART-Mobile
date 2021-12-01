@@ -475,7 +475,7 @@ public class Utilities {
                 .show();
     }
 
-    public static void issueNotification(NotificationManagerCompat notificationManagerCompat, Context context, String contentText, String channel) {
+    public static void issueNotification(NotificationManagerCompat notificationManagerCompat, Context context, String contentText, String channel, boolean progressStatus) {
 
         Notification builder = new NotificationCompat.Builder(context, channel)
                 .setSmallIcon(R.drawable.ic_data)
@@ -483,6 +483,7 @@ public class Utilities {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
                 .setContentText(contentText)
                 .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .setProgress(0, 0, progressStatus)
                 .build();
 
         notificationManagerCompat.notify(1, builder);

@@ -129,8 +129,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         return notificationManager;
     }
 
-    public void issueNotification(String contentMsg, String channel){
-        Utilities.issueNotification(getNotificationManager(), getApplication(),contentMsg, channel);
+    public void issueNotification(String contentMsg, String channel, boolean progressStatus){
+        Utilities.issueNotification(getNotificationManager(), getApplication(),contentMsg, channel, progressStatus);
     }
 
     protected abstract IBaseService initRelatedService();

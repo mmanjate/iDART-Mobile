@@ -95,6 +95,13 @@ public class Patient extends BaseModel {
 	@ForeignCollectionField(eager = false)
 	private  ForeignCollection<Prescription> prescriptions;
 
+	public Patient() {
+	}
+
+	public Patient(String uuid) {
+		this.uuid = uuid;
+	}
+
 	public int getId() {
 		return id;
 	}
