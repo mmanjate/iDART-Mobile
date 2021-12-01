@@ -201,7 +201,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
     }
 
 
-    private Patient setPatientFromRest(LinkedTreeMap<String, Object> patient){
+    public Patient setPatientFromRest(LinkedTreeMap<String, Object> patient){
 
         Patient localPatient = null;
         try {

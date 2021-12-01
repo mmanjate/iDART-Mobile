@@ -28,6 +28,7 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
     public static final String WORK_STATUS_STARTING = "STARTING";
     protected String workStatus;
     public static Application app;
+    protected long newRecsQty;
 
     public BaseWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -59,8 +60,8 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
 
     protected abstract void doOnStart();
 
-    protected void issueNotification(String channel, String msg) throws InterruptedException {
-        Utilities.issueNotification(NotificationManagerCompat.from(getApplicationContext()), getApplicationContext(), msg, channel);
+    protected void issueNotification(String channel, String msg, boolean progressStatus) throws InterruptedException {
+        Utilities.issueNotification(NotificationManagerCompat.from(getApplicationContext()), getApplicationContext(), msg, channel, progressStatus);
     }
 
     @Override
@@ -84,6 +85,7 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
 
     protected void doAfterSearch(String flag, List<T> recs) throws SQLException {
         if (Utilities.listHasElements(recs) || flag.equals(BaseRestService.REQUEST_SUCESS)) {
+            this.newRecsQty = this.newRecsQty + recs.size();
             this.offset = this.offset + RECORDS_PER_SEARCH;
             doSave(recs);
             fullLoadRecords();
@@ -91,6 +93,10 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
             changeStatusToFinished();
             doOnFinish();
         }
+    }
+
+    protected boolean hasNewRescs () {
+        return getNewRecsQty() > 0;
     }
 
     protected abstract void doOnFinish();
@@ -119,6 +125,14 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public long getNewRecsQty() {
+        return newRecsQty;
+    }
+
+    public void setNewRecsQty(long newRecsQty) {
+        this.newRecsQty = newRecsQty;
     }
 
     protected void changeStatusToPerforming () {

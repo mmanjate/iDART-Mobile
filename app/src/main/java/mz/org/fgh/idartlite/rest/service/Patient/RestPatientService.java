@@ -77,6 +77,7 @@ public class RestPatientService extends BaseRestService {
                                                     "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
                                                     "&offset=" + offset +
                                                     "&limit=" + limit;
+            List<Patient> newPatients = new ArrayList<>();
 
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 getRestServiceExecutor().execute(() -> {
@@ -97,6 +98,7 @@ public class RestPatientService extends BaseRestService {
                                         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) patient;
                                         if (!patientService.checkPatient(itemresult)) {
                                             patientService.saveOnPatient(itemresult);
+                                            newPatients.add(new Patient(itemresult.get("uuidopenmrs").toString()));
                                         } else {
                                             patientService.updateOnPatientViaRest(itemresult);
                                             Log.i(TAG, "onResponse: " + patient + " Ja Existe");
@@ -107,7 +109,7 @@ public class RestPatientService extends BaseRestService {
                                         continue;
                                     }
                                 }
-                                listener.doOnResponse(BaseRestService.REQUEST_SUCESS, null);
+                                listener.doOnResponse(BaseRestService.REQUEST_SUCESS, newPatients);
                             } else {
                                 listener.doOnResponse(REQUEST_NO_DATA, null);
                                 Log.w(TAG, "Response Sem Info." + patients.length);

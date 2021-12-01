@@ -300,9 +300,9 @@ public class SettingsVM extends BaseViewModel {
 
                     if (!Utilities.stringHasValue(notificationText)) notificationText = "Não foram encontrados dados novos para sincronizar.";
 
-                    issueNotification(notificationText, notificationChannel);
+                    issueNotification(notificationText, notificationChannel, false);
                 }else if (workInfo.getState() == WorkInfo.State.FAILED){
-                    issueNotification("Sincronização não efectuada, por favor tente mais tarde.", notificationChannel);
+                    issueNotification("Sincronização não efectuada, por favor tente mais tarde.", notificationChannel, false);
                 }
 
             }
@@ -322,7 +322,7 @@ public class SettingsVM extends BaseViewModel {
 
 
     public void syncMetadataNow(){
-        issueNotification("Actualização de metadados iniciada", CHANNEL_2_ID);
+        issueNotification("Actualização de metadados iniciada", CHANNEL_2_ID, true);
 
 
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(MetaDataSyncWorker.class).build();
@@ -335,7 +335,7 @@ public class SettingsVM extends BaseViewModel {
     public void initDataRemotionNow(){
 
 
-        issueNotification("Remoção de dados iniciada", CHANNEL_3_ID);
+        issueNotification("Remoção de dados iniciada", CHANNEL_3_ID, true);
 
 
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(RemoveDataSyncWorker.class).build();
