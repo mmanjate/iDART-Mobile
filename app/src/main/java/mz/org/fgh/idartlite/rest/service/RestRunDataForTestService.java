@@ -110,7 +110,7 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
         RestDispenseTypeService.restGetAllDispenseType();
         RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
         RestTherapeuticLineService.restGetAllTherapeuticLine();
-        RestPatientService.restGetAllPatient();
+        //RestPatientService.restGetAllPatient();
         RestEpisodeService.restGetAllReadyEpisodes();
         RestEpisodeService.restGetAllEpisodes();
 

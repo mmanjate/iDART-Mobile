@@ -70,10 +70,7 @@ public class DataSyncWorker extends Worker {
         List<Patient> patientList;
         Episode episode;
 
-        ServiceWatcher watcher = ServiceWatcher.fastCreate(ServiceWatcher.TYPE_DOWNLOAD);
-
         try {
-            RestPatientService.restGetAllPatient(watcher);
             RestEpisodeService.restGetAllReadyEpisodes();
             RestEpisodeService.restGetAllEpisodes();
 
@@ -166,16 +163,8 @@ public class DataSyncWorker extends Worker {
             return Result.failure();
         }
 
-        while (!watcher.hasUpdates()){
-            try {
-                Thread.sleep(DELAY);
-            } catch (InterruptedException exception) {
+        //Data outputData = new Data.Builder().putString(UPLOAD_MESSAGE_STATUS, watcher.getUpdates()).build();
 
-            }
-        }
-
-        Data outputData = new Data.Builder().putString(UPLOAD_MESSAGE_STATUS, watcher.getUpdates()).build();
-
-        return Result.success(outputData);
+        return Result.success();
     }
 }

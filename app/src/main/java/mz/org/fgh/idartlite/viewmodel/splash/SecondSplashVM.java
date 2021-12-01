@@ -1,8 +1,18 @@
 package mz.org.fgh.idartlite.viewmodel.splash;
 
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_3_ID;
+import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.DOWNLOAD_MESSAGE_STATUS;
+import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.REMOVAL_MESSAGE_STATUS;
+import static mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment.UPLOAD_MESSAGE_STATUS;
+
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -19,11 +29,14 @@ import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
 import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.settings.AppSettingsService;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.home.IDartHomeActivity;
 import mz.org.fgh.idartlite.view.splash.SecondSplashActivity;
 import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
+import mz.org.fgh.idartlite.workSchedule.work.DataSyncWorker;
+import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 
-public class SecondSplashVM extends BaseViewModel implements RestResponseListener<Clinic> {
+public class SecondSplashVM extends BaseViewModel{
 
     private AppSettingsService settingsService;
     private List<AppSettings> appSettings;
@@ -58,8 +71,7 @@ public class SecondSplashVM extends BaseViewModel implements RestResponseListene
             this.appSettings = settingsService.getAll();
 
             scheduleSyncWorks();
-
-            new Thread(() -> getFirstData()).start();
+            getFirstData();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,19 +95,7 @@ public class SecondSplashVM extends BaseViewModel implements RestResponseListene
         workerScheduleExecutor.initPostNewPatientDataTaskWork();
     }
 
-
-    @Override
-    public void doOnRestErrorResponse(String errormsg) {
-
-    }
-
-    @Override
-    public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {
-
-    }
-
-    @Override
-    public void doOnRestSucessResponse(String flag) {
+    public void goHome() {
 
         ClinicService clinicService = new ClinicService(getApplication(),getCurrentUser());
         Clinic localClinic = null;
@@ -113,12 +113,29 @@ public class SecondSplashVM extends BaseViewModel implements RestResponseListene
     }
 
     private void getFirstData() {
-        RestPatientService.restGetAllPatient(SecondSplashVM.this);
+        WorkManager workManager;
+        OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).build();
+        workManager = WorkManager.getInstance(getApplication());
+        workManager.enqueue(patientOneTimeWorkRequest);
+
+        observeRunningSync(workManager, patientOneTimeWorkRequest);
+
         try {
             RestStockService.restGetStock(getCurrentClinic());
             RestStockService.restPostStockCenter(getCurrentClinic());
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void observeRunningSync(WorkManager workManager, OneTimeWorkRequest mRequest){
+        workManager.getWorkInfoByIdLiveData(mRequest.getId()).observe(getRelatedActivity(), workInfo -> {
+            if (workInfo != null) {
+                if (workInfo.getState() == WorkInfo.State.SUCCEEDED){
+                    WorkInfo.State state = workInfo.getState();
+                    goHome();
+                }
+            }
+        });
     }
 }
