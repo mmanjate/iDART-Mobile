@@ -128,6 +128,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
                 loadFirstPage();
 
                 changeSearchStatusToFinished();
+                this.processedRecs = getAllDisplyedRecords();
 
                 displaySearchResults();
             } else {
