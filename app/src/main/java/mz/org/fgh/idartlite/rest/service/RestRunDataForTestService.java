@@ -114,11 +114,11 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
         RestEpisodeService.restGetAllReadyEpisodes();
         RestEpisodeService.restGetAllEpisodes();
 
-        try {
+       /* try {
             RestStockService.restGetStock(clinicService.getAllClinics().get(0));
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
         try {
             stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_READY);

@@ -15,6 +15,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ import mz.org.fgh.idartlite.view.splash.SecondSplashActivity;
 import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 import mz.org.fgh.idartlite.workSchedule.work.DataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
+import mz.org.fgh.idartlite.workSchedule.work.get.StockWorker;
 
 public class SecondSplashVM extends BaseViewModel{
 
@@ -115,14 +117,14 @@ public class SecondSplashVM extends BaseViewModel{
     private void getFirstData() {
         WorkManager workManager;
         OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).build();
+        OneTimeWorkRequest stockOneTimeWorkRequest = new OneTimeWorkRequest.Builder(StockWorker.class).build();
         workManager = WorkManager.getInstance(getApplication());
-        workManager.enqueue(patientOneTimeWorkRequest);
-
+        workManager.enqueue(Arrays.asList(stockOneTimeWorkRequest,patientOneTimeWorkRequest));
+     //   goHome();
         observeRunningSync(workManager, patientOneTimeWorkRequest);
 
         try {
-            RestStockService.restGetStock(getCurrentClinic());
-            RestStockService.restPostStockCenter(getCurrentClinic());
+           RestStockService.restPostStockCenter(getCurrentClinic());
         } catch (SQLException e) {
             e.printStackTrace();
         }

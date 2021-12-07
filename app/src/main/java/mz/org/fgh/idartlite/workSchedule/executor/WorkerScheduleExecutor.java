@@ -15,7 +15,7 @@ import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetConfigWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetEpisodeWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetPatientDispensationWorkerScheduler;
-import mz.org.fgh.idartlite.workSchedule.work.get.RestGetStockWorkerScheduler;
+import mz.org.fgh.idartlite.workSchedule.work.get.StockWorker;
 import mz.org.fgh.idartlite.workSchedule.work.patch.RestPatchStockConfigWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostNewPatientWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostPatientDataWorkerScheduler;
@@ -98,7 +98,7 @@ public class WorkerScheduleExecutor {
                 .setRequiresCharging(true)
                 .build();
 
-        PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetStockWorkerScheduler.class, getDataSyncInterval(), TimeUnit.HOURS)
+        PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(StockWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .setInitialDelay(1,TimeUnit.HOURS)
                 .addTag("INIT_STOCK_ID " + JOB_ID)

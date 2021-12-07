@@ -37,6 +37,7 @@ import mz.org.fgh.idartlite.service.drug.DrugService;
 import mz.org.fgh.idartlite.service.drug.IDrugService;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
 import static mz.org.fgh.idartlite.util.DateUtilities.getUtilDateFromString;
 
@@ -100,24 +101,34 @@ public class RestStockService extends BaseRestService {
         }
     }
 
-    public static void restGetStock(Clinic clinic) throws SQLException {
+  /*  public static void restGetStock(Clinic clinic) throws SQLException {
         getStock(clinic,null);
     }
 
     public static void restGetStock(Clinic clinic, ServiceWatcher watcher) throws SQLException {
         getStock(clinic, watcher);
-    }
+    }*/
 
-    public static void getStock(Clinic clinic, ServiceWatcher watcher) throws SQLException {
+
+    public static void getStock(RestResponseListener listener,long offset, long limit) throws SQLException {
 
         stockService = new StockService(getApp(), null);
         clinicService = new ClinicService(BaseService.getApp(), null);
 
-        if (clinic == null)
-            clinic = clinicService.getAllClinics().get(0);
+     //   if (clinic == null)
+          Clinic clinic = clinicService.getAllClinics().get(0);
 
-        Clinic finalClinic = clinic;
-        String url = BaseRestService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
+      // Clinic finalClinic = clinic;
+   //     String url = BaseRestService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
+          String url;
+        if (limit > 0) {
+            url = BaseRestService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()" +
+                    "&offset=" + offset +
+                    "&limit=" + limit;
+        }else {
+            url = BaseRestService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
+        }
+
 
         getRestServiceExecutor().execute(() -> {
             RESTServiceHandler handler = new RESTServiceHandler();
@@ -135,7 +146,7 @@ public class RestStockService extends BaseRestService {
                             try {
                                 LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) stock;
                                 if (itemresult != null) {
-                                    Stock localStock = getNewLocalStock(itemresult, finalClinic);
+                                    Stock localStock = getNewLocalStock(itemresult, clinic);
                                     if (localStock != null) {
                                         stockService.saveOrUpdateViaRest(localStock);
                                         counter++;
@@ -149,12 +160,16 @@ public class RestStockService extends BaseRestService {
                                 continue;
                             }
                         }
-                        if (watcher != null && counter > 0) watcher.addUpdates(counter +" novas referencias de Stocks");
-                    } else
+                        listener.doOnResponse(BaseRestService.REQUEST_SUCESS, null);
+                    } else {
+                        listener.doOnResponse(REQUEST_NO_DATA, null);
                         Log.w(TAG, "Response Sem Info." + stocks.length);
-
+                    }
                 }
-            }, error -> Log.e("Response", generateErrorMsg(error)));
+            },  error -> {
+                listener.doOnResponse(generateErrorMsg(error), null);
+                Log.d(TAG, "onErrorResponse: Erro no GET :" + generateErrorMsg(error));
+            });
         });
     }
 
