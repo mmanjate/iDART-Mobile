@@ -11,6 +11,7 @@ import androidx.work.WorkManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
@@ -19,6 +20,7 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.AppSettings;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
 import mz.org.fgh.idartlite.util.SimpleValue;
@@ -28,6 +30,7 @@ import mz.org.fgh.idartlite.workSchedule.work.DataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.MetaDataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.RemoveDataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
+import mz.org.fgh.idartlite.workSchedule.work.get.StockWorker;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
@@ -312,8 +315,8 @@ public class SettingsVM extends BaseViewModel {
     public void syncDataNow(){
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class).build();
         OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).build();
-        mWorkManager.beginWith(mRequest)
-                    .then(patientOneTimeWorkRequest)
+        OneTimeWorkRequest stockOneTimeWorkRequest = new OneTimeWorkRequest.Builder(StockWorker.class).build();
+        mWorkManager.beginWith(Arrays.asList(patientOneTimeWorkRequest,mRequest, stockOneTimeWorkRequest))
                     .enqueue();
 
         saveLastSyncDateTime();

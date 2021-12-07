@@ -74,13 +74,13 @@ public class DataSyncWorker extends Worker {
             RestEpisodeService.restGetAllReadyEpisodes();
             RestEpisodeService.restGetAllEpisodes();
 
-            try {
+           /* try {
                 RestStockService.restGetStock(clinicService.getAllClinics().get(0));
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
 
-            try {
+           try {
                 stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_READY);
                 if (stockList != null)
                     if (stockList.size() > 0) {
