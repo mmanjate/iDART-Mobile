@@ -316,7 +316,7 @@
     <string name="dispense_type_report">Tipo de Dispensa </string>
     <string name="data_de_referencia_report">Data de Referência</string>
     <string name="prescription_date_report">Data da Prescrição</string>
-
+    <string name="order_number_report">Ordem</string>
 
     <string name="clinic_info">Vitais</string>
 

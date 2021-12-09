@@ -307,10 +307,14 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
         List<Dispense> dispenses = getDataBaseHelper().getDispenseDao().getAbsentPatientsBetweenNextPickppDateStartDateAndEndDateWithLimit(getApplication(),startDate,endDate,offset,limit);
         List<Dispense> reportDispenses = new ArrayList<>();
-
+        int orderNumber=1;
         for (Dispense dispense:
                 dispenses) {
-            if(DateUtilities.getDaysBetween(dispense.getNextPickupDate(),endDate) >= 5) reportDispenses.add(dispense);
+            if(DateUtilities.getDaysBetween(dispense.getNextPickupDate(),endDate) >= 5){
+                dispense.setOrderNumber(orderNumber);
+                reportDispenses.add(dispense);
+                orderNumber++;
+            }
         }
 
 

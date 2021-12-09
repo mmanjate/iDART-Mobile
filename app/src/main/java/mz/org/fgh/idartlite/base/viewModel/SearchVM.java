@@ -221,9 +221,9 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     private List<T> getNextRecordsToDisplay() throws SQLException {
 
         int end = 0;
-        List<T> recs = null;
+        List<T> recs = new ArrayList<>();
 
-        if ((allDisplyedRecords.size()+pageSize) > this.searchResults.size()){
+        if ((allDisplyedRecords.size()+pageSize) > this.searchResults.size() && !isPdfGeneration()){
             if (isOnlineSearch()) {
                 doOnlineSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
             } else recs = doSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
@@ -242,10 +242,19 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
             }
         }else {
             end = allDisplyedRecords.size()+pageSize-1;
-            if (onlineSearch) loadNewRecords(end);
+            // if(isPdfGeneration() && isOnlineSearch()) doOnlineSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
+            if (onlineSearch && isPdfGeneration) {
+                doOnlineSearch(getSearchResults().size(), RECORDS_PER_SEARCH);
+              //  loadNewRecords(end);
+            }else if(onlineSearch) loadNewRecords(end);
         }
 
-        if (!onlineSearch) loadNewRecords(end);
+        if (!onlineSearch) {
+            if(end > this.searchResults.size())  end=this.searchResults.size()-1;
+            loadNewRecords(end);
+            if(allDisplyedRecords.size() != this.searchResults.size())  recs.addAll(allDisplyedRecords);
+
+        }
         return recs;
     }
 

@@ -71,8 +71,9 @@ public class Dispense extends BaseModel {
     @DatabaseField(columnName = COLUMN_VOIDED)
     private boolean voided=false;
 
-    private List<DispensedDrug> dispensedDrugs = new ArrayList<>();
+    private int orderNumber;
 
+    private List<DispensedDrug> dispensedDrugs = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -234,4 +235,11 @@ public class Dispense extends BaseModel {
     }
 
 
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 }

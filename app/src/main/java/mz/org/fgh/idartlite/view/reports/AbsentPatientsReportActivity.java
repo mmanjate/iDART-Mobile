@@ -299,12 +299,13 @@ public class AbsentPatientsReportActivity extends BaseActivity {
         tableImage.addCell(cell);
 
 
-        PdfPTable table = new PdfPTable(new float[]{4, 4, 3, 3, 3});
+        PdfPTable table = new PdfPTable(new float[]{2,4, 4, 3, 3, 3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
         table.setWidthPercentage(100);
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(getString(R.string.order_number_report));
         table.addCell(getString(R.string.nid_report));
         table.addCell(getString(R.string.name_report));
         table.addCell(getString(R.string.contacto_pessoais));
@@ -318,7 +319,7 @@ public class AbsentPatientsReportActivity extends BaseActivity {
         }
 
         for (Dispense dispense:dispenses){
-
+            table.addCell(String.valueOf(dispense.getOrderNumber()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getNid()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getFullName()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getPhone()));
