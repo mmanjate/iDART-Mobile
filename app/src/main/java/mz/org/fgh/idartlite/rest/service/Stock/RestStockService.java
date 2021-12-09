@@ -28,6 +28,7 @@ import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Drug;
+import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
@@ -129,7 +130,7 @@ public class RestStockService extends BaseRestService {
             url = BaseRestService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
         }
 
-
+        List<Stock> newStock = new ArrayList<>();
         getRestServiceExecutor().execute(() -> {
             RESTServiceHandler handler = new RESTServiceHandler();
             handler.addHeader("Content-Type", "Application/json");
@@ -149,6 +150,7 @@ public class RestStockService extends BaseRestService {
                                     Stock localStock = getNewLocalStock(itemresult, clinic);
                                     if (localStock != null) {
                                         stockService.saveOrUpdateViaRest(localStock);
+                                        newStock.add(localStock);
                                         counter++;
                                     }
                                 } else {
@@ -160,7 +162,7 @@ public class RestStockService extends BaseRestService {
                                 continue;
                             }
                         }
-                        listener.doOnResponse(BaseRestService.REQUEST_SUCESS, null);
+                        listener.doOnResponse(BaseRestService.REQUEST_SUCESS, newStock);
                     } else {
                         listener.doOnResponse(REQUEST_NO_DATA, null);
                         Log.w(TAG, "Response Sem Info." + stocks.length);

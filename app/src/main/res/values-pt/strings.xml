@@ -437,4 +437,5 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="pacientes_suspeitos_tb" translatable="false">Lista de Suspeitos TB</string>
     <string name="include_online_info">Incluir Informação online?</string>
     <string name="online">online</string>
+    <string name="order_number_report">Ordem</string>
 </resources>

@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_10dp">
 
-
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="0dp"
@@ -240,7 +239,6 @@
                             android:text="@{dispense.prescription.patient.phone}"/>
 
 
-
                         <TextView
                             android:id="@+id/lbl_date_missed"
                             android:layout_width="match_parent"
@@ -282,6 +280,25 @@
                             android:paddingLeft="@dimen/dimen_4dp"
                             android:text="@{Utilities.parseLongToString(DateUtilities.getDaysBetween(dispense.nextPickupDate,DateUtilities.getCurrentDate()))}" />
 
+                        <TextView
+                            android:id="@+id/lbl_sanitary_unit_absent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lbl_days_missed"
+                            android:layout_toLeftOf="@+id/txt_sanitary_unit_absent"
+                            android:gravity="right"
+                            android:text="@string/unidade_sanit_ria"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txt_sanitary_unit_absent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/days_missed"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:paddingLeft="@dimen/dimen_6dp"
+                            android:text="@{dispense.prescription.patient.episodes1.iterator().next().sanitaryUnit}" />
                     </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>

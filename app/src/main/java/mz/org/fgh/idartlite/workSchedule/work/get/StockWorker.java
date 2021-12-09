@@ -27,7 +27,7 @@ public class StockWorker extends BaseWorker<Stock> {
     @Override
     protected void doOnStart() {
         try {
-            issueNotification(CHANNEL_1_ID, "Sincronização de Stock Iniciada");
+            issueNotification(CHANNEL_1_ID, "Sincronização de Stock Iniciada",true);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,6 @@ public class StockWorker extends BaseWorker<Stock> {
 
     @Override
     public void doOnlineSearch(long offset, long limit) throws SQLException {
-      //  RestPatientService.restGetAllPatient(offset, limit, this);
 
         try {
             RestStockService.getStock(this,offset,limit);
@@ -47,7 +46,7 @@ public class StockWorker extends BaseWorker<Stock> {
     @Override
     protected void doOnFinish() {
         try {
-            issueNotification(CHANNEL_1_ID, "Sincronização de Stock Terminada");
+            issueNotification(CHANNEL_1_ID, "Sincronização de Stock Terminada",false);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
