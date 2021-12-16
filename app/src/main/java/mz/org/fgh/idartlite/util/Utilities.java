@@ -421,19 +421,19 @@ public class Utilities {
         Intent testIntent = new Intent(Intent.ACTION_VIEW);
         testIntent.setType("application/pdf");
         List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
-        if (list.size() > 0) {
+ //       if (list.size() > 0) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            //  Uri uri = Uri.fromFile(pdfFile);
+            // Uri uri = Uri.fromFile(pdfFile);
 
             Uri uri =  FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".FileProvider", pdfFile);
             intent.setDataAndType(uri, "application/pdf");
 
             mContext.startActivity(intent);
-        } else {
-            Toast.makeText( mContext, "Download a PDF Viewer to see the generated PDF", Toast.LENGTH_SHORT).show();
-        }
+        //} else {
+        //    Toast.makeText( mContext, "Download a PDF Viewer to see the generated PDF", Toast.LENGTH_SHORT).show();
+     //   }
     }
 
 

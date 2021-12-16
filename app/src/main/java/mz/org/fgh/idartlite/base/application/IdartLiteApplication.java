@@ -11,6 +11,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+import java.util.Locale;
+
 import mz.org.fgh.idartlite.util.LruBitmapCache;
 
 public class IdartLiteApplication extends Application {
@@ -34,6 +36,7 @@ public class IdartLiteApplication extends Application {
         mInstance = this;
 
         createNotificationChannels();
+        Locale.setDefault(new Locale("en_ZA"));
     }
 
     private void createNotificationChannels(){

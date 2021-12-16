@@ -250,7 +250,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         }
 
         if (!onlineSearch) {
-            if(end > this.searchResults.size())  end=this.searchResults.size()-1;
+            if(end >= this.searchResults.size())  end=this.searchResults.size()-1;
             loadNewRecords(end);
             if(allDisplyedRecords.size() != this.searchResults.size())  recs.addAll(allDisplyedRecords);
 
