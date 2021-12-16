@@ -17,6 +17,7 @@ import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
+import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
 
 public class StockWorker extends BaseWorker<Stock> {
 
@@ -27,7 +28,7 @@ public class StockWorker extends BaseWorker<Stock> {
     @Override
     protected void doOnStart() {
         try {
-            issueNotification(CHANNEL_1_ID, "Sincronização de Stock Iniciada",true);
+            issueNotification(CHANNEL_2_ID, "Sincronização de Stock Iniciada",true);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -46,7 +47,7 @@ public class StockWorker extends BaseWorker<Stock> {
     @Override
     protected void doOnFinish() {
         try {
-            issueNotification(CHANNEL_1_ID, "Sincronização de Stock Terminada",false);
+            issueNotification(CHANNEL_2_ID, "Sincronização de Stock Terminada",false);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

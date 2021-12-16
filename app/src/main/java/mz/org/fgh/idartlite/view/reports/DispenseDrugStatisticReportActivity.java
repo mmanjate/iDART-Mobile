@@ -247,7 +247,10 @@ public class DispenseDrugStatisticReportActivity extends BaseActivity {
     }
 
     public void createPdfDocument() throws IOException, DocumentException {
-        createPdf(getRelatedViewModel().getAllDisplyedRecords());
+        if (getRelatedViewModel().isOnlineSearch()) {
+            createPdf(getRelatedViewModel().getProcessedRecs());
+        } else
+            createPdf(getRelatedViewModel().getAllDisplyedRecords());
     }
 
 
