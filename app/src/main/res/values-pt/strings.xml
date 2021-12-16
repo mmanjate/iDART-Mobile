@@ -438,4 +438,5 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="include_online_info">Incluir Informação online?</string>
     <string name="online">online</string>
     <string name="order_number_report">Ordem</string>
+    <string name="graphic_report_dispense_by_regime">Gráfico de Levantamentos por regime</string>
 </resources>
