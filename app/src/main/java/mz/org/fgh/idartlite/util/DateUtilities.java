@@ -400,7 +400,7 @@ public class DateUtilities {
     }
 
     public static Date getUtilDateFromString(String stringDate, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
         try {
             Date date = (Date) format.parse(stringDate);
             return date;
@@ -412,7 +412,7 @@ public class DateUtilities {
     }
 
     public static String getStringDateFromDate(Date date, String pattern) {
-        SimpleDateFormat datetemp = new SimpleDateFormat(pattern, Locale.getDefault());
+        SimpleDateFormat datetemp = new SimpleDateFormat(pattern, Locale.ENGLISH);
         String data = datetemp.format(date);
         return data;
 
