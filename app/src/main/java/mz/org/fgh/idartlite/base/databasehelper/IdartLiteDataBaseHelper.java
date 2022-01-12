@@ -22,6 +22,7 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.clinic.IClinicDao;
 import mz.org.fgh.idartlite.dao.clinic.IClinicSectorDao;
+import mz.org.fgh.idartlite.dao.clinic.IClinicSectorTypeDao;
 import mz.org.fgh.idartlite.dao.clinic.IPharmacyTypeDao;
 import mz.org.fgh.idartlite.dao.clinicInfo.IClinicInfoDao;
 import mz.org.fgh.idartlite.dao.dispense.IDispenseDao;
@@ -56,6 +57,7 @@ import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.ClinicSector;
+import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.model.Country;
 import mz.org.fgh.idartlite.model.DestroyedDrug;
 import mz.org.fgh.idartlite.model.DiseaseType;
@@ -132,6 +134,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
     private IClinicInfoDao clinicInfoDao;
+
+    private IClinicSectorTypeDao clinicSectorTypeDao;
 
  //   private IPatientSectorDao patientSectorDao;
 
@@ -355,6 +359,14 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         return clinicSectorDao;
     }
 
+    //JNM 11.01.2022
+    public IClinicSectorTypeDao getClinicSectorTypeDao() throws SQLException {
+        if(clinicSectorTypeDao == null){
+            clinicSectorTypeDao = getDao(ClinicSectorType.class);
+        }
+        return clinicSectorTypeDao;
+    }
+
     public IReturnedDrugDao getReturnedDrugDao() throws SQLException {
         if(returnedDrugDao == null){
             returnedDrugDao = getDao(ReturnedDrug.class);
@@ -423,6 +435,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, OperationType.class);
             TableUtils.createTableIfNotExists(connectionSource, AppSettings.class);
             TableUtils.createTableIfNotExists(connectionSource, ClinicInformation.class);
+            TableUtils.createTableIfNotExists(connectionSource, ClinicSectorType.class);
             TableUtils.createTableIfNotExists(connectionSource, PatientAttribute.class);
 
 

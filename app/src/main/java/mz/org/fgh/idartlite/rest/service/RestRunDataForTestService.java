@@ -185,8 +185,10 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
                 if (patientList.size() > 0) {
                     for (Patient patient : patientList) {
                         episode = episodeService.findEpisodeWithStopReasonByPatient(patient);
-                        if (episode == null)
+                        if (episode == null){
                             RestDispenseService.restGetLastDispense(patient);
+                            RestClinicInfoService.getRestLastClinicInfo(patient);
+                        }
                     }
                 }
         } catch (SQLException e) {

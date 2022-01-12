@@ -20,6 +20,7 @@ import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
+import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.rest.service.User.RestUserService;
 import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
@@ -42,6 +43,9 @@ public class LoginVM extends BaseViewModel {
     private Clinic selectedClinic;
 
     private ClinicSector selectedClinicSector;
+
+    //JNM 12.01.2022
+    private ClinicSectorType selectedClinicSectorType;
 
     private List<Clinic> clinicList;
 
@@ -249,6 +253,8 @@ public class LoginVM extends BaseViewModel {
         notifyPropertyChanged(BR.selectedClinic);
         notifyPropertyChanged(BR.selectedClinicSector);
         notifyPropertyChanged(BR.sanitaryUnit);
+        //JNM 12.01.2022
+        notifyPropertyChanged(BR.selectedClinicSectorType);
 
     }
 
@@ -260,6 +266,18 @@ public class LoginVM extends BaseViewModel {
     public void setSelectedClinicSector(Listble selectedClinicSector) {
         this.selectedClinicSector = (ClinicSector) selectedClinicSector;
         notifyPropertyChanged(BR.selectedClinicSector);
+    }
+
+    //JNM 12.01.2022
+    @Bindable
+    public Listble getSelectedClinicSectorType() {
+        return getSelectedClinicSectorType();
+    }
+
+    //JNM 12.01.2022
+    public void setSelectedClinicSectorType(Listble selectedClinicSectorType) {
+        this.selectedClinicSectorType = (ClinicSectorType) selectedClinicSectorType;
+        notifyPropertyChanged(BR.selectedClinicSectorType);
     }
 
     @Bindable

@@ -135,6 +135,7 @@ public class DataSyncWorker extends Worker {
                             episode = episodeService.findEpisodeWithStopReasonByPatient(patient);
                             if (episode == null)
                                 RestDispenseService.restGetLastDispense(patient);
+                                RestClinicInfoService.getRestLastClinicInfo(patient);
                         }
                     }
             } catch (SQLException e) {
