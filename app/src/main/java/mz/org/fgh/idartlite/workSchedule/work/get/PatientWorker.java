@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.work.BaseWorker;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
 
 public class PatientWorker extends BaseWorker<Patient> {

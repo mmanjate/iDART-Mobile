@@ -7,6 +7,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
@@ -40,13 +43,18 @@ public class PatientHomeVM extends BaseViewModel {
 
     }
 
-    public void callSearchPatient(){
+    public void callSearchPatient(String searchMode){
 
         if(getRelatedActivity().getApplicationStep().checkSanitaryUnit(currentClinic)) {
             getRelatedActivity().nextActivityWithGenericParams(NewPatientSearchActivity.class);
         }
         else {
-            getRelatedActivity().nextActivityWithGenericParams(SearchPatientActivity.class);
+            Map<String, Object> params = new HashMap<>();
+            params.put("user", getCurrentUser());
+            params.put("clinic", getCurrentClinic());
+            params.put("searchMode", searchMode);
+
+            getRelatedActivity().nextActivityFinishingCurrent(SearchPatientActivity.class, params);
         }
     }
 

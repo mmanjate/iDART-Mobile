@@ -13,13 +13,13 @@
         <variable name="provinceAdapter"         type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
         <variable name="districtAdapter"          type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
 
-        <import type="mz.org.fgh.idartlite.model.Patient"/>
+        <import type="mz.org.fgh.idartlite.model.patient.Patient"/>
         <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="android.view.View"/>
 
         <variable
             name="patient"
-            type="mz.org.fgh.idartlite.model.Patient" />
+            type="mz.org.fgh.idartlite.model.patient.Patient" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -271,7 +271,8 @@ public class LoginVM extends BaseViewModel {
     //JNM 12.01.2022
     @Bindable
     public Listble getSelectedClinicSectorType() {
-        return getSelectedClinicSectorType();
+        //return getSelectedClinicSectorType();
+        return null;
     }
 
     //JNM 12.01.2022

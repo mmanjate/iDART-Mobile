@@ -56,10 +56,10 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     protected boolean isFullLoad;
 
-    protected List processedRecs;
+    protected List<?> processedRecs;
 
 
-    private AbstractRecycleViewAdapter adapter;
+    private AbstractRecycleViewAdapter<T> adapter;
 
     public SearchVM(@NonNull Application application) {
         super(application);
@@ -68,7 +68,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
         this.allDisplyedRecords = new ArrayList<>();
         this.searchResults = new ArrayList<>();
-        this.processedRecs = new ArrayList();
+        this.processedRecs = new ArrayList<>();
 
         activatePaginatedSearch();
 
@@ -86,12 +86,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     }
 
     public void changeReportSearchMode(String searchType) {
-        if (searchType.equals(getApplication().getString(R.string.local))) {
-            this.setOnlineSearch(false);
-        }
-        else {
-            setOnlineSearch(true);
-        }
+        this.setOnlineSearch(!searchType.equals(getApplication().getString(R.string.local)));
     }
 
     public void initSearch() {
@@ -281,9 +276,9 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
                     createPdfDocument();
                 } else {
                     getAllDisplyedRecords().clear();
-                    getAllDisplyedRecords().addAll(doBeforeDisplay(getSearchResults()));
+                    getAllDisplyedRecords().addAll((Collection<? extends T>) doBeforeDisplay(getSearchResults()));
 
-                    this.processedRecs = (List) doBeforeDisplay(getSearchResults());
+                    this.processedRecs = (List<?>) doBeforeDisplay(getSearchResults());
                     doAfterFirstOnlineSearch();
                 }
             }
@@ -325,7 +320,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         return (allDisplyedRecords.size()+pageSize) > this.searchResults.size();
     }
 
-    public void loadMoreRecords(RecyclerView rv, AbstractRecycleViewAdapter adapter) {
+    public void loadMoreRecords(RecyclerView rv, AbstractRecycleViewAdapter<T> adapter) {
         this.adapter = adapter;
 
         if (isPaginatedSearch() && getAllDisplyedRecords().size() <= getSearchResults().size() && getSearchResults().size() >= PAGE_SIZE){
@@ -337,23 +332,20 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
                 }
             });
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!isOnlineSearch() || !mustSearchMore()) {
-                        getAllDisplyedRecords().remove(getAllDisplyedRecords().size() - 1);
-                        adapter.notifyItemRemoved(getAllDisplyedRecords().size());
-                    }
-
-                    try {
-                        getNextRecordsToDisplay();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    adapter.notifyDataSetChanged();
-                    adapter.setLoaded();
-
+            new Handler().postDelayed(() -> {
+                if (!isOnlineSearch() || !mustSearchMore()) {
+                    getAllDisplyedRecords().remove(getAllDisplyedRecords().size() - 1);
+                    adapter.notifyItemRemoved(getAllDisplyedRecords().size());
                 }
+
+                try {
+                    getNextRecordsToDisplay();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
+                adapter.setLoaded();
+
             }, getDelayMillis());
         }
     }
@@ -415,7 +407,7 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
     public void doOnResponse(String flag, List<T> objects) {
         if (flag.equals(BaseRestService.REQUEST_SUCESS)) {
             if (!isFullLoad) {
-                this.searchResults.addAll(doBeforeDisplay(objects));
+                this.searchResults.addAll((Collection<? extends T>) doBeforeDisplay(objects));
             }else {
                 this.searchResults.addAll(objects);
             }
@@ -436,16 +428,12 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
         }
     }
 
-    public boolean isFullLoad() {
-        return isFullLoad;
-    }
-
     public void setFullLoad(boolean fullLoad) {
         isFullLoad = fullLoad;
     }
 
     @Override
-    public Collection<? extends T> doBeforeDisplay(List<T> objects) {
+    public Collection<?> doBeforeDisplay(List<T> objects) {
         return objects;
     }
 
@@ -501,11 +489,8 @@ public abstract class SearchVM<T extends BaseModel> extends BaseViewModel implem
 
     }
 
-    public List getProcessedRecs() {
+    public List<?> getProcessedRecs() {
         return processedRecs;
     }
 
-    public void setProcessedRecs(List processedRecs) {
-        this.processedRecs = processedRecs;
-    }
 }

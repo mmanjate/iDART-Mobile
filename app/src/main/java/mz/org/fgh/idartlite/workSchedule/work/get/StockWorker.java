@@ -8,15 +8,10 @@ import androidx.work.WorkerParameters;
 import java.sql.SQLException;
 import java.util.List;
 
-import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.base.work.BaseWorker;
-import mz.org.fgh.idartlite.model.Patient;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
-import mz.org.fgh.idartlite.service.clinic.ClinicService;
-import mz.org.fgh.idartlite.service.clinic.IClinicService;
 
-import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
 
 public class StockWorker extends BaseWorker<Stock> {

@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.view.clinicInfo;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,26 +12,19 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.Calendar;
 
-import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityClinicInfoBinding;
-import mz.org.fgh.idartlite.databinding.EpisodeActivityBinding;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.view.episode.EpisodeActivity;
 import mz.org.fgh.idartlite.viewmodel.clinicInfo.ClinicInfoVM;
-import mz.org.fgh.idartlite.viewmodel.episode.EpisodeVM;
 
 public class ClinicInfoActivity extends BaseActivity  implements IDialogListener {
 

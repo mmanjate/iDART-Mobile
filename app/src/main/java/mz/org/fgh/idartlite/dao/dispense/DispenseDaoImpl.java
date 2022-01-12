@@ -1,17 +1,13 @@
 package mz.org.fgh.idartlite.dao.dispense;
 
 import android.app.Application;
-import android.database.Cursor;
 
-import com.j256.ormlite.dao.GenericRawResults;
-import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.stmt.ColumnArg;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,12 +17,9 @@ import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
-import mz.org.fgh.idartlite.model.ReferedStockMoviment;
-import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.TherapeuticLine;
-import mz.org.fgh.idartlite.util.DateUtilities;
 
 public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implements IDispenseDao {
 

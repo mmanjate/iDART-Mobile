@@ -1,6 +1,6 @@
 package mz.org.fgh.idartlite.searchparams;
 
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 
 public class PatientSearchParams extends AbstractSearchParams<Patient> {
 

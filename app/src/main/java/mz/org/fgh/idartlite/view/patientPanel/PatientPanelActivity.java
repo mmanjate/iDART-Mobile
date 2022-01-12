@@ -20,7 +20,7 @@ import mz.org.fgh.idartlite.adapter.tab.patient.PatientTabAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.viewmodel.patient.PatientVM;
@@ -83,19 +83,25 @@ public class PatientPanelActivity extends BaseActivity {
 
         adapter = new PatientTabAdapter(getSupportFragmentManager());
         adapter.addFragment(new PatientDemographicFragment(), getString(R.string.general_info));
-        adapter.addFragment(new EpisodeFragment(), getString(R.string.episode));
-        adapter.addFragment(new ClinicInfoFragment(), getString(R.string.clinic_info));
+        if (!getRelatedViewModel().getPatient().isFaltosoOrAbandono()) adapter.addFragment(new EpisodeFragment(), getString(R.string.episode));
+        if (!getRelatedViewModel().getPatient().isFaltosoOrAbandono()) adapter.addFragment(new ClinicInfoFragment(), getString(R.string.clinic_info));
         adapter.addFragment(new PrescriptionFragment(), getString(R.string.prescription));
         adapter.addFragment(new DispenseFragment(), getString(R.string.dispense));
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.mipmap.ic_patient);
-        tabLayout.getTabAt(1).setIcon(R.mipmap.ic_episode);
-        tabLayout.getTabAt(2).setIcon(R.mipmap.ic_clinic_info_last);
-        tabLayout.getTabAt(3).setIcon(R.mipmap.ic_precricao);
-        tabLayout.getTabAt(4).setIcon(R.mipmap.ic_dispense);
+        if (!getRelatedViewModel().getPatient().isFaltosoOrAbandono()) {
+            tabLayout.getTabAt(0).setIcon(R.mipmap.ic_patient);
+            tabLayout.getTabAt(1).setIcon(R.mipmap.ic_episode);
+            tabLayout.getTabAt(2).setIcon(R.mipmap.ic_clinic_info_last);
+            tabLayout.getTabAt(3).setIcon(R.mipmap.ic_precricao);
+            tabLayout.getTabAt(4).setIcon(R.mipmap.ic_dispense);
+        } else {
+            tabLayout.getTabAt(0).setIcon(R.mipmap.ic_patient);
+            tabLayout.getTabAt(1).setIcon(R.mipmap.ic_precricao);
+            tabLayout.getTabAt(2).setIcon(R.mipmap.ic_dispense);
+        }
 
         if (Utilities.stringHasValue(selectedTab) && selectedTab.equals(PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION)) {
             tabLayout.getTabAt(3).select();

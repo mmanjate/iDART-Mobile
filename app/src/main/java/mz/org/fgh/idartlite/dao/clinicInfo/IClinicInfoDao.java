@@ -8,7 +8,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 
 public interface IClinicInfoDao extends IGenericDao<ClinicInformation, Integer> {
 

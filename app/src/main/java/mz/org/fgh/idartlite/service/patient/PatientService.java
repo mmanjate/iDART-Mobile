@@ -16,7 +16,8 @@ import mz.org.fgh.idartlite.dao.patient.IPatientDao;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.PatientAttribute;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
@@ -30,7 +31,8 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
     private IPatientDao patientDao;
     protected ClinicService clinicService;
     protected PrescriptionService prescriptionService;
-    protected EpisodeService episodeService ;
+    protected EpisodeService episodeService;
+    private IPatientAttributeService attributeService;
 
     public PatientService(Application application, User currentUser) {
         super(application, currentUser);
@@ -43,6 +45,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
             this.prescriptionService = new PrescriptionService(application, currentUser);
             this.episodeService = new EpisodeService(application, currentUser);
             this.clinicService = new ClinicService(application, currentUser);
+            this.attributeService = new PatientAttributeService(application, currentUser);
 
 
         }catch (SQLException sql){
@@ -57,7 +60,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
 
     @Override
     public void save(Patient record) throws SQLException {
-
+        savePatient(record);
     }
 
     @Override
@@ -75,6 +78,11 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
 
     public void  savePatient(Patient patient) throws SQLException {
         patientDao.create(patient);
+        if (Utilities.listHasElements(patient.getAttributes())) {
+            for (PatientAttribute attribute: patient.getAttributes()) {
+                attributeService.save(attribute);
+            }
+        }
     }
 
     @Override
@@ -193,6 +201,13 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void changePatienToFaltosoOrAbandono(Patient patient) throws SQLException {
+        PatientAttribute attribute = attributeService.getByAttributeOfPatient(PatientAttribute.PATIENT_DISPENSATION_STATUS, patient);
+        attribute.setValue(PatientAttribute.PATIENT_DISPENSATION_STATUS_FALTOSO);
+        attributeService.update(attribute);
     }
 
 

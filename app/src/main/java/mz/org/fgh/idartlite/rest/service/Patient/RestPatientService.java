@@ -21,16 +21,14 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
-import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.model.SyncMobilePatient;
 import mz.org.fgh.idartlite.model.User;
@@ -274,7 +272,92 @@ public class RestPatientService extends BaseRestService {
             }
     }
 
+    public static void restSearchPatientByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit, RestResponseListener listener) {
 
+
+        final boolean finished = false;
+
+        clinicService = new ClinicService(getApp(), null);
+
+        patientService = new PatientService(getApp(), null);
+        provinceService=new ProvinceService(getApp(),null);
+
+        List<Patient> newPatients = new ArrayList<>();
+        Clinic clinic = null;
+        Map<String, Province> provinceMap=new HashMap<>();
+        try {
+            clinic = clinicService.getAllClinics().get(0);
+            provinceMap=provinceService.getProvincesInMap();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
+
+            Clinic finalClinic = clinic;
+            Map<String, Province> finalProvinceMap = provinceMap;
+            getRestServiceExecutor().execute(() -> {
+                String url;
+                    url = BaseRestService.baseUrl + "/sync_temp_patients?or=(patientid.like.*" + nid + "*" +
+                            ",firstnames.like.*" + name + "*" +
+                            ",lastname.like.*" + surname + "*)" +
+                            "&offset=" + offset +
+                            "&limit=" + limit;
+
+                RESTServiceHandler handler = new RESTServiceHandler();
+                handler.addHeader("Content-Type", "Application/json");
+
+                handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
+                    @Override
+                    public void onResponse(Object[] patients) {
+                        Log.d("Response", String.valueOf(patients.length));
+
+                        if (patients.length > 0) {
+                            for (Object patient : patients) {
+                                Log.i(TAG, "onResponse: " + patient);
+
+                                LinkedTreeMap<String, Object> patientRest = (LinkedTreeMap<String, Object>) patient;
+                                Patient localPatient = new Patient();
+
+                                String concatAdrees = getFullAdreess(Objects.requireNonNull(patientRest.get("address1")).toString(),
+                                        Objects.requireNonNull(patientRest.get("address2")).toString(),
+                                        Objects.requireNonNull(patientRest.get("address3")).toString());
+
+                                localPatient.setProvince(finalProvinceMap.get(Objects.requireNonNull(patientRest.get("province")).toString()));
+                                localPatient.setAddress(concatAdrees);
+                                localPatient.setBirthDate(getSqlDateFromString(Objects.requireNonNull(patientRest.get("dateofbirth")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+                                localPatient.setClinic(finalClinic);
+                                localPatient.setFirstName(Objects.requireNonNull(patientRest.get("firstnames")).toString());
+                                localPatient.setLastName(Objects.requireNonNull(patientRest.get("lastname")).toString());
+                                localPatient.setGender(Objects.requireNonNull(patientRest.get("sex")).toString());
+                                localPatient.setNid(Objects.requireNonNull(patientRest.get("patientid")).toString());
+                                localPatient.setPhone(Objects.requireNonNull(patientRest.get("cellphone")).toString());
+                                localPatient.setUuid(Objects.requireNonNull(patientRest.get("uuidopenmrs")).toString());
+                                if ((patientRest.get("datainiciotarv") != null)) {
+                                    localPatient.setStartARVDate(getSqlDateFromString(Objects.requireNonNull(patientRest.get("datainiciotarv")).toString(), "dd MMM yyyy"));
+                                }
+                                newPatients.add(localPatient);
+                            }
+                            listener.doOnResponse(BaseRestService.REQUEST_SUCESS, newPatients);
+                        }
+                        else {
+                            Log.w(TAG, "Response Sem Info." + patients.length);
+                            listener.doOnResponse(REQUEST_NO_DATA, null);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        listener.doOnResponse(generateErrorMsg(error), null);
+                        Log.e("Response", generateErrorMsg(error));
+                    }
+                });
+            });
+        } else {
+            Log.e(TAG, "Response Servidor Offline");
+
+        }
+    }
 
     private static String getFullAdreess(String address1, String address2, String address3) {
         return address1 + " " + address2 + " " + address3;

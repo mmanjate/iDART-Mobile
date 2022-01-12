@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,22 +15,12 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.dao.clinicInfo.IClinicInfoDao;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.service.clinicInfo.ClinicInfoService;
 import mz.org.fgh.idartlite.service.clinicInfo.IClinicInfoService;
-import mz.org.fgh.idartlite.service.dispense.DispenseService;
-import mz.org.fgh.idartlite.service.dispense.IDispenseService;
-import mz.org.fgh.idartlite.service.episode.EpisodeService;
-import mz.org.fgh.idartlite.service.episode.IEpisodeService;
-import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.clinicInfo.ClinicInfoActivity;
-import mz.org.fgh.idartlite.view.episode.EpisodeActivity;
-import mz.org.fgh.idartlite.view.patientPanel.AddNewPatientActivity;
 
 public class ClinicInfoVM extends BaseViewModel {
 

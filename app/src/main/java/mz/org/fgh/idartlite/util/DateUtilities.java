@@ -415,7 +415,6 @@ public class DateUtilities {
         SimpleDateFormat datetemp = new SimpleDateFormat(pattern, Locale.ENGLISH);
         String data = datetemp.format(date);
         return data;
-
     }
 
     public static Date getDateOfForwardDays(Date date, int days)

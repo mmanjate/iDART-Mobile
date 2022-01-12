@@ -8,7 +8,7 @@
             type="mz.org.fgh.idartlite.viewmodel.dispense.FILAReportVM" />
         <variable
             name="patient"
-            type="mz.org.fgh.idartlite.model.Patient" />
+            type="mz.org.fgh.idartlite.model.patient.Patient" />
         <variable
             name="dispense"
             type="mz.org.fgh.idartlite.model.Dispense" />
