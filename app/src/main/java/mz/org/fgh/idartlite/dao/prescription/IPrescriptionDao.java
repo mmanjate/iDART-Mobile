@@ -1,8 +1,7 @@
 package mz.org.fgh.idartlite.dao.prescription;
 
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
-import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 
 import java.sql.SQLException;

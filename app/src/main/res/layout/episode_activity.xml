@@ -12,7 +12,7 @@
             type="mz.org.fgh.idartlite.viewmodel.episode.EpisodeVM" />
         <variable
             name="patient"
-            type="mz.org.fgh.idartlite.model.Patient" />
+            type="mz.org.fgh.idartlite.model.patient.Patient" />
         <variable
             name="episode"
             type="mz.org.fgh.idartlite.model.Episode" />

@@ -1,24 +1,17 @@
 package mz.org.fgh.idartlite.view.patientPanel;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Application;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,25 +20,14 @@ import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
-import mz.org.fgh.idartlite.common.ApplicationStep;
 
 import mz.org.fgh.idartlite.databinding.ActivityAddNewPatientBinding;
-import mz.org.fgh.idartlite.databinding.ActivityPatientBinding;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
-import mz.org.fgh.idartlite.model.DispenseType;
-import mz.org.fgh.idartlite.model.District;
-import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Province;
-import mz.org.fgh.idartlite.model.TherapeuticLine;
-import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.util.DateUtilities;
-import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.episode.EpisodeActivity;
-import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;
 import mz.org.fgh.idartlite.viewmodel.patient.AddPatientVM;
-import mz.org.fgh.idartlite.viewmodel.prescription.PrescriptionVM;
 
 public class AddNewPatientActivity extends BaseActivity implements IDialogListener {
 

@@ -130,7 +130,7 @@ public class DispenseByDispenseTypeStatisticReportVM extends SearchVM<Dispense> 
     }
 
     @Override
-    public List doBeforeDisplay(List<Dispense> objects) {
+    public List<?> doBeforeDisplay(List<Dispense> objects) {
         ArrayList list = new ArrayList();
 
 

@@ -1,16 +1,12 @@
 package mz.org.fgh.idartlite.service.clinicInfo;
 
-import android.app.Application;
-
-import com.google.gson.internal.LinkedTreeMap;
-
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 
 
 public interface IClinicInfoService extends IBaseService<ClinicInformation> {

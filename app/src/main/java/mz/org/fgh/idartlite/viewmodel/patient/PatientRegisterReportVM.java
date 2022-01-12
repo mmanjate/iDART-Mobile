@@ -5,8 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
-import com.itextpdf.text.DocumentException;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -17,7 +15,7 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.searchparams.PatientSearchParams;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;

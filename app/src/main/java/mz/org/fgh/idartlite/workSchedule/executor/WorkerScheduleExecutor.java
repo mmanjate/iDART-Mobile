@@ -82,7 +82,7 @@ public class WorkerScheduleExecutor {
                 .setRequiresCharging(true)
                 .build();
 
-        PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(PatientWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
+            PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(PatientWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .setInitialDelay(8,TimeUnit.HOURS)
                 .addTag("PATIENT_ID " + JOB_ID)

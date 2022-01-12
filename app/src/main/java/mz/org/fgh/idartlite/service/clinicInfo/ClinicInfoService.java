@@ -9,7 +9,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;

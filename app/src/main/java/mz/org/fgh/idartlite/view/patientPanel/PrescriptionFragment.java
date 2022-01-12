@@ -28,7 +28,7 @@ import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.PrescriptionFragmentBinding;
 import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;

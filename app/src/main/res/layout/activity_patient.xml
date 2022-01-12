@@ -6,7 +6,7 @@
     <data>
         <variable
             name="patient"
-            type="mz.org.fgh.idartlite.model.Patient" />
+            type="mz.org.fgh.idartlite.model.patient.Patient" />
     </data>
 
         <LinearLayout

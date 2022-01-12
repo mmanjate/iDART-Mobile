@@ -16,6 +16,7 @@ import java.util.Objects;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.clinicInfo.ClinicInfoDaoImpl;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.util.DateUtilities;
 
 

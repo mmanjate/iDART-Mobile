@@ -1,12 +1,21 @@
 package mz.org.fgh.idartlite.base.databasehelper;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.R;
@@ -28,6 +37,7 @@ import mz.org.fgh.idartlite.dao.drug.ITherapeuticRegimenDao;
 import mz.org.fgh.idartlite.dao.episode.IEpisodeDao;
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
 import mz.org.fgh.idartlite.dao.param.operationtype.IOperationTypeDao;
+import mz.org.fgh.idartlite.dao.patient.IPatientAttributeDao;
 import mz.org.fgh.idartlite.dao.patient.IPatientDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescribedDrugDao;
 import mz.org.fgh.idartlite.dao.prescription.IPrescriptionDao;
@@ -57,7 +67,8 @@ import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Form;
 import mz.org.fgh.idartlite.model.OperationType;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.PatientAttribute;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
@@ -115,6 +126,9 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private IReferedStockMovimentDao referedStockMovimentDao;
     private IOperationTypeDao operationTypeDao;
     private IAppSettingsDao appSettingsDao;
+    private IPatientAttributeDao patientAttributeDao;
+
+    private final Context context;
 
 
     private IClinicInfoDao clinicInfoDao;
@@ -141,6 +155,13 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             dispensedDrugDao = getDao(DispensedDrug.class);
         }
         return dispensedDrugDao;
+    }
+
+    public IPatientAttributeDao getPatientAttributeDao() throws SQLException {
+        if(patientAttributeDao == null){
+            patientAttributeDao = getDao(PatientAttribute.class);
+        }
+        return patientAttributeDao;
     }
 
     public IDispenseTypeDao getDispenseTypeDao() throws SQLException {
@@ -353,6 +374,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private IdartLiteDataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
+        this.context = context;
     }
 
     public static IdartLiteDataBaseHelper getInstance(Context context) {
@@ -364,6 +386,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     public IdartLiteDataBaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion, int configFileId) {
         super(context, databaseName, factory, databaseVersion, configFileId);
+        this.context = context;
     }
 
     @Override
@@ -400,6 +423,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, OperationType.class);
             TableUtils.createTableIfNotExists(connectionSource, AppSettings.class);
             TableUtils.createTableIfNotExists(connectionSource, ClinicInformation.class);
+            TableUtils.createTableIfNotExists(connectionSource, PatientAttribute.class);
 
 
         } catch (SQLException e) {
@@ -409,14 +433,17 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        dropTables();
         onCreate(database,connectionSource);
+        Log.e(TAG, "Updating table from " + oldVersion + " to " + newVersion);
+        for (int i = oldVersion; i < newVersion; ++i) {
+            String migrationName = String.format("from_%d_to_%d.sql", i, (i + 1));
+            Log.d(TAG, "Looking for migration file: " + migrationName);
+            readAndExecuteSQLScript(database, context, migrationName);
+        }
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //dropTables();
-        //onCreate(db,connectionSource);
     }
 
     private void dropTables() {
@@ -456,6 +483,48 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void readAndExecuteSQLScript(SQLiteDatabase db, Context ctx, String fileName) {
+        if (TextUtils.isEmpty(fileName)) {
+            Log.d(TAG, "SQL script file name is empty");
+            return;
+        }
+
+        Log.d(TAG, "Script found. Executing...");
+        AssetManager assetManager = ctx.getAssets();
+        BufferedReader reader = null;
+
+        try {
+            InputStream is = assetManager.open(fileName);
+            InputStreamReader isr = new InputStreamReader(is);
+            reader = new BufferedReader(isr);
+            executeSQLScript(db, reader);
+        } catch (IOException e) {
+            Log.e(TAG, "IOException:", e);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Log.e(TAG, "IOException:", e);
+                }
+            }
+        }
+
+    }
+
+    private void executeSQLScript(SQLiteDatabase db, BufferedReader reader) throws IOException {
+        String line;
+        StringBuilder statement = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            statement.append(line);
+            statement.append("\n");
+            if (line.endsWith(";")) {
+                db.execSQL(statement.toString());
+                statement = new StringBuilder();
+            }
         }
     }
 }

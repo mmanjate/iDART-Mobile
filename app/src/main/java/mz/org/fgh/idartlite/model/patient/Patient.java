@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.model;
+package mz.org.fgh.idartlite.model.patient;
 
 import android.content.Context;
 import android.os.Build;
@@ -20,6 +20,11 @@ import java.util.Objects;
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.patient.PatientDaoImpl;
+import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.District;
+import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 
@@ -94,6 +99,8 @@ public class Patient extends BaseModel {
 
 	@ForeignCollectionField(eager = false)
 	private  ForeignCollection<Prescription> prescriptions;
+
+	private List<PatientAttribute> attributes;
 
 	public Patient() {
 	}
@@ -217,6 +224,14 @@ public class Patient extends BaseModel {
 
 	public void setBirthDateEstimated(boolean birthDateEstimated) {
 		this.birthDateEstimated = birthDateEstimated;
+	}
+
+	public List<PatientAttribute> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(List<PatientAttribute> attributes) {
+		this.attributes = attributes;
 	}
 
 	public District getDistrict() {
@@ -368,5 +383,13 @@ public class Patient extends BaseModel {
 
 	public boolean isMale() {
 		return this.gender.equalsIgnoreCase("M");
+	}
+
+	public boolean isFaltosoOrAbandono () {
+		if (Utilities.listHasElements(this.attributes)) return false;
+		for (PatientAttribute attribute : this.getAttributes()) {
+			if (attribute.isFaltosoOrAbandonoAttr()) return true;
+		}
+		return false;
 	}
 }

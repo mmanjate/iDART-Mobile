@@ -11,7 +11,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 
 
 public interface IPatientService extends IBaseService<Patient> {
@@ -41,4 +41,6 @@ public interface IPatientService extends IBaseService<Patient> {
     List<String> getSanitaryUnitsWithRecordsOnPeriod(Date start, Date end) throws SQLException;
 
     public void updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) ;
+
+    void changePatienToFaltosoOrAbandono(Patient patient) throws SQLException;
 }

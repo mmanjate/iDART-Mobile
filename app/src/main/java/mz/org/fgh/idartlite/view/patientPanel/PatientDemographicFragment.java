@@ -17,9 +17,8 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.PacinteDetailsFragmentBinding;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;
 import mz.org.fgh.idartlite.viewmodel.patient.PatientDemographicsVM;
 
 public class PatientDemographicFragment extends GenericFragment {

@@ -20,24 +20,18 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.clinicInfo.ClinicInfoAdapter;
-import mz.org.fgh.idartlite.adapter.recyclerview.episode.EpisodeAdapter;
 import mz.org.fgh.idartlite.base.fragment.GenericFragment;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.FragmentClinicInfoBinding;
-import mz.org.fgh.idartlite.databinding.FragmentEpisodeBinding;
 import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.clinicInfo.ClinicInfoActivity;
-import mz.org.fgh.idartlite.view.episode.EpisodeActivity;
 import mz.org.fgh.idartlite.viewmodel.clinicInfo.ClinicInfoVM;
-import mz.org.fgh.idartlite.viewmodel.episode.EpisodeVM;
 
 public class ClinicInfoFragment extends GenericFragment implements IListbleDialogListener {
 

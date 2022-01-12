@@ -19,7 +19,7 @@ public interface SearchPaginator<T extends BaseModel>{
 
     default void createPdfDocument() {}
 
-    default Collection<? extends T> doBeforeDisplay(List<T> objects) {
+    default Collection<?> doBeforeDisplay(List<T> objects) {
         return null;
     }
 

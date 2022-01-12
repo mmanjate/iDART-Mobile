@@ -26,6 +26,7 @@ import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 import mz.org.fgh.idartlite.viewmodel.patient.PatientVM;
@@ -62,7 +63,17 @@ public class SearchPatientActivity extends BaseActivity {
         recyclerPatient.setHasFixedSize(true);
         recyclerPatient.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
 
-        recyclerPatient.addOnItemTouchListener(
+        Intent intent = this.getIntent();
+        if(intent != null){
+            Bundle bundle = intent.getExtras();
+            if(bundle != null) {
+                getRelatedViewModel().changeReportSearchMode ((String) bundle.getSerializable("searchMode"));
+
+            }
+        }
+
+        if (!getRelatedViewModel().isOnlineSearch()) {
+            recyclerPatient.addOnItemTouchListener(
                 new ClickListener(getApplicationContext(), recyclerPatient, new ClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
@@ -70,15 +81,16 @@ public class SearchPatientActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onLongItemClick(View view, int position) { }
+                    public void onLongItemClick(View view, int position) {
+                    }
 
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                     }
-                }
-                )
-        );
+                })
+            );
+        }
     }
 
     @Override

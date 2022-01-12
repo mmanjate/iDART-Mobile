@@ -1,6 +1,5 @@
 package mz.org.fgh.idartlite.view.dispense;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,35 +14,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.ListbleRecycleViewAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.common.ApplicationStep;
-import mz.org.fgh.idartlite.databinding.ActivityCreateDispenseBinding;
 import mz.org.fgh.idartlite.databinding.ActivityReturnDispenseBinding;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.Dispense;
-import mz.org.fgh.idartlite.model.DispensedDrug;
-import mz.org.fgh.idartlite.model.Drug;
-import mz.org.fgh.idartlite.model.Patient;
-import mz.org.fgh.idartlite.model.ReturnedDrug;
 import mz.org.fgh.idartlite.util.DateUtilities;
-import mz.org.fgh.idartlite.view.patientPanel.AddNewPatientActivity;
 import mz.org.fgh.idartlite.view.patientPanel.DispenseFragment;
 import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
-import mz.org.fgh.idartlite.view.patientPanel.PrescriptionFragment;
 import mz.org.fgh.idartlite.view.prescription.PrescriptionActivity;
 import mz.org.fgh.idartlite.viewmodel.dispense.ReturnDispenseVM;
-import mz.org.fgh.idartlite.viewmodel.patient.AddPatientVM;
 
 public class ReturnDispenseActivity extends BaseActivity implements IDialogListener {
 

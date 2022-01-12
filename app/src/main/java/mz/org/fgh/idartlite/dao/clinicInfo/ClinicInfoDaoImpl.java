@@ -15,11 +15,9 @@ import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.ClinicInformation;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.util.Utilities;
-
-import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
 
 public class ClinicInfoDaoImpl extends GenericDaoImpl<ClinicInformation, Integer> implements IClinicInfoDao {
 

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.BR;
@@ -14,12 +15,16 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.Patient;
+import mz.org.fgh.idartlite.model.patient.PatientAttribute;
+import mz.org.fgh.idartlite.model.patient.Patient;
+import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.searchparams.PatientSearchParams;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
+import mz.org.fgh.idartlite.service.patient.IPatientAttributeService;
 import mz.org.fgh.idartlite.service.patient.IPatientService;
+import mz.org.fgh.idartlite.service.patient.PatientAttributeService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patientSearch.SearchPatientActivity;
@@ -29,12 +34,14 @@ public class PatientVM extends SearchVM<Patient> {
     private Patient patient;
     private IPatientService patientService;
     private IEpisodeService episodeService;
+    private IPatientAttributeService attributeService;
 
     public PatientVM(@NonNull Application application) {
         super(application);
 
         patientService = (PatientService) getServiceProvider().get(PatientService.class);
         episodeService = new EpisodeService(application,getCurrentUser());
+        attributeService = new PatientAttributeService(application, getCurrentUser());
 
     }
 
@@ -70,19 +77,21 @@ public class PatientVM extends SearchVM<Patient> {
         if(!Utilities.stringHasValue(getSearchParams().getSearchParam())) {
             Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.nid_or_name_is_mandatory)).show();
         }else {
+            getLoadingDialog().startLoadingDialog();
             super.initSearch();
         }
     }
 
     @Override
     protected void doOnNoRecordFound() {
+        getLoadingDialog().dismisDialog();
         Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.no_search_results)).show();
     }
 
     @Override
     public void displaySearchResults() {
         Utilities.hideSoftKeyboard(getRelatedActivity());
-
+        getLoadingDialog().dismisDialog();
         ((SearchPatientActivity)getRelatedActivity()).displaySearchResult();
     }
 
@@ -99,6 +108,12 @@ public class PatientVM extends SearchVM<Patient> {
     @Override
     public List<Patient> doSearch(long offset, long limit) throws SQLException {
         return searchPatient(this.getSearchParams().getSearchParam().trim(), getCurrentClinic(), offset, limit);
+    }
+
+    @Override
+    public void doOnlineSearch(long offset, long limit) throws SQLException {
+        super.doOnlineSearch(offset, limit);
+        RestPatientService.restSearchPatientByNidOrNameOrSurname(getSearchParams().getSearchParam(), getSearchParams().getSearchParam(), getSearchParams().getSearchParam(), offset, limit, this);
     }
 
     public List<Patient> getAllPatient() throws SQLException {
@@ -133,4 +148,29 @@ public class PatientVM extends SearchVM<Patient> {
         notifyPropertyChanged(BR.searchParam);
     }
 
+    public void downloadSelected(Patient patient) {
+        setPatient(patient);
+        patient.setAttributes(new ArrayList<>());
+        patient.getAttributes().add(PatientAttribute.fastCreateFaltoso(patient));
+        try {
+            Patient existingPatient = patientService.checkExistsPatientWithNID(patient.getNid());
+            if (existingPatient == null) {
+                // patientService.save(patient);
+                //patientService.ep
+                Utilities.displayAlertDialog(getRelatedActivity(),"Paciente carregado com sucesso.").show();
+            } else {
+                existingPatient.setAttributes(attributeService.getAllOfPatient(existingPatient));
+                if (existingPatient.isFaltosoOrAbandono()) {
+                    Utilities.displayAlertDialog(getRelatedActivity(),"O paciente seleccionado ja foi carregado.").show();
+                } else {
+                    //patientService.changePatienToFaltosoOrAbandono(existingPatient);
+                    Utilities.displayAlertDialog(getRelatedActivity(),"Paciente carregado com sucesso.").show();
+                }
+
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }
