@@ -258,7 +258,8 @@
     <string name="would_like_to_create_new_prescription">O Retorno foi efectuado com Sucesso. Pretende Criar uma nova Prescrição ?</string>
 
     <string name="cant_return_dispense">Ja Foi Efectuado o retorno uma vez, não pode voltar a refazer.</string>
-    <string name="clinic_sector">Paragem Unica</string>
+    <string name="clinic_sector_type">Tipo de Sector de dispensa</string>
+    <string name="clinic_sector">Sector de dispensa</string>
     <string name="would_like_create_patient">A Prescrição foi gravada com sucesso. Pretende dispensar a mesma?</string>
     <string name="are_sure_work_this_patient">Tem Certeza que pretende trabalhar com este paciente? Os Seus dados serao baixados</string>
 
