@@ -18,10 +18,12 @@ import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
+import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
+import mz.org.fgh.idartlite.service.clinic.IClinicSectorTypeService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
 import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
@@ -33,63 +35,90 @@ public class RestClinicService extends BaseRestService {
     private static IClinicService clinicService;
     private static IUserService userService;
     private static IPharmacyTypeService pharmacyTypeService;
-
     private static IClinicSectorService clinicSectorService;
+
+    // JNM_12.01.2022
+    private static IClinicSectorTypeService clinicSectorTypeService;
 
     public RestClinicService(Application application, User currentUser) {
         super(application, currentUser);
 
-       // clinicSectorService = (IClinicSectorService) getServiceFactory().get(ClinicSectorService.class);
+        // clinicSectorService = (IClinicSectorService) getServiceFactory().get(ClinicSectorService.class);
     }
 
-    public List<Clinic> restGetAllClinic(RestResponseListener listener) {
+    //Carregamento de todas clinics no server central JNM_12.01.2022
+    public List<Clinic> restGetAllClinic(RestResponseListener listener) throws SQLException {
 
         String url = BaseRestService.baseUrl + "/clinic?select=*,clinicsector(*)";
+        // JNM_12.01.2022
+        String urlClinSecType = BaseRestService.baseUrl + "/clinic?select=*,clinicsectortype(*)";
 
         clinicService = (IClinicService) getServiceFactory().get(ClinicService.class);
         userService = (IUserService) getServiceFactory().get(UserService.class);
         pharmacyTypeService = (IPharmacyTypeService) getServiceFactory().get(PharmacyTypeService.class);
+        // JNM_12.01.2022
+        clinicSectorTypeService = (IClinicSectorTypeService) getServiceFactory().get(ClinicSectorType.class);
+
 
         List<Clinic> clinicList = new ArrayList<>();
 
+        // Verifica conexao com server. JNM_12.01.2022
         if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
             getRestServiceExecutor().execute(() -> {
 
                 RESTServiceHandler handler = new RESTServiceHandler();
                 handler.addHeader("Content-Type", "Application/json");
 
+                // Buscar todas clinics no server
                 handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
                     @Override
                     public void onResponse(Object[] clinics) {
-
+                        // Buscar todas clinicSectorTypes
+                        List<ClinicSectorType> clinicSectorTypeList = null;
+                        try {
+                            clinicSectorTypeList = clinicSectorTypeService.getAllClinicSectorType();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        //FIM => Buscar todas clinicSectorTypes
                         if (clinics.length > 0) {
                             for (Object clinic : clinics) {
                                 try {
                                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) clinic;
-
-
 
                                     Clinic clinicRest = new Clinic();
                                     clinicRest.setRestId((int) Float.parseFloat(Objects.requireNonNull(itemresult.get("id")).toString()));
                                     clinicRest.setCode(Objects.requireNonNull(itemresult.get("code")).toString());
                                     clinicRest.setClinicName(Objects.requireNonNull(itemresult.get("clinicname")).toString());
                                     clinicRest.setPharmacyType(pharmacyTypeService.getPharmacyTypeByCode(Objects.requireNonNull(itemresult.get("facilitytype")).toString()));
-                                    if(clinicRest.getPharmacyType().getDescription().equalsIgnoreCase("Unidade Sanitária")){
-                                        List<Object> itemresult1= (List<Object>) Objects.requireNonNull(itemresult.get("clinicsector"));
-                                       List<ClinicSector> clinicSectors=new ArrayList<>();
-                                        for (Object clinicSector:
-                                                itemresult1) {
+                                    if (clinicRest.getPharmacyType().getDescription().equalsIgnoreCase("Unidade Sanitária")) {// Se esta clinic é US
+                                        List<Object> itemresult1 = (List<Object>) Objects.requireNonNull(itemresult.get("clinicsector")); // Pega a lista de sectores dessa US
+                                        List<ClinicSector> clinicSectors = new ArrayList<>();
+                                        for (Object clinicSector : itemresult1) {
                                             LinkedTreeMap<String, Object> itemresult2 = (LinkedTreeMap<String, Object>) clinicSector;
-                                            ClinicSector clinicSector1=new ClinicSector();
+                                            ClinicSector clinicSector1 = new ClinicSector();
                                             clinicSector1.setSectorName(Objects.requireNonNull(itemresult2.get("sectorname")).toString());
                                             clinicSector1.setUuid(Objects.requireNonNull(itemresult2.get("uuid")).toString());
-                                            clinicSector1.setCode(Objects.requireNonNull(itemresult2.get("code")).toString());
-                                        //    clinicSector1.setClinicId((int) Float.parseFloat(Objects.requireNonNull(itemresult2.get("clinic")).toString()));
+                                            clinicSector1.setCode(Objects.requireNonNull(itemresult2.get("code")).toString()); // Inicialmente era só paragem única este code, agora será um de 4 tipos
+
+                                            // Atribuir Clinic a clinicSector ( Em substiuicao a linha comentada a baixo)
+                                            clinicSector1.setClinic(clinicRest);
+                                            // clinicSector1.setClinicId((int) Float.parseFloat(Objects.requireNonNull(itemresult2.get("clinic")).toString()));
+
+                                            // Atribuir ClinicSectorType a clinicSector
+                                            if (clinicSectorTypeList.size() > 0 && clinicSectorTypeList != null) {
+                                                for (ClinicSectorType cst : clinicSectorTypeList
+                                                ) {
+                                                    if (cst.getCode().equalsIgnoreCase(clinicSector1.getCode())) {
+                                                        clinicSector1.setClinicSectorType(cst);
+                                                    }
+                                                }
+                                            }
+
                                             clinicSectors.add(clinicSector1);
                                         }
 
                                         clinicRest.setClinicSectorList(clinicSectors);
-
 
                                     }
 
@@ -106,7 +135,7 @@ public class RestClinicService extends BaseRestService {
                                     continue;
                                 }
                             }
-                            if(listener!=null) listener.doOnRestSucessResponse("Success");
+                            if (listener != null) listener.doOnRestSucessResponse("Success");
                         } else
                             Log.w(TAG, "Response Sem Info." + clinics.length);
                     }
@@ -121,23 +150,22 @@ public class RestClinicService extends BaseRestService {
         } else {
             Log.e(TAG, "Response Servidor Offline");
             try {
-            if (listener != null){
-                String errorMsg = "";
-                
-                    if (userService.checkIfUsertableIsEmpty()){
+                if (listener != null) {
+                    String errorMsg = "";
+
+                    if (userService.checkIfUsertableIsEmpty()) {
                         errorMsg = application.getString(R.string.error_msg_server_offline);
-                    }else {
+                    } else {
                         errorMsg = application.getString(R.string.error_msg_server_offline_records_wont_be_sync);
                     }
-                listener.doOnRestErrorResponse(errorMsg);
-            }
+                    listener.doOnRestErrorResponse(errorMsg);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return clinicList;
     }
-
 
 
 }

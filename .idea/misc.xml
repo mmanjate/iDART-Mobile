@@ -3,18 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_dispense_by_dispense_type_report.xml" value="0.3697916666666667" />
-        <entry key="app/src/main/res/layout/activity_dispense_drug_graph_statistic_report.xml" value="0.3697916666666667" />
-        <entry key="app/src/main/res/layout/activity_dispense_drug_statistic_report.xml" value="0.3374094202898551" />
-        <entry key="app/src/main/res/layout/activity_dispensed_drugs_report.xml" value="0.3697916666666667" />
-        <entry key="app/src/main/res/layout/activity_fila_report.xml" value="0.3697916666666667" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.35280797101449274" />
-        <entry key="app/src/main/res/layout/activity_patient.xml" value="0.2740036231884058" />
-        <entry key="app/src/main/res/layout/activity_prescription.xml" value="0.2740036231884058" />
-        <entry key="app/src/main/res/layout/content_patients_awaiting_statistics.xml" value="0.20729166666666668" />
-        <entry key="app/src/main/res/layout/custom_dialog_loading.xml" value="0.20729166666666668" />
-        <entry key="app/src/main/res/layout/dispense_report.xml" value="0.2740036231884058" />
-        <entry key="app/src/main/res/layout/report_search_mode_opts.xml" value="0.3697916666666667" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_add_new_patient.xml" value="0.4" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_login.xml" value="0.4" />
       </map>
     </option>
   </component>

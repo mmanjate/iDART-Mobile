@@ -11,6 +11,8 @@
 
     <variable name="clinicAdapter" type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
     <variable name="clinicSectorAdapter" type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+
+    <variable name="clinicSectorTypeAdapter" type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
     <import type="android.view.View"/>
 </data>
     <ScrollView
@@ -67,6 +69,24 @@
                     app:adapter="@{clinicAdapter}"
                     bind:selectedOpt="@={viewModel.selectedClinic}"
                     />
+
+                <TextView
+                    android:id="@+id/textClinicSectorType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/login_text_style"
+                    android:visibility="@{viewModel.sanitaryUnit  ? View.VISIBLE : View.GONE}"
+                    android:text="@string/clinic_sector_type"/>
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/clinic_sector_Type"
+                    android:prompt="@string/clinic_sector_type"
+                    style="@style/login_spinner_style"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:visibility="@{viewModel.sanitaryUnit ? View.VISIBLE : View.GONE}"
+                    app:adapter="@{clinicSectorTypeAdapter}"
+                    bind:selectedOpt="@={viewModel.selectedClinicSectorType}" />
 
                 <TextView
                     android:id="@+id/textClinicSector"

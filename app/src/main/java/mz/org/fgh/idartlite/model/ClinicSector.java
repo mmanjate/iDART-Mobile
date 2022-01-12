@@ -24,6 +24,7 @@ public class ClinicSector extends BaseModel implements Listble {
 	public static final String COLUMN_PHONE = "phone";
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_CLINIC_ID = "clinic_id";
+	public static final String COLUMN_CLINIC_SECTOR_TYPE_ID = "clinic_sector_type_id";
 
 	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
@@ -43,6 +44,9 @@ public class ClinicSector extends BaseModel implements Listble {
 	@DatabaseField(columnName = COLUMN_CLINIC_ID,canBeNull = false, foreign = true, foreignAutoRefresh = true )
 	private Clinic clinic;
 
+	@DatabaseField(columnName = COLUMN_CLINIC_SECTOR_TYPE_ID,canBeNull = false, foreign = true, foreignAutoRefresh = true )
+	private ClinicSectorType clinicSectorType;
+
 	public Clinic getClinic() {
 		return clinic;
 	}
@@ -52,6 +56,14 @@ public class ClinicSector extends BaseModel implements Listble {
 	}
 
 	public ClinicSector() {
+	}
+
+	public ClinicSectorType getClinicSectorType() {
+		return clinicSectorType;
+	}
+
+	public void setClinicSectorType(ClinicSectorType clinicSectorType) {
+		this.clinicSectorType = clinicSectorType;
 	}
 
 	public ClinicSector(int id, String sectorName) {

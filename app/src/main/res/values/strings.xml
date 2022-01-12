@@ -265,7 +265,9 @@
 
     <string name="cant_return_dispense">Ja Foi Efectuado o retorno uma vez, não pode voltar a refazer.</string>
 
-    <string name="clinic_sector">Paragem Unica</string>
+    <string name="clinic_sector_type">Tipo de Sector de dispensa</string>
+
+    <string name="clinic_sector">Sector de dispensa</string>
 
     <string name="would_like_create_patient">Não foram encontrados resultados para a sua pesquisa, Pesquise denovo melhorando os Filtros. Pretende Cadastrar o Paciente?</string>
 
