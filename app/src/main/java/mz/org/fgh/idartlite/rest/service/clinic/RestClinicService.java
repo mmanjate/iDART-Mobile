@@ -21,6 +21,7 @@ import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.clinic.ClinicSectorTypeService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.IClinicSectorTypeService;
@@ -57,7 +58,7 @@ public class RestClinicService extends BaseRestService {
         userService = (IUserService) getServiceFactory().get(UserService.class);
         pharmacyTypeService = (IPharmacyTypeService) getServiceFactory().get(PharmacyTypeService.class);
         // JNM_12.01.2022
-        clinicSectorTypeService = (IClinicSectorTypeService) getServiceFactory().get(ClinicSectorType.class);
+        clinicSectorTypeService = (IClinicSectorTypeService) getServiceFactory().get(ClinicSectorTypeService.class);
 
 
         List<Clinic> clinicList = new ArrayList<>();

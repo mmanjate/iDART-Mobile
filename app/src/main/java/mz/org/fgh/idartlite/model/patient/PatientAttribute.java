@@ -26,7 +26,7 @@ public class PatientAttribute extends BaseModel {
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = COLUMN_ATTRIBUTE, unique = true)
+    @DatabaseField(columnName = COLUMN_ATTRIBUTE, unique = false)
     private String attribute;
 
     @DatabaseField(columnName = COLUMN_VALUE)

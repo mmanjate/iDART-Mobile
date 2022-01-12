@@ -151,7 +151,11 @@ public class SplashService extends BaseService implements ISplashService {
             RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
             RestTherapeuticLineService.restGetAllTherapeuticLine();
 
-            clinicList = restClinicService.restGetAllClinic(listener);
+            try {
+                clinicList = restClinicService.restGetAllClinic(listener);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             long timeOut = 60000;
             long requestTime = 0;
             while (!Utilities.listHasElements(clinicList)) {

@@ -90,7 +90,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
     private static final String DATABASE_NAME    = "idartlite.db";
-    private static final int    DATABASE_VERSION = 11;
+    private static final int    DATABASE_VERSION = 12;
 
 
     private IUserDao userDao;
@@ -404,7 +404,6 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-
             TableUtils.createTableIfNotExists(connectionSource, DispenseType.class);
             TableUtils.createTableIfNotExists(connectionSource, DiseaseType.class);
             TableUtils.createTableIfNotExists(connectionSource, PharmacyType.class);
@@ -437,8 +436,6 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, ClinicInformation.class);
             TableUtils.createTableIfNotExists(connectionSource, ClinicSectorType.class);
             TableUtils.createTableIfNotExists(connectionSource, PatientAttribute.class);
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -446,12 +443,24 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-        onCreate(database,connectionSource);
         Log.e(TAG, "Updating table from " + oldVersion + " to " + newVersion);
         for (int i = oldVersion; i < newVersion; ++i) {
+            try {
+                doUpgrade(database, connectionSource, oldVersion, newVersion);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             String migrationName = String.format("from_%d_to_%d.sql", i, (i + 1));
             Log.d(TAG, "Looking for migration file: " + migrationName);
             readAndExecuteSQLScript(database, context, migrationName);
+        }
+    }
+
+    private void doUpgrade (SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) throws SQLException {
+        if (oldVersion == 11 ) {
+            //TableUtils.dropTable(connectionSource, ClinicSector.class, true);
+            TableUtils.createTableIfNotExists(connectionSource, ClinicSectorType.class);
+            TableUtils.createTableIfNotExists(connectionSource, PatientAttribute.class);
         }
     }
 
@@ -462,7 +471,6 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private void dropTables() {
         try {
             TableUtils.dropTable(connectionSource, DispenseType.class, true);
-
             TableUtils.dropTable(connectionSource, DiseaseType.class, true);
             TableUtils.dropTable(connectionSource, PharmacyType.class, true);
             TableUtils.dropTable(connectionSource, Clinic.class, true);

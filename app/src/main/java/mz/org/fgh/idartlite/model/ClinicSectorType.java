@@ -16,7 +16,7 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.clinic.ClinicSectorTypeDaoImpl;
 import mz.org.fgh.idartlite.dao.patient.PatientDaoImpl;
 
-@DatabaseTable(tableName = "clinicSectorType", daoClass = ClinicSectorTypeDaoImpl.class)
+@DatabaseTable(tableName = "clinic_sector_type", daoClass = ClinicSectorTypeDaoImpl.class)
 public class ClinicSectorType extends BaseModel implements Listble {
 
     public static final String COLUMN_ID = "id";

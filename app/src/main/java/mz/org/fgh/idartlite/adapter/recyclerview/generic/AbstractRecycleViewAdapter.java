@@ -49,6 +49,10 @@ public abstract class AbstractRecycleViewAdapter<T extends BaseModel> extends Re
         this.onLoadMoreListener = onLoadMoreListener;
     }
 
+    public BaseActivity getActivity() {
+        return this.activity;
+    }
+
     public IOnLoadMoreListener getOnLoadMoreListener() {
         return onLoadMoreListener;
     }
