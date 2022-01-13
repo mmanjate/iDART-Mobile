@@ -100,6 +100,8 @@ public class Patient extends BaseModel {
 	@ForeignCollectionField(eager = false)
 	private  ForeignCollection<Prescription> prescriptions;
 
+	private List<Prescription> prescriptionList;
+
 	private List<PatientAttribute> attributes;
 
 	public Patient() {
@@ -386,10 +388,19 @@ public class Patient extends BaseModel {
 	}
 
 	public boolean isFaltosoOrAbandono () {
-		if (Utilities.listHasElements(this.attributes)) return false;
+		if (!Utilities.listHasElements(this.attributes)) return false;
 		for (PatientAttribute attribute : this.getAttributes()) {
 			if (attribute.isFaltosoOrAbandonoAttr()) return true;
 		}
 		return false;
+	}
+
+	public void addPrescription(Prescription prescription) {
+		if (Utilities.listHasElements(this.prescriptionList)) this.prescriptionList = new ArrayList<>();
+		this.prescriptionList.add(prescription);
+	}
+
+	public List<Prescription> getPrescriptionList() {
+		return prescriptionList;
 	}
 }

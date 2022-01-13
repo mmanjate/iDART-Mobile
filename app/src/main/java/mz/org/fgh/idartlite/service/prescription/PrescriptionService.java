@@ -22,6 +22,7 @@ import mz.org.fgh.idartlite.service.dispense.DispenseTypeService;
 import mz.org.fgh.idartlite.service.drug.TherapeuthicLineService;
 import mz.org.fgh.idartlite.service.drug.TherapheuticRegimenService;
 import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.Utilities;
 
 import static java.util.Objects.requireNonNull;
 import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
@@ -35,10 +36,7 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
 
     public PrescriptionService(Application application, User currUser) {
         super(application, currUser);
-        this.therapeuticRegimenService = new TherapheuticRegimenService(getApp(), currUser);
-        this.therapeuticLineService = new TherapeuthicLineService(getApp(), currUser);
-        this.dispenseTypeService = new DispenseTypeService(getApp(), currUser);
-        this.prescribedDrugService = new PrescribedDrugService(getApp(), currUser);
+
 
     }
 
@@ -46,9 +44,17 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
         super(application);
     }
 
+    public void init(Application application, User currUser) {
+        super.init(application, currUser);
+        this.therapeuticRegimenService = new TherapheuticRegimenService(getApp(), currUser);
+        this.therapeuticLineService = new TherapeuthicLineService(getApp(), currUser);
+        this.dispenseTypeService = new DispenseTypeService(getApp(), currUser);
+        this.prescribedDrugService = new PrescribedDrugService(getApp(), currUser);
+    }
+
     @Override
     public void save(Prescription record) throws SQLException {
-
+        createPrescription(record);
     }
 
     @Override
@@ -63,7 +69,7 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
 
     public void createPrescription(Prescription prescription) throws SQLException {
         getDataBaseHelper().getPrescriptionDao().create(prescription);
-        if (prescription.getPrescribedDrugs() != null)
+        if (Utilities.listHasElements(prescription.getPrescribedDrugs()))
             savePriscribedDrus(prescription.getPrescribedDrugs());
     }
 
@@ -172,10 +178,14 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
             prescription.setDispenseType(dispenseTypeService.getDispenseTypeByDescription("Dispensa Trimestral (DT)"));
         else
             prescription.setDispenseType(dispenseTypeService.getDispenseTypeByDescription("Dispensa Mensal (DM)"));
-        createPrescription(prescription);
+
+        if (!localPatient.isFaltosoOrAbandono()) createPrescription(prescription);
+
 
         if(patient.get("jsonprescribeddrugs") != null)
-        prescribedDrugService.savePrescribedDrug(prescription, requireNonNull(patient.get("jsonprescribeddrugs")).toString());
+        prescribedDrugService.savePrescribedDrug(prescription, requireNonNull(patient.get("jsonprescribeddrugs")).toString(), !localPatient.isFaltosoOrAbandono());
+
+        localPatient.addPrescription(prescription);
     }
 
 }

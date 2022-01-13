@@ -210,6 +210,17 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         attributeService.update(attribute);
     }
 
+    @Override
+    public void saveFaltoso(Patient patient) throws SQLException {
+        save(patient);
+        if (Utilities.listHasElements(patient.getEpisodes())) {
+            for (Episode episode: patient.getEpisodes()) {
+                episodeService.save(episode);
+            }
+        }
+        prescriptionService.save(patient.getPrescriptionList().get(0));
+    }
+
 
     private String getFullAdreess(String address1, String address2, String address3) {
         return address1 + " " + address2 + " " + address3;

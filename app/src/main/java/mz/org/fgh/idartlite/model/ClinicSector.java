@@ -26,6 +26,8 @@ public class ClinicSector extends BaseModel implements Listble {
 	public static final String COLUMN_CLINIC_ID = "clinic_id";
 	public static final String COLUMN_CLINIC_SECTOR_TYPE_ID = "clinic_sector_type_id";
 
+	private static final long serialVersionUID = -5768764982413774128L;
+
 	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
 
@@ -172,5 +174,9 @@ public class ClinicSector extends BaseModel implements Listble {
 	@Override
 	public int compareTo(Object o) {
 		return 0;
+	}
+
+	public boolean mustValidateStock() {
+		return this.clinicSectorType.isBrigadaMovel() || this.clinicSectorType.isClinicaMovel() || this.clinicSectorType.isParagemUnica() || this.clinicSectorType.isAPE();
 	}
 }

@@ -31,6 +31,7 @@ import mz.org.fgh.idartlite.common.ApplicationStep;
 import mz.org.fgh.idartlite.databinding.FragmentDispenseBinding;
 import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
+import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Prescription;
@@ -160,6 +161,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                             params.put("dispense", getRelatedViewModel().getDispense());
                             params.put("step", ApplicationStep.STEP_EDIT);
                             params.put("comingFromPrescription", false);
+                            params.put("clinicSector", getClinicSector());
                             nextActivity(CreateDispenseActivity.class, params);
                         }
                     }
@@ -188,6 +190,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                         newParams.put("dispense", getRelatedViewModel().getDispense());
                         newParams.put("step", ApplicationStep.STEP_REMOVE);
                         newParams.put("positionRemoved", dispensePosition);
+                        newParams.put("clinicSector", getClinicSector());
                         nextActivity(ReturnDispenseActivity.class, newParams);
 
                     }
@@ -201,6 +204,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                 params.put("dispense", getRelatedViewModel().getDispense());
                 params.put("step", ApplicationStep.STEP_DISPLAY);
                 params.put("comingFromPrescription", false);
+                params.put("clinicSector", getClinicSector());
                 nextActivity(CreateDispenseActivity.class, params);
                 return true;
 
@@ -219,6 +223,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                         params1.put("user", getCurrentUser());
                         params1.put("clinic", getMyActivity().getCurrentClinic());
                         params1.put("dispense", getRelatedViewModel().getDispense());
+                        params1.put("clinicSector", getClinicSector());
                         nextActivity(ReturnDispenseActivity.class, params1);
 
                     }
@@ -283,6 +288,10 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
 
     private Patient getSelectedPatient() {
         return getMyActivity().getPatient();
+    }
+
+    public ClinicSector getClinicSector() {
+        return getMyActivity().getClinicSector();
     }
 
     @Override

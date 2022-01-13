@@ -458,7 +458,6 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private void doUpgrade (SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) throws SQLException {
         if (oldVersion == 11 ) {
-            //TableUtils.dropTable(connectionSource, ClinicSector.class, true);
             TableUtils.createTableIfNotExists(connectionSource, ClinicSectorType.class);
             TableUtils.createTableIfNotExists(connectionSource, PatientAttribute.class);
         }
