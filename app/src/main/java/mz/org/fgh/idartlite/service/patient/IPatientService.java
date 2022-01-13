@@ -43,4 +43,6 @@ public interface IPatientService extends IBaseService<Patient> {
     public void updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) ;
 
     void changePatienToFaltosoOrAbandono(Patient patient) throws SQLException;
+
+    void saveFaltoso(Patient patient) throws SQLException;
 }

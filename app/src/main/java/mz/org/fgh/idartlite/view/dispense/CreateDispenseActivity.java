@@ -285,7 +285,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
                         drug.setQuantity(qtdADispensar);
                         listble = drug;
 
-                        if (!verifyIfExistStockToDispense(drug)) {
+                        if (!existsStockToDispense(drug)) {
                             Utilities.displayAlertDialog(CreateDispenseActivity.this, getString(R.string.stock_menor)).show();
                             return;
                         }
@@ -621,19 +621,21 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
     }
 
-    private boolean verifyIfExistStockToDispense(Drug drug) {
+    private boolean existsStockToDispense(Drug drug) {
+        if (getCurrentClinic().isSanitaryUnit() && !getClinicSector().mustValidateStock()) return true;
 
         final int qtdADispensar = this.getQuantidadeADispensar(drug);
+        int stockQuantityMoviment = 0;
 
         List<Stock> stocks = getRelatedViewModel().getAllStocksByClinicAndDrug(getCurrentClinic(), drug);
         for (Stock stock : stocks) {
-            int stockQuantityMoviment = stock.getStockMoviment();
-
-            if (qtdADispensar <= stockQuantityMoviment) {
-                return true;
-            }
+            stockQuantityMoviment += stock.getStockMoviment();
         }
-        return false;
+
+        if (qtdADispensar > stockQuantityMoviment) {
+            return false;
+        }
+        return true;
     }
 
     private boolean verifyIfDrugHasAtLeastOneStock(Drug drug) {
@@ -713,12 +715,11 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
 
         StringBuilder emptyStockDrugs = new StringBuilder();
 
-        if (getRelatedViewModel().getDispense().getPrescription().getPatient().isFaltosoOrAbandono()) return emptyStockDrugs.toString();
+        if (getRelatedViewModel().getDispense().getPrescription().getPatient().isFaltosoOrAbandono() && getCurrentClinic().isSanitaryUnit() && !getClinicSector().mustValidateStock()) return emptyStockDrugs.toString();
 
-        for (Listble lt : this.selectedDrugs
-        ) {
+        for (Listble lt : this.selectedDrugs) {
             Drug drug = (Drug) lt;
-            if (!this.verifyIfExistStockToDispense(drug)) {
+            if (!existsStockToDispense(drug)) {
                 emptyStockDrugs.append(drug.getDescription() + "\n");
             }
         }
@@ -733,7 +734,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
         List<PrescribedDrug> prescribedDrugs = new ArrayList<>();
         try {
             prescribedDrugs = getRelatedViewModel().getAllPrescribedDrugsByPrescription(this.prescription);
-        } catch (SQLException ex) {
+        } catch (SQLException ignored) {
         }
         return prescribedDrugs;
     }

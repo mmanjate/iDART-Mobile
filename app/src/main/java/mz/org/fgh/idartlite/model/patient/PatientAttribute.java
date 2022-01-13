@@ -23,16 +23,18 @@ public class PatientAttribute extends BaseModel {
     public static final String PATIENT_DISPENSATION_ABANDONO = "abandono";
     public static final String PATIENT_DISPENSATION_NORMAL = "normal";
 
+    private static final long serialVersionUID = -7824699963085694414L;
+
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = COLUMN_ATTRIBUTE, unique = false)
+    @DatabaseField(columnName = COLUMN_ATTRIBUTE, uniqueCombo = true)
     private String attribute;
 
-    @DatabaseField(columnName = COLUMN_VALUE)
+    @DatabaseField(columnName = COLUMN_VALUE, uniqueCombo = true)
     private String value;
 
-    @DatabaseField(columnName = COLUMN_PATIENT_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = COLUMN_PATIENT_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true, uniqueCombo = true)
     private Patient patient;
 
     public PatientAttribute(String attribute, String value, Patient patient) {

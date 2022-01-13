@@ -37,15 +37,6 @@ public class IDartHomeActivity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = this.getIntent();
-        if(intent != null){
-            Bundle bundle = intent.getExtras();
-            if(bundle != null) {
-
-                this.getRelatedViewModel().setCurrentClinicSector((ClinicSector) bundle.getSerializable("clinicSector"));
-            }
-        }
-
         StockAlertReportActivity alert = new StockAlertReportActivity();
         alert.showDialog(this,savedInstanceState);
 
@@ -64,9 +55,6 @@ public class IDartHomeActivity extends BaseActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-
-
     }
 
     @Override
@@ -79,8 +67,7 @@ public class IDartHomeActivity extends BaseActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
     @Override
@@ -92,5 +79,4 @@ public class IDartHomeActivity extends BaseActivity {
     public HomeViewModel getRelatedViewModel() {
         return (HomeViewModel) super.getRelatedViewModel();
     }
-
 }

@@ -12,7 +12,7 @@ public interface IPrescribedDrugService extends IBaseService<PrescribedDrug> {
 
     public void createPrescribedDrug(PrescribedDrug prescribedDrug) throws SQLException ;
 
-    public void savePrescribedDrug(Prescription prescription, String drugs) ;
+    public void savePrescribedDrug(Prescription prescription, String drugs, boolean doSave) ;
 
     public List<PrescribedDrug> getAllByPrescription(Prescription prescription) throws SQLException;
 
