@@ -7,7 +7,9 @@ import androidx.databinding.Bindable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
@@ -27,7 +29,9 @@ import mz.org.fgh.idartlite.service.patient.IPatientService;
 import mz.org.fgh.idartlite.service.patient.PatientAttributeService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 import mz.org.fgh.idartlite.view.patientSearch.SearchPatientActivity;
+import mz.org.fgh.idartlite.viewmodel.prescription.PrescriptionVM;
 
 public class PatientVM extends SearchVM<Patient> {
 
@@ -155,9 +159,8 @@ public class PatientVM extends SearchVM<Patient> {
         try {
             Patient existingPatient = patientService.checkExistsPatientWithNID(patient.getNid());
             if (existingPatient == null) {
-                // patientService.save(patient);
-                //patientService.ep
-                Utilities.displayAlertDialog(getRelatedActivity(),"Paciente carregado com sucesso.").show();
+                patientService.saveFaltoso(patient);
+                Utilities.displayConfirmationDialog(getRelatedActivity(), "Paciente carregado com sucesso. Gostaria de ir aos detalhes do mesmo?", getRelatedActivity().getString(R.string.yes), getRelatedActivity().getString(R.string.no), PatientVM.this).show();
             } else {
                 existingPatient.setAttributes(attributeService.getAllOfPatient(existingPatient));
                 if (existingPatient.isFaltosoOrAbandono()) {
@@ -169,6 +172,25 @@ public class PatientVM extends SearchVM<Patient> {
 
             }
 
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    @Override
+    public void doOnConfirmed() {
+        goToPatientPanel(getPatient());
+    }
+
+    public void goToPatientPanel (Patient patient) {
+        Map<String, Object> params = new HashMap<>();
+        try {
+            patient.setAttributes(attributeService.getAllOfPatient(patient));
+            params.put("patient", patient);
+            params.put("user", getCurrentUser());
+            params.put("clinic", getCurrentClinic());
+            params.put("clinicSector", getCurrentClinicSector());
+            getRelatedActivity().nextActivity(PatientPanelActivity.class,params);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

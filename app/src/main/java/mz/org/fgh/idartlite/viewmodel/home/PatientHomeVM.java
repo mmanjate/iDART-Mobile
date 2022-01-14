@@ -53,7 +53,7 @@ public class PatientHomeVM extends BaseViewModel {
             params.put("user", getCurrentUser());
             params.put("clinic", getCurrentClinic());
             params.put("searchMode", searchMode);
-
+            params.put("clinicSector", getCurrentClinicSector());
             getRelatedActivity().nextActivityFinishingCurrent(SearchPatientActivity.class, params);
         }
     }

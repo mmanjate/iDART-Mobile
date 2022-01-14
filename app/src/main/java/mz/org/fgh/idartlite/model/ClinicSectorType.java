@@ -22,6 +22,11 @@ public class ClinicSectorType extends BaseModel implements Listble {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_CODE = "code";
     public static final String COLUMN_DESCRIPTION = "description";
+    public static final String PARAGEM_UNICA = "PARAGEM_UNICA";
+    public static final String PROVEDOR = "PROVEDOR";
+    public static final String CLINICA_MOVEL = "CLINICA_MOVEL";
+    public static final String BRIGADA_MOVEL = "BRIGADA_MOVEL";
+    public static final String APE = "APE";
 
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
@@ -226,5 +231,21 @@ public class ClinicSectorType extends BaseModel implements Listble {
     @Override
     public int compareTo(Object o) {
         return 0;
+    }
+
+    public boolean isBrigadaMovel() {
+        return this.code.equals(BRIGADA_MOVEL);
+    }
+
+    public boolean isClinicaMovel() {
+        return this.code.equals(CLINICA_MOVEL);
+    }
+
+    public boolean isParagemUnica() {
+        return this.code.equals(PARAGEM_UNICA);
+    }
+
+    public boolean isAPE() {
+        return this.code.equals(APE);
     }
 }

@@ -37,12 +37,12 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
 
     @Override
     public void save(Episode record) throws SQLException {
-
+        createEpisode(record);
     }
 
     @Override
     public void update(Episode record) throws SQLException {
-
+        udpateEpisode(record);
     }
 
     public List<Episode> getAllEpisodesByPatient(Patient patient) throws SQLException{

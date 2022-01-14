@@ -436,9 +436,16 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, ClinicInformation.class);
             TableUtils.createTableIfNotExists(connectionSource, ClinicSectorType.class);
             TableUtils.createTableIfNotExists(connectionSource, PatientAttribute.class);
+            doAfterCreation(database, context);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void doAfterCreation(SQLiteDatabase database, Context context) {
+        String migrationName = "runAfterCreation.sql";
+        Log.d(TAG, "Looking for migration file: " + migrationName);
+        readAndExecuteSQLScript(database, context, migrationName);
     }
 
     @Override
@@ -458,7 +465,6 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     private void doUpgrade (SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) throws SQLException {
         if (oldVersion == 11 ) {
-            //TableUtils.dropTable(connectionSource, ClinicSector.class, true);
             TableUtils.createTableIfNotExists(connectionSource, ClinicSectorType.class);
             TableUtils.createTableIfNotExists(connectionSource, PatientAttribute.class);
         }

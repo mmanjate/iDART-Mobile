@@ -47,7 +47,7 @@ public class PrescribedDrugService extends BaseService<PrescribedDrug> implement
     }
 
 
-    public void savePrescribedDrug(Prescription prescription, String drugs) {
+    public void savePrescribedDrug(Prescription prescription, String drugs, boolean dosave) {
 
         List drugList = getListofObjectFromString(drugs);
 
@@ -65,7 +65,8 @@ public class PrescribedDrugService extends BaseService<PrescribedDrug> implement
                     PrescribedDrug prescribedDrug = new PrescribedDrug();
                     prescribedDrug.setPrescription(prescription);
                     prescribedDrug.setDrug(localDrug);
-                    createPrescribedDrug(prescribedDrug);
+                    prescription.getPrescribedDrugs().add(prescribedDrug);
+                    if (dosave) createPrescribedDrug(prescribedDrug);
 
                 } catch (Exception e) {
                     e.printStackTrace();

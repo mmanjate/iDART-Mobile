@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.model.SyncMobilePatient;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.model.patient.PatientAttribute;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
@@ -40,6 +42,8 @@ import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
 import mz.org.fgh.idartlite.service.patient.IPatientService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
+import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
+import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
 import mz.org.fgh.idartlite.service.territory.IProvinceService;
 import mz.org.fgh.idartlite.service.territory.ProvinceService;
 
@@ -53,6 +57,7 @@ public class RestPatientService extends BaseRestService {
     private static IEpisodeService episodeService;
     private static IPatientService patientService;
     private static IProvinceService provinceService;
+    private static IPrescriptionService prescriptionService;
 
     public RestPatientService(Application application, User currentUser) {
         super(application, currentUser);
@@ -60,6 +65,8 @@ public class RestPatientService extends BaseRestService {
         clinicService = new ClinicService(getApplication(), null);
 
         patientService = new PatientService(getApplication(), null);
+
+        prescriptionService = new PrescriptionService(getApplication());
     }
 
     public static void getAllPatient(RestResponseListener listener, long offset, long limit) {
@@ -336,6 +343,24 @@ public class RestPatientService extends BaseRestService {
                                 if ((patientRest.get("datainiciotarv") != null)) {
                                     localPatient.setStartARVDate(getSqlDateFromString(Objects.requireNonNull(patientRest.get("datainiciotarv")).toString(), "dd MMM yyyy"));
                                 }
+                                //Falsoso ou abandono
+                                if (true) {
+                                    localPatient.setAttributes(new ArrayList<>());
+                                    localPatient.getAttributes().add(PatientAttribute.fastCreateFaltoso(localPatient));
+
+                                    Episode episode = new Episode();
+                                    episode.setEpisodeDate(getSqlDateFromString(Objects.requireNonNull(patientRest.get("prescriptiondate")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+                                    episode.setPatient(localPatient);
+                                    episode.setSanitaryUnit(Objects.requireNonNull(patientRest.get("mainclinicname")).toString());
+                                    episode.setUsUuid(Objects.requireNonNull(patientRest.get("mainclinicuuid")).toString());
+                                    episode.setStartReason(PatientAttribute.PATIENT_DISPENSATION_STATUS_FALTOSO);
+                                    episode.setNotes(PatientAttribute.PATIENT_DISPENSATION_STATUS_FALTOSO);
+                                    episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+                                    episode.setUuid(UUID.randomUUID().toString());
+                                    localPatient.setEpisodes(new ArrayList<>());
+                                    localPatient.getEpisodes().add(episode);
+                                }
+                                prescriptionService.saveLastPrescriptionFromRest(patientRest, localPatient);
                                 newPatients.add(localPatient);
                             }
                             listener.doOnResponse(BaseRestService.REQUEST_SUCESS, newPatients);
@@ -357,6 +382,20 @@ public class RestPatientService extends BaseRestService {
             Log.e(TAG, "Response Servidor Offline");
 
         }
+    }
+
+    private void buildEpisode(LinkedTreeMap<String, Object> patient, Patient localPatient, Date episodeDate) {
+        Episode episode = new Episode();
+        episode.setEpisodeDate(episodeDate);
+        episode.setPatient(localPatient);
+        episode.setSanitaryUnit(Objects.requireNonNull(patient.get("mainclinicname")).toString());
+        episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
+        episode.setStartReason("Referido De");
+        episode.setNotes("Referido De");
+        episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+        episode.setUuid(UUID.randomUUID().toString());
+        localPatient.setEpisodes(new ArrayList<>());
+        localPatient.getEpisodes().add(episode);
     }
 
     private static String getFullAdreess(String address1, String address2, String address3) {

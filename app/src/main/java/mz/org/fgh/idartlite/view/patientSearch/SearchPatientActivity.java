@@ -144,11 +144,7 @@ public class SearchPatientActivity extends BaseActivity {
 
 
     private void nextActivity(int position) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("patient", getRelatedViewModel().getSearchResults().get(position));
-        params.put("user", getCurrentUser());
-        params.put("clinic", getCurrentClinic());
-        nextActivity(PatientPanelActivity.class,params);
+        getRelatedViewModel().goToPatientPanel(getRelatedViewModel().getSearchResults().get(position));
     }
 
     @Override

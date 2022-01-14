@@ -29,6 +29,8 @@ public class Clinic extends BaseModel implements Listble {
 	public static final String COLUMN_PHARMACY_TYPE_ID = "pharmacy_type_id";
 	public static final String COLUMN_REST_ID = "restid";
 
+	private static final long serialVersionUID = 7682159171372981952L;
+
 	@DatabaseField(columnName = COLUMN_ID, generatedId = true)
 	private int id;
 
@@ -207,5 +209,9 @@ public class Clinic extends BaseModel implements Listble {
 
 	public void setClinicSectorList(List<ClinicSector> clinicSectorList) {
 		this.clinicSectorList = clinicSectorList;
+	}
+
+	public boolean isSanitaryUnit() {
+		return getPharmacyType().getDescription().equalsIgnoreCase("Unidade Sanitária");
 	}
 }

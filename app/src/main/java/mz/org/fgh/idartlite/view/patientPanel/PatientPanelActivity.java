@@ -83,7 +83,7 @@ public class PatientPanelActivity extends BaseActivity {
 
         adapter = new PatientTabAdapter(getSupportFragmentManager());
         adapter.addFragment(new PatientDemographicFragment(), getString(R.string.general_info));
-        if (!getRelatedViewModel().getPatient().isFaltosoOrAbandono()) adapter.addFragment(new EpisodeFragment(), getString(R.string.episode));
+        adapter.addFragment(new EpisodeFragment(), getString(R.string.episode));
         if (!getRelatedViewModel().getPatient().isFaltosoOrAbandono()) adapter.addFragment(new ClinicInfoFragment(), getString(R.string.clinic_info));
         adapter.addFragment(new PrescriptionFragment(), getString(R.string.prescription));
         adapter.addFragment(new DispenseFragment(), getString(R.string.dispense));
@@ -99,14 +99,21 @@ public class PatientPanelActivity extends BaseActivity {
             tabLayout.getTabAt(4).setIcon(R.mipmap.ic_dispense);
         } else {
             tabLayout.getTabAt(0).setIcon(R.mipmap.ic_patient);
-            tabLayout.getTabAt(1).setIcon(R.mipmap.ic_precricao);
-            tabLayout.getTabAt(2).setIcon(R.mipmap.ic_dispense);
+            tabLayout.getTabAt(1).setIcon(R.mipmap.ic_episode);
+            tabLayout.getTabAt(2).setIcon(R.mipmap.ic_precricao);
+            tabLayout.getTabAt(3).setIcon(R.mipmap.ic_dispense);
         }
 
         if (Utilities.stringHasValue(selectedTab) && selectedTab.equals(PrescriptionFragment.FRAGMENT_CODE_PRESCRIPTION)) {
-            tabLayout.getTabAt(3).select();
+            if (getRelatedViewModel().getPatient().isFaltosoOrAbandono()) {
+                tabLayout.getTabAt(2).select();
+            } else
+                tabLayout.getTabAt(3).select();
         }else if(Utilities.stringHasValue(selectedTab) && selectedTab.equals(DispenseFragment.FRAGMENT_CODE_DISPENSE)){
-            tabLayout.getTabAt(4).select();
+            if (getRelatedViewModel().getPatient().isFaltosoOrAbandono()) {
+                tabLayout.getTabAt(3).select();
+            } else
+                tabLayout.getTabAt(4).select();
         }
     }
 
