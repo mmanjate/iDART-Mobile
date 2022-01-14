@@ -6,7 +6,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.model.ClinicSectorType;
 
-public interface IClinicSectorTypeService extends IBaseService<ClinicSectorType> {
+public interface IClinicSectorTypeService extends IBaseService {
 
     public List<ClinicSectorType> getAllClinicSectorType() throws SQLException;
 }

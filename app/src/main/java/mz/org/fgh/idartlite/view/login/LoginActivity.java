@@ -17,21 +17,28 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityLoginBinding;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.ClinicSectorType;
+import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.rest.service.User.RestUserService;
 import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.patientPanel.AddNewPatientActivity;
 import mz.org.fgh.idartlite.viewmodel.login.LoginVM;
-public class LoginActivity extends BaseActivity implements RestResponseListener<Clinic> {
-    private ActivityLoginBinding activityLoginBinding;
-    private List<Clinic> clinicList;
-    private ListableSpinnerAdapter clinicSectorAdapter;
 
+public class LoginActivity extends BaseActivity implements RestResponseListener<Clinic> {
+    //Data binding variable
+    private ActivityLoginBinding activityLoginBinding;
+
+    // Vars for bindings
+    private ListableSpinnerAdapter clinicSectorAdapter;
+    private ListableSpinnerAdapter clinicSectorTypeAdapter;
+
+    private List<Clinic> clinicList;
     private static final String LOG_USR_NAME = "log_name";
 
     private static final String LOG_USR_PASS = "log_pass";
 
     private static final String LOG_SHARED_FILE_NAME = "log_cred";
-
 
 
     @Override
@@ -45,9 +52,9 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
 
         clinicList = new ArrayList<Clinic>();
         Intent intent = this.getIntent();
-        if(intent != null){
+        if (intent != null) {
             Bundle bundle = intent.getExtras();
-            if(bundle != null) {
+            if (bundle != null) {
                 clinicList.add(0, new Clinic());
                 clinicList.addAll((List<Clinic>) bundle.getSerializable("clinicList"));
             }
@@ -58,6 +65,8 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
         }
 
         getSharedPreferencesData();
+
+        populateSctorTypes();
     }
 
     public void loadClinicAdapters() {
@@ -65,18 +74,38 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
         activityLoginBinding.setClinicAdapter(adapter);
     }
 
-    public void savingSharedPreferences(){
-        if(getRelatedViewModel().isRemeberMe()){
+    // Popular as clinicSectorTypes
+    private void populateSctorTypes() {
+        try {
+            List<ClinicSectorType> clinicSectorTypeArrayList = new ArrayList<>();
+            ClinicSectorType cst = new ClinicSectorType();
+            cst.setCode("APE");
+            cst.setDescription("APE");
+            clinicSectorTypeArrayList.add(cst);
+            clinicSectorTypeArrayList.addAll(getRelatedViewModel().getAllClinicSectorTypes());
+            System.out.println("Total: "+clinicSectorTypeArrayList.size());
 
-            SecurePreferences preferences = new SecurePreferences(getApplicationContext(), LOG_SHARED_FILE_NAME,  true);
+            clinicSectorTypeAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, clinicSectorTypeArrayList);
+            activityLoginBinding.clinicSectorType.setAdapter(clinicSectorTypeAdapter);
+            activityLoginBinding.setClinicSectorAdapter(clinicSectorTypeAdapter);
+        } catch (Exception e) {
+            Utilities.displayAlertDialog(LoginActivity.this, getString(R.string.error_loading_form_data) + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
-            preferences.put(LOG_USR_NAME,getCurrentUser().getUserName());
-            preferences.put(LOG_USR_PASS,getCurrentUser().getPassword());
+    public void savingSharedPreferences() {
+        if (getRelatedViewModel().isRemeberMe()) {
+
+            SecurePreferences preferences = new SecurePreferences(getApplicationContext(), LOG_SHARED_FILE_NAME, true);
+
+            preferences.put(LOG_USR_NAME, getCurrentUser().getUserName());
+            preferences.put(LOG_USR_PASS, getCurrentUser().getPassword());
         }
     }
 
     private void getSharedPreferencesData() {
-        SecurePreferences sp = new SecurePreferences(getApplicationContext(),LOG_SHARED_FILE_NAME, true);
+        SecurePreferences sp = new SecurePreferences(getApplicationContext(), LOG_SHARED_FILE_NAME, true);
 
         if (sp.containsKey(LOG_USR_NAME)) {
             String user = sp.getString(LOG_USR_NAME);
@@ -88,17 +117,23 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
         }
     }
 
-    public void loadClinicSectorAdapter(){
+    public void loadClinicSectorAdapter() {
 
         clinicSectorAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, getRelatedViewModel().getClinicSectorsList());
         activityLoginBinding.setClinicSectorAdapter(clinicSectorAdapter);
     }
 
-    public void changeViewToAuthenticatingMode(){
+    public void loadClinicSectorTypeAdapter() {
+
+        clinicSectorTypeAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, getRelatedViewModel().getClinicSectorTypeList());
+        activityLoginBinding.setClinicSectorTypeAdapter(clinicSectorTypeAdapter);
+    }
+
+    public void changeViewToAuthenticatingMode() {
         getRelatedViewModel().setAuthenticating(true);
     }
 
-    public void changeViewToNormalMode(){
+    public void changeViewToNormalMode() {
         getRelatedViewModel().setAuthenticating(false);
     }
 
@@ -106,6 +141,7 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
     public LoginVM getRelatedViewModel() {
         return (LoginVM) super.getRelatedViewModel();
     }
+
     @Override
     public BaseViewModel initViewModel() {
         return new ViewModelProvider(this).get(LoginVM.class);
@@ -122,7 +158,7 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
         }
         changeViewToNormalMode();
 
-        if (Utilities.stringHasValue(flag)){
+        if (Utilities.stringHasValue(flag)) {
             if (flag.equals(RestUserService.auth)) {
                 try {
                     getRelatedViewModel().saveUserSettingsAndProcced();
@@ -130,7 +166,7 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
                     e.printStackTrace();
                     Utilities.displayAlertDialog(LoginActivity.this, "Ocorreu um erro ao guardar as configurações do utilizador.").show();
                 }
-            }else {
+            } else {
                 Utilities.displayAlertDialog(LoginActivity.this, "Os dados do utilizador são inválidos").show();
             }
         }
@@ -141,7 +177,8 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
     }
 
     @Override
-    public void doOnRestErrorResponse(String errormsg) {}
+    public void doOnRestErrorResponse(String errormsg) {
+    }
 
     @Override
     public void doOnRestSucessResponseObjects(String flag, List<Clinic> objects) {

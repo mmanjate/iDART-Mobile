@@ -23,11 +23,14 @@ import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.rest.service.User.RestUserService;
 import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
+import mz.org.fgh.idartlite.service.clinic.ClinicSectorTypeService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
+import mz.org.fgh.idartlite.service.clinic.IClinicSectorTypeService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.user.IUserService;
 import mz.org.fgh.idartlite.service.user.UserService;
+import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.home.IDartHomeActivity;
 import mz.org.fgh.idartlite.view.login.LoginActivity;
@@ -40,12 +43,31 @@ public class LoginVM extends BaseViewModel {
 
     private IClinicSectorService clinicSectorService;
 
+    //JNM 12.01.2022
+    private IClinicSectorTypeService clinicSectorTypeService;
+
     private Clinic selectedClinic;
 
     private ClinicSector selectedClinicSector;
 
     //JNM 12.01.2022
-    private ClinicSectorType selectedClinicSectorType;
+    private List<ClinicSector> clinicSectorList;
+    private ClinicSectorType clinicSectorType;
+    private List<ClinicSectorType> clinicSectorTypes = new ArrayList<>();
+    public List<ClinicSectorType> getClinicSectorTypeList() {
+        return clinicSectorTypes;
+    }
+    public List<ClinicSector> getClinicSectorList() {
+        return clinicSectorList;
+    }
+    public List<ClinicSector> getAllClinicSectorsByType(ClinicSectorType clinicSectorType) throws SQLException {
+        return clinicSectorService.getClinicSectorsByType(clinicSectorType);
+    }
+    public List<ClinicSectorType> getAllClinicSectorTypes() throws SQLException {
+        return clinicSectorTypeService.getAllClinicSectorType();
+    }
+
+
 
     private List<Clinic> clinicList;
 
@@ -58,6 +80,7 @@ public class LoginVM extends BaseViewModel {
     private boolean sanitaryUnit;
 
     public LoginVM(@NonNull Application application) {
+
         super(application);
     }
 
@@ -68,6 +91,8 @@ public class LoginVM extends BaseViewModel {
         restUserService = new RestUserService(getApplication(), getCurrentUser());
         clinicService = new ClinicService(getApplication(), getCurrentUser());
         clinicSectorService= new ClinicSectorService(getApplication(),getCurrentUser());
+        //JNM 12.01.2022
+        clinicSectorTypeService = new ClinicSectorTypeService(getApplication(), getCurrentUser());
 
         return userService;
     }
@@ -246,6 +271,22 @@ public class LoginVM extends BaseViewModel {
         clinicSectorsList.clear();
         getClinicSectorsList().add(new ClinicSector());
         if(((Clinic) selectedClinic).getClinicName()!=null && verifySanitaryUnit()) {
+
+            // Fazer o bind de todas clinicSectorType aqui (Trata-se de uma US)
+            List<ClinicSectorType> clinicSectorTypes = new ArrayList<>();
+
+            try {
+                for (ClinicSectorType cst: getAllClinicSectorTypes()) {
+                    clinicSectorTypes.add(cst);
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            getClinicSectorTypeList().addAll(clinicSectorTypes);
+            getRelatedActivity().loadClinicSectorTypeAdapter();
+
+
             getClinicSectorsList().addAll(((Clinic) selectedClinic).getClinicSectorList());
             getRelatedActivity().loadClinicSectorAdapter();
 
@@ -254,7 +295,7 @@ public class LoginVM extends BaseViewModel {
         notifyPropertyChanged(BR.selectedClinicSector);
         notifyPropertyChanged(BR.sanitaryUnit);
         //JNM 12.01.2022
-        notifyPropertyChanged(BR.selectedClinicSectorType);
+        notifyPropertyChanged(BR.clinicSectorType);
 
     }
 
@@ -270,15 +311,33 @@ public class LoginVM extends BaseViewModel {
 
     //JNM 12.01.2022
     @Bindable
-    public Listble getSelectedClinicSectorType() {
+    public Listble getClinicSectorType() {
         //return getSelectedClinicSectorType();
         return null;
     }
 
     //JNM 12.01.2022
-    public void setSelectedClinicSectorType(Listble selectedClinicSectorType) {
-        this.selectedClinicSectorType = (ClinicSectorType) selectedClinicSectorType;
-        notifyPropertyChanged(BR.selectedClinicSectorType);
+    public void setClinicSectorType(Listble clinicSectorTypes)  {
+
+        // Fazer o bind de todas clinicSectorType aqui (Trata-se de uma US)
+        List<ClinicSectorType> clinicSectorTypes1 = new ArrayList<>();
+
+        try {
+            for (ClinicSectorType cst: getAllClinicSectorTypes()) {
+                clinicSectorTypes1.add(cst);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        getClinicSectorTypeList().addAll(clinicSectorTypes1);
+        getRelatedActivity().loadClinicSectorTypeAdapter();
+        getRelatedActivity().loadClinicSectorAdapter();
+
+        notifyPropertyChanged(BR.clinicSectorType);
+        notifyPropertyChanged(BR.selectedClinicSector);
+        //}
+
     }
 
     @Bindable
