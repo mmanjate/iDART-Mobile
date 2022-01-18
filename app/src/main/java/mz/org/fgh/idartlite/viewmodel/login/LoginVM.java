@@ -50,16 +50,14 @@ public class LoginVM extends BaseViewModel {
 
     private ClinicSector selectedClinicSector;
 
+    private ClinicSectorType selectedClinicSectorType;
+
     //JNM 12.01.2022
-    private List<ClinicSector> clinicSectorList;
-    private ClinicSectorType clinicSectorType;
     private List<ClinicSectorType> clinicSectorTypes = new ArrayList<>();
     public List<ClinicSectorType> getClinicSectorTypeList() {
         return clinicSectorTypes;
     }
-    public List<ClinicSector> getClinicSectorList() {
-        return clinicSectorList;
-    }
+
     public List<ClinicSector> getAllClinicSectorsByType(ClinicSectorType clinicSectorType) throws SQLException {
         return clinicSectorService.getClinicSectorsByType(clinicSectorType);
     }
@@ -268,12 +266,13 @@ public class LoginVM extends BaseViewModel {
         this.selectedClinic = (Clinic) selectedClinic;
         setCurrentClinic(this.selectedClinic);
 
-        clinicSectorsList.clear();
-        getClinicSectorsList().add(new ClinicSector());
+        // clinicSectorsList.clear();
+        // getClinicSectorsList().add(new ClinicSector());
         if(((Clinic) selectedClinic).getClinicName()!=null && verifySanitaryUnit()) {
 
             // Fazer o bind de todas clinicSectorType aqui (Trata-se de uma US)
             List<ClinicSectorType> clinicSectorTypes = new ArrayList<>();
+
 
             try {
                 for (ClinicSectorType cst: getAllClinicSectorTypes()) {
@@ -283,19 +282,19 @@ public class LoginVM extends BaseViewModel {
                 throwables.printStackTrace();
             }
 
+            getClinicSectorTypeList().add(new ClinicSectorType());
             getClinicSectorTypeList().addAll(clinicSectorTypes);
             getRelatedActivity().loadClinicSectorTypeAdapter();
 
-
-            getClinicSectorsList().addAll(((Clinic) selectedClinic).getClinicSectorList());
-            getRelatedActivity().loadClinicSectorAdapter();
+            // getClinicSectorsList().addAll(((Clinic) selectedClinic).getClinicSectorList());
+            // getRelatedActivity().loadClinicSectorAdapter();
 
         }
         notifyPropertyChanged(BR.selectedClinic);
-        notifyPropertyChanged(BR.selectedClinicSector);
+        // notifyPropertyChanged(BR.selectedClinicSector);
         notifyPropertyChanged(BR.sanitaryUnit);
         //JNM 12.01.2022
-        notifyPropertyChanged(BR.clinicSectorType);
+        notifyPropertyChanged(BR.selectedClinicSectorType);
 
     }
 
@@ -305,38 +304,43 @@ public class LoginVM extends BaseViewModel {
     }
 
     public void setSelectedClinicSector(Listble selectedClinicSector) {
+        System.out.println(selectedClinicSector.getClass().toString());
         this.selectedClinicSector = (ClinicSector) selectedClinicSector;
         notifyPropertyChanged(BR.selectedClinicSector);
     }
 
     //JNM 12.01.2022
     @Bindable
-    public Listble getClinicSectorType() {
-        //return getSelectedClinicSectorType();
-        return null;
+    public Listble getSelectedClinicSectorType() {
+        return selectedClinicSectorType;
     }
 
     //JNM 12.01.2022
-    public void setClinicSectorType(Listble clinicSectorTypes)  {
+    public void setSelectedClinicSectorType(Listble selectedClinicSectorType)  {
 
-        // Fazer o bind de todas clinicSectorType aqui (Trata-se de uma US)
-        List<ClinicSectorType> clinicSectorTypes1 = new ArrayList<>();
+        this.selectedClinicSectorType = (ClinicSectorType) selectedClinicSectorType;
+        setCurrentClinicSectorType(this.selectedClinicSectorType);
 
-        try {
-            for (ClinicSectorType cst: getAllClinicSectorTypes()) {
-                clinicSectorTypes1.add(cst);
+        clinicSectorsList.clear();
+        // getClinicSectorsList().add(new ClinicSector());
+
+        List<ClinicSector> clinicSectorList = new ArrayList<>();
+
+        Clinic currClinic = (Clinic) this.currentClinic;
+
+        for (ClinicSector clinicSector: currClinic.getClinicSectorList()) {
+            if (clinicSector.getCode().equalsIgnoreCase(this.currentClinicSectorType.getCode())) {
+                clinicSectorList.add(clinicSector);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
 
-        getClinicSectorTypeList().addAll(clinicSectorTypes1);
-        getRelatedActivity().loadClinicSectorTypeAdapter();
+        getClinicSectorsList().add(new ClinicSector());
+        getClinicSectorsList().addAll(clinicSectorList);
         getRelatedActivity().loadClinicSectorAdapter();
 
-        notifyPropertyChanged(BR.clinicSectorType);
+        //JNM 17.01.2022
+        notifyPropertyChanged(BR.selectedClinicSectorType);
         notifyPropertyChanged(BR.selectedClinicSector);
-        //}
 
     }
 

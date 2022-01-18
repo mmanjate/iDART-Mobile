@@ -86,7 +86,7 @@
                     android:layout_marginBottom="@dimen/dimen_10dp"
                     android:visibility="@{viewModel.sanitaryUnit ? View.VISIBLE : View.GONE}"
                     app:adapter="@{clinicSectorTypeAdapter}"
-                    bind:selectedOpt="@={viewModel.clinicSectorType}" />
+                    bind:selectedOpt="@={viewModel.selectedClinicSectorType}" />
 
                 <TextView
                     android:id="@+id/textClinicSector"

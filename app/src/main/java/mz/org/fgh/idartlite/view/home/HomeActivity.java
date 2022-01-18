@@ -31,7 +31,6 @@ public class HomeActivity extends BaseActivity {
         if(intent != null){
             Bundle bundle = intent.getExtras();
             if(bundle != null) {
-
                 this.getRelatedViewModel().setCurrentClinicSector((ClinicSector) bundle.getSerializable("clinicSector"));
             }
         }

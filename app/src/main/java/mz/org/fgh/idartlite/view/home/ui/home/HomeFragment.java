@@ -26,6 +26,7 @@ public class HomeFragment extends GenericFragment {
     private FragmentHomeBinding homeBinding;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        System.out.println("Entering Fragment Home");
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
 

@@ -78,16 +78,11 @@ public class LoginActivity extends BaseActivity implements RestResponseListener<
     private void populateSctorTypes() {
         try {
             List<ClinicSectorType> clinicSectorTypeArrayList = new ArrayList<>();
-            ClinicSectorType cst = new ClinicSectorType();
-            cst.setCode("APE");
-            cst.setDescription("APE");
-            clinicSectorTypeArrayList.add(cst);
             clinicSectorTypeArrayList.addAll(getRelatedViewModel().getAllClinicSectorTypes());
-            System.out.println("Total: "+clinicSectorTypeArrayList.size());
 
             clinicSectorTypeAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, clinicSectorTypeArrayList);
             activityLoginBinding.clinicSectorType.setAdapter(clinicSectorTypeAdapter);
-            activityLoginBinding.setClinicSectorAdapter(clinicSectorTypeAdapter);
+            activityLoginBinding.setClinicSectorAdapter(clinicSectorAdapter);
         } catch (Exception e) {
             Utilities.displayAlertDialog(LoginActivity.this, getString(R.string.error_loading_form_data) + e.getMessage());
             e.printStackTrace();

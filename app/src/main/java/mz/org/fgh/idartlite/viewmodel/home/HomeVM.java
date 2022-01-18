@@ -6,9 +6,12 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.view.home.IDartHomeActivity;
 import mz.org.fgh.idartlite.view.home.PatientHomeActivity;
 import mz.org.fgh.idartlite.view.reports.ReportTypeActivity;
@@ -17,6 +20,7 @@ import mz.org.fgh.idartlite.view.stock.panel.StockActivity;
 public class HomeVM extends BaseViewModel {
 
     public HomeVM(@NonNull Application application) {
+
         super(application);
     }
 
@@ -60,6 +64,11 @@ public class HomeVM extends BaseViewModel {
     @Bindable
     public String getClinicName(){
         return getRelatedActivity().getCurrentClinic().getClinicName();
+    }
+
+    @Bindable
+    public String getClinicSectorType(){
+        return getRelatedActivity().getCurrentClinicSector().getClinicSectorType().getCode();
     }
 
 
