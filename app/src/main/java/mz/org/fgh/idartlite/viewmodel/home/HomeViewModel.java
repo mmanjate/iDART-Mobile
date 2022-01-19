@@ -9,6 +9,7 @@ import androidx.databinding.Bindable;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.view.home.IDartHomeActivity;
 import mz.org.fgh.idartlite.view.home.PatientHomeActivity;
 import mz.org.fgh.idartlite.view.home.ui.home.HomeFragment;
@@ -67,7 +68,10 @@ public class HomeViewModel extends BaseViewModel {
     public String getClinicName(){
         return getRelatedActivity().getCurrentClinic().getClinicName();
     }
-
+    @Bindable
+    public String getClinicSectorType(){
+        return getRelatedActivity().getCurrentClinicSector().getClinicSectorType().getCode();
+    }
 
     @Bindable
     public String getPhone(){

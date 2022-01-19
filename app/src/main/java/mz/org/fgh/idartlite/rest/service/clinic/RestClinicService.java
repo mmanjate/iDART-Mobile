@@ -52,7 +52,7 @@ public class RestClinicService extends BaseRestService {
 
         String url = BaseRestService.baseUrl + "/clinic?select=*,clinicsector(*)";
         // JNM_12.01.2022
-        String urlClinSecType = BaseRestService.baseUrl + "/clinic?select=*,clinicsectortype(*)";
+        //String urlClinSecType = BaseRestService.baseUrl + "/clinic?select=*,clinicsectortype(*)";
 
         clinicService = (IClinicService) getServiceFactory().get(ClinicService.class);
         userService = (IUserService) getServiceFactory().get(UserService.class);
@@ -108,8 +108,8 @@ public class RestClinicService extends BaseRestService {
 
                                             // Atribuir ClinicSectorType a clinicSector
                                             if (clinicSectorTypeList.size() > 0 && clinicSectorTypeList != null) {
-                                                for (ClinicSectorType cst : clinicSectorTypeList
-                                                ) {
+                                                for (ClinicSectorType cst : clinicSectorTypeList) {
+                                                    System.out.println(cst.getCode());
                                                     if (cst.getCode().equalsIgnoreCase(clinicSector1.getCode())) {
                                                         clinicSector1.setClinicSectorType(cst);
                                                     }
@@ -167,6 +167,4 @@ public class RestClinicService extends BaseRestService {
         }
         return clinicList;
     }
-
-
 }

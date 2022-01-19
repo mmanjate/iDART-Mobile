@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_add_new_patient.xml" value="0.10740740740740741" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_home.xml" value="0.16394927536231885" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_i_dart_home.xml" value="0.16" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_login.xml" value="0.1490036231884058" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_patient.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_patient_home.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_second_splash.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_settings.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_splash.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/fragment_home.xml" value="0.16875" />
         <entry key="app/src/main/res/layout/activity_add_new_patient.xml" value="0.3695652173913043" />
         <entry key="app/src/main/res/layout/activity_create_dispense.xml" value="0.3697916666666667" />
         <entry key="app/src/main/res/layout/activity_dispense_by_dispense_type_report.xml" value="0.3697916666666667" />

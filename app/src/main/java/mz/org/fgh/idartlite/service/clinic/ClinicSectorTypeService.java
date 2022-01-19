@@ -9,7 +9,7 @@ import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.model.User;
 
-public class ClinicSectorTypeService extends BaseService<ClinicSectorType> implements IClinicSectorTypeService {
+public class ClinicSectorTypeService extends BaseService implements IClinicSectorTypeService {
 
 
     public ClinicSectorTypeService(Application application, User currentUser) {
@@ -22,6 +22,6 @@ public class ClinicSectorTypeService extends BaseService<ClinicSectorType> imple
 
     @Override
     public List<ClinicSectorType> getAllClinicSectorType() throws SQLException {
-        return getDataBaseHelper().getClinicSectorTypeDao().queryForAll();
+        return getDataBaseHelper().getClinicSectorTypeDao().getAllClinicSectorType();
     }
 }

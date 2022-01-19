@@ -260,6 +260,23 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
     }
 
     /**
+     * Set the current clinicSector on related vewModel
+     * @param currentClinicSector to be set
+     */
+    public void setCurrentClinicSector(ClinicSector currentClinicSector) {
+        getRelatedViewModel().setCurrentClinicSector(currentClinicSector);
+    }
+    /**
+     *
+     * @return the current {@link ClinicSector}
+     */
+    public ClinicSector getCurrentClinicSector() {
+        if (getRelatedViewModel() == null) return null;
+
+        return getRelatedViewModel().getCurrentClinicSector();
+    }
+
+    /**
      * Set the current clinic on related vewModel
      * @param currentClinic to be set
      */

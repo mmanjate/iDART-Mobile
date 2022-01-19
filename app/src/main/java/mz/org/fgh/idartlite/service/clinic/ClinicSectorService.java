@@ -8,6 +8,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
+import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.model.User;
 
 public class ClinicSectorService extends BaseService implements IClinicSectorService {
@@ -20,6 +21,11 @@ public class ClinicSectorService extends BaseService implements IClinicSectorSer
     @Override
     public List<ClinicSector> getClinicSectorsByClinic(Clinic clinic) throws SQLException {
         return getDataBaseHelper().getClinicSectorDao().getClinicSectorsByClinic(clinic);
+    }
+
+    @Override
+    public List<ClinicSector> getClinicSectorsByType(ClinicSectorType clinicSectorType) throws SQLException {
+        return getDataBaseHelper().getClinicSectorDao().getClinicSectorsByTYpe(clinicSectorType);
     }
 
     @Override

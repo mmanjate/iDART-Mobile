@@ -99,6 +99,8 @@ public class SecondSplashVM extends BaseViewModel{
 
     public void goHome() {
 
+        System.out.println("Time to go to Home Page");
+
         ClinicService clinicService = new ClinicService(getApplication(),getCurrentUser());
         Clinic localClinic = null;
         try {
@@ -110,6 +112,7 @@ public class SecondSplashVM extends BaseViewModel{
         Map<String, Object> params = new HashMap<>();
         params.put("user", getCurrentUser());
         params.put("clinic", localClinic);
+        params.put("clinicSector", getCurrentClinicSector());
         getRelatedActivity().nextActivityFinishingCurrent(IDartHomeActivity.class, params);
 
     }

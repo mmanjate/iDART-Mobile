@@ -6,6 +6,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
+import mz.org.fgh.idartlite.model.ClinicSectorType;
 
 public interface IClinicSectorDao extends IGenericDao<ClinicSector, Integer> {
 
@@ -14,4 +15,5 @@ public interface IClinicSectorDao extends IGenericDao<ClinicSector, Integer> {
 
     public ClinicSector getClinicSector() throws SQLException ;
 
+    List<ClinicSector> getClinicSectorsByTYpe(ClinicSectorType clinicSectorType) throws SQLException;
 }

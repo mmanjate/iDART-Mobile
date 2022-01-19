@@ -52,6 +52,7 @@ import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
 import mz.org.fgh.idartlite.model.AppSettings;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
+import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.LoadingDialog;
@@ -75,6 +76,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private Listble selectedListble;
     protected User currentUser;
     protected Clinic currentClinic;
+    // JNM 17.01.2022
+    protected ClinicSectorType currentClinicSectorType;
 
     protected List<Listble> selectedListbles;
 
@@ -268,6 +271,18 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     public void setCurrentClinic(Clinic currentClinic) {
         this.currentClinic = currentClinic;
         notifyPropertyChanged(BR.currentClinic);
+    }
+
+
+    // JNM 17.01.2022
+    @Bindable
+    public ClinicSectorType getCurrentClinicSectorType() {
+        return currentClinicSectorType;
+    }
+
+    public void setCurrentClinicSectorType(ClinicSectorType currentClinicSectorType) {
+        this.currentClinicSectorType = currentClinicSectorType;
+        notifyPropertyChanged(BR.currentClinicSectorType);
     }
 
     @Bindable
