@@ -396,11 +396,24 @@ public class Patient extends BaseModel {
 	}
 
 	public void addPrescription(Prescription prescription) {
-		if (Utilities.listHasElements(this.prescriptionList)) this.prescriptionList = new ArrayList<>();
+		if (!Utilities.listHasElements(this.prescriptionList)) this.prescriptionList = new ArrayList<>();
 		this.prescriptionList.add(prescription);
+	}
+
+	public void addAttribute(PatientAttribute attribute) {
+		if (!Utilities.listHasElements(this.attributes)) this.attributes = new ArrayList<>();
+		this.attributes.add(attribute);
 	}
 
 	public List<Prescription> getPrescriptionList() {
 		return prescriptionList;
+	}
+
+	public String getDispensatioStatus() {
+		if (!Utilities.listHasElements(this.attributes)) return null;
+		for (PatientAttribute attribute : this.getAttributes()) {
+			if (attribute.isFaltosoOrAbandonoAttr()) return attribute.getValue();
+		}
+		return null;
 	}
 }

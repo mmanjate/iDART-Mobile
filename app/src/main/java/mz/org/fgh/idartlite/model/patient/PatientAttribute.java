@@ -19,9 +19,9 @@ public class PatientAttribute extends BaseModel {
     public static final String COLUMN_VALUE = "value";
     public static final String COLUMN_PATIENT_ID = "patient_id";
     public static final String PATIENT_DISPENSATION_STATUS = "PATIENT_DISPENSATION_STATUS";
-    public static final String PATIENT_DISPENSATION_STATUS_FALTOSO = "faltoso";
-    public static final String PATIENT_DISPENSATION_ABANDONO = "abandono";
-    public static final String PATIENT_DISPENSATION_NORMAL = "normal";
+    public static final String PATIENT_DISPENSATION_STATUS_FALTOSO = "Faltoso";
+    public static final String PATIENT_DISPENSATION_ABANDONO = "Abandono";
+    public static final String PATIENT_DISPENSATION_NORMAL = "Activo";
 
     private static final long serialVersionUID = -7824699963085694414L;
 
@@ -56,6 +56,10 @@ public class PatientAttribute extends BaseModel {
 
     public static PatientAttribute fastCreateNormal(Patient patient) {
         return new PatientAttribute(PATIENT_DISPENSATION_STATUS, PATIENT_DISPENSATION_NORMAL, patient);
+    }
+
+    public static PatientAttribute fastCreateByCode(String estadopaciente, Patient patient) {
+        return new PatientAttribute(PATIENT_DISPENSATION_STATUS, estadopaciente, patient);
     }
 
     public int getId() {

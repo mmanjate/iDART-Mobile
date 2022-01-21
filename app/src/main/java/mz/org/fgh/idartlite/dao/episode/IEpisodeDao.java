@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.dao.episode;
 
+import android.app.Application;
+
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -22,4 +24,6 @@ public interface IEpisodeDao extends IGenericDao<Episode, Integer> {
     public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end, long offset, long limit) throws SQLException;
 
     List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end) throws SQLException;
+
+    public List<Episode> getAllEpisodeByStatusAndPatientDispenseStatus(Application application, String status, String dispenseStatus) throws SQLException;
 }

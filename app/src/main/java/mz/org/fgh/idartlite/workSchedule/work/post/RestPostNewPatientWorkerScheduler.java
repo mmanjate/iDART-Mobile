@@ -12,12 +12,13 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.patient.PatientAttribute;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 
 public class RestPostNewPatientWorkerScheduler extends Worker {
-    private static final String TAG = "RestPostNewPatientWorke";
+    private static final String TAG = "RestPostNewPatientWork";
     private List<Episode> episodeList;
     private EpisodeService episodeService;
 
@@ -32,7 +33,7 @@ public class RestPostNewPatientWorkerScheduler extends Worker {
             episodeService = new EpisodeService(BaseRestService.getApp(), null);
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
                 Log.d(TAG, "doWork: Sync New Patient Data");
-                episodeList = episodeService.getAllEpisodeByStatus(BaseModel.SYNC_SATUS_READY);
+                episodeList = episodeService.getAllEpisodeByStatusAndDispenseStatus(BaseModel.SYNC_SATUS_READY, PatientAttribute.PATIENT_DISPENSATION_NORMAL);
                 if (episodeList != null)
                     if (episodeList.size() > 0) {
                         for (Episode episode : episodeList) {

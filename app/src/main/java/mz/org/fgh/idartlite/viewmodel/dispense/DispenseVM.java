@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
@@ -22,11 +23,13 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
+import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
+import mz.org.fgh.idartlite.model.patient.PatientAttribute;
 import mz.org.fgh.idartlite.service.dispense.DispenseDrugService;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseDrugService;
@@ -35,6 +38,8 @@ import mz.org.fgh.idartlite.service.drug.DrugService;
 import mz.org.fgh.idartlite.service.drug.IDrugService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
+import mz.org.fgh.idartlite.service.patient.IPatientAttributeService;
+import mz.org.fgh.idartlite.service.patient.PatientAttributeService;
 import mz.org.fgh.idartlite.service.prescription.IPrescribedDrugService;
 import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
 import mz.org.fgh.idartlite.service.prescription.PrescribedDrugService;
@@ -68,6 +73,9 @@ public class DispenseVM extends BaseViewModel {
     private IEpisodeService episodeService;
 
     private IPrescribedDrugService prescribedDrugService;
+    private Episode episode;
+
+    private IPatientAttributeService attributeService;
 
     public DispenseVM(@NonNull Application application) {
         super(application);
@@ -80,6 +88,7 @@ public class DispenseVM extends BaseViewModel {
         this.stockService = new StockService(application, getCurrentUser());
         this.episodeService = new EpisodeService(application, getCurrentUser());
         this.prescribedDrugService = new PrescribedDrugService(application, getCurrentUser());
+        this.attributeService = new PatientAttributeService(application, getCurrentUser());
         this.setViewListRemoveButton(true);
 
     }
@@ -185,6 +194,12 @@ public class DispenseVM extends BaseViewModel {
 
         ((CreateDispenseActivity) getRelatedActivity()).loadFormData();
 
+        try {
+            this.dispense.getPrescription().getPatient().setAttributes(attributeService.getAllOfPatient(this.dispense.getPrescription().getPatient()));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         String validationErrors = this.patientHasEndingEpisode();
 
 
@@ -209,8 +224,15 @@ public class DispenseVM extends BaseViewModel {
                                 String secondValidationErrors = this.dispenseOnDateBeforePickupDate();
 
                                 if (!Utilities.stringHasValue(secondValidationErrors)) {
+
+                                    if (dispense.getId() <= 0 && this.dispense.getPrescription().getPatient().isFaltosoOrAbandono()) {
+                                        this.dispense.getPrescription().getPatient().setEpisodes(episodeService.getAllEpisodesByPatient(this.dispense.getPrescription().getPatient()));
+                                        generateClosureEpisode(this.dispense.getPrescription().getPatient());
+                                    } else this.episode = null;
+
                                     String patientNid = this.dispense.getPrescription().getPatient().getNid();
                                      this.dispenseService.saveOrUpdateDispense(dispense);
+                                     saveClosureEpisodeForFaltosoOrAbandono();
                                     Utilities.displayAlertDialog(getRelatedActivity(), "Dispensa para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
                                 } else {
                                     Utilities.displayAlertDialog(getRelatedActivity(), secondValidationErrors).show();
@@ -234,6 +256,24 @@ public class DispenseVM extends BaseViewModel {
             Utilities.displayAlertDialog(getRelatedActivity(), validationErrors).show();
         }
 
+    }
+
+    private void saveClosureEpisodeForFaltosoOrAbandono() throws SQLException {
+        if (this.episode != null && this.dispense.getPrescription().getPatient().isFaltosoOrAbandono()) {
+            episodeService.save(this.episode);
+        }
+    }
+
+    private void generateClosureEpisode(Patient patient) {
+        this.episode = new Episode();
+        this.episode.setEpisodeDate(DateUtilities.getCurrentDate());
+        this.episode.setPatient(patient);
+        this.episode.setSanitaryUnit(patient.getEpisodes().get(0).getSanitaryUnit());
+        this.episode.setUsUuid(patient.getEpisodes().get(0).getUsUuid());
+        this.episode.setStopReason(PatientAttribute.PATIENT_DISPENSATION_STATUS_FALTOSO);
+        this.episode.setNotes(PatientAttribute.PATIENT_DISPENSATION_STATUS_FALTOSO + " Dispensa efectuada");
+        this.episode.setSyncStatus(BaseModel.SYNC_SATUS_READY);
+        this.episode.setUuid(UUID.randomUUID().toString());
     }
 
     public List<DispensedDrug> findDispensedDrugsByDispenseId(int id) throws SQLException {
