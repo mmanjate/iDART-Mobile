@@ -31,7 +31,7 @@ public class DispensedDrug extends BaseModel {
     @DatabaseField(columnName = COLUMN_STOCK , canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Stock stock;
 
-    @DatabaseField(columnName = COLUMN_DISPENSE ,canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = COLUMN_DISPENSE ,canBeNull = true, foreign = true, foreignAutoRefresh = true)
     private Dispense dispense;
 
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)

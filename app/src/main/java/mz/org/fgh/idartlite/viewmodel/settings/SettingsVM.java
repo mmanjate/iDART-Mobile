@@ -31,6 +31,7 @@ import mz.org.fgh.idartlite.workSchedule.work.MetaDataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.RemoveDataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.StockWorker;
+import mz.org.fgh.idartlite.workSchedule.work.post.RestPostPatientWorker;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
@@ -316,7 +317,9 @@ public class SettingsVM extends BaseViewModel {
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class).build();
         OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).build();
         OneTimeWorkRequest stockOneTimeWorkRequest = new OneTimeWorkRequest.Builder(StockWorker.class).build();
-        mWorkManager.beginWith(Arrays.asList(patientOneTimeWorkRequest,mRequest, stockOneTimeWorkRequest))
+        OneTimeWorkRequest faltososRequest = new OneTimeWorkRequest.Builder(RestPostPatientWorker.class).build();
+
+        mWorkManager.beginWith(Arrays.asList(patientOneTimeWorkRequest,mRequest, stockOneTimeWorkRequest, faltososRequest))
                     .enqueue();
 
         saveLastSyncDateTime();

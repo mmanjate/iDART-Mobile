@@ -31,7 +31,6 @@ import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 import mz.org.fgh.idartlite.view.patientSearch.SearchPatientActivity;
-import mz.org.fgh.idartlite.viewmodel.prescription.PrescriptionVM;
 
 public class PatientVM extends SearchVM<Patient> {
 
@@ -117,7 +116,7 @@ public class PatientVM extends SearchVM<Patient> {
     @Override
     public void doOnlineSearch(long offset, long limit) throws SQLException {
         super.doOnlineSearch(offset, limit);
-        RestPatientService.restSearchPatientByNidOrNameOrSurname(getSearchParams().getSearchParam(), getSearchParams().getSearchParam(), getSearchParams().getSearchParam(), offset, limit, this);
+        RestPatientService.restSearchPatientFaltosoOrAbandonoByNidOrNameOrSurname(getSearchParams().getSearchParam(), getSearchParams().getSearchParam(), getSearchParams().getSearchParam(), offset, limit, this);
     }
 
     public List<Patient> getAllPatient() throws SQLException {
@@ -154,8 +153,6 @@ public class PatientVM extends SearchVM<Patient> {
 
     public void downloadSelected(Patient patient) {
         setPatient(patient);
-        patient.setAttributes(new ArrayList<>());
-        patient.getAttributes().add(PatientAttribute.fastCreateFaltoso(patient));
         try {
             Patient existingPatient = patientService.checkExistsPatientWithNID(patient.getNid());
             if (existingPatient == null) {

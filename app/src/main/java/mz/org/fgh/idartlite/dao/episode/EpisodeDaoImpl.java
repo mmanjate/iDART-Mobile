@@ -8,11 +8,18 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
+import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.Prescription;
+import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.patient.Patient;
+import mz.org.fgh.idartlite.model.patient.PatientAttribute;
 
 import static mz.org.fgh.idartlite.model.Dispense.COLUMN_SYNC_STATUS;
+
+import android.app.Application;
 
 public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements IEpisodeDao {
 
@@ -54,6 +61,27 @@ public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements 
                 return typeList;
 
         return null;
+    }
+
+    public List<Episode> getAllEpisodeByStatusAndPatientDispenseStatus(Application application, String episodeStatus, String dispenseStatus) throws SQLException {
+
+        QueryBuilder<Patient, Integer> patientQb = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
+
+        QueryBuilder<PatientAttribute, Integer> attributeQb = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientAttributeDao().queryBuilder();
+        if (dispenseStatus.equals(PatientAttribute.PATIENT_DISPENSATION_STATUS_FALTOSO) || dispenseStatus.equals(PatientAttribute.PATIENT_DISPENSATION_ABANDONO)) {
+            attributeQb.where().eq(PatientAttribute.COLUMN_ATTRIBUTE, PatientAttribute.PATIENT_DISPENSATION_STATUS).and()
+                    .eq(PatientAttribute.COLUMN_VALUE, PatientAttribute.PATIENT_DISPENSATION_STATUS_FALTOSO).or()
+                    .eq(PatientAttribute.COLUMN_VALUE, PatientAttribute.PATIENT_DISPENSATION_ABANDONO);
+        } else {
+            attributeQb.where().eq(PatientAttribute.COLUMN_ATTRIBUTE, PatientAttribute.PATIENT_DISPENSATION_STATUS).and()
+                    .eq(PatientAttribute.COLUMN_VALUE, PatientAttribute.PATIENT_DISPENSATION_NORMAL);
+        }
+        patientQb.join(attributeQb);
+
+        QueryBuilder<Episode, Integer> episodeQb =   IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
+        episodeQb.join(patientQb).where().eq(COLUMN_SYNC_STATUS,episodeStatus);
+
+        return episodeQb.orderBy(Episode.COLUMN_ID, false).query();
     }
 
     @Override

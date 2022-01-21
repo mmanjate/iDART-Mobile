@@ -27,6 +27,8 @@ public class SyncMobilePatient {
     private String clinicuuid;
     private Date arvstartdate;
     private Date enrolldate;
+    private String estadopaciente;
+    private boolean exclusaopaciente;
 
     public Integer getId() {
         return id;
@@ -210,5 +212,21 @@ public class SyncMobilePatient {
 
     public void setEnrolldate(Date enrolldate) {
         this.enrolldate = enrolldate;
+    }
+
+    public String getEstadopaciente() {
+        return estadopaciente;
+    }
+
+    public void setEstadopaciente(String estadopaciente) {
+        this.estadopaciente = estadopaciente;
+    }
+
+    public boolean isExclusaopaciente() {
+        return exclusaopaciente;
+    }
+
+    public void setExclusaopaciente(boolean exclusaopaciente) {
+        this.exclusaopaciente = exclusaopaciente;
     }
 }
