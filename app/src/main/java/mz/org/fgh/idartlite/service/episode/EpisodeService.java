@@ -116,9 +116,9 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
 
     }
 
-    public List<Episode> getAllEpisodeByStatus(String status) throws SQLException {
+    public List<Episode> getAllByStatus(String status) throws SQLException {
 
-     return   getDataBaseHelper().getEpisodeDao().getAllEpisodeByStatus(status);
+     return   getDataBaseHelper().getEpisodeDao().getAllByStatus(status);
     }
 
 

@@ -374,7 +374,7 @@ public class RestDispenseService extends BaseRestService {
             syncDispense.setExpirydate(dispense.getNextPickupDate());
 
             syncDispense.setDateexpectedstring(DateUtilities.getStringDateFromDate(dispense.getNextPickupDate(), "dd MMM yyyy"));
-            syncDispense.setDrugname(dispensedDrug.getStock().getDrug().getDescription());
+            syncDispense.setDrugname(dispensedDrug.getDrug().getDescription());
             syncDispense.setDispensedate(dispense.getPickupDate());
 
             syncDispense.setMainclinic(0);

@@ -30,9 +30,9 @@ public interface IDispenseService extends IBaseService<Dispense> {
 
     public long countAllOfPrescription(Prescription prescription) throws SQLException ;
 
-    public void saveOrUpdateDispense(Dispense dispense) throws SQLException;
+    public void saveOrUpdateDispense(Dispense dispense, boolean updateStock) throws SQLException;
 
-    public void saveOrUpdateDispensedDrugs(List<DispensedDrug> dispensedDrugs, Dispense dispense) throws SQLException;
+    public void saveOrUpdateDispensedDrugs(List<DispensedDrug> dispensedDrugs, Dispense dispense, boolean updateStock) throws SQLException;
 
     public List<Dispense> getAllDispensesByStatus(String status) throws SQLException;
 

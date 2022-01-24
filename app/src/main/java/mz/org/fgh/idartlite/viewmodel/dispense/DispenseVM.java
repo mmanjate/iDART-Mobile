@@ -231,7 +231,7 @@ public class DispenseVM extends BaseViewModel {
                                     } else this.episode = null;
 
                                     String patientNid = this.dispense.getPrescription().getPatient().getNid();
-                                     this.dispenseService.saveOrUpdateDispense(dispense);
+                                     this.dispenseService.saveOrUpdateDispense(dispense, mustValidateStock());
                                      saveClosureEpisodeForFaltosoOrAbandono();
                                     Utilities.displayAlertDialog(getRelatedActivity(), "Dispensa para o paciente " + patientNid + " efectuado com sucesso!", ((CreateDispenseActivity) getRelatedActivity())).show();
                                 } else {
@@ -262,6 +262,12 @@ public class DispenseVM extends BaseViewModel {
         if (this.episode != null && this.dispense.getPrescription().getPatient().isFaltosoOrAbandono()) {
             episodeService.save(this.episode);
         }
+    }
+
+    private boolean mustValidateStock() {
+        if (this.dispense.getPrescription().getPatient().isFaltosoOrAbandono() && getCurrentClinic().isSanitaryUnit() && !getCurrentClinicSector().mustValidateStock()) return false;
+
+        return true;
     }
 
     private void generateClosureEpisode(Patient patient) {
@@ -360,7 +366,7 @@ public class DispenseVM extends BaseViewModel {
             try {
                 this.dispenseService.deleteDispense(dispense);
                 dispense.setId(0);
-                this.dispenseService.saveOrUpdateDispense(dispense);
+                this.dispenseService.saveOrUpdateDispense(dispense, mustValidateStock());
                 this.backToPreviusActivity();
             } catch (SQLException ex) {
 

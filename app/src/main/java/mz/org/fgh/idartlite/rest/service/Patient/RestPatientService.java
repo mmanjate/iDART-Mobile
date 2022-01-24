@@ -444,7 +444,7 @@ public class RestPatientService extends BaseRestService {
 
     public static void restPostPatientFaltosoOrAbandono(Patient patient) throws SQLException {
 
-        String url = BaseRestService.baseUrl + "/sync_mobile_patient?patientid=eq."+ patient.getNid() + "*";
+        String url = BaseRestService.baseUrl + "/sync_mobile_patient?patientid=eq."+ patient.getNid();
 
         episodeService = new EpisodeService(getApp());
 
@@ -468,7 +468,7 @@ public class RestPatientService extends BaseRestService {
 
                             handler.addHeader("Content-Type", "application/json");
                             JSONObject jsonObject = new JSONObject(restObject);
-                            handler.objectRequest(url, Request.Method.POST, jsonObject, Object[].class, (Response.Listener<TreeMap<String, Object>>) response -> {
+                            handler.objectRequest(url, Request.Method.PATCH, jsonObject, Object[].class, (Response.Listener<TreeMap<String, Object>>) response -> {
                                 Log.d(TAG, "onResponse: Paciente enviado : " + response);
 
                                 try {

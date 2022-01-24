@@ -585,6 +585,7 @@ public class CreateDispenseActivity extends BaseActivity implements IDialogListe
         List<Stock> stocks = getRelatedViewModel().getAllStocksByClinicAndDrug(getCurrentClinic(), drug);
 
         DispensedDrug dispensedDrug = new DispensedDrug();
+        dispensedDrug.setDrug(drug);
 
         for (Stock stock :
                 stocks) {

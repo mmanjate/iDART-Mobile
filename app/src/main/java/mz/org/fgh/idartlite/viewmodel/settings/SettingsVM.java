@@ -319,7 +319,7 @@ public class SettingsVM extends BaseViewModel {
         OneTimeWorkRequest stockOneTimeWorkRequest = new OneTimeWorkRequest.Builder(StockWorker.class).build();
         OneTimeWorkRequest faltososRequest = new OneTimeWorkRequest.Builder(RestPostPatientWorker.class).build();
 
-        mWorkManager.beginWith(Arrays.asList(patientOneTimeWorkRequest,mRequest, stockOneTimeWorkRequest, faltososRequest))
+        mWorkManager.beginWith(Arrays.asList(faltososRequest, patientOneTimeWorkRequest,mRequest, stockOneTimeWorkRequest))
                     .enqueue();
 
         saveLastSyncDateTime();

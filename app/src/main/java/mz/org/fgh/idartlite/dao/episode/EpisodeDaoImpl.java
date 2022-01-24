@@ -52,7 +52,7 @@ public class EpisodeDaoImpl extends GenericDaoImpl<Episode, Integer> implements 
         return queryBuilder().orderBy(Episode.COLUMN_EPISODE_DATE,false).where().eq(Episode.COLUMN_PATIENT_ID, patient.getId()).and().isNotNull(Episode.COLUMN_STOP_REASON).queryForFirst();
     }
 
-    public List<Episode> getAllEpisodeByStatus(String status) throws SQLException {
+    public List<Episode> getAllByStatus(String status) throws SQLException {
 
         List<Episode> typeList = this.queryForEq(COLUMN_SYNC_STATUS, status);
 

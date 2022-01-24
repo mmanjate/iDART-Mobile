@@ -18,7 +18,7 @@ public interface IEpisodeDao extends IGenericDao<Episode, Integer> {
 
     public Episode findEpisodeWithStopReasonByPatient(Patient patient) throws SQLException;
 
-    public List<Episode> getAllEpisodeByStatus(String status) throws SQLException;
+    public List<Episode> getAllByStatus(String status) throws SQLException;
 
 
     public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end, long offset, long limit) throws SQLException;
