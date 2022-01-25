@@ -203,6 +203,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GenericA
         Map<String, Object> params = new HashMap<>();
         params.put("user", getCurrentUser());
         params.put("clinic", getCurrentClinic());
+        params.put("clinicSector", getClinicSector());
         nextActivity(clazz,params);
         finish();
     }

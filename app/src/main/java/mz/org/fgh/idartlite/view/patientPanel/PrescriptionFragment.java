@@ -103,6 +103,7 @@ public class PrescriptionFragment extends GenericFragment implements IListbleDia
             params.put("user", getCurrentUser());
             params.put("clinic", getMyActivity().getCurrentClinic());
             params.put("step", ApplicationStep.STEP_CREATE);
+            params.put("clinicSector", getMyActivity().getClinicSector());
             nextActivityFinishingCurrent(PrescriptionActivity.class, params);
         }
     }
@@ -135,6 +136,7 @@ public class PrescriptionFragment extends GenericFragment implements IListbleDia
                             params.put("user", getRelatedViewModel().getCurrentUser());
                             params.put("clinic", getMyActivity().getCurrentClinic());
                             params.put("step", ApplicationStep.STEP_EDIT);
+                            params.put("clinicSector", getMyActivity().getClinicSector());
                             nextActivity(PrescriptionActivity.class, params);
                         }
                     } catch (SQLException e) {
@@ -156,6 +158,7 @@ public class PrescriptionFragment extends GenericFragment implements IListbleDia
                 params.put("user", getRelatedViewModel().getCurrentUser());
                 params.put("clinic", getMyActivity().getCurrentClinic());
                 params.put("step", ApplicationStep.STEP_DISPLAY);
+                params.put("clinicSector", getMyActivity().getClinicSector());
                 nextActivity(PrescriptionActivity.class, params);
             default:
                 return false;

@@ -14,6 +14,7 @@ import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.patient.PatientAttribute;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.rest.service.ClinicInfo.RestClinicInfoService;
 import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseService;
@@ -54,7 +55,7 @@ public class RestPostPatientDataWorkerScheduler extends Worker {
                     }
                 }else {Log.d(TAG, "doWork: Sem Dispensas para syncronizar");}
 
-            List<Episode> episodeList=episodeService.getAllEpisodeByStatus(BaseModel.SYNC_SATUS_READY);
+            List<Episode> episodeList = episodeService.getAllEpisodeByStatusAndDispenseStatus(BaseModel.SYNC_SATUS_READY, PatientAttribute.PATIENT_DISPENSATION_NORMAL);
             if(episodeList != null && episodeList.size() > 0) {
                 for (Episode episode : episodeList) {
                     RestEpisodeService.restPostEpisode(episode);

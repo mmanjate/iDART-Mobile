@@ -147,10 +147,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
-                            android:drawableTop="@mipmap/ic_search_patient"
+                            android:drawableTop="@drawable/ic_load_patient"
                             android:layout_gravity="center"
                             android:onClick="@{()-> viewModel.callSearchPatient(@string/online)}"
-                            android:text="Carregar paciente Faltoso"/>
+                            android:text="Carregar paciente\n Faltoso"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="@dimen/dimen_0dp"
@@ -162,7 +162,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
-                            android:drawableTop="@mipmap/ic_search_patient"
+                            android:drawableTop="@drawable/ic_search_patient"
                             android:layout_gravity="center"
                             android:onClick="@{()-> viewModel.callSearchPatient(@string/local)}"
                             android:text="@string/procurar_paciente"/>
@@ -173,13 +173,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="@dimen/dimen_0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="@dimen/dimen_0dp"
@@ -191,7 +184,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:drawableTop="@mipmap/ic_search_patient"
+                        android:drawableTop="@drawable/ic_person_add"
                         android:layout_gravity="center"
                         android:visibility="@{viewModel.currentClinicSector.mustValidateStock ? View.VISIBLE : View.GONE}"
                         android:onClick="@{()-> viewModel.callAddNewPatient()}"

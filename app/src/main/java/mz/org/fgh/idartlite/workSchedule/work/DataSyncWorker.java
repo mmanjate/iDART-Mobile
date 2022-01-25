@@ -16,6 +16,7 @@ import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.model.patient.PatientAttribute;
 import mz.org.fgh.idartlite.rest.service.ClinicInfo.RestClinicInfoService;
 import mz.org.fgh.idartlite.rest.service.Dispense.RestDispenseService;
 import mz.org.fgh.idartlite.rest.service.Episode.RestEpisodeService;
@@ -116,7 +117,7 @@ public class DataSyncWorker extends Worker {
 
             try {
 
-                List<Episode> episodeList = episodeService.getAllEpisodeByStatus(BaseModel.SYNC_SATUS_READY);
+                List<Episode> episodeList = episodeService.getAllEpisodeByStatusAndDispenseStatus(BaseModel.SYNC_SATUS_READY, PatientAttribute.PATIENT_DISPENSATION_NORMAL);
                 if (episodeList != null && episodeList.size() > 0) {
                     for (Episode episode1 : episodeList) {
                         RestEpisodeService.restPostEpisode(episode1);

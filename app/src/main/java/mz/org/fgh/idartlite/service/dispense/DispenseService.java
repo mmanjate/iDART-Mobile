@@ -109,14 +109,14 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
         return getDataBaseHelper().getDispenseDao().countAllOfPrescription(prescription);
     }
 
-    public void saveOrUpdateDispense(Dispense dispense) throws SQLException {
+    public void saveOrUpdateDispense(Dispense dispense, boolean updateStock) throws SQLException {
         getDataBaseHelper().getDispenseDao().createOrUpdate(dispense);
         List<DispensedDrug> dispensedDrugs = this.dispenseDrugService.findDispensedDrugByDispenseId(dispense.getId());
 
         if (dispensedDrugs.size() == 0) {
-            this.saveOrUpdateDispensedDrugs(dispense.getDispensedDrugs(), dispense);
+            this.saveOrUpdateDispensedDrugs(dispense.getDispensedDrugs(), dispense, updateStock);
         } else {
-            this.saveOrUpdateDispensedDrugs(dispensedDrugs, dispense);
+            this.saveOrUpdateDispensedDrugs(dispensedDrugs, dispense, updateStock);
         }
 
         if (dispense.getPrescription().getExpiryDate() != null) {
@@ -127,12 +127,12 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
         }
     }
 
-    public void saveOrUpdateDispensedDrugs(List<DispensedDrug> dispensedDrugs, Dispense dispense) throws SQLException {
+    public void saveOrUpdateDispensedDrugs(List<DispensedDrug> dispensedDrugs, Dispense dispense, boolean updateStock) throws SQLException {
         for (DispensedDrug dispensedDrug : dispensedDrugs) {
             dispensedDrug.setDispense(dispense);
             getDataBaseHelper().getDispensedDrugDao().createOrUpdate(dispensedDrug);
 
-            this.updateStock(dispensedDrug);
+            if (updateStock) this.updateStock(dispensedDrug);
         }
     }
 

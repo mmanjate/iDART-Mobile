@@ -30,7 +30,7 @@ public interface IEpisodeService extends IBaseService<Episode> {
 
     public boolean patientHasEndingEpisode(Patient patient);
 
-    public List<Episode> getAllEpisodeByStatus(String status) throws SQLException ;
+    public List<Episode> getAllByStatus(String status) throws SQLException ;
 
     public void saveOnEpisodeEnding(LinkedTreeMap<String, Object> episode) ;
 

@@ -444,7 +444,7 @@ public class RestPatientService extends BaseRestService {
 
     public static void restPostPatientFaltosoOrAbandono(Patient patient) throws SQLException {
 
-        String url = BaseRestService.baseUrl + "/sync_mobile_patient?patientid=eq."+ patient.getNid() + "*";
+        String url = BaseRestService.baseUrl + "/sync_temp_patients?uuidopenmrs=eq."+ patient.getUuid();
 
         episodeService = new EpisodeService(getApp());
 
@@ -452,7 +452,7 @@ public class RestPatientService extends BaseRestService {
 
 
             try {
-                Episode episode = episodeService.getAllEpisodesByPatient(patient).get(0);
+                Episode episode = episodeService.getLatestByPatient(patient);
 
                 if (episode.getSyncStatus().equalsIgnoreCase(BaseModel.SYNC_SATUS_READY))
                     getRestServiceExecutor().execute(() -> {
@@ -468,7 +468,7 @@ public class RestPatientService extends BaseRestService {
 
                             handler.addHeader("Content-Type", "application/json");
                             JSONObject jsonObject = new JSONObject(restObject);
-                            handler.objectRequest(url, Request.Method.POST, jsonObject, Object[].class, (Response.Listener<TreeMap<String, Object>>) response -> {
+                            handler.objectRequest(url, Request.Method.PATCH, jsonObject, Object[].class, (Response.Listener<TreeMap<String, Object>>) response -> {
                                 Log.d(TAG, "onResponse: Paciente enviado : " + response);
 
                                 try {
