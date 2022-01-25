@@ -17,9 +17,9 @@ import mz.org.fgh.idartlite.workSchedule.work.get.RestGetEpisodeWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetPatientDispensationWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.StockWorker;
 import mz.org.fgh.idartlite.workSchedule.work.patch.RestPatchStockConfigWorkerScheduler;
+import mz.org.fgh.idartlite.workSchedule.work.patch.RestPacthPatientWorker;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostNewPatientWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostPatientDataWorkerScheduler;
-import mz.org.fgh.idartlite.workSchedule.work.post.RestPostPatientWorker;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostStockWorkerScheduler;
 
 public class WorkerScheduleExecutor {
@@ -163,7 +163,7 @@ public class WorkerScheduleExecutor {
                 .setRequiresCharging(true)
                 .build();
 
-        PeriodicWorkRequest periodicPostDataWorkRequest = new PeriodicWorkRequest.Builder(RestPostPatientWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
+        PeriodicWorkRequest periodicPostDataWorkRequest = new PeriodicWorkRequest.Builder(RestPacthPatientWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .setInitialDelay(2,TimeUnit.HOURS)
                 .addTag("FALTOSOS " + JOB_ID)

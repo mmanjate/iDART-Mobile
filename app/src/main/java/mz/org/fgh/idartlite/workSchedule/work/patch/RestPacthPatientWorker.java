@@ -1,4 +1,4 @@
-package mz.org.fgh.idartlite.workSchedule.work.post;
+package mz.org.fgh.idartlite.workSchedule.work.patch;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 
@@ -22,12 +22,12 @@ import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.util.Utilities;
 
-public class RestPostPatientWorker extends BaseWorker<Patient> {
-    private static final String TAG = "RestPostPatientWorker";
+public class RestPacthPatientWorker extends BaseWorker<Patient> {
+    private static final String TAG = "RestPacthPatientWorker";
     private List<Episode> episodeList;
     private EpisodeService episodeService;
 
-    public RestPostPatientWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public RestPacthPatientWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         episodeService = new EpisodeService(BaseRestService.getApp(), null);
     }

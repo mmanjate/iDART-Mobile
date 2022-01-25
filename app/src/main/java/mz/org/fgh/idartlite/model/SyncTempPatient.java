@@ -4,8 +4,6 @@ import java.util.Date;
 
 public class SyncTempPatient {
 
-    private Integer id;
-    private boolean accountstatus;
     private Date dateofbirth;
     private String cellphone;
     private String firstnames;
@@ -32,13 +30,10 @@ public class SyncTempPatient {
     private Character syncstatus;
     private String clinicuuid;
     private String mainclinicuuid;
-    private int duration;
     private Date prescriptiondate;
     private Date prescriptionenddate;
     private String regimenome;
     private String linhanome;
-    private int dispensatrimestral;
-    private int dispensasemestral;
     private String prescriptionid;
     private Character prescricaoespecial;
     private String motivocriacaoespecial;
@@ -46,21 +41,6 @@ public class SyncTempPatient {
     private String estadopaciente;
     private boolean exclusaopaciente;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public boolean isAccountstatus() {
-        return accountstatus;
-    }
-
-    public void setAccountstatus(boolean accountstatus) {
-        this.accountstatus = accountstatus;
-    }
 
     public Date getDateofbirth() {
         return dateofbirth;
@@ -270,13 +250,6 @@ public class SyncTempPatient {
         this.mainclinicuuid = mainclinicuuid;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
 
     public Date getPrescriptiondate() {
         return prescriptiondate;
@@ -308,22 +281,6 @@ public class SyncTempPatient {
 
     public void setLinhanome(String linhanome) {
         this.linhanome = linhanome;
-    }
-
-    public int getDispensatrimestral() {
-        return dispensatrimestral;
-    }
-
-    public void setDispensatrimestral(int dispensatrimestral) {
-        this.dispensatrimestral = dispensatrimestral;
-    }
-
-    public int getDispensasemestral() {
-        return dispensasemestral;
-    }
-
-    public void setDispensasemestral(int dispensasemestral) {
-        this.dispensasemestral = dispensasemestral;
     }
 
     public String getPrescriptionid() {

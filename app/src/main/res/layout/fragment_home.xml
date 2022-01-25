@@ -77,6 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.currentClinic.address}"
+                    android:visibility="@{Utilities.stringHasValue(viewModel.currentClinic.address) ? View.VISIBLE : View.GONE}"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     app:drawableStartCompat="@drawable/ic_location"
@@ -136,7 +137,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:drawableTop="@drawable/ic_baseline_list_alt_24"
+                        android:drawableTop="@drawable/ic_report"
                         android:onClick="@{()-> viewModel.callReports()}"
                         android:layout_gravity="center"
                         android:text="@string/relatorios"/>
@@ -150,13 +151,6 @@
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="@dimen/dimen_0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="@dimen/dimen_0dp"
