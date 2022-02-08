@@ -47,12 +47,11 @@ public class RestClinicService extends BaseRestService {
         // clinicSectorService = (IClinicSectorService) getServiceFactory().get(ClinicSectorService.class);
     }
 
-    //Carregamento de todas clinics no server central JNM_12.01.2022
+    //Carregamento de todas clinics com os respectivos ClinicSectors no server central JNM_12.01.2022
     public List<Clinic> restGetAllClinic(RestResponseListener listener) throws SQLException {
 
-        String url = BaseRestService.baseUrl + "/clinic?select=*,clinicsector(*)";
-        // JNM_12.01.2022
-        //String urlClinSecType = BaseRestService.baseUrl + "/clinic?select=*,clinicsectortype(*)";
+        // String url = BaseRestService.baseUrl + "/clinic?select=*,clinic_sector(*)";
+        String url = BaseRestService.baseUrl + "/clinic?facilitytype=neq.Unidade%20Sanitária&mainclinic=eq.false";
 
         clinicService = (IClinicService) getServiceFactory().get(ClinicService.class);
         userService = (IUserService) getServiceFactory().get(UserService.class);
@@ -109,10 +108,10 @@ public class RestClinicService extends BaseRestService {
                                             // Atribuir ClinicSectorType a clinicSector
                                             if (clinicSectorTypeList.size() > 0 && clinicSectorTypeList != null) {
                                                 for (ClinicSectorType cst : clinicSectorTypeList) {
-                                                    System.out.println(cst.getCode());
-                                                    if (cst.getCode().equalsIgnoreCase(clinicSector1.getCode())) {
-                                                        clinicSector1.setClinicSectorType(cst);
-                                                    }
+                                                    System.out.println("##################################################---------------------");
+                                                    System.out.println(itemresult2.get("clinic_sector_type_id").toString());
+                                                    clinicSector1.setClinicSectorType(clinicSectorTypeService.getClinicSectorTypeById(Objects.requireNonNull(itemresult2.get("clinic_sector_type_id").toString())) );
+                                                        // sclinicSector1.setClinicSectorType(cst);
                                                 }
                                             }
 

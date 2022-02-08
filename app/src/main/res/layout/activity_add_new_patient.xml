@@ -429,13 +429,15 @@
                             android:id="@+id/save_and_continue"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            app:srcCompat="@drawable/ic_done"
-                            android:layout_marginTop="@dimen/dimen_22dp"
-                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
-                            android:layout_margin="@dimen/dimen_18dp"
+                            android:layout_gravity="right"
+                            android:layout_marginStart="@dimen/dimen_18dp"
+                            android:layout_marginTop="@dimen/dimen_18dp"
+                            android:layout_marginEnd="@dimen/dimen_18dp"
+                            android:layout_marginBottom="@dimen/dimen_18dp"
                             android:background="@drawable/button_shape"
                             android:onClick="@{() -> viewModel.save()}"
-                            android:layout_gravity="right"/>
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                            app:srcCompat="@drawable/ic_done" />
 
 
                     </RelativeLayout>

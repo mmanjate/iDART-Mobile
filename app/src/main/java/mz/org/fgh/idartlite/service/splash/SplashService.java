@@ -20,6 +20,7 @@ import mz.org.fgh.idartlite.rest.service.Drug.RestDrugService;
 import mz.org.fgh.idartlite.rest.service.Form.RestFormService;
 import mz.org.fgh.idartlite.rest.service.Regimen.RestTherapeuticRegimenService;
 import mz.org.fgh.idartlite.rest.service.TherapeuticLine.RestTherapeuticLineService;
+import mz.org.fgh.idartlite.rest.service.clinic.RestClinicSectorTypeService;
 import mz.org.fgh.idartlite.rest.service.clinic.RestClinicService;
 import mz.org.fgh.idartlite.rest.service.clinic.RestPharmacyTypeService;
 import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
@@ -147,6 +148,7 @@ public class SplashService extends BaseService implements ISplashService {
                 e.printStackTrace();
             }
 
+            RestClinicSectorTypeService.restGetAllClinicSectorType();
             RestDispenseTypeService.restGetAllDispenseType();
             RestTherapeuticRegimenService.restGetAllTherapeuticRegimen();
             RestTherapeuticLineService.restGetAllTherapeuticLine();

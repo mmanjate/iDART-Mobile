@@ -193,7 +193,7 @@
                         android:background="@android:color/transparent"
                         android:drawableTop="@mipmap/ic_search_patient"
                         android:layout_gravity="center"
-                        android:visibility="@{viewModel.currentClinicSector.mustValidateStock ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewModel.currentClinicSector.mustValidateStock ? View.GONE : View.VISIBLE}"
                         android:onClick="@{()-> viewModel.callAddNewPatient()}"
                         android:text="@string/adicionar_paciente"/>
                 </LinearLayout>
