@@ -6,6 +6,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -182,8 +183,11 @@ public class PrescriptionService extends BaseService<Prescription> implements IP
         if (!localPatient.isFaltosoOrAbandono()) createPrescription(prescription);
 
 
-        if(patient.get("jsonprescribeddrugs") != null)
-        prescribedDrugService.savePrescribedDrug(prescription, requireNonNull(patient.get("jsonprescribeddrugs")).toString(), !localPatient.isFaltosoOrAbandono());
+        if(patient.get("jsonprescribeddrugs") != null){
+            prescription.setPrescribedDrugs(new ArrayList<>());
+            prescribedDrugService.savePrescribedDrug(prescription, requireNonNull(patient.get("jsonprescribeddrugs")).toString(), !localPatient.isFaltosoOrAbandono());
+        }
+
 
         localPatient.addPrescription(prescription);
     }

@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.service.episode;
 
+import android.app.Application;
+
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.sql.SQLException;
@@ -28,7 +30,7 @@ public interface IEpisodeService extends IBaseService<Episode> {
 
     public boolean patientHasEndingEpisode(Patient patient);
 
-    public List<Episode> getAllEpisodeByStatus(String status) throws SQLException ;
+    public List<Episode> getAllByStatus(String status) throws SQLException ;
 
     public void saveOnEpisodeEnding(LinkedTreeMap<String, Object> episode) ;
 
@@ -38,4 +40,6 @@ public interface IEpisodeService extends IBaseService<Episode> {
 
 
     List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end) throws SQLException;
+
+    List<Episode> getAllEpisodeByStatusAndDispenseStatus(String status, String dispenseStatus) throws SQLException;
 }

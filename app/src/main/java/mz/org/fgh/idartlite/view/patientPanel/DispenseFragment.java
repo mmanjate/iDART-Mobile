@@ -98,6 +98,7 @@ public class DispenseFragment extends GenericFragment implements IListbleDialogL
                     bundle.putSerializable("dispenses", (Serializable) dispensesList);
                     bundle.putSerializable("step", ApplicationStep.STEP_CREATE);
                     bundle.putSerializable("comingFromPrescription", false);
+                    bundle.putSerializable("clinicSector", getClinicSector());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 } else

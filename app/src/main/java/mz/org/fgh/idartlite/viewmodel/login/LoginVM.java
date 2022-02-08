@@ -153,6 +153,7 @@ public class LoginVM extends BaseViewModel {
         ClinicSector clinicSectore= (ClinicSector) getSelectedClinicSector();
         clinicSectore.setClinic(clinicService.getAllClinics().get(0));
         clinicSectorService.saveClinicSector(clinicSectore);
+        setCurrentClinicSector(clinicSectorService.getClinicSector());
     }
 
     public void login() {

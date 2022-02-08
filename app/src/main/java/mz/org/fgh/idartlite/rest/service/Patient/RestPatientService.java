@@ -29,6 +29,7 @@ import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.SyncTempPatient;
 import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.model.SyncMobilePatient;
@@ -158,7 +159,7 @@ public class RestPatientService extends BaseRestService {
 
                         try {
 
-                            SyncMobilePatient syncPatient = setSyncPatient(patient, episode, clinicSector, finalClinic);
+                            SyncMobilePatient syncPatient = convertSyncPatient(patient, episode, clinicSector, finalClinic);
 
                             Gson g = new Gson();
                             String restObject = g.toJson(syncPatient);
@@ -198,8 +199,6 @@ public class RestPatientService extends BaseRestService {
 
 
     public static void restGetPatientByNidOrNameOrSurname(String nid, String name, String surname, RestResponseListener listener) {
-
-
         final boolean finished = false;
 
         clinicService = new ClinicService(getApp(), null);
@@ -257,6 +256,7 @@ public class RestPatientService extends BaseRestService {
                                         if ((patientRest.get("datainiciotarv") != null)) {
                                             localPatient.setStartARVDate(getSqlDateFromString(Objects.requireNonNull(patientRest.get("datainiciotarv")).toString(), "dd MMM yyyy"));
                                         }
+                                        localPatient.addAttribute(PatientAttribute.fastCreateByCode(Objects.requireNonNull(patientRest.get("estadopaciente")).toString(), localPatient));
                                         newPatients.add(localPatient);
                                 }
                             }
@@ -279,7 +279,7 @@ public class RestPatientService extends BaseRestService {
             }
     }
 
-    public static void restSearchPatientByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit, RestResponseListener listener) {
+    public static void restSearchPatientFaltosoOrAbandonoByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit, RestResponseListener listener) {
 
 
         final boolean finished = false;
@@ -288,6 +288,7 @@ public class RestPatientService extends BaseRestService {
 
         patientService = new PatientService(getApp(), null);
         provinceService=new ProvinceService(getApp(),null);
+        prescriptionService = new PrescriptionService(getApp());
 
         List<Patient> newPatients = new ArrayList<>();
         Clinic clinic = null;
@@ -308,9 +309,12 @@ public class RestPatientService extends BaseRestService {
                     url = BaseRestService.baseUrl + "/sync_temp_patients?or=(patientid.like.*" + nid + "*" +
                             ",firstnames.like.*" + name + "*" +
                             ",lastname.like.*" + surname + "*)" +
+                            "&and=(estadopaciente.in.(\"Faltoso\",\"Abandono\")" +
+                            ",exclusaopaciente.is.false)" +
                             "&offset=" + offset +
                             "&limit=" + limit;
 
+                Log.e(TAG, url);
                 RESTServiceHandler handler = new RESTServiceHandler();
                 handler.addHeader("Content-Type", "Application/json");
 
@@ -403,7 +407,7 @@ public class RestPatientService extends BaseRestService {
     }
 
 
-    private static SyncMobilePatient setSyncPatient(Patient patient, Episode episode, ClinicSector clinicSector, Clinic clinic) {
+    private static SyncMobilePatient convertSyncPatient(Patient patient, Episode episode, ClinicSector clinicSector, Clinic clinic) {
 
         SyncMobilePatient syncMobilePatient = new SyncMobilePatient();
 
@@ -436,6 +440,59 @@ public class RestPatientService extends BaseRestService {
 
         return syncMobilePatient;
 
+    }
+
+    public static void restPostPatientFaltosoOrAbandono(Patient patient) throws SQLException {
+
+        String url = BaseRestService.baseUrl + "/sync_temp_patients?uuidopenmrs=eq."+ patient.getUuid();
+
+        episodeService = new EpisodeService(getApp());
+
+        if (patient != null) {
+
+
+            try {
+                Episode episode = episodeService.getLatestByPatient(patient);
+
+                if (episode.getSyncStatus().equalsIgnoreCase(BaseModel.SYNC_SATUS_READY))
+                    getRestServiceExecutor().execute(() -> {
+
+                        RESTServiceHandler handler = new RESTServiceHandler();
+
+                        try {
+
+                            SyncTempPatient syncPatient = convertSyncTempPatient(patient);
+
+                            Gson g = new Gson();
+                            String restObject = g.toJson(syncPatient);
+
+                            handler.addHeader("Content-Type", "application/json");
+                            JSONObject jsonObject = new JSONObject(restObject);
+                            handler.objectRequest(url, Request.Method.PATCH, jsonObject, Object[].class, (Response.Listener<TreeMap<String, Object>>) response -> {
+                                Log.d(TAG, "onResponse: Paciente enviado : " + response);
+
+                                try {
+                                    episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+                                    episodeService.udpateEpisode(episode);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }, error -> Log.d(TAG, "onErrorResponse: Erro no POST :" + generateErrorMsg(error)));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static SyncTempPatient convertSyncTempPatient(Patient patient) {
+        SyncTempPatient syncTempPatient = new SyncTempPatient();
+        syncTempPatient.setExclusaopaciente(true);
+        return syncTempPatient;
     }
 
 }

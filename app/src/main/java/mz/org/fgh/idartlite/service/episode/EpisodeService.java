@@ -116,9 +116,9 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
 
     }
 
-    public List<Episode> getAllEpisodeByStatus(String status) throws SQLException {
+    public List<Episode> getAllByStatus(String status) throws SQLException {
 
-     return   getDataBaseHelper().getEpisodeDao().getAllEpisodeByStatus(status);
+     return   getDataBaseHelper().getEpisodeDao().getAllByStatus(status);
     }
 
 
@@ -185,16 +185,20 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
     }
 
     public void buildEpisode(LinkedTreeMap<String, Object> patient, Patient localPatient, Date dataEpisodio) throws SQLException {
-       Episode episode = new Episode();
-                episode.setEpisodeDate(dataEpisodio);
-                episode.setPatient(localPatient);
-                episode.setSanitaryUnit(Objects.requireNonNull(patient.get("mainclinicname")).toString());
-                episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
-                episode.setStartReason("Referido De");
-                episode.setNotes("Referido De");
-                episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
-                episode.setUuid(UUID.randomUUID().toString());
-                createEpisode(episode);
+        Episode episode = new Episode();
+        episode.setEpisodeDate(dataEpisodio);
+        episode.setPatient(localPatient);
+        episode.setSanitaryUnit(Objects.requireNonNull(patient.get("mainclinicname")).toString());
+        episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
+        episode.setStartReason("Referido De");
+        episode.setNotes("Referido De");
+        episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+        episode.setUuid(UUID.randomUUID().toString());
+        createEpisode(episode);
+    }
 
+    @Override
+    public List<Episode> getAllEpisodeByStatusAndDispenseStatus(String status, String dispenseStatus) throws SQLException {
+        return getDataBaseHelper().getEpisodeDao().getAllEpisodeByStatusAndPatientDispenseStatus(getApplication(), status, dispenseStatus);
     }
 }

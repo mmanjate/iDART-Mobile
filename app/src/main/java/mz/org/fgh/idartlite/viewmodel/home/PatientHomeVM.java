@@ -44,18 +44,12 @@ public class PatientHomeVM extends BaseViewModel {
     }
 
     public void callSearchPatient(String searchMode){
-
-        if(getRelatedActivity().getApplicationStep().checkSanitaryUnit(currentClinic)) {
-            getRelatedActivity().nextActivityWithGenericParams(NewPatientSearchActivity.class);
-        }
-        else {
-            Map<String, Object> params = new HashMap<>();
-            params.put("user", getCurrentUser());
-            params.put("clinic", getCurrentClinic());
-            params.put("searchMode", searchMode);
-            params.put("clinicSector", getCurrentClinicSector());
-            getRelatedActivity().nextActivityFinishingCurrent(SearchPatientActivity.class, params);
-        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("user", getCurrentUser());
+        params.put("clinic", getCurrentClinic());
+        params.put("searchMode", searchMode);
+        params.put("clinicSector", getCurrentClinicSector());
+        getRelatedActivity().nextActivityFinishingCurrent(SearchPatientActivity.class, params);
     }
 
     public void callAddNewPatient(){
