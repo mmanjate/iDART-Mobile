@@ -30,6 +30,8 @@ public class ClinicService extends BaseService<Clinic> implements IClinicService
     }
 
     public List<Clinic> getAllClinics() throws SQLException {
+        System.out.println("#######################################çççççççççççççççççççç-");
+        System.out.println(getDataBaseHelper().getIClinicDao().getAllClinics().size());
       return getDataBaseHelper().getIClinicDao().getAllClinics();
     }
 

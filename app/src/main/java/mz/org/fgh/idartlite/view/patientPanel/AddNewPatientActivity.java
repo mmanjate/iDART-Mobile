@@ -23,6 +23,7 @@ import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 
 import mz.org.fgh.idartlite.databinding.ActivityAddNewPatientBinding;
 import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
+import mz.org.fgh.idartlite.model.Country;
 import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.util.DateUtilities;
@@ -299,7 +300,15 @@ public class AddNewPatientActivity extends BaseActivity implements IDialogListen
         try {
             List<Province> provinces = new ArrayList<>();
             provinces.add(new Province());
-            provinces.addAll(getRelatedViewModel().getAllProvinces());
+            Province p1 = new Province(); p1.setId(1);p1.setCode("MPT");p1.setName("Maputo");p1.setCountry(new Country());p1.setUuid("uuid1");p1.setRestId(1);
+            Province p2 = new Province(); p2.setId(2);p2.setCode("GZ");p2.setName("Gaza");p2.setCountry(new Country());p2.setUuid("uuid2");p2.setRestId(1);
+            Province p3 = new Province(); p3.setId(3);p3.setCode("IB");p3.setName("Inhambane");p3.setCountry(new Country());p3.setUuid("uuid3");p3.setRestId(1);
+
+            provinces.add(p1);
+            provinces.add(p2);
+            provinces.add(p3);
+
+            //provinces.addAll(getRelatedViewModel().getAllProvinces());
 
             provinceAdapter = new ListableSpinnerAdapter(this, R.layout.simple_auto_complete_item, provinces);
             addNewPatientBinding.spnProvince.setAdapter(provinceAdapter);
