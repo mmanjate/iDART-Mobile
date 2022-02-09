@@ -70,8 +70,9 @@ public class ClinicSectorTypeService extends BaseService implements IClinicSecto
         ClinicSectorType localClinicSectorType = new ClinicSectorType();
         try {
             LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) clinicSectorType;
-
-            localClinicSectorType.setDescription(Objects.requireNonNull(itemresult.get("code")).toString());
+            localClinicSectorType.setId((int)Double.parseDouble(Objects.requireNonNull(itemresult.get("id")).toString()));
+            localClinicSectorType.setDescription(Objects.requireNonNull(itemresult.get("description")).toString());
+            localClinicSectorType.setCode(Objects.requireNonNull(itemresult.get("code")).toString());
             saveClinicSectorType(localClinicSectorType);
 
         } catch (SQLException e) {
@@ -80,11 +81,7 @@ public class ClinicSectorTypeService extends BaseService implements IClinicSecto
     }
 
     @Override
-    public ClinicSectorType getClinicSectorTypeById(String id) throws SQLException {
-        System.out.println("Getting ClinicSectorTypeById right now==============================");
-        // ClinicSectorType clinicSectorType  = (ClinicSectorType) getDataBaseHelper().getClinicSectorTypeDao().queryForEq(COLUMN_DESCRIPTION,id);
-        ClinicSectorType clinicSectorType  = (ClinicSectorType) getDataBaseHelper().getClinicSectorTypeDao().queryForEq(COLUMN_DESCRIPTION,id);
-        System.out.println("ClinicSectorTypeById ==============================: "+clinicSectorType);
-        return clinicSectorType;
+    public ClinicSectorType getClinicSectorTypeById(int id) throws SQLException {
+        return getDataBaseHelper().getClinicSectorTypeDao().queryForId(id);
     }
 }

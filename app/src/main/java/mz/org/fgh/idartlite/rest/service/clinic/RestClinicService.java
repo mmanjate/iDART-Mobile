@@ -30,6 +30,7 @@ import mz.org.fgh.idartlite.service.clinic.IPharmacyTypeService;
 import mz.org.fgh.idartlite.service.clinic.PharmacyTypeService;
 import mz.org.fgh.idartlite.service.user.IUserService;
 import mz.org.fgh.idartlite.service.user.UserService;
+import mz.org.fgh.idartlite.util.Utilities;
 
 public class RestClinicService extends BaseRestService {
     private static final String TAG = "RestClinicService";
@@ -93,30 +94,28 @@ public class RestClinicService extends BaseRestService {
                                     clinicRest.setPharmacyType(pharmacyTypeService.getPharmacyTypeByCode(Objects.requireNonNull(itemresult.get("facilitytype")).toString()));
                                     if (clinicRest.getPharmacyType().getDescription().equalsIgnoreCase("Unidade Sanitária")) {// Se esta clinic é US
                                         List<Object> itemresult1 = (List<Object>) Objects.requireNonNull(itemresult.get("clinicsector")); // Pega a lista de sectores dessa US
-                                        List<ClinicSector> clinicSectors = new ArrayList<>();
-                                        for (Object clinicSector : itemresult1) {
-                                            LinkedTreeMap<String, Object> itemresult2 = (LinkedTreeMap<String, Object>) clinicSector;
-                                            ClinicSector clinicSector1 = new ClinicSector();
-                                            clinicSector1.setSectorName(Objects.requireNonNull(itemresult2.get("sectorname")).toString());
-                                            clinicSector1.setUuid(Objects.requireNonNull(itemresult2.get("uuid")).toString());
-                                            clinicSector1.setCode(Objects.requireNonNull(itemresult2.get("code")).toString()); // Inicialmente era só paragem única este code, agora será um de 4 tipos
+                                        if (Utilities.listHasElements(itemresult1)) {
+                                            List<ClinicSector> clinicSectors = new ArrayList<>();
+                                            for (Object clinicSector : itemresult1) {
+                                                LinkedTreeMap<String, Object> itemresult2 = (LinkedTreeMap<String, Object>) clinicSector;
+                                                ClinicSector clinicSector1 = new ClinicSector();
+                                                clinicSector1.setSectorName(Objects.requireNonNull(itemresult2.get("sectorname")).toString());
+                                                clinicSector1.setUuid(Objects.requireNonNull(itemresult2.get("uuid")).toString());
+                                                clinicSector1.setCode(Objects.requireNonNull(itemresult2.get("code")).toString()); // Inicialmente era só paragem única este code, agora será um de 4 tipos
 
-                                            // Atribuir Clinic a clinicSector ( Em substiuicao a linha comentada a baixo)
-                                            clinicSector1.setClinic(clinicRest);
-                                            // clinicSector1.setClinicId((int) Float.parseFloat(Objects.requireNonNull(itemresult2.get("clinic")).toString()));
+                                                // Atribuir Clinic a clinicSector ( Em substiuicao a linha comentada a baixo)
+                                                clinicSector1.setClinic(clinicRest);
+                                                // clinicSector1.setClinicId((int) Float.parseFloat(Objects.requireNonNull(itemresult2.get("clinic")).toString()));
 
-                                            // Atribuir ClinicSectorType a clinicSector
-                                            if (clinicSectorTypeList.size() > 0 && clinicSectorTypeList != null) {
-                                                System.out.println(clinicSectorTypeList.size());
-                                                System.out.println(itemresult2.get("clinicsectortype"));
-                                                clinicSector1.setClinicSectorType(clinicSectorTypeService.getClinicSectorTypeById(Objects.requireNonNull(itemresult2.get("clinicsectortype").toString())) );
+                                                // Atribuir ClinicSectorType a clinicSector
+                                                clinicSector1.setClinicSectorType(clinicSectorTypeService.getClinicSectorTypeById((int) Double.parseDouble(Objects.requireNonNull(itemresult2.get("clinicsectortype")).toString())));
+
+                                                clinicSectors.add(clinicSector1);
                                             }
 
-                                            clinicSectors.add(clinicSector1);
+                                            clinicRest.setClinicSectorList(clinicSectors);
+
                                         }
-
-                                        clinicRest.setClinicSectorList(clinicSectors);
-
                                     }
 
 

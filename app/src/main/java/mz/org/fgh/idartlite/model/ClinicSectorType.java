@@ -8,6 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -226,6 +227,19 @@ public class ClinicSectorType extends BaseModel implements Listble {
         }else{
             return  description;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ClinicSectorType)) return false;
+        ClinicSectorType that = (ClinicSectorType) o;
+        return id == that.id && Objects.equals(code, that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code);
     }
 
     @Override
