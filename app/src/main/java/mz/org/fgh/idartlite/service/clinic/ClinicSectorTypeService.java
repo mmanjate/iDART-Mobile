@@ -81,7 +81,10 @@ public class ClinicSectorTypeService extends BaseService implements IClinicSecto
 
     @Override
     public ClinicSectorType getClinicSectorTypeById(String id) throws SQLException {
+        System.out.println("Getting ClinicSectorTypeById right now==============================");
+        // ClinicSectorType clinicSectorType  = (ClinicSectorType) getDataBaseHelper().getClinicSectorTypeDao().queryForEq(COLUMN_DESCRIPTION,id);
         ClinicSectorType clinicSectorType  = (ClinicSectorType) getDataBaseHelper().getClinicSectorTypeDao().queryForEq(COLUMN_DESCRIPTION,id);
+        System.out.println("ClinicSectorTypeById ==============================: "+clinicSectorType);
         return clinicSectorType;
     }
 }
