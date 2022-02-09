@@ -176,6 +176,7 @@ public class ClinicSector extends BaseModel implements Listble {
 		return 0;
 	}
 
+	// Visibility Validation
 	public boolean mustValidateStock() {
 		return this.clinicSectorType.isBrigadaMovel() || this.clinicSectorType.isClinicaMovel() || this.clinicSectorType.isParagemUnica() || this.clinicSectorType.isAPE();
 	}

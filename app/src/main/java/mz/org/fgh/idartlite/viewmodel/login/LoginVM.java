@@ -329,6 +329,8 @@ public class LoginVM extends BaseViewModel {
 
         Clinic currClinic = (Clinic) this.currentClinic;
 
+        System.out.println("************************************************ SIZE: "+currClinic.getClinicSectorList().size());
+
         for (ClinicSector clinicSector: currClinic.getClinicSectorList()) {
             if (clinicSector.getCode().equalsIgnoreCase(this.currentClinicSectorType.getCode())) {
                 clinicSectorList.add(clinicSector);
