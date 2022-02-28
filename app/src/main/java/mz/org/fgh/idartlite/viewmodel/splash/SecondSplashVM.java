@@ -99,8 +99,6 @@ public class SecondSplashVM extends BaseViewModel{
 
     public void goHome() {
 
-        System.out.println("Time to go to Home Page");
-
         ClinicService clinicService = new ClinicService(getApplication(),getCurrentUser());
         Clinic localClinic = null;
         try {
