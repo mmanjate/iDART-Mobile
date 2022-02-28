@@ -53,6 +53,7 @@ import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
 public class RestPatientService extends BaseRestService {
 
     private static final String TAG = "RestPatientService";
+    private static String url = null;
     private static IClinicService clinicService;
     private static ClinicSectorService clinicSectorService;
     private static IEpisodeService episodeService;
@@ -74,15 +75,28 @@ public class RestPatientService extends BaseRestService {
 
         try {
             clinicService = new ClinicService(getApp(), null);
+            clinicSectorService = new ClinicSectorService(getApp(), null);
 
             Clinic clinic = clinicService.getAllClinics().get(0);
+            Clinic finalClinic = clinicService.getAllClinics().get(0);
+            ArrayList<ClinicSector> clinicSectorList = (ArrayList<ClinicSector>) clinicSectorService.getClinicSectorsByClinic(finalClinic);
+
+            if(clinicSectorList.isEmpty()){
+                url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinic.getUuid() +
+                        "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
+                        "&offset=" + offset +
+                        "&limit=" + limit;
+            }else {
+                ClinicSector clinicSector = clinicSectorList.get(0);
+                url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinicSector.getUuid() +
+                        "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
+                        "&offset=" + offset +
+                        "&limit=" + limit;
+            }
 
             patientService = new PatientService(getApp(), null);
 
-            String url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinic.getUuid() +
-                                                    "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
-                                                    "&offset=" + offset +
-                                                    "&limit=" + limit;
+
             List<Patient> newPatients = new ArrayList<>();
 
             if (RESTServiceHandler.getServerStatus(BaseRestService.baseUrl)) {
