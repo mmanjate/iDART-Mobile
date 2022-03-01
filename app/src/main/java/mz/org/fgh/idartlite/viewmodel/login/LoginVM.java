@@ -270,6 +270,7 @@ public class LoginVM extends BaseViewModel {
         // clinicSectorsList.clear();
         // getClinicSectorsList().add(new ClinicSector());
         if(((Clinic) selectedClinic).getClinicName()!=null && verifySanitaryUnit()) {
+            System.out.println("llllllllllllllllllllllllll: "+((Clinic) selectedClinic).getClinicName());
 
             // Fazer o bind de todas clinicSectorType aqui (Trata-se de uma US)
             List<ClinicSectorType> clinicSectorTypes = new ArrayList<>();
@@ -299,17 +300,6 @@ public class LoginVM extends BaseViewModel {
 
     }
 
-    @Bindable
-    public Listble getSelectedClinicSector() {
-        return selectedClinicSector;
-    }
-
-    public void setSelectedClinicSector(Listble selectedClinicSector) {
-        System.out.println(selectedClinicSector.getClass().toString());
-        this.selectedClinicSector = (ClinicSector) selectedClinicSector;
-        notifyPropertyChanged(BR.selectedClinicSector);
-    }
-
     //JNM 12.01.2022
     @Bindable
     public Listble getSelectedClinicSectorType() {
@@ -330,13 +320,22 @@ public class LoginVM extends BaseViewModel {
         Clinic currClinic = (Clinic) this.currentClinic;
 
         if (Utilities.listHasElements(currClinic.getClinicSectorList())) {
+            int i = 0;
             for (ClinicSector clinicSector : currClinic.getClinicSectorList()) {
                 if (clinicSector.getClinicSectorType().equals(this.currentClinicSectorType)) {
+                    clinicSector.setClinicSectorType(this.selectedClinicSectorType);
                     clinicSectorList.add(clinicSector);
+                    i++;
+                    System.out.println("llllllllllllllllllllllllllllllllllllllllll: "+i);
+                    System.out.println("llllllllllllllllllllllllllllllllllllllllll: "+this.selectedClinicSectorType.getId());
+                    System.out.println("llllllllllllllllllllllllllllllllllllllllll: "+this.selectedClinicSectorType.getDescription());
+                    System.out.println("llllllllllllllllllllllllllllllllllllllllll: "+clinicSector.getId());
+                    System.out.println("llllllllllllllllllllllllllllllllllllllllll: "+clinicSector.getSectorName());
                 }
             }
         }
 
+        getClinicSectorsList().clear();
         getClinicSectorsList().add(new ClinicSector());
         getClinicSectorsList().addAll(clinicSectorList);
         getRelatedActivity().loadClinicSectorAdapter();
@@ -344,7 +343,19 @@ public class LoginVM extends BaseViewModel {
         //JNM 17.01.2022
         notifyPropertyChanged(BR.selectedClinicSectorType);
         notifyPropertyChanged(BR.selectedClinicSector);
+        notifyPropertyChanged(BR.selectedClinic);
+        notifyPropertyChanged(BR.clinicSectorType);
 
+    }
+
+    @Bindable
+    public Listble getSelectedClinicSector() {
+        return selectedClinicSector;
+    }
+
+    public void setSelectedClinicSector(Listble selectedClinicSector) {
+        this.selectedClinicSector = (ClinicSector) selectedClinicSector;
+        notifyPropertyChanged(BR.selectedClinicSector);
     }
 
     @Bindable
@@ -395,7 +406,7 @@ public class LoginVM extends BaseViewModel {
 
         Clinic clinic= (Clinic) getSelectedClinic();
         if(clinic!=null) {
-            if (clinic.getPharmacyType().getDescription().equalsIgnoreCase("Unidade Sanitária"))
+            if (clinic.getPharmacyType().getDescription().contains("Unidade Sanit"))
                 return sanitaryUnit=true;
         }
 

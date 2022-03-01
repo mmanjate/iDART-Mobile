@@ -388,6 +388,7 @@ public class DateUtilities {
     }
 
     public static Date getSqlDateFromString(String stringDate, String pattern) {
+        System.out.println("CONVERTING DATE");
         SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.ENGLISH);
         try {
             Date date = (Date) format.parse(stringDate);

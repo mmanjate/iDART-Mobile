@@ -149,6 +149,7 @@
                             android:background="@android:color/transparent"
                             android:drawableTop="@drawable/ic_load_patient"
                             android:layout_gravity="center"
+                            android:visibility="@{viewModel.currentClinic.isPrivateClinic ? View.GONE : View.VISIBLE}"
                             android:onClick="@{()-> viewModel.callSearchPatient(@string/online)}"
                             android:text="Carregar paciente\n Faltoso"/>
                 </LinearLayout>
@@ -157,15 +158,16 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
-                        <Button
-                            android:id="@+id/button3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/transparent"
-                            android:drawableTop="@drawable/ic_search_patient"
-                            android:layout_gravity="center"
-                            android:onClick="@{()-> viewModel.callSearchPatient(@string/local)}"
-                            android:text="@string/procurar_paciente"/>
+                    <Button
+                        android:id="@+id/add_patient"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawableTop="@drawable/ic_person_add"
+                        android:layout_gravity="center"
+                        android:visibility="@{true ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{()-> viewModel.callAddNewPatient()}"
+                        android:text="@string/adicionar_paciente"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -180,15 +182,14 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
                     <Button
-                        android:id="@+id/add_patient"
+                        android:id="@+id/button3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:drawableTop="@drawable/ic_person_add"
+                        android:drawableTop="@drawable/ic_search_patient"
                         android:layout_gravity="center"
-                        android:visibility="@{viewModel.currentClinicSector.mustValidateStock ? View.GONE : View.VISIBLE}"
-                        android:onClick="@{()-> viewModel.callAddNewPatient()}"
-                        android:text="@string/adicionar_paciente"/>
+                        android:onClick="@{()-> viewModel.callSearchPatient(@string/local)}"
+                        android:text="@string/procurar_paciente"/>
                 </LinearLayout>
             </LinearLayout>
 

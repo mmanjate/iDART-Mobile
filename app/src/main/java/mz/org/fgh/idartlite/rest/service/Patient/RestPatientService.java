@@ -72,7 +72,6 @@ public class RestPatientService extends BaseRestService {
     }
 
     public static void getAllPatient(RestResponseListener listener, long offset, long limit) {
-
         try {
             clinicService = new ClinicService(getApp(), null);
             clinicSectorService = new ClinicSectorService(getApp(), null);
