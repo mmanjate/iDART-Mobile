@@ -52,7 +52,7 @@ public class SecondSplashVM extends BaseViewModel{
 
     @Override
     protected IBaseService initRelatedService() {
-        settingsService = new AppSettingsService(getApplication());
+        //settingsService = new AppSettingsService(getApplication());
         return null;
     }
 
@@ -63,20 +63,22 @@ public class SecondSplashVM extends BaseViewModel{
 
     @Override
     protected void initFormData() {
-
     }
 
     @Override
     public void preInit() {
-
+        getFirstData();
+        /*
         try {
-            this.appSettings = settingsService.getAll();
-
-            scheduleSyncWorks();
+            //this.appSettings = settingsService.getAll();
+            //System.out.println(this.appSettings.size());
+            //scheduleSyncWorks();
             getFirstData();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+         */
     }
 
     @Override
@@ -84,6 +86,7 @@ public class SecondSplashVM extends BaseViewModel{
         return (SecondSplashActivity) super.getRelatedActivity();
     }
 
+    /*
     private void scheduleSyncWorks() {
         workerScheduleExecutor = new WorkerScheduleExecutor(getRelatedActivity().getApplicationContext(), this.appSettings);
         workerScheduleExecutor.initConfigTaskWork();
@@ -95,7 +98,7 @@ public class SecondSplashVM extends BaseViewModel{
         workerScheduleExecutor.initPatientDispenseTaskWork();
         workerScheduleExecutor.initEpisodeTaskWork();
         workerScheduleExecutor.initPostNewPatientDataTaskWork();
-    }
+    } */
 
     public void goHome() {
 

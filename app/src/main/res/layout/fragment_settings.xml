@@ -210,9 +210,9 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/spn_period"
                             android:layout_alignParentRight="true"
-                            android:onClick="@{() -> viewModel.syncDataNow()}"
                             android:drawableLeft="@drawable/ic_baseline_sync_green"
-                            android:text="Sincronizar Agora"/>
+                            android:onClick="@{() -> viewModel.syncDataNow()}"
+                            android:text="Sincronizar Agora" />
 
 
                     </RelativeLayout>
