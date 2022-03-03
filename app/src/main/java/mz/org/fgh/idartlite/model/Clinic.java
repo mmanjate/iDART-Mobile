@@ -212,11 +212,11 @@ public class Clinic extends BaseModel implements Listble {
 	}
 
 	public boolean isSanitaryUnit() {
-		return getPharmacyType().getDescription().equalsIgnoreCase("Unidade Sanitária");
+		return getPharmacyType().getDescription().contains("Unidade Sanit");
 	}
 
 	public boolean isPrivateClinic() {
-		return getPharmacyType().getDescription().equalsIgnoreCase("Privada");
+		return getPharmacyType().getDescription().equalsIgnoreCase("Privada") || getPharmacyType().getDescription().contains("Comunit");
 	}
 
 	// Visibility Validation

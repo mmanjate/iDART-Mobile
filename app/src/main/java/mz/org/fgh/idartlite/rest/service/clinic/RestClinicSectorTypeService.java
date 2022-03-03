@@ -8,12 +8,14 @@ import androidx.collection.ArrayMap;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
+import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.clinic.ClinicSectorTypeService;
@@ -39,7 +41,7 @@ public class RestClinicSectorTypeService extends BaseRestService {
 
     private static void getAllClinicSectorType(ServiceWatcher watcher)  {
 
-        String url = BaseRestService.baseUrl + "/clinic_sector_type";
+        String url = BaseRestService.baseUrl + "/clinic_sector_type?order=id.asc";
         clinicSectorTypeService = new ClinicSectorTypeService(getApp(), null);
 
         //clinicSectorTypeService = (IClinicSectorTypeService) getServiceFactory().get(ClinicSectorTypeService.class);
@@ -63,8 +65,9 @@ public class RestClinicSectorTypeService extends BaseRestService {
                             System.out.println("onResponse: " + clinicSectorType);
                             // Log.i(TAG, "onResponse: " + clinicSectorType);
                             try {
-                                if(!clinicSectorTypeService.checkClinicSectorType(clinicSectorType)) {
-                                    clinicSectorTypeService.saveOnClinicSectorType(clinicSectorType);
+                                LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) clinicSectorType;
+                                if(!clinicSectorTypeService.checkClinicSectorType(itemresult)) {
+                                    clinicSectorTypeService.saveOnClinicSectorType(itemresult);
                                     counter++;
                                 }else{
                                     System.out.println("onResponse: "+clinicSectorType+" Ja Existe");

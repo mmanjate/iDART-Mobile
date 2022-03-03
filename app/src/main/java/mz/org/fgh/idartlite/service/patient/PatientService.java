@@ -243,7 +243,8 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
 
         try {
 
-            Clinic clinic = clinicService.getClinicByUuid(Objects.requireNonNull(patient.get("clinicuuid")).toString());
+            //Clinic clinic = clinicService.getClinicByUuid(Objects.requireNonNull(patient.get("clinicuuid")).toString());
+            Clinic clinic = clinicService.getAllClinics().get(0);
 
             String concatAdrees = getFullAdreess(Objects.requireNonNull(patient.get("address1")).toString(),
                     Objects.requireNonNull(patient.get("address2")).toString(),
