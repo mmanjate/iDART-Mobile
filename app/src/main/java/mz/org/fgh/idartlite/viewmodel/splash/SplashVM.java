@@ -22,13 +22,20 @@ import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.service.splash.ISplashService;
 import mz.org.fgh.idartlite.service.splash.SplashService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.login.LoginActivity;
 import mz.org.fgh.idartlite.view.splash.SplashActivity;
+import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 
 public class SplashVM extends BaseViewModel implements RestResponseListener<Clinic> {
+
+    private AppSettingsService settingsService;
+    private List<AppSettings> appSettings;
+
+    private WorkerScheduleExecutor workerScheduleExecutor;
 
     public SplashVM(@NonNull Application application) {
         super(application);
@@ -36,6 +43,7 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     @Override
     protected IBaseService initRelatedService() {
+        settingsService = new AppSettingsService(getApplication());
         return new SplashService(getApplication());
     }
 
@@ -66,6 +74,29 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     @Override
     public void preInit() {
+        /*
+        try {
+            this.appSettings = settingsService.getAll();
+            scheduleSyncWorks();
+            //getFirstData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+         */
+    }
+
+    private void scheduleSyncWorks() {
+        workerScheduleExecutor = new WorkerScheduleExecutor(getRelatedActivity().getApplicationContext(), this.appSettings);
+        workerScheduleExecutor.initConfigTaskWork();
+        workerScheduleExecutor.initStockTaskWork();
+        workerScheduleExecutor.initDataTaskWork();
+        workerScheduleExecutor.initPatchStockDataTaskWork();
+        workerScheduleExecutor.initPostPatientDataTaskWork();
+        workerScheduleExecutor.initPostStockDataTaskWork();
+        workerScheduleExecutor.initPatientDispenseTaskWork();
+        workerScheduleExecutor.initEpisodeTaskWork();
+        workerScheduleExecutor.initPostNewPatientDataTaskWork();
     }
 
     public void requestConfiguration() {
@@ -101,6 +132,8 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
             BaseRestService.setBaseUrl(getRelatedService().getCentralServerSettings().getValue());
 
+            this.appSettings = settingsService.getAll();
+            scheduleSyncWorks();
         } catch (SQLException e) {
             e.printStackTrace();
         }

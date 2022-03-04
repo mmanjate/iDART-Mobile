@@ -25,6 +25,7 @@ import mz.org.fgh.idartlite.service.settings.IAppSettingsService;
 import mz.org.fgh.idartlite.util.SimpleValue;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment;
+import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 import mz.org.fgh.idartlite.workSchedule.work.DataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.MetaDataSyncWorker;
 import mz.org.fgh.idartlite.workSchedule.work.RemoveDataSyncWorker;
@@ -313,6 +314,10 @@ public class SettingsVM extends BaseViewModel {
     }
 
     public void syncDataNow(){
+        //mWorkManager.cancelAllWorkByTag("PATIENT_ID" + WorkerScheduleExecutor.JOB_ID);
+        //mWorkManager.getInstance(getApplication()).cancelAllWorkByTag("PATIENT_ID" + WorkerScheduleExecutor.JOB_ID);
+        //mWorkManager.getInstance(getApplication()).cancelAllWork();
+        mWorkManager.cancelAllWork();
         OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class).build();
         OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).build();
         OneTimeWorkRequest stockOneTimeWorkRequest = new OneTimeWorkRequest.Builder(StockWorker.class).build();
