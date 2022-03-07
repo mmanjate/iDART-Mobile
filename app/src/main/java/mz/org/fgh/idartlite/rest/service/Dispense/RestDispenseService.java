@@ -317,6 +317,14 @@ public class RestDispenseService extends BaseRestService {
 
         episodeService = new EpisodeService(getApp(), null);
         SyncDispense syncDispense = new SyncDispense();
+        int qtySupplied = 0;
+
+        if(dispensedDrug.getQuantitySupplied() == 0){
+            qtySupplied = ((dispense.getSupply() / 4) * 30) / dispensedDrug.getDrug().getPackSize();
+        }else {
+            qtySupplied = dispensedDrug.getQuantitySupplied();
+        }
+
         try {
             Episode episode = episodeService.getAllEpisodesByPatient(dispense.getPrescription().getPatient()).get(0);
             syncDispense.setDate(dispense.getPrescription().getPrescriptionDate());
@@ -366,7 +374,7 @@ public class RestDispenseService extends BaseRestService {
             syncDispense.setPatientfirstname(dispense.getPrescription().getPatient().getFirstName());
             syncDispense.setPatientlastname(dispense.getPrescription().getPatient().getLastName());
             syncDispense.setPickupdate(dispense.getPickupDate());
-            syncDispense.setQtyinhand("(" + dispensedDrug.getQuantitySupplied() + ")");
+            syncDispense.setQtyinhand("(" + qtySupplied + ")");
             syncDispense.setQtyinlastbatch("(" + dispensedDrug.getQuantitySupplied() + ")");
             syncDispense.setSummaryqtyinhand("(" + dispensedDrug.getQuantitySupplied() + ")");
             syncDispense.setTimesperday(1);

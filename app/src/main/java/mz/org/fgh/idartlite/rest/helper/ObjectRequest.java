@@ -69,7 +69,7 @@ public class ObjectRequest<T> extends JsonRequest<T> {
 
     @Override
     public String getUrl() {
-        if(mMethod == Method.GET) {
+        if(mMethod == Method.GET && mUrl != null) {
             StringBuilder stringBuilder = new StringBuilder(mUrl);
             if (mParams != null) {
                 Iterator<Map.Entry<String, Object>> iterator = mParams.entrySet().iterator();

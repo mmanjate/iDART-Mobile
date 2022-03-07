@@ -82,15 +82,18 @@ public class RestPatientService extends BaseRestService {
 
             if(clinicSectorList.isEmpty()){
                 url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinic.getUuid() +
-                        "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
+                        "&exclusaopaciente=eq.false&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
                         "&offset=" + offset +
                         "&limit=" + limit;
             }else {
                 ClinicSector clinicSector = clinicSectorList.get(0);
-                url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinicSector.getUuid() +
-                        "&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
-                        "&offset=" + offset +
-                        "&limit=" + limit;
+                if(!clinicSector.getClinicSectorType().getDescription().contains("Provedor")){
+                    url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinicSector.getUuid() +
+                            "&exclusaopaciente=eq.false&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
+                            "&offset=" + offset +
+                            "&limit=" + limit;
+                }
+                // Carregar paciente alocados ao Provedor iDART Modbile v2.4.0
             }
 
             patientService = new PatientService(getApp(), null);
@@ -324,6 +327,7 @@ public class RestPatientService extends BaseRestService {
                             ",lastname.like.*" + surname + "*)" +
                             "&and=(estadopaciente.in.(\"Faltoso\",\"Abandono\")" +
                             ",exclusaopaciente.is.false)" +
+                            "&mainclinicuuid=eq." + finalClinic.getUuid() +
                             "&offset=" + offset +
                             "&limit=" + limit;
 
@@ -349,7 +353,9 @@ public class RestPatientService extends BaseRestService {
 
                                 localPatient.setProvince(finalProvinceMap.get(Objects.requireNonNull(patientRest.get("province")).toString()));
                                 localPatient.setAddress(concatAdrees);
-                                localPatient.setBirthDate(getSqlDateFromString(Objects.requireNonNull(patientRest.get("dateofbirth")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+                                if ((patientRest.get("dateofbirth") != null)) {
+                                    localPatient.setBirthDate(getSqlDateFromString(Objects.requireNonNull(patientRest.get("dateofbirth")).toString(), "yyyy-MM-dd'T'HH:mm:ss"));
+                                }
                                 localPatient.setClinic(finalClinic);
                                 localPatient.setFirstName(Objects.requireNonNull(patientRest.get("firstnames")).toString());
                                 localPatient.setLastName(Objects.requireNonNull(patientRest.get("lastname")).toString());
@@ -504,6 +510,7 @@ public class RestPatientService extends BaseRestService {
 
     private static SyncTempPatient convertSyncTempPatient(Patient patient) {
         SyncTempPatient syncTempPatient = new SyncTempPatient();
+        syncTempPatient.setSyncstatus('U');
         syncTempPatient.setExclusaopaciente(true);
         return syncTempPatient;
     }

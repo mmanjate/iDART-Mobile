@@ -609,7 +609,7 @@ public class ClinicInfoActivity extends BaseActivity  implements IDialogListener
         if(createClinicInfoBinding.sweatingAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
         if(createClinicInfoBinding.parentAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
         if(createClinicInfoBinding.tbReferedAnswers.getCheckedRadioButtonId()==emptyRadio) return error;
-        if(!this.getRelatedViewModel().getPatient().isMale() || this.getRelatedViewModel().getPatient().getAge() > this.latestAge) {
+        if(!this.getRelatedViewModel().getPatient().isMale() && this.getRelatedViewModel().getPatient().getAge() <= this.latestAge) {
             if (createClinicInfoBinding.pregnancyAnswers.getCheckedRadioButtonId() == emptyRadio)
                 return error;
             if (createClinicInfoBinding.menstruationAnswers.getCheckedRadioButtonId() == emptyRadio)

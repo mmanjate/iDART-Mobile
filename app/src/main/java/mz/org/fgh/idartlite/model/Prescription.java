@@ -369,7 +369,11 @@ public class Prescription extends BaseModel {
 
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Este paciente contém uma Prescrição anterior válida/sem duração com o id "+this.getUiId() +" (detalhes abaixo).", "\n\n");
 
-		prescriptionData = Utilities.concatStrings(prescriptionData, "Regime: "+this.therapeuticRegimen.getDescription(), "\n");
+		if(this.therapeuticRegimen != null){
+			prescriptionData = Utilities.concatStrings(prescriptionData, "Regime: " +this.therapeuticRegimen.getDescription(), "\n");
+		}else{
+			prescriptionData = Utilities.concatStrings(prescriptionData, "Regime: não definido!" , "\n");
+		}
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Duração: "+getDurationToUserUI(), "\n");
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Registado em: "+ DateUtilities.formatToDDMMYYYY(this.prescriptionDate), "\n");
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Medicamentos na Prescrição: \n"+getPrescribedDrugsAsString(), "\n");
