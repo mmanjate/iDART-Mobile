@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.model.User;
@@ -38,7 +39,7 @@ public class ClinicSectorTypeService extends BaseService implements IClinicSecto
 
     @Override
     public ClinicSectorType getClinicSectorTypeByCode(String code) throws SQLException {
-        List<ClinicSectorType> clinicSectorTypeList = getDataBaseHelper().getClinicSectorTypeDao().queryForEq(COLUMN_DESCRIPTION,code);
+        List<ClinicSectorType> clinicSectorTypeList = getDataBaseHelper().getClinicSectorTypeDao().queryForEq("code",code);
 
         ClinicSectorType clinicSectorType = null;
 
