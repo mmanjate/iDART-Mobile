@@ -5,13 +5,14 @@
     <data>
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.patient.PatientVM" />
+            type="mz.org.fgh.idartlite.base.viewModel.SearchVM" />
         <variable
             name="patient"
             type="mz.org.fgh.idartlite.model.patient.Patient" />
+        <import type="mz.org.fgh.idartlite.model.patient.PatientAttribute" />
+        <import type="mz.org.fgh.idartlite.util.Utilities" />
 
         <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
-        <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="android.view.View"/>
     </data>
 
@@ -232,7 +233,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_5dp"
             android:layout_gravity="center"
-            android:visibility="@{viewModel.onlineSearch ? View.VISIBLE : View.GONE}"
+            android:visibility='@{(viewModel.onlineSearch &amp;&amp; (Utilities.stringHasValue(patient.dispensatioStatus) &amp;&amp; patient.dispensatioStatus != PatientAttribute.PATIENT_DISPENSATION_NORMAL)) ? View.VISIBLE : View.GONE}'
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_arrow_circle_down" />
 
