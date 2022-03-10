@@ -14,6 +14,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.generic.AbstractRecycleViewAdapter;
+import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.databinding.ContentPatientBinding;
 import mz.org.fgh.idartlite.databinding.ItemLoadingBinding;
 import mz.org.fgh.idartlite.model.patient.Patient;
@@ -55,7 +56,7 @@ public class ContentListPatientAdapter extends AbstractRecycleViewAdapter<Patien
 
             Patient patient = (Patient) records.get(position);
             ((PatientViewHolder) viewHolder).contentPatientBinding.setPatient(patient);
-            ((PatientViewHolder) viewHolder).contentPatientBinding.setViewModel((PatientVM) getActivity().getRelatedViewModel());
+            ((PatientViewHolder) viewHolder).contentPatientBinding.setViewModel((SearchVM) getActivity().getRelatedViewModel());
             ((PatientViewHolder) viewHolder).contentPatientBinding.downloadPatient.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
