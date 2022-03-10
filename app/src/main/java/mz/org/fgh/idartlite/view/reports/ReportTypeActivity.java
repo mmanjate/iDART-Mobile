@@ -169,7 +169,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("006", "Relatorio Resumo de Pacientes Esperados por Regime", R.drawable.ic_list, PatientsAwaitingStatisticsActivity.class));
         reports.add(Report.fastCreate("007", "Relatorio de Pacientes Faltosos", R.drawable.ic_list, AbsentPatientsReportActivity.class));
         reports.add(Report.fastCreate("008", "Relatorio de Dispensas Não Sincronizadas", R.drawable.ic_list, DispensesNonSyncReportActivity.class));
-        reports.add(Report.fastCreate("009", "Relatorio de Estatistico de Dispensas por Frascos", R.drawable.ic_list, DispenseDrugStatisticReportActivity.class));
+        reports.add(Report.fastCreate("009", "Relatorio Estatistico de Dispensas por Frascos", R.drawable.ic_list, DispenseDrugStatisticReportActivity.class));
         reports.add(Report.fastCreate("010", "Relatorio de Pacientes que rastrearam para RAMs", R.drawable.ic_list, AdverseReactionReportActivity.class, createParams(ClinicInformation.PARAM_RAM_STATUS, ClinicInformation.PARAM_RAM_STATUS_ALL)));
         reports.add(Report.fastCreate("011", "Relatorio de Pacientes com RAM", R.drawable.ic_list, AdverseReactionReportActivity.class, createParams(ClinicInformation.PARAM_RAM_STATUS, ClinicInformation.PARAM_RAM_STATUS_POSETIVE)));
         reports.add(Report.fastCreate("012", "Relatorio de Pacientes monitorados para adesão", R.drawable.ic_list, PatientTreatmentFollowUpReportActivity.class, createParams(ClinicInformation.PARAM_FOLLOW_STATUS, ClinicInformation.PARAM_FOLLOW_STATUS_ALL)));
@@ -178,7 +178,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("015", "Relatorio de Pacientes que rastrearam para TB ", R.drawable.ic_list, TBTracedPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.TB_STATUS_ALL)));
         reports.add(Report.fastCreate("016", "Relatorio de Pacientes que rastrearam para gravidez", R.drawable.ic_list, PregnantPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.PREGNANT_STATUS_ALL)));
         reports.add(Report.fastCreate("017", "Relatorio de Pacientes identificadas como Gravidas", R.drawable.ic_list, PregnantPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.PREGNANT_STATUS_POSITIVE)));
-        reports.add(Report.fastCreate("018", "Relatorio de Estatistico de Dispensas por Tipo de Dispensa e Regime", R.drawable.ic_list, DispenseByDispenseTypeReportActivity.class));
+        reports.add(Report.fastCreate("018", "Relatorio Estatistico de Dispensas por Tipo de Dispensa e Regime", R.drawable.ic_list, DispenseByDispenseTypeReportActivity.class));
 
         return reports;
     }
