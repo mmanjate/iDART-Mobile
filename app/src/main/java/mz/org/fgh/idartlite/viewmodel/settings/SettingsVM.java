@@ -314,20 +314,9 @@ public class SettingsVM extends BaseViewModel {
     }
 
     public void syncDataNow(){
-        //mWorkManager.cancelAllWorkByTag("PATIENT_ID" + WorkerScheduleExecutor.JOB_ID);
-        //mWorkManager.getInstance(getApplication()).cancelAllWorkByTag("PATIENT_ID" + WorkerScheduleExecutor.JOB_ID);
-        //mWorkManager.getInstance(getApplication()).cancelAllWork();
-        mWorkManager.cancelAllWork();
-        OneTimeWorkRequest mRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class).build();
-        OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).build();
-        OneTimeWorkRequest stockOneTimeWorkRequest = new OneTimeWorkRequest.Builder(StockWorker.class).build();
-        OneTimeWorkRequest faltososRequest = new OneTimeWorkRequest.Builder(RestPacthPatientWorker.class).build();
-
-        mWorkManager.beginWith(Arrays.asList(faltososRequest, patientOneTimeWorkRequest,mRequest, stockOneTimeWorkRequest))
-                    .enqueue();
-
+        this.initWorkScheduleExecutor(getRelatedFragment().getContext(), getCurrentClinic(), this.appSettings);
+        this.workerScheduleExecutor.runDataSyncNow();
         saveLastSyncDateTime();
-
     }
 
 

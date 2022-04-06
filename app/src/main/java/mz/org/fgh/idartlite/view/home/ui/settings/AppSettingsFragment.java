@@ -1,6 +1,10 @@
 package mz.org.fgh.idartlite.view.home.ui.settings;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +39,20 @@ public class AppSettingsFragment extends GenericFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         settingsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
 
+        settingsBinding.btnSyncNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settingsBinding.btnSyncNow.setEnabled(false);
+                getRelatedViewModel().syncDataNow();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        settingsBinding.btnSyncNow.setEnabled(true);
+                        Log.d(TAG,"resend1");
+                    }
+                },3000);
+            }
+        });
         return settingsBinding.getRoot();
     }
 
@@ -55,6 +73,7 @@ public class AppSettingsFragment extends GenericFragment {
         dataRemovingAdapter = new ListableSpinnerAdapter(getMyActivity(), R.layout.simple_auto_complete_item, getRelatedViewModel().getDataDeletionPeriodList());
         settingsBinding.spnRemovePeriod.setAdapter(dataRemovingAdapter);
         settingsBinding.setDataRemovingAdapter(dataRemovingAdapter);
+
 
     }
 

@@ -58,6 +58,7 @@ import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.LoadingDialog;
 import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 
 public abstract class BaseViewModel  extends AndroidViewModel implements Observable, IDialogListener {
 
@@ -97,6 +98,8 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     private NotificationManagerCompat notificationManager;
 
     LoadingDialog loadingDialog;
+
+    protected WorkerScheduleExecutor workerScheduleExecutor;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
@@ -474,5 +477,10 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public LoadingDialog getLoadingDialog() {
         return loadingDialog;
+    }
+
+    protected void initWorkScheduleExecutor(Context context, Clinic currClinic, List<AppSettings> appSettings) {
+        this.workerScheduleExecutor = WorkerScheduleExecutor.getInstance(context, currClinic, appSettings);
+        if (this.workerScheduleExecutor.getCurrClinic() == null) this.workerScheduleExecutor.setCurrClinic(currClinic);
     }
 }

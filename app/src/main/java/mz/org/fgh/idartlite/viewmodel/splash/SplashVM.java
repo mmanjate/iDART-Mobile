@@ -35,7 +35,7 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
     private AppSettingsService settingsService;
     private List<AppSettings> appSettings;
 
-    private WorkerScheduleExecutor workerScheduleExecutor;
+    //private WorkerScheduleExecutor workerScheduleExecutor;
 
     public SplashVM(@NonNull Application application) {
         super(application);
@@ -87,7 +87,8 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
     }
 
     private void scheduleSyncWorks() {
-        workerScheduleExecutor = new WorkerScheduleExecutor(getRelatedActivity().getApplicationContext(), this.appSettings);
+        this.initWorkScheduleExecutor(getRelatedActivity().getApplicationContext(), null, this.appSettings);
+        //workerScheduleExecutor = WorkerScheduleExecutor.getInstance(getRelatedActivity().getApplicationContext(), null, this.appSettings);
         workerScheduleExecutor.initConfigTaskWork();
         workerScheduleExecutor.initStockTaskWork();
         workerScheduleExecutor.initDataTaskWork();

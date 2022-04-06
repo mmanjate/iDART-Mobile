@@ -23,6 +23,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.FileProvider;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+
+import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
 import java.security.MessageDigest;
@@ -31,6 +35,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.base.model.BaseModel;
@@ -487,5 +492,44 @@ public class Utilities {
                 .build();
 
         notificationManagerCompat.notify(1, builder);
+    }
+
+    public static boolean isWorkScheduled(String tag, WorkManager instance) {
+        ListenableFuture<List<WorkInfo>> statuses = instance.getWorkInfosByTag(tag);
+        try {
+            boolean running = false;
+            List<WorkInfo> workInfoList = statuses.get();
+            for (WorkInfo workInfo : workInfoList) {
+                WorkInfo.State state = workInfo.getState();
+                running = state == WorkInfo.State.RUNNING | state == WorkInfo.State.ENQUEUED;
+            }
+            return running;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean isWorkRunning(String tag, WorkManager instance) {
+        ListenableFuture<List<WorkInfo>> statuses = instance.getWorkInfosByTag(tag);
+        try {
+            List<WorkInfo> workInfoList = statuses.get();
+            for (WorkInfo workInfo : workInfoList) {
+                WorkInfo.State state = workInfo.getState();
+                if (state.equals(WorkInfo.State.RUNNING)) {
+                 return true;
+                }
+            }
+            return false;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

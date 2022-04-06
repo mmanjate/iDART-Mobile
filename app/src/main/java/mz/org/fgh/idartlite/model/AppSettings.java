@@ -38,6 +38,7 @@ public class AppSettings extends BaseModel implements Listble {
 
     @DatabaseField(columnName = COLUMN_SETTING_DESCRIPTION)
     private String description;
+    private Clinic clinic;
 
 
     public int getId() {
@@ -67,6 +68,7 @@ public class AppSettings extends BaseModel implements Listble {
     public String getDescription() {
         return description;
     }
+
 
     public AppSettings() {
     }
@@ -100,6 +102,14 @@ public class AppSettings extends BaseModel implements Listble {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
     }
 
     @Override
