@@ -195,12 +195,12 @@
 
                         <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/spn_period"
-                            android:layout_width="fill_parent"
-                            android:layout_below="@+id/txt_sync"
                             style="@style/bottom_spinner_style"
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
+                            android:layout_below="@+id/txt_sync"
                             app:adapter="@{syncPeriodAdapter}"
-                            bind:selectedOpt="@={viewModel.dataSyncPeriod}"/>
+                            bind:selectedOpt="@={viewModel.dataSyncPeriod}" />
                         />
 
 

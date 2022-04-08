@@ -254,16 +254,14 @@ public class WorkerScheduleExecutor {
 
     public void runOneTimePatientSync() {
         OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).addTag("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID).build();
-        if (!Utilities.isWorkRunning("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager)) {
+        if (!Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager)) {
             workManager.enqueue(patientOneTimeWorkRequest);
-        } else {
-            Utilities.displayAlertDialog(this.context, "Existe neste momento em andamento uma sincronização em curso, impossível iniciar uma nova!").show();
         }
     }
 
     public void runOneTimeStockSync() {
         OneTimeWorkRequest stockOneTimeWorkRequest = new OneTimeWorkRequest.Builder(StockWorker.class).addTag("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID).build();
-        if (!Utilities.isWorkRunning("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("INIT_STOCK_ID " + JOB_ID, workManager)) {
+        if (!Utilities.isWorkScheduled("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("INIT_STOCK_ID " + JOB_ID, workManager)) {
             workManager.enqueue(stockOneTimeWorkRequest);
             try {
                 RestStockService.restPostStockCenter(currClinic);
@@ -280,22 +278,29 @@ public class WorkerScheduleExecutor {
 
     public void runOneTimeFaltososSync() {
         OneTimeWorkRequest faltososRequest = new OneTimeWorkRequest.Builder(RestPacthPatientWorker.class).addTag("ONE_TIME_FALTOSO_ID" + ONE_TIME_REQUEST_JOB_ID).build();
-        if (!Utilities.isWorkRunning("ONE_TIME_FALTOSO_ID" + ONE_TIME_REQUEST_JOB_ID, workManager)) {
+        if (!Utilities.isWorkScheduled("ONE_TIME_FALTOSO_ID" + ONE_TIME_REQUEST_JOB_ID, workManager)) {
             workManager.enqueue(faltososRequest);
         }
     }
 
     public void runOneTimeDataSync() {
         OneTimeWorkRequest dataRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class).addTag("ONE_TIME_DATA_ID" + ONE_TIME_REQUEST_JOB_ID).build();
-        if (!Utilities.isWorkRunning("ONE_TIME_DATA_ID" + ONE_TIME_REQUEST_JOB_ID, workManager)) {
+        if (!Utilities.isWorkScheduled("ONE_TIME_DATA_ID" + ONE_TIME_REQUEST_JOB_ID, workManager)) {
             workManager.enqueue(dataRequest);
         }
     }
 
     public void runDataSyncNow() {
-        this.runOneTimePatientSync();
-        this.runOneTimeStockSync();
-        this.runOneTimeFaltososSync();
-        this.runOneTimeDataSync();
+        if (Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
+                Utilities.isWorkScheduled("PATIENT_ID " + JOB_ID, workManager) ||
+                Utilities.isWorkScheduled("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
+                Utilities.isWorkScheduled("INIT_STOCK_ID " + JOB_ID, workManager)) {
+            Utilities.displayAlertDialog(this.context, "Existe neste momento uma sincronização similar em curso, por favor aguarde o seu termino para iniciar nova.").show();
+        } else {
+            this.runOneTimePatientSync();
+            this.runOneTimeStockSync();
+            this.runOneTimeFaltososSync();
+            this.runOneTimeDataSync();
+        }
     }
 }
