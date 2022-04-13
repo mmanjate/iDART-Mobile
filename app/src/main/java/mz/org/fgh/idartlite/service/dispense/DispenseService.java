@@ -23,6 +23,8 @@ import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.StockReportData;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
+import mz.org.fgh.idartlite.service.stock.IStockAlertService;
+import mz.org.fgh.idartlite.service.stock.StockAlertService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 
@@ -34,17 +36,25 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
     private DispenseDrugService dispenseDrugService;
 
+    private IStockAlertService stockAlertService;
+
     public DispenseService(Application application, User currUser) {
         super(application, currUser);
 
+        initServices(application, currUser);
+
+    }
+
+    private void initServices(Application application, User currUser) {
         this.stockService = new StockService(application, currUser);
         this.prescriptionService = new PrescriptionService(application, currUser);
         this.dispenseDrugService = new DispenseDrugService(application, currUser);
-
+        this.stockAlertService = new StockAlertService(application, currUser);
     }
 
     public DispenseService(Application application) {
         super(application);
+        initServices(application, null);
     }
 
     @Override
@@ -199,6 +209,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
 
     public List<StockReportData> getStockAlertReportMonthPeriod() throws SQLException{
+        this.stockAlertService.clearOldData();
 
         List<Dispense> dispenses= getDispensesBetweenStartDateAndEndDate(DateUtilities.getDateOfPreviousDays(DateUtilities.getCurrentDate(),30), DateUtilities.getCurrentDate());
 
@@ -237,21 +248,14 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
             List<DispensedDrug> dispenseDrugs= drugsMap.get(drug);
             int quantityDispensed=0; // same as maxConsumption
             int stockActual=0;
-            for (DispensedDrug dispenseD:
-                    dispenseDrugs) {
 
-
+            for (DispensedDrug dispenseD: dispenseDrugs) {
                 quantityDispensed+=dispenseD.getQuantitySupplied();
-
-
-
             }
+
             for (Stock stock : stocksList){
-
                 if( drug.equals(stock.getDrug())){
-
                     stockActual +=  stock.getStockMoviment();
-
                 }
             }
 
@@ -287,7 +291,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
             else if(quantityDispensed == stockActual) {
                 stockReport.setStockDescription("Stock Normal");
             }
-
+            this.stockAlertService.save(stockReport);
             stockReportData.add(stockReport);
         }
 

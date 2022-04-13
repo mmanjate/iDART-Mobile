@@ -1,7 +1,10 @@
 package mz.org.fgh.idartlite.workSchedule.executor;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
@@ -22,6 +25,7 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.workSchedule.work.DataSyncWorker;
+import mz.org.fgh.idartlite.workSchedule.work.generic.StockAlertWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetConfigWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetEpisodeWorkerScheduler;
@@ -170,6 +174,21 @@ public class WorkerScheduleExecutor {
         workManager.enqueue(periodicPostNewPatienWorkRequest);
     }
 
+    public void initStockAlertTaskWork() {
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresCharging(true)
+                .build();
+
+        PeriodicWorkRequest periodicPostNewPatienWorkRequest = new PeriodicWorkRequest.Builder(StockAlertWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .setInitialDelay(1,TimeUnit.HOURS)
+                .addTag("NEW_STOCK_ALERT_ID " + JOB_ID)
+                .build();
+
+        workManager.enqueue(periodicPostNewPatienWorkRequest);
+    }
+
     public void initPostPatientDataTaskWork() {
 
         Constraints constraints = new Constraints.Builder()
@@ -256,6 +275,13 @@ public class WorkerScheduleExecutor {
         OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).addTag("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID).build();
         if (!Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager)) {
             workManager.enqueue(patientOneTimeWorkRequest);
+        }
+    }
+
+    public void runOneStockAlert() {
+        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(StockAlertWorker.class).addTag("ONE_TIME_STOCK_ALERT_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        if (!Utilities.isWorkScheduled("ONE_TIME_STOCK_ALERT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("NEW_STOCK_ALERT_ID " + JOB_ID, workManager)) {
+            workManager.enqueue(request);
         }
     }
 

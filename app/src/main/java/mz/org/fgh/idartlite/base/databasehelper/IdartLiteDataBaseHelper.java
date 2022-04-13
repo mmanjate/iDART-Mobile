@@ -47,6 +47,7 @@ import mz.org.fgh.idartlite.dao.stock.IDestroyedDrugDao;
 import mz.org.fgh.idartlite.dao.stock.IIventoryDao;
 import mz.org.fgh.idartlite.dao.stock.IReferedStockMovimentDao;
 import mz.org.fgh.idartlite.dao.stock.IStockAjustmentDao;
+import mz.org.fgh.idartlite.dao.stock.IStockAlertDao;
 import mz.org.fgh.idartlite.dao.stock.IStockDao;
 import mz.org.fgh.idartlite.dao.territory.ICountryDao;
 import mz.org.fgh.idartlite.dao.territory.IDistrictDao;
@@ -69,6 +70,7 @@ import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.Form;
 import mz.org.fgh.idartlite.model.OperationType;
+import mz.org.fgh.idartlite.model.StockReportData;
 import mz.org.fgh.idartlite.model.patient.PatientAttribute;
 import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.PharmacyType;
@@ -85,12 +87,13 @@ import mz.org.fgh.idartlite.model.TherapeuticLine;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.model.inventory.Iventory;
+import mz.org.fgh.idartlite.service.stock.IStockAlertService;
 
 public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
 
 
     private static final String DATABASE_NAME    = "idartlite.db";
-    private static final int    DATABASE_VERSION = 12;
+    private static final int    DATABASE_VERSION = 13;
 
 
     private IUserDao userDao;
@@ -136,6 +139,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
     private IClinicInfoDao clinicInfoDao;
 
     private IClinicSectorTypeDao clinicSectorTypeDao;
+    private IStockAlertDao stockAlertDao;
 
  //   private IPatientSectorDao patientSectorDao;
 
@@ -343,6 +347,13 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         return appSettingsDao;
     }
 
+    public IStockAlertDao getStockAlertDao() throws SQLException {
+        if(stockAlertDao == null){
+            stockAlertDao = getDao(StockReportData.class);
+        }
+        return stockAlertDao;
+    }
+
     /* public IPatientSectorDao getPatientSectorDao() throws SQLException {
         if(patientSectorDao == null){
             patientSectorDao = getDao(PatientSector.class);
@@ -467,6 +478,8 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
         if (oldVersion == 11 ) {
             TableUtils.createTableIfNotExists(connectionSource, ClinicSectorType.class);
             TableUtils.createTableIfNotExists(connectionSource, PatientAttribute.class);
+        } else if (oldVersion == 12) {
+            TableUtils.createTableIfNotExists(connectionSource, StockReportData.class);
         }
     }
 
