@@ -146,9 +146,7 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
             BaseRestService.setBaseUrl(getRelatedService().getCentralServerSettings().getValue());
 
             this.appSettings = settingsService.getAll();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                scheduleSyncWorks();
-            }
+            scheduleSyncWorks();
         } catch (SQLException e) {
             e.printStackTrace();
         }

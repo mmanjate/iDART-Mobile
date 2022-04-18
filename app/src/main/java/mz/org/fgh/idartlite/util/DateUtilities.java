@@ -80,6 +80,36 @@ public class DateUtilities {
         return d.get(Calendar.SECOND);
     }
 
+    public static Date addMonth(Date date, int amount){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.MONTH, amount);
+        return c.getTime();
+    }
+
+    public static Date addDay(Date date, int amount){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, amount);
+        return c.getTime();
+    }
+
+    public static Date setDays(Date date, int amount) {
+        return set(date, Calendar.DAY_OF_MONTH, amount);
+    }
+
+    private static Date set(Date date, int calendarField, int amount) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date must not be null");
+        }
+        // getInstance() returns a new object, so this method is thread safe.
+        Calendar c = Calendar.getInstance();
+        c.setLenient(false);
+        c.setTime(date);
+        c.set(calendarField, amount);
+        return c.getTime();
+    }
+
     public static Date getCurrentDate(){
         return Calendar.getInstance().getTime();
     }

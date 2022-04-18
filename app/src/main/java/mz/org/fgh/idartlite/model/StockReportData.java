@@ -18,9 +18,9 @@ public class StockReportData extends BaseModel {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_DRUG_DESCRIPTION = "drugDescription";
     public static final String COLUMN_MAX_CONSUPTION = "maximumConsumption";
-    public static final String COLUMN_CUR_STOCK = "actualStock";
     public static final String COLUMN_VALID_STOCK = "validStock";
     public static final String COLUMN_STOCK_DESCRIPTION = "stockDescription";
+    public static final String COLUMN_DRUG = "drug_id";
 
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
@@ -29,13 +29,24 @@ public class StockReportData extends BaseModel {
     private String drugDescription;
     @DatabaseField(columnName = COLUMN_MAX_CONSUPTION)
     private String maximumConsumption;
-    @DatabaseField(columnName = COLUMN_CUR_STOCK)
-    private String actualStock;
     @DatabaseField(columnName = COLUMN_VALID_STOCK)
     private String validStock;
     @DatabaseField(columnName = COLUMN_STOCK_DESCRIPTION)
     private String stockDescription;
+    @DatabaseField(columnName = COLUMN_DRUG,canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    private Drug drug;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDrug(Drug drug) {
+        this.drug = drug;
+    }
 
     public String getDrugDescription() {
         return drugDescription;
@@ -46,11 +57,15 @@ public class StockReportData extends BaseModel {
     }
 
     public String getActualStock() {
-        return actualStock;
+        return String.valueOf(this.drug.getCurrStock());
     }
 
     public String getValidStock() {
         return validStock;
+    }
+
+    public Drug getDrug() {
+        return drug;
     }
 
     public void setDrugDescription(String drugDescription) {
@@ -59,10 +74,6 @@ public class StockReportData extends BaseModel {
 
     public void setMaximumConsumption(String maximumConsumption) {
         this.maximumConsumption = maximumConsumption;
-    }
-
-    public void setActualStock(String actualStock) {
-        this.actualStock = actualStock;
     }
 
     public void setValidStock(String validStock) {

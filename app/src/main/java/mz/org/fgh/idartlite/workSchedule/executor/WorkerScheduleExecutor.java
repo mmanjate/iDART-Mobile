@@ -180,9 +180,9 @@ public class WorkerScheduleExecutor {
                 .setRequiresCharging(true)
                 .build();
 
-        PeriodicWorkRequest periodicPostNewPatienWorkRequest = new PeriodicWorkRequest.Builder(StockAlertWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
+        PeriodicWorkRequest periodicPostNewPatienWorkRequest = new PeriodicWorkRequest.Builder(StockAlertWorker.class, getDataSyncInterval(), TimeUnit.DAYS)
                 .setConstraints(constraints)
-                .setInitialDelay(1,TimeUnit.HOURS)
+                .setInitialDelay(7,TimeUnit.DAYS)
                 .addTag("NEW_STOCK_ALERT_ID " + JOB_ID)
                 .build();
 
@@ -323,10 +323,11 @@ public class WorkerScheduleExecutor {
                 Utilities.isWorkScheduled("INIT_STOCK_ID " + JOB_ID, workManager)) {
             Utilities.displayAlertDialog(this.context, "Existe neste momento uma sincronização similar em curso, por favor aguarde o seu termino para iniciar nova.").show();
         } else {
-            this.runOneTimePatientSync();
-            this.runOneTimeStockSync();
-            this.runOneTimeFaltososSync();
-            this.runOneTimeDataSync();
+            //this.runOneTimePatientSync();
+            //this.runOneTimeStockSync();
+            //this.runOneTimeFaltososSync();
+            //this.runOneTimeDataSync();
+            this.runOneStockAlert();
         }
     }
 }

@@ -210,8 +210,17 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
     public List<StockReportData> getStockAlertReportMonthPeriod() throws SQLException{
         this.stockAlertService.clearOldData();
+        Date startDate = null;
+        Date endDate = null;
 
-        List<Dispense> dispenses= getDispensesBetweenStartDateAndEndDate(DateUtilities.getDateOfPreviousDays(DateUtilities.getCurrentDate(),30), DateUtilities.getCurrentDate());
+        if (DateUtilities.getDayOfMonth(DateUtilities.getCurrentDate()) >= 20) {
+            startDate = DateUtilities.setDays(DateUtilities.getDateOfPreviousDays(DateUtilities.getCurrentDate(),30), 21);
+        } else {
+            startDate = DateUtilities.setDays(DateUtilities.addMonth(DateUtilities.getCurrentDate(), -2), 21);
+        }
+        endDate = DateUtilities.setDays(DateUtilities.addMonth(startDate, 1), 20);
+
+        List<Dispense> dispenses= getDispensesBetweenStartDateAndEndDate(startDate, endDate);
 
         List<DispensedDrug> dispensedDrugs = getDataBaseHelper().getDispensedDrugDao().getDispensedDrugsByDispenses(dispenses);
 
@@ -245,6 +254,7 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
             StockReportData stockReport= new StockReportData();
 
             stockReport.setDrugDescription(drug.getDescription());
+            stockReport.setDrug(drug);
             List<DispensedDrug> dispenseDrugs= drugsMap.get(drug);
             int quantityDispensed=0; // same as maxConsumption
             int stockActual=0;
@@ -269,7 +279,6 @@ public class DispenseService extends BaseService<Dispense> implements IDispenseS
 
 
             stockReport.setMaximumConsumption(Integer.toString(quantityDispensed));
-            stockReport.setActualStock(Integer.toString(stockActual));
             stockReport.setValidStock(Integer.toString(quantityDispensed));
 
         /*    if(validStock >= stockActual) {

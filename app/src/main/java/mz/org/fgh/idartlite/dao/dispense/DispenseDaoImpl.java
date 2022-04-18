@@ -58,8 +58,6 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
 
         List<Dispense> dispenses = dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE, false).query();
 
-        System.out.println(dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE, false).prepareStatementString());
-
         return dispenses;
     }
 
@@ -92,7 +90,6 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
                 .and()
                 .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false);
 
-        System.out.println(qb.prepareStatementString());
         return qb.query();
     }
 
@@ -116,7 +113,6 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
                 .and()
                 .le(Dispense.COLUMN_PICKUP_DATE, endDate).and().eq(Dispense.COLUMN_VOIDED,false);
 
-        System.out.println(qb.prepareStatementString());
         return qb.query();
     }
 
@@ -182,7 +178,6 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
         outerDispenseQb.where().ge(Dispense.COLUMN_NEXT_PICKUP_DATE, startDate)
                 .and()
                 .le(Dispense.COLUMN_NEXT_PICKUP_DATE, endDate).and().in(Dispense.COLUMN_NEXT_PICKUP_DATE,dispenseQb1.selectRaw("max(next_pickup_date)")).and().eq(Dispense.COLUMN_VOIDED,false).and().not().exists(dispenseQb2);
-        System.out.println(outerDispenseQb.prepareStatementString());
 
         return outerDispenseQb.query();
     }

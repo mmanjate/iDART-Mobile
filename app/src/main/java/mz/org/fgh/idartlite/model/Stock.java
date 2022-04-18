@@ -15,6 +15,7 @@ import java.util.Objects;
 import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.stock.StockDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
 @DatabaseTable(tableName = Stock.TABLE_NAME, daoClass = StockDaoImpl.class)
 public class Stock extends BaseModel implements Listble {
@@ -314,5 +315,9 @@ public class Stock extends BaseModel implements Listble {
 
     public void modifyCurrentQuantity(int qtyToAdd){
         this.stockMoviment += qtyToAdd;
+    }
+
+    public boolean isExpired() {
+        return DateUtilities.dateDiff(this.expiryDate, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT) < 0;
     }
 }

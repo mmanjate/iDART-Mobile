@@ -17,6 +17,7 @@ import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.dao.drug.DrugDaoImpl;
 import mz.org.fgh.idartlite.model.inventory.InventoryRelatedObject;
+import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = Drug.TABLE_NAME, daoClass = DrugDaoImpl.class)
 public class Drug extends BaseModel implements Listble, InventoryRelatedObject {
@@ -56,6 +57,8 @@ public class Drug extends BaseModel implements Listble, InventoryRelatedObject {
     private int restid;
 
     private int quantity;
+
+    private List<Stock> stockList;
 
     private List<StockAjustment> ajustmentInfo;
 
@@ -242,5 +245,22 @@ public class Drug extends BaseModel implements Listble, InventoryRelatedObject {
 
     public void setDestroyedDrugsInfo(List<DestroyedDrug> destroyedDrugsInfo) {
         this.destroyedDrugsInfo = destroyedDrugsInfo;
+    }
+
+    public List<Stock> getStockList() {
+        return stockList;
+    }
+
+    public void setStockList(List<Stock> stockList) {
+        this.stockList = stockList;
+    }
+
+    public int getCurrStock() {
+        if (!Utilities.listHasElements(this.stockList)) return 0;
+        int stockValue = 0;
+        for (Stock stock : this.stockList) {
+            if (!stock.isExpired()) stockValue = stockValue + stock.getStockMoviment();
+        }
+        return stockValue;
     }
 }

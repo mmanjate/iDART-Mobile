@@ -447,6 +447,7 @@ public class IdartLiteDataBaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, ClinicInformation.class);
             TableUtils.createTableIfNotExists(connectionSource, ClinicSectorType.class);
             TableUtils.createTableIfNotExists(connectionSource, PatientAttribute.class);
+            TableUtils.createTableIfNotExists(connectionSource, StockReportData.class);
             doAfterCreation(database, context);
         } catch (SQLException e) {
             e.printStackTrace();
