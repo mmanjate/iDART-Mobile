@@ -1,16 +1,31 @@
 package mz.org.fgh.idartlite.workSchedule.executor;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import mz.org.fgh.idartlite.model.AppSettings;
+import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
+import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.workSchedule.work.DataSyncWorker;
+import mz.org.fgh.idartlite.workSchedule.work.generic.StockAlertWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetConfigWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetEpisodeWorkerScheduler;
@@ -26,16 +41,35 @@ public class WorkerScheduleExecutor {
 
     private static final String TAG = "ExecutePostWorkerSchedu";
     public static final int JOB_ID = 1000;
+    public static final int ONE_TIME_REQUEST_JOB_ID = 1001;
     private Context context;
     private List<AppSettings> appSettings;
     private static int daysOfWeek = 7;
     private WorkManager workManager;
+    private static WorkerScheduleExecutor instance;
+    private Clinic currClinic;
 
 
-    public WorkerScheduleExecutor(Context context, List<AppSettings> appSettings) {
+    private WorkerScheduleExecutor(Context context, Clinic currClinic, List<AppSettings> appSettings) {
         this.workManager = WorkManager.getInstance(context);
         this.context = context;
         this.appSettings = appSettings;
+        this.currClinic = currClinic;
+    }
+
+    public static WorkerScheduleExecutor getInstance(Context context, Clinic currClinic, List<AppSettings> appSettings) {
+        if (instance == null) {
+            instance = new WorkerScheduleExecutor(context, currClinic, appSettings);
+        }
+        return instance;
+    }
+
+    public Clinic getCurrClinic() {
+        return currClinic;
+    }
+
+    public void setCurrClinic(Clinic currClinic) {
+        this.currClinic = currClinic;
     }
 
     public WorkManager getWorkManager() {
@@ -140,6 +174,21 @@ public class WorkerScheduleExecutor {
         workManager.enqueue(periodicPostNewPatienWorkRequest);
     }
 
+    public void initStockAlertTaskWork() {
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresCharging(true)
+                .build();
+
+        PeriodicWorkRequest periodicPostNewPatienWorkRequest = new PeriodicWorkRequest.Builder(StockAlertWorker.class, getDataSyncInterval(), TimeUnit.DAYS)
+                .setConstraints(constraints)
+                .setInitialDelay(7,TimeUnit.DAYS)
+                .addTag("NEW_STOCK_ALERT_ID " + JOB_ID)
+                .build();
+
+        workManager.enqueue(periodicPostNewPatienWorkRequest);
+    }
+
     public void initPostPatientDataTaskWork() {
 
         Constraints constraints = new Constraints.Builder()
@@ -182,7 +231,7 @@ public class WorkerScheduleExecutor {
 
         PeriodicWorkRequest periodicPostDataWorkRequest = new PeriodicWorkRequest.Builder(RestPostStockWorkerScheduler.class, getDataSyncInterval(), TimeUnit.HOURS)
                 .setConstraints(constraints)
-                 .setInitialDelay(1,TimeUnit.HOURS)
+                .setInitialDelay(1,TimeUnit.HOURS)
                 .addTag("STOCK_ID " + JOB_ID)
                 .build();
 
@@ -220,5 +269,65 @@ public class WorkerScheduleExecutor {
                 .build();
 
         workManager.enqueue(periodicEpisodeDataWorkRequest);
+    }
+
+    public void runOneTimePatientSync() {
+        OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).addTag("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        if (!Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager)) {
+            workManager.enqueue(patientOneTimeWorkRequest);
+        }
+    }
+
+    public void runOneStockAlert() {
+        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(StockAlertWorker.class).addTag("ONE_TIME_STOCK_ALERT_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        if (!Utilities.isWorkScheduled("ONE_TIME_STOCK_ALERT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("NEW_STOCK_ALERT_ID " + JOB_ID, workManager)) {
+            workManager.enqueue(request);
+        }
+    }
+
+    public void runOneTimeStockSync() {
+        OneTimeWorkRequest stockOneTimeWorkRequest = new OneTimeWorkRequest.Builder(StockWorker.class).addTag("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        if (!Utilities.isWorkScheduled("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("INIT_STOCK_ID " + JOB_ID, workManager)) {
+            workManager.enqueue(stockOneTimeWorkRequest);
+            try {
+                RestStockService.restPostStockCenter(currClinic);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void runPatinetAndStockSync() {
+        this.runOneTimePatientSync();
+        this.runOneTimeStockSync();
+    }
+
+    public void runOneTimeFaltososSync() {
+        OneTimeWorkRequest faltososRequest = new OneTimeWorkRequest.Builder(RestPacthPatientWorker.class).addTag("ONE_TIME_FALTOSO_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        if (!Utilities.isWorkScheduled("ONE_TIME_FALTOSO_ID" + ONE_TIME_REQUEST_JOB_ID, workManager)) {
+            workManager.enqueue(faltososRequest);
+        }
+    }
+
+    public void runOneTimeDataSync() {
+        OneTimeWorkRequest dataRequest = new OneTimeWorkRequest.Builder(DataSyncWorker.class).addTag("ONE_TIME_DATA_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        if (!Utilities.isWorkScheduled("ONE_TIME_DATA_ID" + ONE_TIME_REQUEST_JOB_ID, workManager)) {
+            workManager.enqueue(dataRequest);
+        }
+    }
+
+    public void runDataSyncNow() {
+        if (Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
+                Utilities.isWorkScheduled("PATIENT_ID " + JOB_ID, workManager) ||
+                Utilities.isWorkScheduled("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
+                Utilities.isWorkScheduled("INIT_STOCK_ID " + JOB_ID, workManager)) {
+            Utilities.displayAlertDialog(this.context, "Existe neste momento uma sincronização similar em curso, por favor aguarde o seu termino para iniciar nova.").show();
+        } else {
+            //this.runOneTimePatientSync();
+            //this.runOneTimeStockSync();
+            //this.runOneTimeFaltososSync();
+            //this.runOneTimeDataSync();
+            this.runOneStockAlert();
+        }
     }
 }

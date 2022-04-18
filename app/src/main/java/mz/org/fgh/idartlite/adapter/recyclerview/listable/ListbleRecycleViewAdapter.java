@@ -56,13 +56,13 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
         if (viewHolder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
             if (listbles.size() != 0) {
-                headerViewHolder.headeritemBinding.setListble(listbles.get(position));
+                headerViewHolder.headeritemBinding.setListble(listbles.get(viewHolder.getAdapterPosition()));
             }
             headerViewHolder.headeritemBinding.setViewListEditButton(activity.isViewListEditButton());
             headerViewHolder.headeritemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
         } else if (viewHolder instanceof ListbleViewHolder) {
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewModel(activity.getRelatedViewModel());
-            ((ListbleViewHolder) viewHolder).listableItemBinding.setListble(listbles.get(position - 1));
+            ((ListbleViewHolder) viewHolder).listableItemBinding.setListble(listbles.get(viewHolder.getAdapterPosition() - 1));
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListEditButton(activity.isViewListEditButton());
             ((ListbleViewHolder) viewHolder).listableItemBinding.setViewListRemoveButton(activity.isViewListRemoveButton());
 
@@ -76,7 +76,7 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void afterTextChanged(Editable s) {
                     if (s != null && Utilities.stringHasValue(s.toString())){
-                        getItemAtPosition(position).setNotes(s.toString());
+                        getItemAtPosition(viewHolder.getAdapterPosition()).setNotes(s.toString());
                     }
                 }
             });
@@ -92,9 +92,11 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 public void afterTextChanged(Editable s) {
                    if (s != null && Utilities.stringHasValue(s.toString()) && Utilities.isNumeric(s.toString())){
 
-                       if (getItemAtPosition(position) != null) {
-                           getItemAtPosition(position).setQtyToModify(Integer.valueOf(s.toString()));
+                       if (getItemAtPosition(viewHolder.getAdapterPosition()) != null) {
+                           getItemAtPosition(viewHolder.getAdapterPosition()).setQtyToModify(Integer.valueOf(s.toString()));
                        }
+                   } else {
+                       getItemAtPosition(viewHolder.getAdapterPosition()).setQtyToModify(0);
                    }
                 }
             });
@@ -113,8 +115,8 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void afterTextChanged(Editable s) {
                     if(s.length()>0){
-                        if (getItemAtPosition(position) != null) {
-                            getItemAtPosition(position).setQtyToModify(Integer.valueOf((s).toString()));
+                        if (getItemAtPosition(viewHolder.getAdapterPosition()) != null) {
+                            getItemAtPosition(viewHolder.getAdapterPosition()).setQtyToModify(Integer.valueOf((s).toString()));
                         }
                     }
 
@@ -125,7 +127,7 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onClick(View view) {
                     activity.getRelatedViewModel().getCurrentStep().changeToRemove();
-                    Utilities.displayDeleteConfirmationDialogFromList(activity, activity.getString(R.string.list_item_delete_msg), position - 1, ListbleRecycleViewAdapter.this).show();
+                    Utilities.displayDeleteConfirmationDialogFromList(activity, activity.getString(R.string.list_item_delete_msg), viewHolder.getAdapterPosition() - 1, ListbleRecycleViewAdapter.this).show();
                 }
             });
 
@@ -133,7 +135,7 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onClick(View view) {
                     activity.getRelatedViewModel().getCurrentStep().changeToEdit();
-                    activity.getRelatedViewModel().setSelectedListble(listbles.get(position - 1));
+                    activity.getRelatedViewModel().setSelectedListble(listbles.get(viewHolder.getAdapterPosition() - 1));
 
                 }
             });
@@ -142,12 +144,12 @@ public class ListbleRecycleViewAdapter extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        if (getItemAtPosition(position) != null) {
-                            activity.getRelatedViewModel().addSelectedListable(getItemAtPosition(position));
+                        if (getItemAtPosition(viewHolder.getAdapterPosition()) != null) {
+                            activity.getRelatedViewModel().addSelectedListable(getItemAtPosition(viewHolder.getAdapterPosition()));
                         }
                     }else {
-                        if (getItemAtPosition(position) != null) {
-                            activity.getRelatedViewModel().removeSelectedListable(getItemAtPosition(position));
+                        if (getItemAtPosition(viewHolder.getAdapterPosition()) != null) {
+                            activity.getRelatedViewModel().removeSelectedListable(getItemAtPosition(viewHolder.getAdapterPosition()));
                         }
                     }
                 }

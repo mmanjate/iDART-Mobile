@@ -1,8 +1,10 @@
 package mz.org.fgh.idartlite.viewmodel.splash;
 
 import android.app.Application;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.service.splash.ISplashService;
 import mz.org.fgh.idartlite.service.splash.SplashService;
+import mz.org.fgh.idartlite.service.stock.IStockAlertService;
+import mz.org.fgh.idartlite.service.stock.StockAlertService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.login.LoginActivity;
 import mz.org.fgh.idartlite.view.splash.SplashActivity;
@@ -34,8 +38,9 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     private AppSettingsService settingsService;
     private List<AppSettings> appSettings;
+    private IStockAlertService stockAlertService;
 
-    private WorkerScheduleExecutor workerScheduleExecutor;
+    //private WorkerScheduleExecutor workerScheduleExecutor;
 
     public SplashVM(@NonNull Application application) {
         super(application);
@@ -44,6 +49,7 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
     @Override
     protected IBaseService initRelatedService() {
         settingsService = new AppSettingsService(getApplication());
+        stockAlertService = new StockAlertService(getApplication());
         return new SplashService(getApplication());
     }
 
@@ -54,9 +60,15 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     @Override
     protected void initFormData() {
-
+        this.initWorkScheduleExecutor(getApplication(), null, this.appSettings);
+        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_PATIENT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
+        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
+        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ALERT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
         try {
             this.systemSettings = getRelatedService().getAllSettings();
+            if (!Utilities.listHasElements(stockAlertService.getAll())) {
+                this.workerScheduleExecutor.runOneStockAlert();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,7 +99,7 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
     }
 
     private void scheduleSyncWorks() {
-        workerScheduleExecutor = new WorkerScheduleExecutor(getRelatedActivity().getApplicationContext(), this.appSettings);
+        this.initWorkScheduleExecutor(getRelatedActivity().getApplicationContext(), null, this.appSettings);
         workerScheduleExecutor.initConfigTaskWork();
         workerScheduleExecutor.initStockTaskWork();
         workerScheduleExecutor.initDataTaskWork();
@@ -97,6 +109,7 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
         workerScheduleExecutor.initPatientDispenseTaskWork();
         workerScheduleExecutor.initEpisodeTaskWork();
         workerScheduleExecutor.initPostNewPatientDataTaskWork();
+        workerScheduleExecutor.initStockAlertTaskWork();
     }
 
     public void requestConfiguration() {
