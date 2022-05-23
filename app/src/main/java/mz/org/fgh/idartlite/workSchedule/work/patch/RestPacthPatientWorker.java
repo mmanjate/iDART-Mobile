@@ -55,7 +55,7 @@ public class RestPacthPatientWorker extends BaseWorker<Patient> {
                 Log.d(TAG, "doWork: Sync Patient Data");
                 if (Utilities.listHasElements(episodeList)) {
                     for (Episode episode : episodeList) {
-                        RestPatientService.restPostPatientFaltosoOrAbandono(episode.getPatient());
+                        RestPatientService.restPatchPatientFaltosoOrAbandono(episode.getPatient());
                     }
                 } else
                     Log.d(TAG, "doWork: Sem Novos Pacientes para sincronizar");

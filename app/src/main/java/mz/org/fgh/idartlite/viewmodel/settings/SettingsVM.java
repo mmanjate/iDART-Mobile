@@ -315,7 +315,7 @@ public class SettingsVM extends BaseViewModel {
 
     public void syncDataNow(){
         this.initWorkScheduleExecutor(getRelatedFragment().getContext(), getCurrentClinic(), this.appSettings);
-        this.workerScheduleExecutor.runDataSyncNow();
+        this.workerScheduleExecutor.runDataSyncNow(false);
         saveLastSyncDateTime();
     }
 

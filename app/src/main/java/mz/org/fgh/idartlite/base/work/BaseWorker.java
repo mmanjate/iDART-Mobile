@@ -9,6 +9,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
@@ -22,13 +23,14 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
 
 
     public static final int RECORDS_PER_SEARCH = 200;
-    private int offset = 0;
+    protected int offset = 0;
     public static final String WORK_STATUS_PERFORMING = "PERFORMING";
     public static final String WORK_STATUS_FINISHED = "FINISHED";
     public static final String WORK_STATUS_STARTING = "STARTING";
     protected String workStatus;
     public static Application app;
     protected long newRecsQty;
+    protected long updatedRecsQty;
 
     public BaseWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -96,7 +98,7 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
     }
 
     protected boolean hasNewRescs () {
-        return getNewRecsQty() > 0;
+        return getNewRecsQty() > 0 || getUpdatedRecsQty() > 0;
     }
 
     protected abstract void doOnFinish();
@@ -125,6 +127,15 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    @Override
+    public void onResponse(String flag, HashMap<String, Object> result) {
+
+    }
+
+    public long getUpdatedRecsQty() {
+        return updatedRecsQty;
     }
 
     public long getNewRecsQty() {

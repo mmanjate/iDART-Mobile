@@ -111,6 +111,10 @@ public class Patient extends BaseModel {
 		this.uuid = uuid;
 	}
 
+	public Patient(int id) {
+		this.id = id;
+	}
+
 	public int getId() {
 		return id;
 	}

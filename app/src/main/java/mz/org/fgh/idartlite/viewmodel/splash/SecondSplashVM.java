@@ -53,17 +53,6 @@ public class SecondSplashVM extends BaseViewModel{
     @Override
     public void preInit() {
         getFirstData();
-        /*
-        try {
-            //this.appSettings = settingsService.getAll();
-            //System.out.println(this.appSettings.size());
-            //scheduleSyncWorks();
-            getFirstData();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-         */
     }
 
     @Override
@@ -71,33 +60,8 @@ public class SecondSplashVM extends BaseViewModel{
         return (SecondSplashActivity) super.getRelatedActivity();
     }
 
-    /*
-    private void scheduleSyncWorks() {
-        workerScheduleExecutor = new WorkerScheduleExecutor(getRelatedActivity().getApplicationContext(), this.appSettings);
-        workerScheduleExecutor.initConfigTaskWork();
-        workerScheduleExecutor.initStockTaskWork();
-        workerScheduleExecutor.initDataTaskWork();
-        workerScheduleExecutor.initPatchStockDataTaskWork();
-        workerScheduleExecutor.initPostPatientDataTaskWork();
-        workerScheduleExecutor.initPostStockDataTaskWork();
-        workerScheduleExecutor.initPatientDispenseTaskWork();
-        workerScheduleExecutor.initEpisodeTaskWork();
-        workerScheduleExecutor.initPostNewPatientDataTaskWork();
-    } */
 
     public void goHome() {
-/*
-
-        ClinicService clinicService = new ClinicService(getApplication(),getCurrentUser());
-        Clinic localClinic = null;
-        try {
-            localClinic = clinicService.getAllClinics().get(0);
-            this.clinic = localClinic;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-*/
-
         Map<String, Object> params = new HashMap<>();
         params.put("user", getCurrentUser());
         params.put("clinic", this.clinic);
@@ -107,19 +71,6 @@ public class SecondSplashVM extends BaseViewModel{
     }
 
     private void getFirstData() {
-        /*WorkManager workManager;
-        OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).build();
-        OneTimeWorkRequest stockOneTimeWorkRequest = new OneTimeWorkRequest.Builder(StockWorker.class).build();
-        workManager = WorkManager.getInstance(getApplication());
-        workManager.enqueue(Arrays.asList(stockOneTimeWorkRequest,patientOneTimeWorkRequest));
-     //   goHome();
-        observeRunningSync(workManager, patientOneTimeWorkRequest);
-
-        try {
-           RestStockService.restPostStockCenter(getCurrentClinic());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
         ClinicService clinicService = new ClinicService(getApplication(),getCurrentUser());
         Clinic localClinic = null;
         try {
@@ -130,7 +81,7 @@ public class SecondSplashVM extends BaseViewModel{
         }
 
         this.initWorkScheduleExecutor(getRelatedActivity().getApplicationContext(), this.clinic, this.appSettings);
-        this.workerScheduleExecutor.runPatinetAndStockSync();
+        this.workerScheduleExecutor.runPatinetAndStockSync(true);
         goHome();
     }
 
