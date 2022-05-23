@@ -1,23 +1,17 @@
 package mz.org.fgh.idartlite.workSchedule.executor;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
+import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.work.Constraints;
+import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import mz.org.fgh.idartlite.model.AppSettings;
@@ -116,12 +110,16 @@ public class WorkerScheduleExecutor {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .setRequiresCharging(true)
                 .build();
-
-            PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(PatientWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
-                .setConstraints(constraints)
-                .setInitialDelay(8,TimeUnit.HOURS)
-                .addTag("PATIENT_ID " + JOB_ID)
+        Data inputData = new Data.Builder()
+                .putBoolean("isFullLoad", false)
                 .build();
+
+        PeriodicWorkRequest periodicPatientDataWorkRequest = new PeriodicWorkRequest.Builder(PatientWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
+            .setConstraints(constraints)
+            .setInputData(inputData)
+            .setInitialDelay(8,TimeUnit.HOURS)
+            .addTag("PATIENT_ID " + JOB_ID)
+            .build();
 
         workManager.enqueue(periodicPatientDataWorkRequest);
     }
@@ -271,8 +269,11 @@ public class WorkerScheduleExecutor {
         workManager.enqueue(periodicEpisodeDataWorkRequest);
     }
 
-    public void runOneTimePatientSync() {
-        OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).addTag("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+    public void runOneTimePatientSync(boolean fullLoad) {
+        Data inputData = new Data.Builder()
+                .putBoolean("isFullLoad", fullLoad)
+                .build();
+        OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).addTag("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID).setInputData(inputData).build();
         if (!Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager)) {
             workManager.enqueue(patientOneTimeWorkRequest);
         }
@@ -297,8 +298,8 @@ public class WorkerScheduleExecutor {
         }
     }
 
-    public void runPatinetAndStockSync() {
-        this.runOneTimePatientSync();
+    public void runPatinetAndStockSync(boolean fullLoad) {
+        this.runOneTimePatientSync(fullLoad);
         this.runOneTimeStockSync();
     }
 
@@ -316,18 +317,19 @@ public class WorkerScheduleExecutor {
         }
     }
 
-    public void runDataSyncNow() {
+    public void runDataSyncNow(boolean fullLoad) {
         if (Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
-                Utilities.isWorkScheduled("PATIENT_ID " + JOB_ID, workManager) ||
-                Utilities.isWorkScheduled("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
-                Utilities.isWorkScheduled("INIT_STOCK_ID " + JOB_ID, workManager)) {
-            Utilities.displayAlertDialog(this.context, "Existe neste momento uma sincronização similar em curso, por favor aguarde o seu termino para iniciar nova.").show();
+            Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager) ||
+            Utilities.isWorkScheduled("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
+            Utilities.isWorkRunning("INIT_STOCK_ID " + JOB_ID, workManager)) {
+            Toast.makeText(context, "Existe neste momento uma sincronização similar em curso, por favor aguarde o seu termino para iniciar nova.", Toast.LENGTH_LONG).show();
+            //Utilities.displayAlertDialog(this.context, "Existe neste momento uma sincronização similar em curso, por favor aguarde o seu termino para iniciar nova.").show();
         } else {
-            //this.runOneTimePatientSync();
-            //this.runOneTimeStockSync();
-            //this.runOneTimeFaltososSync();
-            //this.runOneTimeDataSync();
-            this.runOneStockAlert();
+            this.runOneTimePatientSync(fullLoad);
+            this.runOneTimeStockSync();
+            this.runOneTimeFaltososSync();
+            this.runOneTimeDataSync();
+            //this.runOneStockAlert();
         }
     }
 }

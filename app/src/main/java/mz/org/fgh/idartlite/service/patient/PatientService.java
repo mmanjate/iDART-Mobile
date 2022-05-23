@@ -116,9 +116,9 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         return result;
     }
 
-    public void saveOnPatient(LinkedTreeMap<String, Object> patient) {
+    public Patient saveOnPatient(LinkedTreeMap<String, Object> patient) {
 
-        Patient localPatient;
+        Patient localPatient = null;
         try {
 
             localPatient= setPatientFromRest(patient);
@@ -129,6 +129,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return localPatient;
     }
 
 
@@ -188,7 +189,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
     }
 
     @Override
-    public void updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) {
+    public Patient updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) {
         Patient localPatient = new Patient();
         try {
 
@@ -201,6 +202,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return localPatient;
     }
 
     @Override

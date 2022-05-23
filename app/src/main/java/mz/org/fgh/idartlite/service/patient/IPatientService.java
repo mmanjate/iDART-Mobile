@@ -28,7 +28,7 @@ public interface IPatientService extends IBaseService<Patient> {
 
     public boolean checkPatient(LinkedTreeMap<String, Object> patient) ;
 
-    public void saveOnPatient(LinkedTreeMap<String, Object> patient) ;
+    public Patient saveOnPatient(LinkedTreeMap<String, Object> patient) ;
 
     public void  updatePatient(Patient patient) throws SQLException ;
 
@@ -40,7 +40,7 @@ public interface IPatientService extends IBaseService<Patient> {
 
     List<String> getSanitaryUnitsWithRecordsOnPeriod(Date start, Date end) throws SQLException;
 
-    public void updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) ;
+    public Patient updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) ;
 
     void changePatienToFaltosoOrAbandono(Patient patient) throws SQLException;
 

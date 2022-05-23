@@ -36,7 +36,7 @@ import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 
 public class SplashVM extends BaseViewModel implements RestResponseListener<Clinic> {
 
-    private AppSettingsService settingsService;
+
     private List<AppSettings> appSettings;
     private IStockAlertService stockAlertService;
 
@@ -48,7 +48,6 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     @Override
     protected IBaseService initRelatedService() {
-        settingsService = new AppSettingsService(getApplication());
         stockAlertService = new StockAlertService(getApplication());
         return new SplashService(getApplication());
     }
@@ -60,18 +59,7 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     @Override
     protected void initFormData() {
-        this.initWorkScheduleExecutor(getApplication(), null, this.appSettings);
-        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_PATIENT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
-        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
-        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ALERT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
-        try {
-            this.systemSettings = getRelatedService().getAllSettings();
-            if (!Utilities.listHasElements(stockAlertService.getAll())) {
-                this.workerScheduleExecutor.runOneStockAlert();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
@@ -168,6 +156,19 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
                 errorMsg = getRelatedActivity().getString(R.string.error_msg_server_offline_records_wont_be_sync);
             }
             Utilities.displayAlertDialog(getRelatedActivity(), errorMsg, SplashVM.this).show();
+        }
+
+        this.initWorkScheduleExecutor(getApplication(), null, this.appSettings);
+        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_PATIENT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
+        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
+        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ALERT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
+        try {
+            this.systemSettings = getRelatedService().getAllSettings();
+            if (!Utilities.listHasElements(stockAlertService.getAll())) {
+                this.workerScheduleExecutor.runOneStockAlert();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

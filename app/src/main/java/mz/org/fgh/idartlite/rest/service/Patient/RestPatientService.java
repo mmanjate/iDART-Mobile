@@ -47,6 +47,7 @@ import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
 import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
 import mz.org.fgh.idartlite.service.territory.IProvinceService;
 import mz.org.fgh.idartlite.service.territory.ProvinceService;
+import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 
 import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
 
@@ -71,7 +72,7 @@ public class RestPatientService extends BaseRestService {
         prescriptionService = new PrescriptionService(getApplication());
     }
 
-    public static void getAllPatient(RestResponseListener listener, long offset, long limit) {
+    public static void getAllPatient(RestResponseListener listener, long offset, long limit, boolean isFullLoad) {
         try {
             clinicService = new ClinicService(getApp(), null);
             clinicSectorService = new ClinicSectorService(getApp(), null);
@@ -82,7 +83,9 @@ public class RestPatientService extends BaseRestService {
 
             if(clinicSectorList.isEmpty()){
                 url = BaseRestService.baseUrl + "/sync_temp_patients?clinicuuid=eq." + clinic.getUuid() +
-                        "&exclusaopaciente=eq.false&syncstatus=eq.P&uuidopenmrs=not.in.(null,\"NA\")" +
+                        "&exclusaopaciente=eq.false";
+                if (!isFullLoad) url += "&syncstatus=in.(\"P\",\"U\")";
+                url += "&uuidopenmrs=not.in.(null,\"NA\")" +
                         "&offset=" + offset +
                         "&limit=" + limit;
             }else {
@@ -116,22 +119,27 @@ public class RestPatientService extends BaseRestService {
 
                                 for (Object patient : patients) {
                                     Log.i(TAG, "onResponse: " + patient);
+                                    Patient patientObj;
                                     try {
                                         LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) patient;
                                         if (!patientService.checkPatient(itemresult)) {
-                                            patientService.saveOnPatient(itemresult);
+                                            patientObj = patientService.saveOnPatient(itemresult);
                                             newPatients.add(new Patient(itemresult.get("uuidopenmrs").toString()));
                                         } else {
-                                            patientService.updateOnPatientViaRest(itemresult);
+                                            patientObj = patientService.updateOnPatientViaRest(itemresult);
+                                            newPatients.add(new Patient());
                                             Log.i(TAG, "onResponse: " + patient + " Ja Existe");
                                         }
+                                        restPatchSyncStatus(patientObj, BaseModel.SYNC_SATUS_SENT);
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     } finally {
                                         continue;
                                     }
                                 }
+
                                 listener.doOnResponse(BaseRestService.REQUEST_SUCESS, newPatients);
+                                //listener.onResponse(BaseRestService.REQUEST_SUCESS, result);
                             } else {
                                 listener.doOnResponse(REQUEST_NO_DATA, null);
                                 Log.w(TAG, "Response Sem Info." + patients.length);
@@ -461,7 +469,7 @@ public class RestPatientService extends BaseRestService {
 
     }
 
-    public static void restPostPatientFaltosoOrAbandono(Patient patient) throws SQLException {
+    public static void restPatchPatientFaltosoOrAbandono(Patient patient) throws SQLException {
 
         String url = BaseRestService.baseUrl + "/sync_temp_patients?uuidopenmrs=eq."+ patient.getUuid();
 
@@ -480,7 +488,7 @@ public class RestPatientService extends BaseRestService {
 
                         try {
 
-                            SyncTempPatient syncPatient = convertSyncTempPatient(patient);
+                            SyncTempPatient syncPatient = convertSyncTempPatient(patient, BaseModel.SYNC_SATUS_UPDATED, true);
 
                             Gson g = new Gson();
                             String restObject = g.toJson(syncPatient);
@@ -508,10 +516,49 @@ public class RestPatientService extends BaseRestService {
         }
     }
 
-    private static SyncTempPatient convertSyncTempPatient(Patient patient) {
+    public static void restPatchSyncStatus(Patient patient, String syncStatus) {
+
+        String url = BaseRestService.baseUrl + "/sync_temp_patients?uuidopenmrs=eq."+ patient.getUuid();
+
+        episodeService = new EpisodeService(getApp());
+
+        if (patient != null) {
+
+
+            try {
+                Episode episode = episodeService.getLatestByPatient(patient);
+
+                    getRestServiceExecutor().execute(() -> {
+
+                        RESTServiceHandler handler = new RESTServiceHandler();
+
+                        try {
+
+                            SyncTempPatient syncPatient = convertSyncTempPatient(patient, syncStatus, false);
+
+                            Gson g = new Gson();
+                            String restObject = g.toJson(syncPatient);
+
+                            handler.addHeader("Content-Type", "application/json");
+                            JSONObject jsonObject = new JSONObject(restObject);
+                            handler.objectRequest(url, Request.Method.PATCH, jsonObject, Object[].class, (Response.Listener<TreeMap<String, Object>>) response -> {
+                                Log.d(TAG, "onResponse: Paciente actualizado : " + response);
+
+                            }, error -> Log.d(TAG, "onErrorResponse: Erro no POST :" + generateErrorMsg(error)));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static SyncTempPatient convertSyncTempPatient(Patient patient, String syncStatus, boolean isFaltoso) {
         SyncTempPatient syncTempPatient = new SyncTempPatient();
-        syncTempPatient.setSyncstatus('U');
-        syncTempPatient.setExclusaopaciente(true);
+        syncTempPatient.setSyncstatus(syncStatus.charAt(0));
+        if (isFaltoso) syncTempPatient.setExclusaopaciente(true);
         return syncTempPatient;
     }
 
