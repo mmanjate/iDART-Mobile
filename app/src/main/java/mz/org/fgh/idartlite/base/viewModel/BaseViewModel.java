@@ -54,15 +54,19 @@ import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.ClinicSectorType;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.LoadingDialog;
 import mz.org.fgh.idartlite.util.SecurePreferences;
 import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 
 public abstract class BaseViewModel  extends AndroidViewModel implements Observable, IDialogListener {
 
     private PropertyChangeRegistry callbacks;
     private BaseActivity relatedActivity;
+
+    protected AppSettingsService settingsService;
 
     protected BaseModel relatedRecord;
 
@@ -98,9 +102,12 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     LoadingDialog loadingDialog;
 
+    protected WorkerScheduleExecutor workerScheduleExecutor;
+
     public BaseViewModel(@NonNull Application application) {
         super(application);
         callbacks = new PropertyChangeRegistry();
+        settingsService = new AppSettingsService(getApplication());
 
         serviceProvider = ServiceProvider.getInstance(application);
 
@@ -119,6 +126,12 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     }
 
     public boolean isCentralServerConfigured(){
+        try {
+            this.systemSettings = settingsService.getAll();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         if (!Utilities.listHasElements(systemSettings)) return false;
 
         for (AppSettings appSettings : systemSettings){
@@ -474,5 +487,10 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
 
     public LoadingDialog getLoadingDialog() {
         return loadingDialog;
+    }
+
+    protected void initWorkScheduleExecutor(Context context, Clinic currClinic, List<AppSettings> appSettings) {
+        this.workerScheduleExecutor = WorkerScheduleExecutor.getInstance(context, currClinic, appSettings);
+        if (this.workerScheduleExecutor.getCurrClinic() == null) this.workerScheduleExecutor.setCurrClinic(currClinic);
     }
 }

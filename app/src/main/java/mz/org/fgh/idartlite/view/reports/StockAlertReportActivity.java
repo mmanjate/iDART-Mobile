@@ -28,21 +28,27 @@ import mz.org.fgh.idartlite.databinding.ActivityStockAlertReportBinding;
 import mz.org.fgh.idartlite.model.StockReportData;
 import mz.org.fgh.idartlite.service.dispense.DispenseService;
 import mz.org.fgh.idartlite.service.dispense.IDispenseService;
+import mz.org.fgh.idartlite.service.stock.IStockAlertService;
+import mz.org.fgh.idartlite.service.stock.IStockService;
+import mz.org.fgh.idartlite.service.stock.StockAlertService;
+import mz.org.fgh.idartlite.service.stock.StockService;
+import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
 
 public class StockAlertReportActivity extends BaseActivity {
 
     private RecyclerView reyclerStock;
     private ActivityStockAlertReportBinding stockAlertReportBinding;
-    private IDispenseService dispenseService;
+    private IStockAlertService stockAlertService;
     private ListbleReportRecycleViewAdapter listbleReportRecycleViewAdapter;
-
+    private IStockService stockService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stockAlertReportBinding=   DataBindingUtil.setContentView(this, R.layout.activity_stock_alert_report);
-        dispenseService= new DispenseService(getApplication(), getCurrentUser());
+        stockAlertService = new StockAlertService(getApplication(), getCurrentUser());
+        stockService = new StockService(getApplication(), getCurrentUser());
 
         reyclerStock = stockAlertReportBinding.reyclerStock;
 
@@ -54,7 +60,12 @@ public class StockAlertReportActivity extends BaseActivity {
         reyclerStock.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
         List<StockReportData> stockReport=new ArrayList<>();
         try {
-         stockReport= dispenseService.getStockAlertReportMonthPeriod();
+         stockReport= stockAlertService.getAll();
+         if (Utilities.listHasElements(stockReport)) {
+             for (StockReportData reportData : stockReport) {
+                 reportData.getDrug().setStockList(stockService.getAllStocksByDrug(reportData.getDrug()));
+             }
+         }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,7 +113,8 @@ public class StockAlertReportActivity extends BaseActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.activity_stock_alert_report_dialog);
-        dispenseService= new DispenseService(activity.getApplication(), getCurrentUser());
+        stockAlertService = new StockAlertService(activity.getApplication(), getCurrentUser());
+        stockService = new StockService(activity.getApplication(), getCurrentUser());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity.getApplication());
 
@@ -114,7 +126,12 @@ public class StockAlertReportActivity extends BaseActivity {
         reyclerStock.addItemDecoration(new DividerItemDecoration(activity.getApplication(), LinearLayout.VERTICAL));
         List<StockReportData> stockReport=new ArrayList<>();
         try {
-            stockReport= dispenseService.getStockAlertReportMonthPeriod();
+            stockReport= stockAlertService.getAll();
+            if (Utilities.listHasElements(stockReport)) {
+                for (StockReportData reportData : stockReport) {
+                    reportData.getDrug().setStockList(stockService.getAllStocksByDrug(reportData.getDrug()));
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
