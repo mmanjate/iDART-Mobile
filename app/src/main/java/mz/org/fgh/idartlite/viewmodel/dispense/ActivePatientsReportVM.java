@@ -66,8 +66,6 @@ public class ActivePatientsReportVM extends SearchVM<Dispense> {
         if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), getSearchParams().getEndDate(), DateUtilities.DAY_FORMAT) < 0){
             return "A data fim deve ser menor ou igual que a data corrente.";
         }
-
-
         return null;
     }
 
