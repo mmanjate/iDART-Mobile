@@ -193,7 +193,7 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
         QueryBuilder<Prescription, Integer> prescriptionQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPrescriptionDao().queryBuilder();
         QueryBuilder<Dispense, Integer> dispenseQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getDispenseDao().queryBuilder().setAlias("dispenses");
 
-        episodeQb.where().isNotNull(Episode.COLUMN_STOP_REASON); //Retorno: Episodios de Fim
+        episodeQb.where().isNotNull(Episode.COLUMN_STOP_REASON);
         dispenseQb.join(prescriptionQb);
         prescriptionQb.groupBy(Prescription.COLUMN_PATIENT_ID).join(patientQb);
         patientQb.where().eq(Patient.COLUMN_ID, new ColumnArg(Patient.TABLE_NAME, Patient.COLUMN_ID)).and().not().in(Patient.COLUMN_ID,episodeQb.selectRaw("patient_id"));
@@ -201,9 +201,7 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
         dispenseQb.orderBy(Dispense.COLUMN_NEXT_PICKUP_DATE,true);
 
         if (limit > 0 && offset > 0) dispenseQb.limit(limit).offset(offset);
-//        dispenseQb.where().ge(Dispense.COLUMN_NEXT_PICKUP_DATE, endDate);
         dispenseQb.where().raw("Date(dispenses.next_pickup_date, \'+3 days\') >= '"+DateUtilities.formatToYYYYMMDD(endDate)+"'");
-//        System.out.println(dispenseQb.prepareStatementString());
         return dispenseQb.query();
     }
 
