@@ -11,6 +11,7 @@ import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.service.BaseService;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.model.ClinicInformation;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
@@ -38,12 +39,16 @@ import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 import mz.org.fgh.idartlite.service.territory.CountryService;
 import mz.org.fgh.idartlite.service.territory.ICountryService;
+import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.SecurePreferences;
 
 public class DataSyncWorker extends Worker {
 
     public static final String TAG = "data_upload_job";
     private static final String PROGRESS = "PROGRESS";
     private static final long DELAY = 6000;
+    private static final String SETTINGS_PREF = "settings_pref";
+    private static final String APP_LAST_SYNC_DATE = "app_last_sync";
 
     public DataSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -61,6 +66,7 @@ public class DataSyncWorker extends Worker {
         IPatientService patientService = new PatientService(BaseService.getApp(), null);
         IClinicSectorService clinicSectorService = new ClinicSectorService(BaseService.getApp(), null);
         IClinicInfoService clinicInfoService = new ClinicInfoService(BaseService.getApp(), null);
+        BaseViewModel baseViewModel = null;
 
         List<Stock> stockList;
         List<Dispense> dispenseList;
@@ -70,12 +76,6 @@ public class DataSyncWorker extends Worker {
         try {
             RestEpisodeService.restGetAllReadyEpisodes();
             RestEpisodeService.restGetAllEpisodes();
-
-           /* try {
-                RestStockService.restGetStock(clinicService.getAllClinics().get(0));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }*/
 
            try {
                 stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_READY);
@@ -149,7 +149,6 @@ public class DataSyncWorker extends Worker {
                 if (clinicInformationList != null && clinicInformationList.size() > 0) {
                     for (ClinicInformation clinicInformation : clinicInformationList) {
                         RestClinicInfoService.restPostClinicInfo(clinicInformation);
-                        //    RestPatientService.restPostPatientSector(clinicInformation.getPatient());
                     }
                 }
             } catch (SQLException e) {
@@ -160,6 +159,9 @@ public class DataSyncWorker extends Worker {
             e.printStackTrace();
             return Result.failure();
         }
+
+        SecurePreferences settingsPreferences = new SecurePreferences(BaseService.getApp(), SETTINGS_PREF,  true);
+        settingsPreferences.put(APP_LAST_SYNC_DATE, DateUtilities.formatToDDMMYYYY_HHMISS(DateUtilities.getCurrentDate()));
 
         //Data outputData = new Data.Builder().putString(UPLOAD_MESSAGE_STATUS, watcher.getUpdates()).build();
 
