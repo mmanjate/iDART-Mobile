@@ -289,7 +289,7 @@ public class ActivePatientsReportActivity extends BaseActivity {
         tableImage.addCell(cell);
 
 
-        PdfPTable table = new PdfPTable(new float[]{2,4, 4, 3, 3, 3});
+        PdfPTable table = new PdfPTable(new float[]{2,4, 4, 3, 3, 3, 3, 3, 3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
@@ -299,8 +299,11 @@ public class ActivePatientsReportActivity extends BaseActivity {
         table.addCell(getString(R.string.nid_report));
         table.addCell(getString(R.string.name_report));
         table.addCell(getString(R.string.contacto_pessoais));
-        table.addCell(getString(R.string.date_missed));
-        table.addCell(getString(R.string.days_missed));
+        table.addCell(getString(R.string.idade));
+        table.addCell(getString(R.string.therapeutic_line));
+        table.addCell(getString(R.string.therapeutic_regimen));
+        table.addCell(getString(R.string.dta_levantamento));
+        table.addCell(getString(R.string.dt_proximo_levantamento));
 
         table.setHeaderRows(1);
         PdfPCell[] cells = table.getRow(0).getCells();
@@ -313,8 +316,11 @@ public class ActivePatientsReportActivity extends BaseActivity {
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getNid()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getFullName()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getPhone()));
+            table.addCell(DateUtilities.calculaIdade1(dispense.getPrescription().getPatient().getBirthDate()));
+            table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticLine().getDescription()));
+            table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticRegimen().getDescription()));
+            table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getPickupDate())));
             table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getNextPickupDate())));
-            table.addCell(String.valueOf(DateUtilities.getDaysBetween(dispense.getNextPickupDate(), DateUtilities.getCurrentDate())));
 
         }
 

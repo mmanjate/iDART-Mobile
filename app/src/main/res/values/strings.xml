@@ -41,6 +41,7 @@
     <string name="idade">Idade:</string>
     <string name="telefone">Telefone:</string>
     <string name="data_levantamento">Data Levantamento</string>
+    <string name="data_ult_levantamento">Data Ultimo Levantamento</string>
 
     <string name="remover">Remover</string>
     <string name="editar">Editar</string>
