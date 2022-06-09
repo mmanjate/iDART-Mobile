@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -226,6 +227,40 @@ public class DateUtilities {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    public static String calculaIdade1(Date dataNasc) {
+
+        try {
+            Calendar dataNascimento = Calendar.getInstance();
+            dataNascimento.setTime(dataNasc);
+            Calendar hoje = Calendar.getInstance();
+
+            int idade = hoje.get(Calendar.YEAR) - dataNascimento.get(Calendar.YEAR);
+
+            if (hoje.get(Calendar.MONTH) < dataNascimento.get(Calendar.MONTH)) {
+                idade--;
+            }
+            else
+            {
+                if (hoje.get(Calendar.MONTH) == dataNascimento.get(Calendar.MONTH) && hoje.get(Calendar.DAY_OF_MONTH) < dataNascimento.get(Calendar.DAY_OF_MONTH)) {
+                    idade--;
+                }
+            }
+            return Integer.toString(idade);
+        } catch (Exception e) {
+            return "0";
+        }
+
+    }
+
+
+
+    public static String doubleToIntString(Double num) {
+
+        Integer numInt = (int) Math . ceil (num);
+
+        return numInt.toString();
     }
 
 
