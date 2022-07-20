@@ -289,7 +289,7 @@ public class ActivePatientsReportActivity extends BaseActivity {
         tableImage.addCell(cell);
 
 
-        PdfPTable table = new PdfPTable(new float[]{2,4, 4, 3, 3, 3, 3, 3, 3});
+        PdfPTable table = new PdfPTable(new float[]{3,4, 3, 3, 3, 3, 3, 3, 3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
@@ -310,9 +310,9 @@ public class ActivePatientsReportActivity extends BaseActivity {
         for (int j = 0; j < cells.length; j++) {
             cells[j].setBackgroundColor(BaseColor.GRAY);
         }
-
+        int orderNumber = 1;
         for (Dispense dispense:dispenses){
-            table.addCell(String.valueOf(dispense.getOrderNumber()));
+            table.addCell(String.valueOf(orderNumber));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getNid()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getFullName()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getPhone()));
@@ -321,7 +321,7 @@ public class ActivePatientsReportActivity extends BaseActivity {
             table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticRegimen().getDescription()));
             table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getPickupDate())));
             table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getNextPickupDate())));
-
+            orderNumber += 1;
         }
 
         PdfWriter.getInstance(document, output);
