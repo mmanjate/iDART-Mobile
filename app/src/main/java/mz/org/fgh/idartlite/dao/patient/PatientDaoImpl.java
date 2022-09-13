@@ -1,7 +1,9 @@
 package mz.org.fgh.idartlite.dao.patient;
 
 import android.app.Application;
+import android.util.Log;
 
+import com.j256.ormlite.stmt.ColumnArg;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
@@ -13,6 +15,7 @@ import java.util.List;
 import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.patient.Patient;
 
@@ -44,7 +47,7 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
     @Override
     public int countNewPatientsByPeriod(Date start, Date end, String sanitaryUnit, Application application) throws SQLException {
         QueryBuilder<Episode, Integer> episodeQb = IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
-        episodeQb.where()
+        episodeQb.selectColumns(Episode.COLUMN_PATIENT_ID).where()
                 .isNull(Episode.COLUMN_STOP_REASON)
                 .and()
                 .isNotNull(Episode.COLUMN_START_REASON)
@@ -55,7 +58,11 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
                 .and()
                 .le(Episode.COLUMN_EPISODE_DATE, end);
 
-        return (int) episodeQb.countOf();
+        QueryBuilder<Patient, Integer> patientQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
+        patientQb.where().in(Patient.COLUMN_ID,episodeQb);
+
+        System.out.println(patientQb.prepareStatementString());
+        return (int) patientQb.countOf();
     }
 
     @Override
@@ -81,14 +88,18 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
     @Override
     public List<Patient> getAllPatientsBetweenStartDateAndEndDate(Application application,Date start, Date end, long offset, long limit) throws SQLException {
         QueryBuilder<Episode, Integer> episodeQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
+//        QueryBuilder<Episode, Integer> episodeQb1 =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
         if (offset > 0 && limit > 0) episodeQb.limit(limit).offset(offset);
-        episodeQb.where().isNotNull(Episode.COLUMN_START_REASON).and().isNull(Episode.COLUMN_STOP_REASON).and().ge(Episode.COLUMN_EPISODE_DATE, start)
+        episodeQb.selectColumns(Episode.COLUMN_PATIENT_ID).where().eq(Episode.COLUMN_PATIENT_ID, new ColumnArg(Patient.TABLE_NAME, Patient.COLUMN_ID)).and().isNotNull(Episode.COLUMN_START_REASON).and()
+                .isNull(Episode.COLUMN_STOP_REASON).and()
+                .ge(Episode.COLUMN_EPISODE_DATE, start)
                 .and()
                 .le(Episode.COLUMN_EPISODE_DATE, end);
 
         QueryBuilder<Patient, Integer> patientQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getPatientDao().queryBuilder();
-
-        patientQb.join(episodeQb);
+        patientQb.where().in(Patient.COLUMN_ID,episodeQb);
+//        patientQb.join(episodeQb);
+        System.out.println(patientQb.prepareStatementString());
 
         return patientQb.query();
 
