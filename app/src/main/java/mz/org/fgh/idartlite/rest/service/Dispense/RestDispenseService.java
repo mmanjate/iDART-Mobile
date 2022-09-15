@@ -46,6 +46,7 @@ import mz.org.fgh.idartlite.service.drug.TherapeuthicLineService;
 import mz.org.fgh.idartlite.service.drug.TherapheuticRegimenService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
 import mz.org.fgh.idartlite.service.episode.IEpisodeService;
+import mz.org.fgh.idartlite.service.patient.IPatientService;
 import mz.org.fgh.idartlite.service.patient.PatientService;
 import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
 import mz.org.fgh.idartlite.service.prescription.PrescribedDrugService;
@@ -62,8 +63,10 @@ public class RestDispenseService extends BaseRestService {
     private static IDispenseDrugService dispenseDrugService;
     private static IEpisodeService episodeService;
     private static IPrescriptionService prescriptionService;
+    private static IPatientService patientService;
     private static List<DispensedDrug> dispensedDrugList;
     private static List<Episode> episodeList;
+    private static ClinicService clinicService;
 
     public RestDispenseService(Application application, User currentUser) {
         super(application, currentUser);
@@ -71,7 +74,103 @@ public class RestDispenseService extends BaseRestService {
         prescriptionService = new PrescriptionService(application, currentUser);
     }
 
+
+
     public static void restGetLastDispense(Patient patient) throws SQLException {
+        restGetLastDispense(null, patient);
+    }
+
+    public static void restGetAllLastDispense(RestResponseListener listener, long offset, long limit) throws SQLException {
+
+        dispenseService = new DispenseService(getApp(), null);
+        dispenseDrugService = new DispenseDrugService(getApp(), null);
+        prescriptionService = new PrescriptionService(getApp(), null);
+        episodeService = new EpisodeService(getApp(), null);
+        patientService = new PatientService(getApp());
+        clinicService = new ClinicService(getApp(), null);
+
+        Clinic clinic = clinicService.getAllClinics().get(0);
+        String url = BaseRestService.baseUrl + "/patient_last_sync_tmp_dispense_vw?clinicuuid=eq." + clinic.getUuid() + "&offset=" + offset + "&limit=" + limit;
+
+        try {
+            getRestServiceExecutor().execute(() -> {
+
+                RESTServiceHandler handler = new RESTServiceHandler();
+
+                try {
+                    handler.addHeader("Content-Type", "application/json");
+                    handler.objectRequest(url, Request.Method.GET, null, Object[].class, (Response.Listener<Object[]>) dispenses -> {
+                        try {
+                            if (dispenses.length > 0) {
+                                List<Dispense> dispenseList = new ArrayList<>();
+                                for (Object dispense : dispenses) {
+                                    Log.d(TAG, "onResponse: Dispensa " + dispense);
+
+                                    LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) (Object) dispense;
+
+                                    Patient patient = patientService.getPatientByUuid(itemresult.get("uuidopenmrs").toString());
+                                    if (patient != null) {
+                                        patient.setEpisodes(episodeService.getAllEpisodesByPatient(patient));
+
+                                        if (patient.hasEpisode() && !patient.hasEndEpisode()) {
+                                            Prescription newPrescription = getPrescroptionRest(dispense, patient);
+                                            Prescription lastPrescription = prescriptionService.getLastPatientPrescription(patient);
+
+                                            if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) > 0) {
+                                                prescriptionService.createPrescription(newPrescription);
+                                                savePrescribedDrugOnRest(dispense, newPrescription);
+                                                lastPrescription.setExpiryDate(newPrescription.getPrescriptionDate());
+                                                prescriptionService.updatePrescriptionEntity(lastPrescription);
+                                            } else if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) == 0) {
+                                                newPrescription = lastPrescription;
+                                            } else {
+                                                break;
+                                            }
+
+                                            Dispense newDispense = getDispenseOnRest(dispense, newPrescription);
+                                            Dispense lastDispense = dispenseService.getLastDispenseFromPrescription(newPrescription);
+
+                                            if (lastDispense != null) {
+                                                if ((int) DateUtilities.dateDiff(newDispense.getPickupDate(), lastDispense.getPickupDate(), DateUtilities.DAY_FORMAT) > 0) {
+                                                    dispenseService.createDispense(newDispense);
+                                                    saveDispensedOnRest(dispense, newDispense);
+                                                } else {
+                                                    break;
+                                                }
+                                            } else {
+                                                dispenseService.createDispense(newDispense);
+                                                saveDispensedOnRest(dispense, newDispense);
+                                            }
+                                            dispenseList.add(newDispense);
+                                        }
+                                    }
+                                }
+                                if (listener != null) listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
+                            } else {
+                                listener.doOnResponse(REQUEST_NO_DATA, null);
+                                Log.w(TAG, "Response Sem Info." + dispenses.length);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            listener.doOnResponse(generateErrorMsg(error), null);
+                            Log.d(TAG, "onErrorResponse: Erro no GET :" + generateErrorMsg(error));
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void restGetLastDispense(RestResponseListener listener, Patient patient) throws SQLException {
 
         dispenseService = new DispenseService(getApp(), null);
         dispenseDrugService = new DispenseDrugService(getApp(), null);
@@ -99,6 +198,7 @@ public class RestDispenseService extends BaseRestService {
                             public void onResponse(Object[] dispenses) {
                                 try {
                                     if (dispenses.length > 0) {
+                                        List<Dispense> dispenseList = new ArrayList<>();
                                         for (Object dispense : dispenses) {
                                             Log.d(TAG, "onResponse: Dispensa " + dispense);
 
@@ -130,7 +230,9 @@ public class RestDispenseService extends BaseRestService {
                                                 dispenseService.createDispense(newDispense);
                                                 saveDispensedOnRest(dispense, newDispense);
                                             }
+                                            dispenseList.add(newDispense);
                                         }
+                                        if (listener != null) listener.doOnRestSucessResponse(BaseRestService.REQUEST_SUCESS);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -293,6 +395,7 @@ public class RestDispenseService extends BaseRestService {
             if (!stockList.isEmpty())
                 dispensedDrug.setStock(stockList.get(0));
             dispensedDrug.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+            dispensedDrug.setDrug(localDrug);
             dispenseDrugService.createDispensedDrug(dispensedDrug);
         }
 

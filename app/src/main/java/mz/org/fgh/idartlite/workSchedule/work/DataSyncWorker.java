@@ -128,7 +128,7 @@ public class DataSyncWorker extends Worker {
                 e.printStackTrace();
             }
 
-            try {
+           /* try {
                 patientList = patientService.getALLPatient();
                 if (patientList != null)
                     if (patientList.size() > 0) {
@@ -141,7 +141,7 @@ public class DataSyncWorker extends Worker {
                     }
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             try {
 

@@ -3,7 +3,9 @@ package mz.org.fgh.idartlite.rest.helper;
 import android.os.StrictMode;
 import android.widget.ImageView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.ImageLoader;
 
 import org.json.JSONObject;
@@ -48,6 +50,10 @@ public class RESTServiceHandler {
             objectRequest = new ObjectRequest<T>(method, url, null, clazz, response, error);
             objectRequest.setHeaders(mHeaders);
         }
+
+        int socketTimeout = 90000;//60 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        objectRequest.setRetryPolicy(policy);
 
         IdartLiteApplication.getInstance().addToRequestQueue(objectRequest, tag_json_arry);
 

@@ -144,12 +144,11 @@ public class WorkerScheduleExecutor {
 
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
-                .setRequiresCharging(true)
                 .build();
 
         PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetPatientDispensationWorkerScheduler.class, getDataSyncInterval(), TimeUnit.HOURS)
                 .setConstraints(constraints)
-                .setInitialDelay(1,TimeUnit.HOURS)
+                .setInitialDelay(5,TimeUnit.MINUTES)
                 .addTag("INIT_PATIENT_DISPENSE_ID " + JOB_ID)
                 .build();
 
@@ -180,7 +179,7 @@ public class WorkerScheduleExecutor {
 
         PeriodicWorkRequest periodicPostNewPatienWorkRequest = new PeriodicWorkRequest.Builder(StockAlertWorker.class, getDataSyncInterval(), TimeUnit.DAYS)
                 .setConstraints(constraints)
-                .setInitialDelay(7,TimeUnit.DAYS)
+                .setInitialDelay(2,TimeUnit.HOURS)
                 .addTag("NEW_STOCK_ALERT_ID " + JOB_ID)
                 .build();
 
@@ -303,6 +302,13 @@ public class WorkerScheduleExecutor {
         this.runOneTimeStockSync();
     }
 
+    public void runOneTimeDispenseSync() {
+        OneTimeWorkRequest dispenseOneTimeWorkRequest = new OneTimeWorkRequest.Builder(RestGetPatientDispensationWorkerScheduler.class).addTag("ONE_TIME_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        if (!Utilities.isWorkScheduled("ONE_TIME_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("INIT_PATIENT_DISPENSE_ID " + JOB_ID, workManager)) {
+            workManager.enqueue(dispenseOneTimeWorkRequest);
+        }
+    }
+
     public void runOneTimeFaltososSync() {
         OneTimeWorkRequest faltososRequest = new OneTimeWorkRequest.Builder(RestPacthPatientWorker.class).addTag("ONE_TIME_FALTOSO_ID" + ONE_TIME_REQUEST_JOB_ID).build();
         if (!Utilities.isWorkScheduled("ONE_TIME_FALTOSO_ID" + ONE_TIME_REQUEST_JOB_ID, workManager)) {
@@ -320,6 +326,8 @@ public class WorkerScheduleExecutor {
     public void runDataSyncNow(boolean fullLoad) {
         if (Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
             Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager) ||
+            Utilities.isWorkRunning("INIT_PATIENT_DISPENSE_ID " + JOB_ID, workManager) ||
+            Utilities.isWorkScheduled("ONE_TIME_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
             Utilities.isWorkScheduled("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
             Utilities.isWorkRunning("INIT_STOCK_ID " + JOB_ID, workManager)) {
             Toast.makeText(context, "Existe neste momento uma sincronização similar em curso, por favor aguarde o seu termino para iniciar nova.", Toast.LENGTH_LONG).show();
@@ -329,6 +337,7 @@ public class WorkerScheduleExecutor {
             this.runOneTimeStockSync();
             this.runOneTimeFaltososSync();
             this.runOneTimeDataSync();
+            this.runOneTimeDispenseSync();
             //this.runOneStockAlert();
         }
     }

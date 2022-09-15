@@ -16,7 +16,9 @@ import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.Dispense;
+import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.patient.Patient;
 
 public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements IPatientDao {
@@ -105,6 +107,18 @@ public class PatientDaoImpl extends GenericDaoImpl<Patient, Integer> implements 
 
 
 
+    }
+
+    @Override
+    public List<Patient> get(Application application, long offset, long limit) throws SQLException {
+        QueryBuilder<Episode, Integer> episodeQb =  IdartLiteDataBaseHelper.getInstance(application.getApplicationContext()).getEpisodeDao().queryBuilder();
+        episodeQb.where().eq(Episode.COLUMN_PATIENT_ID, new ColumnArg(Patient.TABLE_NAME, Patient.COLUMN_ID)).and().isNotNull(Episode.COLUMN_STOP_REASON);
+
+        QueryBuilder<Patient, Integer> qb = queryBuilder();
+        qb.where().not().exists(episodeQb);
+        qb.limit(limit).offset(offset);
+
+        return qb.query();
     }
 
     public boolean checkIsEmpty(String param, Clinic clinic) throws SQLException {
