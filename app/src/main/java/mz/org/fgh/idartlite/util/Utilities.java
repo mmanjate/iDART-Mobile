@@ -480,7 +480,7 @@ public class Utilities {
                 .show();
     }
 
-    public static void issueNotification(NotificationManagerCompat notificationManagerCompat, Context context, String contentText, String channel, boolean progressStatus) {
+    public static void issueNotification(NotificationManagerCompat notificationManagerCompat, Context context, String contentText, String channel, boolean progressStatus, int notificationId) {
 
         Notification builder = new NotificationCompat.Builder(context, channel)
                 .setSmallIcon(R.drawable.ic_data)
@@ -491,7 +491,7 @@ public class Utilities {
                 .setProgress(0, 0, progressStatus)
                 .build();
 
-        notificationManagerCompat.notify(1, builder);
+        notificationManagerCompat.notify(notificationId, builder);
     }
 
     public static boolean isWorkScheduled(String tag, WorkManager instance) {

@@ -116,15 +116,17 @@ public class RestDispenseService extends BaseRestService {
                                             Prescription newPrescription = getPrescroptionRest(dispense, patient);
                                             Prescription lastPrescription = prescriptionService.getLastPatientPrescription(patient);
 
-                                            if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) > 0) {
-                                                prescriptionService.createPrescription(newPrescription);
-                                                savePrescribedDrugOnRest(dispense, newPrescription);
-                                                lastPrescription.setExpiryDate(newPrescription.getPrescriptionDate());
-                                                prescriptionService.updatePrescriptionEntity(lastPrescription);
-                                            } else if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) == 0) {
-                                                newPrescription = lastPrescription;
-                                            } else {
-                                                break;
+                                            if (lastPrescription != null) {
+                                                if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) > 0) {
+                                                    prescriptionService.createPrescription(newPrescription);
+                                                    savePrescribedDrugOnRest(dispense, newPrescription);
+                                                    lastPrescription.setExpiryDate(newPrescription.getPrescriptionDate());
+                                                    prescriptionService.updatePrescriptionEntity(lastPrescription);
+                                                } else if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) == 0) {
+                                                    newPrescription = lastPrescription;
+                                                } else {
+                                                    break;
+                                                }
                                             }
 
                                             Dispense newDispense = getDispenseOnRest(dispense, newPrescription);
@@ -142,6 +144,7 @@ public class RestDispenseService extends BaseRestService {
                                                 saveDispensedOnRest(dispense, newDispense);
                                             }
                                             dispenseList.add(newDispense);
+
                                         }
                                     }
                                 }

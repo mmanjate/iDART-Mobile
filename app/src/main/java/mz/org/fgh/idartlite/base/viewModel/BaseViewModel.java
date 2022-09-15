@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
@@ -103,6 +104,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     LoadingDialog loadingDialog;
 
     protected WorkerScheduleExecutor workerScheduleExecutor;
+    protected int notificationId;
 
     public BaseViewModel(@NonNull Application application) {
         super(application);
@@ -122,6 +124,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         settingsPreferences = new SecurePreferences(application, SETTINGS_PREF,  true);
 
         notificationManager = NotificationManagerCompat.from(getApplication());
+        this.notificationId = ThreadLocalRandom.current().nextInt();
 
     }
 
@@ -146,7 +149,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
     }
 
     public void issueNotification(String contentMsg, String channel, boolean progressStatus){
-        Utilities.issueNotification(getNotificationManager(), getApplication(),contentMsg, channel, progressStatus);
+        Utilities.issueNotification(getNotificationManager(), getApplication(),contentMsg, channel, progressStatus, this.notificationId);
     }
 
     protected abstract IBaseService initRelatedService();

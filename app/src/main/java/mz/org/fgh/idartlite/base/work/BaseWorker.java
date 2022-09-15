@@ -11,6 +11,7 @@ import androidx.work.WorkerParameters;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
@@ -31,10 +32,12 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
     public static Application app;
     protected long newRecsQty;
     protected long updatedRecsQty;
+    protected int notificationId;
 
     public BaseWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         setWorkStatus(WORK_STATUS_STARTING);
+        this.notificationId = ThreadLocalRandom.current().nextInt();
     }
 
     @Override
@@ -63,7 +66,7 @@ public abstract class BaseWorker<T extends BaseModel> extends Worker implements 
     protected abstract void doOnStart();
 
     protected void issueNotification(String channel, String msg, boolean progressStatus) throws InterruptedException {
-        Utilities.issueNotification(NotificationManagerCompat.from(getApplicationContext()), getApplicationContext(), msg, channel, progressStatus);
+        Utilities.issueNotification(NotificationManagerCompat.from(getApplicationContext()), getApplicationContext(), msg, channel, progressStatus, this.notificationId);
     }
 
     @Override
