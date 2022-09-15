@@ -148,7 +148,7 @@ public class WorkerScheduleExecutor {
 
         PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetPatientDispensationWorkerScheduler.class, getDataSyncInterval(), TimeUnit.HOURS)
                 .setConstraints(constraints)
-                .setInitialDelay(5,TimeUnit.MINUTES)
+                .setInitialDelay(3,TimeUnit.HOURS)
                 .addTag("INIT_PATIENT_DISPENSE_ID " + JOB_ID)
                 .build();
 
@@ -273,8 +273,9 @@ public class WorkerScheduleExecutor {
                 .putBoolean("isFullLoad", fullLoad)
                 .build();
         OneTimeWorkRequest patientOneTimeWorkRequest = new OneTimeWorkRequest.Builder(PatientWorker.class).addTag("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID).setInputData(inputData).build();
+        OneTimeWorkRequest dispenseOneTimeWorkRequest = new OneTimeWorkRequest.Builder(RestGetPatientDispensationWorkerScheduler.class).addTag("ONE_TIME_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID).build();
         if (!Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager)) {
-            workManager.enqueue(patientOneTimeWorkRequest);
+            workManager.beginWith(patientOneTimeWorkRequest).then(dispenseOneTimeWorkRequest).enqueue();
         }
     }
 
