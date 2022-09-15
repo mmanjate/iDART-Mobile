@@ -24,4 +24,6 @@ public interface IPatientDao extends IGenericDao<Patient, Integer> {
 
     public List<Patient> getAllPatientsBetweenStartDateAndEndDate(Application application,Date start, Date end, long offset, long limit) throws SQLException;
 
+    public List<Patient> get(Application application, long offset, long limit) throws SQLException;
+
 }

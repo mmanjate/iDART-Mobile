@@ -1,6 +1,12 @@
 package mz.org.fgh.idartlite.viewmodel.splash;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
@@ -39,6 +45,7 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     private List<AppSettings> appSettings;
     private IStockAlertService stockAlertService;
+    private WifiManager wifiManager;
 
     //private WorkerScheduleExecutor workerScheduleExecutor;
 
@@ -74,6 +81,30 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
 
     @Override
     public void preInit() {
+        wifiManager = (WifiManager) getRelatedActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        BroadcastReceiver wifiScanReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context c, Intent intent) {
+                boolean success = intent.getBooleanExtra(
+                        WifiManager.EXTRA_RESULTS_UPDATED, false);
+                if (success) {
+                    scanSuccess();
+                } else {
+                    // scan failure handling
+                    scanFailure();
+                }
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        getRelatedActivity().getApplicationContext().registerReceiver(wifiScanReceiver, intentFilter);
+
+        boolean success = wifiManager.startScan();
+        if (!success) {
+            // scan failure handling
+            scanFailure();
+        }
         /*
         try {
             this.appSettings = settingsService.getAll();
@@ -84,6 +115,16 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
         }
 
          */
+    }
+
+    private void scanSuccess() {
+        List<ScanResult> results = wifiManager.getScanResults();
+    }
+
+    private void scanFailure() {
+        // handle failure: new scan did NOT succeed
+        // consider using old scan results: these are the OLD results!
+        List<ScanResult> results = wifiManager.getScanResults();
     }
 
     private void scheduleSyncWorks() {
@@ -159,13 +200,13 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
         }
 
         this.initWorkScheduleExecutor(getApplication(), null, this.appSettings);
-        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_PATIENT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
-        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
-        this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ALERT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
+        //this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_PATIENT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
+        //this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
+        //this.workerScheduleExecutor.getWorkManager().cancelAllWorkByTag("ONE_TIME_STOCK_ALERT_ID" + WorkerScheduleExecutor.ONE_TIME_REQUEST_JOB_ID);
         try {
             this.systemSettings = getRelatedService().getAllSettings();
             if (!Utilities.listHasElements(stockAlertService.getAll())) {
-                this.workerScheduleExecutor.runOneStockAlert();
+                //this.workerScheduleExecutor.runOneStockAlert();
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -270,6 +270,10 @@ public class Patient extends BaseModel {
 		return false;
 	}
 
+	public boolean hasEpisode(){
+		return Utilities.listHasElements(this.episodes);
+	}
+
 	public void addEpisode(Episode e){
 		if (this.episodes == null) this.episodes = new ArrayList<>();
 

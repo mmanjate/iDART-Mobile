@@ -76,6 +76,10 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         return patientDao.queryForAll();
     }
 
+    public List<Patient> get(long offset, long limit) throws SQLException {
+        return patientDao.get(application, offset, limit);
+    }
+
     public void  savePatient(Patient patient) throws SQLException {
         patientDao.create(patient);
         if (Utilities.listHasElements(patient.getAttributes())) {
