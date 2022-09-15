@@ -326,6 +326,8 @@ public class WorkerScheduleExecutor {
     public void runDataSyncNow(boolean fullLoad) {
         if (Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
             Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager) ||
+            Utilities.isWorkRunning("INIT_PATIENT_DISPENSE_ID " + JOB_ID, workManager) ||
+            Utilities.isWorkScheduled("ONE_TIME_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
             Utilities.isWorkScheduled("ONE_TIME_STOCK_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
             Utilities.isWorkRunning("INIT_STOCK_ID " + JOB_ID, workManager)) {
             Toast.makeText(context, "Existe neste momento uma sincronização similar em curso, por favor aguarde o seu termino para iniciar nova.", Toast.LENGTH_LONG).show();
@@ -335,6 +337,7 @@ public class WorkerScheduleExecutor {
             this.runOneTimeStockSync();
             this.runOneTimeFaltososSync();
             this.runOneTimeDataSync();
+            this.runOneTimeDispenseSync();
             //this.runOneStockAlert();
         }
     }
