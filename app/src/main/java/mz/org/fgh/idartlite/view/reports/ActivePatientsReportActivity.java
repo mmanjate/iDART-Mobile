@@ -317,8 +317,8 @@ public class ActivePatientsReportActivity extends BaseActivity {
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getFullName()));
             table.addCell(String.valueOf(dispense.getPrescription().getPatient().getPhone()));
             table.addCell(DateUtilities.calculaIdade1(dispense.getPrescription().getPatient().getBirthDate()));
-            table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticLine().getDescription()));
-            table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticRegimen().getDescription()));
+            table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticLine() != null ? dispense.getPrescription().getTherapeuticLine().getDescription() : "N/A"));
+            table.addCell(String.valueOf(dispense.getPrescription().getTherapeuticRegimen() != null ? dispense.getPrescription().getTherapeuticRegimen().getDescription() : "N/A"));
             table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getPickupDate())));
             table.addCell(String.valueOf(DateUtilities.formatToDDMMYYYY(dispense.getNextPickupDate())));
             orderNumber += 1;
