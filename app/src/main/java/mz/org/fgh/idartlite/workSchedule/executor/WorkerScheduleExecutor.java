@@ -23,6 +23,7 @@ import mz.org.fgh.idartlite.workSchedule.work.generic.StockAlertWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetConfigWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetEpisodeWorkerScheduler;
+import mz.org.fgh.idartlite.workSchedule.work.get.RestGetLastUSDispenseWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetPatientDispensationWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.StockWorker;
 import mz.org.fgh.idartlite.workSchedule.work.patch.RestPatchStockConfigWorkerScheduler;
@@ -147,6 +148,21 @@ public class WorkerScheduleExecutor {
                 .build();
 
         PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetPatientDispensationWorkerScheduler.class, getDataSyncInterval(), TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .setInitialDelay(3,TimeUnit.HOURS)
+                .addTag("INIT_PATIENT_DISPENSE_ID " + JOB_ID)
+                .build();
+
+        workManager.enqueue(periodicConfigDataWorkRequest);
+    }
+
+    public void initPatientUSDispenseTaskWork() {
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetLastUSDispenseWorker.class, getDataSyncInterval(), TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .setInitialDelay(3,TimeUnit.HOURS)
                 .addTag("INIT_PATIENT_DISPENSE_ID " + JOB_ID)
@@ -324,6 +340,13 @@ public class WorkerScheduleExecutor {
         }
     }
 
+    public void runOneTimeUSDispensesSync() {
+        OneTimeWorkRequest faltososRequest = new OneTimeWorkRequest.Builder(RestGetLastUSDispenseWorker.class).addTag("ONE_US_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        if (!Utilities.isWorkScheduled("ONE_US_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID, workManager)) {
+            workManager.enqueue(faltososRequest);
+        }
+    }
+
     public void runDataSyncNow(boolean fullLoad) {
         if (Utilities.isWorkScheduled("ONE_TIME_PATIENT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) ||
             Utilities.isWorkRunning("PATIENT_ID " + JOB_ID, workManager) ||
@@ -339,7 +362,7 @@ public class WorkerScheduleExecutor {
             this.runOneTimeFaltososSync();
             this.runOneTimeDataSync();
             this.runOneTimeDispenseSync();
-            //this.runOneStockAlert();
+            //this.runOneTimeUSDispensesSync();
         }
     }
 }
