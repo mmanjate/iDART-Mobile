@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
@@ -641,6 +642,137 @@ public class RestDispenseService extends BaseRestService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+    }
+
+    public static void restGetAllLastUSDispense(RestResponseListener listener, long offset, long limit) throws SQLException {
+
+        dispenseService = new DispenseService(getApp(), null);
+        dispenseDrugService = new DispenseDrugService(getApp(), null);
+        prescriptionService = new PrescriptionService(getApp(), null);
+        episodeService = new EpisodeService(getApp(), null);
+        patientService = new PatientService(getApp());
+        clinicService = new ClinicService(getApp(), null);
+
+        Clinic clinic = clinicService.getAllClinics().get(0);
+        String url = BaseRestService.baseUrl + "/patient_us_sync_tmp_dispense_vw?clinicuuid=eq." + clinic.getUuid() + "&syncstatus=eq." + "N" + "&offset=" + offset + "&limit=" + limit;
+
+        try {
+            getRestServiceExecutor().execute(() -> {
+
+                RESTServiceHandler handler = new RESTServiceHandler();
+
+                try {
+                    handler.addHeader("Content-Type", "application/json");
+                    handler.objectRequest(url, Request.Method.GET, null, Object[].class, (Response.Listener<Object[]>) dispenses -> {
+                        try {
+                            if (dispenses.length > 0) {
+                                List<Dispense> dispenseList = new ArrayList<>();
+                                for (Object dispense : dispenses) {
+                                    Log.d(TAG, "onResponse: Dispensa " + dispense);
+
+                                    LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) (Object) dispense;
+
+                                    Patient patient = patientService.getPatientByUuid(itemresult.get("uuidopenmrs").toString());
+                                    if (patient != null) {
+                                        patient.setEpisodes(episodeService.getAllEpisodesByPatient(patient));
+
+                                        if (patient.hasEpisode() && !patient.hasEndEpisode()) {
+                                            Prescription newPrescription = getPrescroptionRest(dispense, patient);
+                                            Prescription lastPrescription = prescriptionService.getLastPatientPrescription(patient);
+
+                                            if (lastPrescription != null) {
+                                                if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) > 0) {
+                                                    prescriptionService.createPrescription(newPrescription);
+                                                    savePrescribedDrugOnRest(dispense, newPrescription);
+                                                    lastPrescription.setExpiryDate(newPrescription.getPrescriptionDate());
+                                                    prescriptionService.updatePrescriptionEntity(lastPrescription);
+                                                } else if ((int) DateUtilities.dateDiff(newPrescription.getPrescriptionDate(), lastPrescription.getPrescriptionDate(), DateUtilities.DAY_FORMAT) == 0) {
+                                                    newPrescription = lastPrescription;
+                                                } else {
+                                                    break;
+                                                }
+                                            }
+
+                                            Dispense newDispense = getDispenseOnRest(dispense, newPrescription);
+                                            Dispense lastDispense = dispenseService.getLastDispenseFromPrescription(newPrescription);
+
+                                            if (lastDispense != null) {
+                                                if ((int) DateUtilities.dateDiff(newDispense.getPickupDate(), lastDispense.getPickupDate(), DateUtilities.DAY_FORMAT) > 0) {
+                                                    dispenseService.createDispense(newDispense);
+                                                    saveDispensedOnRest(dispense, newDispense);
+                                                } else {
+                                                    break;
+                                                }
+                                            } else {
+                                                dispenseService.createDispense(newDispense);
+                                                saveDispensedOnRest(dispense, newDispense);
+                                            }
+                                            restPatchSyncStatus(String.valueOf(Double.valueOf(itemresult.get("id").toString()).intValue()), 'S');
+                                            dispenseList.add(newDispense);
+
+                                        }
+                                    }
+                                }
+                                if (listener != null) listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
+                            } else {
+                                listener.doOnResponse(REQUEST_NO_DATA, null);
+                                Log.w(TAG, "Response Sem Info." + dispenses.length);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            listener.doOnResponse(generateErrorMsg(error), null);
+                            Log.d(TAG, "onErrorResponse: Erro no GET :" + generateErrorMsg(error));
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void restPatchSyncStatus(String syncTempDispenseId, Character syncStatus) {
+
+        String url = BaseRestService.baseUrl + "/sync_temp_dispense?id=eq."+ syncTempDispenseId;
+
+        episodeService = new EpisodeService(getApp());
+
+
+        if (syncTempDispenseId != null) {
+
+
+            try {
+                SyncDispense syncDispense = new SyncDispense();
+                syncDispense.setSyncstatus(syncStatus);
+
+                getRestServiceExecutor().execute(() -> {
+
+                    RESTServiceHandler handler = new RESTServiceHandler();
+                    try {
+                        Gson g = new Gson();
+                        String restObject = g.toJson(syncDispense);
+
+                        handler.addHeader("Content-Type", "application/json");
+                        JSONObject jsonObject = new JSONObject(restObject);
+                        handler.objectRequest(url, Request.Method.PATCH, jsonObject, Object[].class, (Response.Listener<TreeMap<String, Object>>) response -> {
+                            Log.d(TAG, "onResponse: Dispensa actualizada : " + response);
+
+                        }, error -> Log.d(TAG, "onErrorResponse: Erro no POST :" + generateErrorMsg(error)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void loadDispensedDrugFromRest(Object restDispense, Dispense dispense) throws SQLException {
