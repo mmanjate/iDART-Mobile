@@ -341,9 +341,9 @@ public class WorkerScheduleExecutor {
     }
 
     public void runOneTimeUSDispensesSync() {
-        OneTimeWorkRequest faltososRequest = new OneTimeWorkRequest.Builder(RestGetLastUSDispenseWorker.class).addTag("ONE_US_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        OneTimeWorkRequest lastUSDispenseRequest = new OneTimeWorkRequest.Builder(RestGetLastUSDispenseWorker.class).addTag("ONE_US_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID).build();
         if (!Utilities.isWorkScheduled("ONE_US_DISPENSE_ID" + ONE_TIME_REQUEST_JOB_ID, workManager)) {
-            workManager.enqueue(faltososRequest);
+            workManager.enqueue(lastUSDispenseRequest);
         }
     }
 
@@ -362,7 +362,7 @@ public class WorkerScheduleExecutor {
             this.runOneTimeFaltososSync();
             this.runOneTimeDataSync();
             this.runOneTimeDispenseSync();
-            //this.runOneTimeUSDispensesSync();
+            this.runOneTimeUSDispensesSync();
         }
     }
 }
