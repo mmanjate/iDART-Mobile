@@ -654,7 +654,7 @@ public class RestDispenseService extends BaseRestService {
         clinicService = new ClinicService(getApp(), null);
 
         Clinic clinic = clinicService.getAllClinics().get(0);
-        String url = BaseRestService.baseUrl + "/patient_us_sync_tmp_dispense_vw?clinicuuid=eq." + clinic.getUuid() + "&syncstatus=eq." + "N" + "&offset=" + offset + "&limit=" + limit;
+        String url = BaseRestService.baseUrl + "/patient_us_sync_tmp_dispense_vw?clinicuuid=eq." + clinic.getUuid() + "&syncstatus=eq." + 'N' + "&offset=" + offset + "&limit=" + limit;
 
         try {
             getRestServiceExecutor().execute(() -> {
