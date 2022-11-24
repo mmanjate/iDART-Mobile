@@ -177,7 +177,7 @@ public class DispenseDaoImpl extends GenericDaoImpl<Dispense, Integer> implement
         prescriptionQb1.join(patientInnerQb);
         dispenseQb2.join(prescriptionQb1);
         dispenseQb2.where().raw(" patientInner.id=patientOuter.id AND dispense.pickup_date >= outerDispense.next_pickup_date AND dispense.pickup_date <= outerDispense.next_pickup_date +1");
-
+        dispenseQb1.where().raw("patient_id = patientOuter.id");
         if (limit > 0 && offset > 0) outerDispenseQb.limit(limit).offset(offset);
         outerDispenseQb.where().ge(Dispense.COLUMN_NEXT_PICKUP_DATE, startDate)
                 .and()
