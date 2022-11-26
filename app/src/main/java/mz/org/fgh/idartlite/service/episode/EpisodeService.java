@@ -102,18 +102,20 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
 
     public boolean patientHasEndingEpisode(Patient patient){
         Episode episode = null;
+        boolean result = false;
         try {
             episode=this.getLatestByPatient(patient);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(episode.getStopReason()!=null){
-          return true;
-        }
-        else {
-            return false;
+
+        if(episode != null){
+            if(episode.getStopReason()!=null){
+                result = true;
+            }
         }
 
+        return result;
     }
 
     public List<Episode> getAllByStatus(String status) throws SQLException {

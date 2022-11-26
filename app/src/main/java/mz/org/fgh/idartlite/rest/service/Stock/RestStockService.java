@@ -127,6 +127,7 @@ public class RestStockService extends BaseRestService {
         }else {
             url = BaseRestService.baseUrl + "/stock?select=*,stocklevel(*)&stockcenter=eq." + clinic.getRestId() + "&expirydate=gt.TODAY()";
         }
+        Log.d(TAG, "-===========================================================================Offset " + offset + "  ====== Limit " + limit );
 
         List<Stock> newStock = new ArrayList<>();
         getRestServiceExecutor().execute(() -> {
