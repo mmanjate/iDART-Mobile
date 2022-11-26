@@ -23,7 +23,7 @@ import mz.org.fgh.idartlite.util.Utilities;
 public abstract class BaseWorker<T extends BaseModel> extends Worker implements SearchPaginator<T>, RestResponseListener<T> {
 
 
-    public static final int RECORDS_PER_SEARCH = 200;
+    public static final int RECORDS_PER_SEARCH = 20;
     protected int offset = 0;
     public static final String WORK_STATUS_PERFORMING = "PERFORMING";
     public static final String WORK_STATUS_FINISHED = "FINISHED";

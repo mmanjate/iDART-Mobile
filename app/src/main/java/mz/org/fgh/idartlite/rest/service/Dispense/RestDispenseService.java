@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
@@ -69,6 +70,7 @@ public class RestDispenseService extends BaseRestService {
     private static List<Episode> episodeList;
     private static ClinicService clinicService;
 
+
     public RestDispenseService(Application application, User currentUser) {
         super(application, currentUser);
         dispenseService = new DispenseService(application, currentUser);
@@ -105,7 +107,7 @@ public class RestDispenseService extends BaseRestService {
                             if (dispenses.length > 0) {
                                 List<Dispense> dispenseList = new ArrayList<>();
                                 for (Object dispense : dispenses) {
-                                    Log.d(TAG, "onResponse: Dispensa " + dispense);
+                                    Log.d(TAG, "onResponse: Dispensa " + dispense );
 
                                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) (Object) dispense;
 
@@ -156,6 +158,7 @@ public class RestDispenseService extends BaseRestService {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Log.d(TAG, "onErrorResponse 1: Erro no GET :" + e.getMessage());
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -166,12 +169,13 @@ public class RestDispenseService extends BaseRestService {
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d(TAG, "onErrorResponse 2: Erro no GET :" + e.getMessage());
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d(TAG, "onErrorResponse 3: Erro no GET :" + e.getMessage());
         }
-
     }
 
     public static void restGetLastDispense(RestResponseListener listener, Patient patient) throws SQLException {
