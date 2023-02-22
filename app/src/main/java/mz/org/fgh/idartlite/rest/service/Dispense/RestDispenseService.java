@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.rest.service.Dispense;
 
+import static mz.org.fgh.idartlite.savelogs.PathConstant.LOGGER_FILE_PATH;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -20,6 +22,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
@@ -35,6 +38,7 @@ import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.model.*;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.savelogs.SaveLogsInStorage;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.dispense.DispenseDrugService;
@@ -85,6 +89,7 @@ public class RestDispenseService extends BaseRestService {
 
     public static void restGetAllLastDispense(RestResponseListener listener, long offset, long limit) throws SQLException {
 
+        SaveLogsInStorage log = SaveLogsInStorage.getSaveLoggerInstance(IdartLiteApplication.getInstance().getApplicationContext(), LOGGER_FILE_PATH);
         dispenseService = new DispenseService(getApp(), null);
         dispenseDrugService = new DispenseDrugService(getApp(), null);
         prescriptionService = new PrescriptionService(getApp(), null);
@@ -157,7 +162,7 @@ public class RestDispenseService extends BaseRestService {
                                 Log.w(TAG, "Response Sem Info." + dispenses.length);
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: "+e );
                             Log.d(TAG, "onErrorResponse 1: Erro no GET :" + e.getMessage());
                         }
                     }, new Response.ErrorListener() {
@@ -168,12 +173,13 @@ public class RestDispenseService extends BaseRestService {
                         }
                     });
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: "+e );
                     Log.d(TAG, "onErrorResponse 2: Erro no GET :" + e.getMessage());
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
+            log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: "+e );
             Log.d(TAG, "onErrorResponse 3: Erro no GET :" + e.getMessage());
         }
     }
