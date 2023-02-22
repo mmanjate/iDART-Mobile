@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
@@ -31,6 +32,7 @@ import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.savelogs.SaveLogsInStorage;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.drug.DrugService;
@@ -38,6 +40,7 @@ import mz.org.fgh.idartlite.service.drug.IDrugService;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
 
+import static mz.org.fgh.idartlite.savelogs.PathConstant.LOGGER_FILE_PATH;
 import static mz.org.fgh.idartlite.util.DateUtilities.getUtilDateFromString;
 
 public class RestStockService extends BaseRestService {
@@ -52,7 +55,7 @@ public class RestStockService extends BaseRestService {
     }
 
     public static void restPostStockCenter(Clinic clinic) throws SQLException{
-
+        SaveLogsInStorage log = SaveLogsInStorage.getSaveLoggerInstance(IdartLiteApplication.getInstance().getApplicationContext(), LOGGER_FILE_PATH);
         String url = BaseRestService.baseUrl + "/stockcenter?on_conflict=id";
         clinicService = new ClinicService(BaseService.getApp(), null);
         stockService = new StockService(getApp(), null);
@@ -67,7 +70,6 @@ public class RestStockService extends BaseRestService {
                 RESTServiceHandler handler = new RESTServiceHandler();
 
                 try {
-
                     Map<String, Object> stockcenter = new ArrayMap<>();
                     stockcenter.put("id", finalClinic.getRestId());
                     stockcenter.put("stockcentername", finalClinic.getClinicName());
@@ -93,9 +95,11 @@ public class RestStockService extends BaseRestService {
                     });
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: "+e );
                 }
             });
         } catch (Exception e) {
+            log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: "+e );
             e.printStackTrace();
         }
     }

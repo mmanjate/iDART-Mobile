@@ -1,5 +1,8 @@
 package mz.org.fgh.idartlite.rest.service.Patient;
 
+import static mz.org.fgh.idartlite.savelogs.PathConstant.LOGGER_FILE_PATH;
+import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -22,6 +25,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.service.BaseService;
@@ -29,13 +33,14 @@ import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
 import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.SyncTempPatient;
-import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.Province;
 import mz.org.fgh.idartlite.model.SyncMobilePatient;
+import mz.org.fgh.idartlite.model.SyncTempPatient;
 import mz.org.fgh.idartlite.model.User;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.patient.PatientAttribute;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.savelogs.SaveLogsInStorage;
 import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
@@ -47,9 +52,6 @@ import mz.org.fgh.idartlite.service.prescription.IPrescriptionService;
 import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
 import mz.org.fgh.idartlite.service.territory.IProvinceService;
 import mz.org.fgh.idartlite.service.territory.ProvinceService;
-import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
-
-import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
 
 public class RestPatientService extends BaseRestService {
 
@@ -62,6 +64,7 @@ public class RestPatientService extends BaseRestService {
     private static IProvinceService provinceService;
     private static IPrescriptionService prescriptionService;
 
+
     public RestPatientService(Application application, User currentUser) {
         super(application, currentUser);
 
@@ -73,10 +76,10 @@ public class RestPatientService extends BaseRestService {
     }
 
     public static void getAllPatient(RestResponseListener listener, long offset, long limit, boolean isFullLoad) {
+        SaveLogsInStorage log = SaveLogsInStorage.getSaveLoggerInstance(IdartLiteApplication.getInstance().getApplicationContext(), LOGGER_FILE_PATH);
         try {
             clinicService = new ClinicService(getApp(), null);
             clinicSectorService = new ClinicSectorService(getApp(), null);
-
             Clinic clinic = clinicService.getAllClinics().get(0);
             Clinic finalClinic = clinicService.getAllClinics().get(0);
             ArrayList<ClinicSector> clinicSectorList = (ArrayList<ClinicSector>) clinicSectorService.getClinicSectorsByClinic(finalClinic);
@@ -132,7 +135,7 @@ public class RestPatientService extends BaseRestService {
                                         }
                                         restPatchSyncStatus(patientObj, BaseModel.SYNC_SATUS_SENT);
                                     } catch (Exception e) {
-                                        e.printStackTrace();
+                                        log.saveErrorLogs(TAG, "Ocorreu um erro ao Buscar Pacientes: [ Patient: "+patient+"]: \n "+e );
                                     } finally {
                                         continue;
                                     }
@@ -156,7 +159,7 @@ public class RestPatientService extends BaseRestService {
                 Log.e(TAG, "Response Servidor Offline");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.saveErrorLogs(TAG, "Ocorreu um erro ao Buscar Pacientes: "+e );
         }
     }
 

@@ -74,6 +74,7 @@ dependencies {
     implementation 'com.ogaclejapan.smarttablayout:utils-v4:2.0.0@aar'
     implementation 'ru.egslava:MaskedEditText:1.0.5'
 
+
     // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
@@ -108,6 +109,8 @@ dependencies {
     //itext
     implementation 'com.itextpdf:itext-pdfa:5.5.10'
     implementation 'com.itextpdf:itextg:5.5.9'
+    implementation 'de.mindpipe.android:android-logging-log4j:1.0.3'
+    implementation 'log4j:log4j:1.2.17'
 
 
 
