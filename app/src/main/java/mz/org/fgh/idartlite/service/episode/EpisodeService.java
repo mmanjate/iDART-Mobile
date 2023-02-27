@@ -152,7 +152,6 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
         Patient localPatient = patientService.getPatientByUuid(Objects.requireNonNull(episode.get("patientuuid")).toString());
 
         return localPatient == null || patientHasEndingEpisode(localPatient);
-
     }
 
     @Override
