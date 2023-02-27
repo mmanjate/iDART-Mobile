@@ -172,7 +172,7 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
      catch (SQLException e) {
         e.printStackTrace();
     }
-     return patientHasEndingEpisode(localPatient);
+     return localPatient == null || patientHasEndingEpisode(localPatient);
 
     }
 
