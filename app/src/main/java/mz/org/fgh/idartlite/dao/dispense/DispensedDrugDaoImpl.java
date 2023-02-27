@@ -6,6 +6,7 @@ import com.j256.ormlite.table.DatabaseTableConfig;
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
+import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Stock;
 
 
@@ -38,5 +39,10 @@ public class DispensedDrugDaoImpl extends GenericDaoImpl<DispensedDrug, Integer>
     @Override
     public List<DispensedDrug> findDispensedDrugByDispenseId(int id) throws SQLException {
         return queryBuilder().where().eq(DispensedDrug.COLUMN_DISPENSE, id).query();
+    }
+
+    @Override
+    public List<DispensedDrug> getDispensedDrugsByStockAndStock(Drug drug, Stock stock) throws SQLException {
+        return queryBuilder().where().eq(DispensedDrug.COLUMN_DRUG_ID, drug.getId()).and().eq(DispensedDrug.COLUMN_STOCK, stock.getId()).query();
     }
 }

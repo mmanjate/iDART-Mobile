@@ -24,4 +24,6 @@ public interface IDispenseDrugService extends IBaseService<DispensedDrug> {
 
     public void deleteDispensedDrugs(List <DispensedDrug> dispenseDrugs)throws SQLException;
 
+    public Long getDispensedDrugsByStockAndStock(Drug drug, Stock stock) throws SQLException;
+
 }

@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.service.stock;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.IBaseService;
@@ -30,4 +31,6 @@ public interface IStockService extends IBaseService<Stock> {
     public void updateStock(Stock stock) throws SQLException ;
 
     public void saveOrUpdateViaRest(Stock stock) throws SQLException ;
+
+    public List<Stock> getStockListByDates(Drug drug, Date startDate, Date endDate ) throws SQLException ;
 }

@@ -39,8 +39,8 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         init();
     }
 
-    private void init(){
-        try{
+    private void init() {
+        try {
             patientDao = getDataBaseHelper().getPatientDao();
             this.prescriptionService = new PrescriptionService(application, currentUser);
             this.episodeService = new EpisodeService(application, currentUser);
@@ -48,7 +48,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
             this.attributeService = new PatientAttributeService(application, currentUser);
 
 
-        }catch (SQLException sql){
+        } catch (SQLException sql) {
             Log.i("erro ", sql.getMessage());
         }
     }
@@ -69,10 +69,10 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
     }
 
     public List<Patient> searchPatientByParamAndClinic(String param, Clinic clinic, long offset, long limit) throws SQLException {
-        return patientDao.searchPatientByParamAndClinic(param, clinic, offset , limit);
+        return patientDao.searchPatientByParamAndClinic(param, clinic, offset, limit);
     }
 
-    public List<Patient> getALLPatient() throws  SQLException {
+    public List<Patient> getALLPatient() throws SQLException {
         return patientDao.queryForAll();
     }
 
@@ -80,10 +80,10 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         return patientDao.get(application, offset, limit);
     }
 
-    public void  savePatient(Patient patient) throws SQLException {
+    public void savePatient(Patient patient) throws SQLException {
         patientDao.create(patient);
         if (Utilities.listHasElements(patient.getAttributes())) {
-            for (PatientAttribute attribute: patient.getAttributes()) {
+            for (PatientAttribute attribute : patient.getAttributes()) {
                 attributeService.save(attribute);
             }
         }
@@ -120,36 +120,29 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         return result;
     }
 
-    public Patient saveOnPatient(LinkedTreeMap<String, Object> patient) {
+    public Patient saveOnPatient(LinkedTreeMap<String, Object> patient) throws Exception {
 
-        Patient localPatient = null;
-        try {
+        Patient localPatient = setPatientFromRest(patient);
+        savePatient(localPatient);
+        episodeService.saveEpisodeFromRest(patient, localPatient);
+        prescriptionService.saveLastPrescriptionFromRest(patient, localPatient);
 
-            localPatient= setPatientFromRest(patient);
-
-            savePatient(localPatient);
-            episodeService.saveEpisodeFromRest(patient, localPatient);
-            prescriptionService.saveLastPrescriptionFromRest(patient, localPatient);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         return localPatient;
     }
 
 
-
     @Override
     public void updatePatient(Patient patient) throws SQLException {
-      this.getDataBaseHelper().getPatientDao().update(patient);
+        this.getDataBaseHelper().getPatientDao().update(patient);
     }
 
     @Override
     public Patient checkExistsPatientWithNID(String nid) throws SQLException {
-       return getDataBaseHelper().getPatientDao().checkExistsPatientWithNID(nid);
+        return getDataBaseHelper().getPatientDao().checkExistsPatientWithNID(nid);
     }
 
     @Override
-    public List<Patient> getPatientsBetweenStartDateAndEndDate(Application application,Date start, Date end, long offset, long limit) throws SQLException {
+    public List<Patient> getPatientsBetweenStartDateAndEndDate(Application application, Date start, Date end, long offset, long limit) throws SQLException {
 
       /* episodeService = new EpisodeService(application, currentUser);
          List<Episode> startEpisodes=episodeService.getAllStartEpisodesBetweenStartDateAndEndDate(start,end,offset,limit);
@@ -162,19 +155,19 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
         }
         return  patients;*/
 
-      return patientDao.getAllPatientsBetweenStartDateAndEndDate(application,start,end,offset,limit);
+        return patientDao.getAllPatientsBetweenStartDateAndEndDate(application, start, end, offset, limit);
     }
 
     @Override
     public List<Patient> searchPatientByNidOrNameOrSurname(String nid, String name, String surname, long offset, long limit, RestResponseListener listener) throws SQLException {
 
-        List<Patient> patients=new ArrayList<>();
-        patients= patientDao.searchPatientByNidOrNameOrSurname(nid,name,surname,offset,limit);
+        List<Patient> patients = new ArrayList<>();
+        patients = patientDao.searchPatientByNidOrNameOrSurname(nid, name, surname, offset, limit);
 
       /*  if(patients.isEmpty()){
             List<Patient> patients1 = RestPatientService.restGetPatientByNidOrNameOrSurname(nid, name, surname, this);
 */
-         //   }
+        //   }
         return patients;
     }
 
@@ -184,28 +177,19 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
 
         List<Episode> episodes = episodeService.getAllStartEpisodesBetweenStartDateAndEndDate(start, end);
 
-        if (!Utilities.listHasElements(episodes)) return  null;
+        if (!Utilities.listHasElements(episodes)) return null;
 
-        for (Episode episode : episodes){
+        for (Episode episode : episodes) {
             if (!usLits.contains(episode.getSanitaryUnit())) usLits.add(episode.getSanitaryUnit());
         }
         return usLits;
     }
 
     @Override
-    public Patient updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) {
-        Patient localPatient = new Patient();
-        try {
-
-            localPatient= setPatientFromRest(patient);
-
-            updatePatient(localPatient);
-            episodeService.saveEpisodeFromRest(patient, localPatient);
-         //   prescriptionService.saveLastPrescriptionFromRest(patient, localPatient);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public Patient updateOnPatientViaRest(LinkedTreeMap<String, Object> patient) throws Exception {
+        Patient localPatient = setPatientFromRest(patient);
+        updatePatient(localPatient);
+        episodeService.saveEpisodeFromRest(patient, localPatient);
         return localPatient;
     }
 
@@ -220,7 +204,7 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
     public void saveFaltoso(Patient patient) throws SQLException {
         save(patient);
         if (Utilities.listHasElements(patient.getEpisodes())) {
-            for (Episode episode: patient.getEpisodes()) {
+            for (Episode episode : patient.getEpisodes()) {
                 episodeService.save(episode);
             }
         }
@@ -233,18 +217,18 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
     }
 
 
-    public Patient setPatientFromRest(LinkedTreeMap<String, Object> patient){
+    public Patient setPatientFromRest(LinkedTreeMap<String, Object> patient) {
 
         Patient localPatient = null;
         try {
-            localPatient= getPatientByUuid(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
+            localPatient = getPatientByUuid(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        if(localPatient==null){
-          localPatient=new Patient();
-      }
+        if (localPatient == null) {
+            localPatient = new Patient();
+        }
 
 
         try {
@@ -266,12 +250,11 @@ public class PatientService extends BaseService<Patient> implements IPatientServ
             localPatient.setPhone(Objects.requireNonNull(patient.get("cellphone")).toString());
             localPatient.setUuid(Objects.requireNonNull(patient.get("uuidopenmrs")).toString());
 
-            if(patient.get("datainiciotarv") != null)
-                if(!patient.get("datainiciotarv").toString().equalsIgnoreCase("null") &&
+            if (patient.get("datainiciotarv") != null)
+                if (!patient.get("datainiciotarv").toString().equalsIgnoreCase("null") &&
                         !patient.get("datainiciotarv").toString().equalsIgnoreCase("NA") &&
-                            !patient.get("datainiciotarv").toString().equalsIgnoreCase("N/A"))
+                        !patient.get("datainiciotarv").toString().equalsIgnoreCase("N/A"))
                     localPatient.setStartARVDate(getSqlDateFromString(Objects.requireNonNull(patient.get("datainiciotarv")).toString(), "dd MMM yyyy"));
-
 
 
         } catch (SQLException e) {

@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.dao.stock;
 import android.app.Application;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.dao.generic.IGenericDao;
@@ -24,4 +25,6 @@ public interface IStockDao extends IGenericDao<Stock, Integer> {
     List<Stock> getAll(Drug drug) throws SQLException;
 
     Stock getByBatchNumber(Stock stock) throws SQLException;
+
+    public List<Stock> getStockListByDates(Drug drug ,Date startDate, Date endDate) throws SQLException;
 }

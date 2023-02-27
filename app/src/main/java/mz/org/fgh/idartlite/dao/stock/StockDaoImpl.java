@@ -8,6 +8,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.databasehelper.IdartLiteDataBaseHelper;
@@ -75,5 +76,10 @@ public class StockDaoImpl extends GenericDaoImpl<Stock, Integer> implements ISto
     @Override
     public Stock getByBatchNumber(Stock stock) throws SQLException {
         return queryBuilder().where().eq(Stock.COLUMN_BATCH_NUMBER, stock.getBatchNumber()).queryForFirst();
+    }
+
+    @Override
+    public List<Stock> getStockListByDates(Drug drug, Date startDate, Date endDate) throws SQLException {
+        return queryBuilder().where().eq(Stock.COLUMN_DRUG, drug.getId()).and().gt(Stock.COLUMN_DATE_RECEIVED,startDate).and().lt(Stock.COLUMN_DATE_RECEIVED,endDate).query();
     }
 }

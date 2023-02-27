@@ -69,7 +69,7 @@ public class EpisodeVM extends BaseViewModel {
         return new Dispense();
     }
 
-    public boolean patientHasEndingEpisode(Patient patient) {
+    public boolean patientHasEndingEpisode(Patient patient) throws Exception {
         return episodeService.patientHasEndingEpisode(patient);
     }
 

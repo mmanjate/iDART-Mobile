@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.rest.service.Episode;
 
+import static mz.org.fgh.idartlite.savelogs.PathConstant.LOGGER_FILE_PATH;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -15,6 +17,7 @@ import org.json.JSONObject;
 import java.sql.SQLException;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
@@ -24,6 +27,7 @@ import mz.org.fgh.idartlite.model.Episode;
 import mz.org.fgh.idartlite.model.SyncEpisode;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
+import mz.org.fgh.idartlite.savelogs.SaveLogsInStorage;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.episode.EpisodeService;
@@ -132,7 +136,7 @@ public class RestEpisodeService extends BaseRestService {
 
 
     public static void getAllReadyEpisodes(RestResponseListener listener, ServiceWatcher watcher) {
-
+        SaveLogsInStorage log = SaveLogsInStorage.getSaveLoggerInstance(IdartLiteApplication.getInstance().getApplicationContext(), LOGGER_FILE_PATH);
         try {
             clinicService = new ClinicService(getApp(),null);
              episodeService = new EpisodeService(getApp(), null);
@@ -188,7 +192,8 @@ public class RestEpisodeService extends BaseRestService {
                 Log.e(TAG,"Response Servidor Offline");
             }
         } catch ( Exception e) {
-            e.printStackTrace();
+            log.saveErrorLogs(TAG, "Ocorreu um erro ao Buscar Pacientes:  "+e );
+
         }
     }
 

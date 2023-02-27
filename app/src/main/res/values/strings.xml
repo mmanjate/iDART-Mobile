@@ -306,6 +306,15 @@
     <string name="operation_failure">\"Ocorreu um erro ao gravar os dados \"</string>
 
     <string name="dispensas_paciente_fila">Dispensas do Paciente(FILA)</string>
+    <string name="fnm">FNM</string>
+    <string name="entrances">entrances</string>
+    <string name="packs">packs</string>
+    <string name="existing_stock">Stock Existente</string>
+    <string name="expiry_date">Data de Validade</string>
+    <string name="balance">Saldo</string>
+    <string name="batch_number">Lote</string>
+
+
 
     <string name="criar_no_directorio">Created a new directory for PDF</string>
 
@@ -447,6 +456,7 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="total_dispensas">Total Dispensas</string>
     <string name="absent_patients_report">Pacientes Faltosos no Periodo</string>
     <string name="active_patients_report">Pacientes Activos  no Periodo</string>
+    <string name="stock_list_report">Lista de Stock</string>
     <string name="date_missed">Data que faltou ao Levantamento</string>
     <string name="remove_dispense">Remover Dispensa</string>
     <string name="days_missed">Numero de Dias que faltou</string>

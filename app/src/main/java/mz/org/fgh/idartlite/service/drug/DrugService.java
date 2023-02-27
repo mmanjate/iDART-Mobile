@@ -6,15 +6,21 @@ import com.google.gson.internal.LinkedTreeMap;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Form;
+import mz.org.fgh.idartlite.model.Stock;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.model.inventory.Iventory;
+import mz.org.fgh.idartlite.service.dispense.DispenseDrugService;
+import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.model.DrugReportModel;
+import mz.org.fgh.idartlite.model.StockReportModel;
 
 import static java.util.Objects.requireNonNull;
 
@@ -22,6 +28,7 @@ public class DrugService extends BaseService<Drug> implements IDrugService {
 
     protected DiseaseTypeService diseaseTypeService = new DiseaseTypeService(getApplication(), null);
     protected FormService formService = new FormService(getApplication(), null);
+    protected DispenseDrugService dispenseDrugService = new DispenseDrugService(getApplication());
 
     public DrugService(Application application, User currentUser) {
         super(application, currentUser);
@@ -51,7 +58,7 @@ public class DrugService extends BaseService<Drug> implements IDrugService {
 
     public List<Drug> getAllByTherapeuticRegimen(TherapeuticRegimen therapeuticRegimen) throws SQLException {
 
-        return  getDataBaseHelper().getDrugDao().getAllByTherapeuticRegimen(getApplication(),therapeuticRegimen);
+        return getDataBaseHelper().getDrugDao().getAllByTherapeuticRegimen(getApplication(), therapeuticRegimen);
     }
 
     public Drug getDrugByFNMCode(String code) throws SQLException {
@@ -129,26 +136,54 @@ public class DrugService extends BaseService<Drug> implements IDrugService {
 
     public List<Drug> getDrugsWithoutRectParanthesis(List<Drug> drugs) throws SQLException {
 
-        List<Drug> newDrugs=new ArrayList<>();
-        for (Drug drug:drugs)
-        {
-            drug.setDescription(drug.getDescription().replace("[","").replace("]",""));
+        List<Drug> newDrugs = new ArrayList<>();
+        for (Drug drug : drugs) {
+            drug.setDescription(drug.getDescription().replace("[", "").replace("]", ""));
             newDrugs.add(drug);
         }
         return newDrugs;
 
     }
 
-    public List<Drug> getAllWithLote() throws SQLException{
+    public List<Drug> getAllWithLote() throws SQLException {
         return getDataBaseHelper().getDrugDao().getAllWithLote(getApplication());
     }
 
-    public List<Drug> getAllDestroyedDrugs() throws SQLException{
+    public List<Drug> getAllDestroyedDrugs() throws SQLException {
         return getDataBaseHelper().getDrugDao().getAllDestroyedDrugs(getApplication());
     }
 
     @Override
     public List<Drug> getAllOnInventory(Iventory iventory) throws SQLException {
         return getDataBaseHelper().getDrugDao().getAllOnInventory(iventory, getApplication());
+    }
+
+    @Override
+    public List<DrugReportModel> getAllWithLoteAndNotExpired(Date startDate, Date endDate) throws SQLException {
+        List<DrugReportModel> listaReportModel = new ArrayList<>();
+        List<Drug> listDrugs = getDataBaseHelper().getDrugDao().getAllWithLoteAndNotExpired(getApplication());
+        for (Drug drug : listDrugs) {
+            List<StockReportModel> stockReportList = new ArrayList<>();
+            DrugReportModel drugRM = new DrugReportModel();
+            drugRM.setDrugName(drug.getDescription());
+            drugRM.setFnm(drug.getFnmcode());
+            int stockActual = 0;
+            List<Stock> listaStock = getDataBaseHelper().getStockDao().getStockListByDates(drug, startDate, endDate);
+            for (Stock stock : listaStock) {
+                StockReportModel stockRm = new StockReportModel();
+                stockRm.setEntranceQtd(String.valueOf(stock.getUnitsReceived()));
+                stockRm.setExistingStock(String.valueOf(stock.getStockMoviment()));
+                stockRm.setBatchNumber(stock.getBatchNumber());
+                stockRm.setExpiryDate(DateUtilities.formatToDDMMYYYY(stock.getValidate()));
+                Long dispensedQtd = dispenseDrugService.getDispensedDrugsByStockAndStock(drug, stock);
+                stockRm.setDispenseQtd(String.valueOf(dispensedQtd));
+                stockActual += stock.getStockMoviment();
+                stockReportList.add(stockRm);
+            }
+            drugRM.setBalance(String.valueOf(stockActual));
+            drugRM.setStockReportList(stockReportList);
+            listaReportModel.add(drugRM);
+        }
+        return listaReportModel;
     }
 }
