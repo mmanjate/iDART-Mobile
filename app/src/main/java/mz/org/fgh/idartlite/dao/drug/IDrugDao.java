@@ -28,4 +28,6 @@ public interface IDrugDao extends IGenericDao<Drug, Integer> {
     List<Drug> getAllDestroyedDrugs(Application application) throws SQLException;
 
     List<Drug> getAllOnInventory(Iventory iventory, Application application) throws SQLException;
+
+    List<Drug> getAllWithLoteAndNotExpired(Application application) throws SQLException;
 }

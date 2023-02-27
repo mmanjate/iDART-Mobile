@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.service.stock;
 import android.app.Application;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.model.BaseModel;
@@ -87,6 +88,10 @@ public class StockService extends BaseService<Stock> implements IStockService {
     @Override
     public void saveOrUpdateViaRest(Stock stock) throws SQLException {
         getDataBaseHelper().getStockDao().createOrUpdate(stock);
+    }
+
+    public List<Stock> getStockListByDates(Drug drug, Date startDate, Date endDate) throws SQLException {
+        return getDataBaseHelper().getStockDao().getStockListByDates(drug,startDate,endDate);
     }
 
 }

@@ -89,9 +89,13 @@ public class EpisodeFragment extends GenericFragment implements IListbleDialogLi
                 public void onClick(View view) {
 
 
-                    if(getRelatedViewModel().patientHasEndingEpisode(getSelectedPatient())){
-                        Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"Nao pode Criar um novo episodio para o paciente uma vez que ele ja tem um episodio de fim").show();
-                        return;
+                    try {
+                        if(getRelatedViewModel().patientHasEndingEpisode(getSelectedPatient())){
+                            Utilities.displayAlertDialog(EpisodeFragment.this.getContext(),"Nao pode Criar um novo episodio para o paciente uma vez que ele ja tem um episodio de fim").show();
+                            return;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     Intent intent = new Intent(getContext(), EpisodeActivity.class);

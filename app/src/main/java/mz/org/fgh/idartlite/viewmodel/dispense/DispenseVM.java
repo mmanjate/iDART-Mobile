@@ -341,7 +341,12 @@ public class DispenseVM extends BaseViewModel {
     }
 
     public String patientHasEndingEpisode() {
-        boolean hasEndingEpisode = this.episodeService.patientHasEndingEpisode(getDispense().getPrescription().getPatient());
+        boolean hasEndingEpisode = false;
+        try {
+            hasEndingEpisode = this.episodeService.patientHasEndingEpisode(getDispense().getPrescription().getPatient());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (hasEndingEpisode) {
             return getRelatedActivity().getString(R.string.dispense_has_final_episode_cant_be_edit);
         }
@@ -349,7 +354,12 @@ public class DispenseVM extends BaseViewModel {
     }
 
     public boolean patientHasEpisodioFim(Patient patient) {
-        return this.episodeService.patientHasEndingEpisode(patient);
+        try {
+            return this.episodeService.patientHasEndingEpisode(patient);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
         public String dispenseCanBeReturned()  {

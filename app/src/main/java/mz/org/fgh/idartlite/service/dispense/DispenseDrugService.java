@@ -73,5 +73,13 @@ public class DispenseDrugService extends BaseService<DispensedDrug> implements I
         getDataBaseHelper().getDispensedDrugDao().delete(dispenseDrugs);
     }
 
-
+    @Override
+    public Long getDispensedDrugsByStockAndStock(Drug drug, Stock stock) throws SQLException {
+        List<DispensedDrug> listDispenses = getDataBaseHelper().getDispensedDrugDao().getDispensedDrugsByStockAndStock(drug, stock);
+        long total = 0;
+        for(DispensedDrug d : listDispenses) {
+            total +=d.getQuantitySupplied();
+        }
+        return total;
+    }
 }

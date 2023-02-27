@@ -179,6 +179,7 @@ public class ReportTypeActivity extends BaseActivity {
         reports.add(Report.fastCreate("017", "Relatorio de Pacientes identificadas como Gravidas", R.drawable.ic_list, PregnantPatientReportActivity.class,createParams(ClinicInformation.CLINIC_INFO_STATUS, ClinicInformation.PREGNANT_STATUS_POSITIVE)));
         reports.add(Report.fastCreate("018", "Relatorio Estatistico de Dispensas por Tipo de Dispensa e Regime", R.drawable.ic_list, DispenseByDispenseTypeReportActivity.class));
         reports.add(Report.fastCreate("019", "Relatorio de pacientes activos na farmacia", R.drawable.ic_list, ActivePatientsReportActivity.class));
+        reports.add(Report.fastCreate("020", "Relatorio de Lista Stock", R.drawable.ic_list, StockListReportActivity.class));
 
         return reports;
     }

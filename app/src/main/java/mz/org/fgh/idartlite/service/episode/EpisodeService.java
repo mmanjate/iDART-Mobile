@@ -21,14 +21,14 @@ import mz.org.fgh.idartlite.util.DateUtilities;
 
 import static mz.org.fgh.idartlite.util.DateUtilities.getSqlDateFromString;
 
-public class EpisodeService extends BaseService<Episode> implements IEpisodeService{
+public class EpisodeService extends BaseService<Episode> implements IEpisodeService {
 
     protected PatientService patientService;
     protected ClinicService clinicService;
 
     public EpisodeService(Application application, User currUser) {
         super(application, currUser);
-       // this.patientService = new PatientService(getApp(), currUser);
+        // this.patientService = new PatientService(getApp(), currUser);
     }
 
     public EpisodeService(Application application) {
@@ -45,15 +45,15 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
         udpateEpisode(record);
     }
 
-    public List<Episode> getAllEpisodesByPatient(Patient patient) throws SQLException{
+    public List<Episode> getAllEpisodesByPatient(Patient patient) throws SQLException {
         return getDataBaseHelper().getEpisodeDao().getAllByPatient(patient);
     }
 
-    public Episode getLatestByPatient(Patient patient) throws SQLException{
+    public Episode getLatestByPatient(Patient patient) throws Exception {
         return getDataBaseHelper().getEpisodeDao().getLatestByPatient(patient);
     }
 
-    public Episode findEpisodeWithStopReasonByPatient(Patient patient) throws SQLException {
+    public Episode findEpisodeWithStopReasonByPatient(Patient patient) throws Exception {
         return getDataBaseHelper().getEpisodeDao().findEpisodeWithStopReasonByPatient(patient);
     }
 
@@ -61,56 +61,45 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
     public void createEpisode(Episode episode) throws SQLException {
         getDataBaseHelper().getEpisodeDao().create(episode);
     }
+
     public void udpateEpisode(Episode episode) throws SQLException {
         getDataBaseHelper().getEpisodeDao().update(episode);
     }
+
     public void deleteEpisode(Episode episode) throws SQLException {
         getDataBaseHelper().getEpisodeDao().delete(episode);
     }
 
-    public void saveEpisodeFromRest(LinkedTreeMap<String, Object> patient, Patient localPatient) {
+    public void saveEpisodeFromRest(LinkedTreeMap<String, Object> patient, Patient localPatient) throws Exception {
 
-        try {
+        Date dataEpisodio = getSqlDateFromString(Objects.requireNonNull(patient.get("prescriptiondate")).toString(), "yyyy-MM-dd'T'HH:mm:ss");
+        Episode episode = getLatestByPatient(localPatient);
+        if (episode != null) {
+            assert dataEpisodio != null;
+            if (episode.getStartReason() == null)
+                episode.setStartReason("");
 
-            Date dataEpisodio = getSqlDateFromString(Objects.requireNonNull(patient.get("prescriptiondate")).toString(), "yyyy-MM-dd'T'HH:mm:ss");
-
-            Episode episode = getLatestByPatient(localPatient);
-
-            if(episode != null){
-                assert dataEpisodio != null;
-                if(episode.getStartReason() == null)
-                    episode.setStartReason("");
-
-                if((int) DateUtilities.dateDiff(dataEpisodio, episode.getEpisodeDate(), DateUtilities.DAY_FORMAT) > 0 && !episode.getStartReason().equalsIgnoreCase("Referido De")) {
-                    buildEpisode(patient,localPatient,dataEpisodio);
-                }else{
-                    episode.setEpisodeDate(dataEpisodio);
-                    episode.setPatient(localPatient);
-                    episode.setSanitaryUnit(Objects.requireNonNull(patient.get("mainclinicname")).toString());
-                    episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
-                    episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
-                    udpateEpisode(episode);
-                }
-            }else{
+            if ((int) DateUtilities.dateDiff(dataEpisodio, episode.getEpisodeDate(), DateUtilities.DAY_FORMAT) > 0 && !episode.getStartReason().equalsIgnoreCase("Referido De")) {
                 buildEpisode(patient, localPatient, dataEpisodio);
+            } else {
+                episode.setEpisodeDate(dataEpisodio);
+                episode.setPatient(localPatient);
+                episode.setSanitaryUnit(Objects.requireNonNull(patient.get("mainclinicname")).toString());
+                episode.setUsUuid(Objects.requireNonNull(patient.get("mainclinicuuid")).toString());
+                episode.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+                udpateEpisode(episode);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            buildEpisode(patient, localPatient, dataEpisodio);
         }
     }
 
-    public boolean patientHasEndingEpisode(Patient patient){
-        Episode episode = null;
+    public boolean patientHasEndingEpisode(Patient patient) throws Exception  {
+        Episode episode =this.getLatestByPatient(patient);
         boolean result = false;
-        try {
-            episode=this.getLatestByPatient(patient);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        if(episode != null){
-            if(episode.getStopReason()!=null){
+        if (episode != null) {
+            if (episode.getStopReason() != null) {
                 result = true;
             }
         }
@@ -120,15 +109,13 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
 
     public List<Episode> getAllByStatus(String status) throws SQLException {
 
-     return   getDataBaseHelper().getEpisodeDao().getAllByStatus(status);
+        return getDataBaseHelper().getEpisodeDao().getAllByStatus(status);
     }
 
 
-    public void saveOnEpisodeEnding(LinkedTreeMap<String, Object> episode) {
+    public void saveOnEpisodeEnding(LinkedTreeMap<String, Object> episode) throws Exception {
 
         Episode localEpisode = new Episode();
-        try {
-
             this.patientService = new PatientService(getApp(), null);
             this.clinicService = new ClinicService(getApp(), null);
             Patient localPatient = patientService.getPatientByUuid(Objects.requireNonNull(episode.get("patientuuid")).toString());
@@ -136,7 +123,7 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
             Episode lastEpisode = getLatestByPatient(localPatient);
             Date inputEpisodeData = getSqlDateFromString(Objects.requireNonNull(episode.get("startdate")).toString(), "yyyy-MM-dd'T'HH:mm:ss");
 
-            if((int) DateUtilities.dateDiff(inputEpisodeData, lastEpisode.getEpisodeDate(), DateUtilities.DAY_FORMAT) > 0) {
+            if ((int) DateUtilities.dateDiff(inputEpisodeData, lastEpisode.getEpisodeDate(), DateUtilities.DAY_FORMAT) > 0) {
 
                 localEpisode.setPatient(localPatient);
                 localEpisode.setSanitaryUnit(getLatestByPatient(localPatient).getSanitaryUnit());
@@ -158,32 +145,24 @@ public class EpisodeService extends BaseService<Episode> implements IEpisodeServ
                 createEpisode(localEpisode);
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    public boolean checkEpisodeExists(LinkedTreeMap<String, Object> episode){
-       Patient localPatient=null;
+    public boolean checkEpisodeExists(LinkedTreeMap<String, Object> episode) throws Exception {
         this.patientService = new PatientService(getApp(), null);
-        try {
-             localPatient = patientService.getPatientByUuid(Objects.requireNonNull(episode.get("patientuuid")).toString());
-        }
-     catch (SQLException e) {
-        e.printStackTrace();
-    }
-     return patientHasEndingEpisode(localPatient);
+        Patient localPatient = patientService.getPatientByUuid(Objects.requireNonNull(episode.get("patientuuid")).toString());
+
+        return localPatient == null || patientHasEndingEpisode(localPatient);
 
     }
 
     @Override
-    public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end,long limit,long offset) throws SQLException {
-        return getDataBaseHelper().getEpisodeDao().getAllStartEpisodesBetweenStartDateAndEndDate(start,end,limit,offset);
+    public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end, long limit, long offset) throws SQLException {
+        return getDataBaseHelper().getEpisodeDao().getAllStartEpisodesBetweenStartDateAndEndDate(start, end, limit, offset);
     }
 
     @Override
     public List<Episode> getAllStartEpisodesBetweenStartDateAndEndDate(Date start, Date end) throws SQLException {
-        return getDataBaseHelper().getEpisodeDao().getAllStartEpisodesBetweenStartDateAndEndDate(start,end);
+        return getDataBaseHelper().getEpisodeDao().getAllStartEpisodesBetweenStartDateAndEndDate(start, end);
     }
 
     public void buildEpisode(LinkedTreeMap<String, Object> patient, Patient localPatient, Date dataEpisodio) throws SQLException {

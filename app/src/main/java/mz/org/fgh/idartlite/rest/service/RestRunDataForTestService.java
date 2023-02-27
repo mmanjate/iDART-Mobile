@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
 import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.rest.ServiceWatcher;
@@ -33,6 +34,7 @@ import mz.org.fgh.idartlite.rest.service.Regimen.RestTherapeuticRegimenService;
 import mz.org.fgh.idartlite.rest.service.Stock.RestStockService;
 import mz.org.fgh.idartlite.rest.service.TherapeuticLine.RestTherapeuticLineService;
 import mz.org.fgh.idartlite.rest.service.clinic.RestPharmacyTypeService;
+import mz.org.fgh.idartlite.savelogs.SaveLogsInStorage;
 import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicSectorService;
@@ -53,11 +55,12 @@ import mz.org.fgh.idartlite.util.Utilities;
 
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_1_ID;
 import static mz.org.fgh.idartlite.base.application.IdartLiteApplication.CHANNEL_2_ID;
+import static mz.org.fgh.idartlite.savelogs.PathConstant.LOGGER_FILE_PATH;
 
 public class RestRunDataForTestService extends BaseRestService implements RestResponseListener {
 
     private List<ServiceWatcher> serviceWatcherList;
-
+    private static final String TAG = "RestRunDataForTestService";
 
     private NotificationManagerCompat notificationManager;
 
@@ -86,6 +89,7 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
     }
 
     public void runDataSync() {
+        SaveLogsInStorage log = SaveLogsInStorage.getSaveLoggerInstance(IdartLiteApplication.getInstance().getApplicationContext(), LOGGER_FILE_PATH);
         IDispenseService dispenseService = new DispenseService(application, currentUser);
         IStockService stockService = new StockService(application, currentUser);
         IEpisodeService episodeService = new EpisodeService(application, currentUser);
@@ -132,7 +136,7 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
                     }
                 }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.saveErrorLogs(TAG, "Ocorreu um erro ao Buscar Pacientes: "+e );
         }
 
         try {
@@ -192,8 +196,8 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
                         }
                     }
                 }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception  e) {
+            log.saveErrorLogs(TAG, "Ocorreu um erro ao Buscar Pacientes: \n "+e );
         }
 
         try {

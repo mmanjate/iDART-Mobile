@@ -1,12 +1,14 @@
 package mz.org.fgh.idartlite.service.drug;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.TherapeuticRegimen;
 import mz.org.fgh.idartlite.model.inventory.Iventory;
+import mz.org.fgh.idartlite.model.DrugReportModel;
 
 
 public interface IDrugService extends IBaseService<Drug> {
@@ -33,4 +35,6 @@ public interface IDrugService extends IBaseService<Drug> {
 
 
     List<Drug> getAllOnInventory(Iventory iventory) throws SQLException;
+
+    List<DrugReportModel> getAllWithLoteAndNotExpired(Date startDate, Date endDate) throws SQLException;
 }

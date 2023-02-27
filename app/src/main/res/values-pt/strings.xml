@@ -426,6 +426,14 @@ Se a reacção adversa for grave, referir o paciente para a US. </string>
     <string name="awaiting_patients_report">Pacientes Esperados no Periodo</string>
     <string name="absent_patients_report">Pacientes Faltosos no Periodo</string>
     <string name="active_patients_report">Pacientes Activos no Periodo</string>
+    <string name="stock_list_report">Lista de Stock</string>
+    <string name="fnm">FNM</string>
+    <string name="entrances">entrances</string>
+    <string name="packs">packs</string>
+    <string name="existing_stock">Stock Existente</string>
+    <string name="expiry_date">Data de Validade</string>
+    <string name="balance">Saldo</string>
+    <string name="batch_number">Lote</string>
 
     <string name="date_missed">Data que faltou ao Levantamento</string>
 
