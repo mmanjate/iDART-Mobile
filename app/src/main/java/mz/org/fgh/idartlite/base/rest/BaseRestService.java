@@ -109,7 +109,7 @@ public abstract class BaseRestService {
         return app;
     }
 
-    protected static String generateErrorMsg(VolleyError error){
+    public static String generateErrorMsg(VolleyError error){
         if (error instanceof NetworkError) {
             return "A network error as occured ";
         } else if (error instanceof ServerError) {

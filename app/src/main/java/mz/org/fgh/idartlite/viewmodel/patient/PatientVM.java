@@ -1,24 +1,31 @@
 package mz.org.fgh.idartlite.viewmodel.patient;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.gson.internal.LinkedTreeMap;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.BR;
 import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
 import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.service.IBaseService;
 import mz.org.fgh.idartlite.base.viewModel.SearchVM;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.patient.PatientAttribute;
 import mz.org.fgh.idartlite.model.patient.Patient;
+import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.rest.service.Patient.RestPatientService;
 import mz.org.fgh.idartlite.searchparams.AbstractSearchParams;
 import mz.org.fgh.idartlite.searchparams.PatientSearchParams;
@@ -38,6 +45,7 @@ public class PatientVM extends SearchVM<Patient> {
     private IPatientService patientService;
     private IEpisodeService episodeService;
     private IPatientAttributeService attributeService;
+    public static final String TAG = "PatientVM";
 
     public PatientVM(@NonNull Application application) {
         super(application);
@@ -77,6 +85,53 @@ public class PatientVM extends SearchVM<Patient> {
 
     @Override
     public void initSearch(){
+        if (getCurrentClinicSector().getClinicSectorType().getCode().contains("PROVEDOR")) {
+            String url = BaseRestService.baseUrl + "/sync_temp_check_loading?mainclinicuuid=eq." +getCurrentClinic().getUuid();
+
+            RESTServiceHandler handler = new RESTServiceHandler();
+            handler.addHeader("Content-Type", "Application/json");
+            handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
+                @Override
+                public void onResponse(Object[] loadingStatusList) {
+
+                    if (loadingStatusList.length > 0) {
+                        for (Object loading : loadingStatusList) {
+                            Log.i(TAG, "onResponse: " + loading);
+                            try {
+                                LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) loading;
+                                Boolean isLoading = itemresult.get("isloading") != null ? Boolean.valueOf(itemresult.get("isloading").toString()) : null;
+                                if (isLoading != null) {
+                                    if (isLoading) {
+                                      issueNotification("O carregamento de pacientes ainda está em curso.", IdartLiteApplication.CHANNEL_1_ID, false);
+
+                                    } else {
+                                        doSearch();
+                                      //  Log.i(TAG, "NAO ESTA em CARREGAMENTOO...");
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                continue;
+                            }
+                        }
+                    } else
+                        Log.w(TAG, "Response Sem Info." + loadingStatusList.length);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("Response", BaseRestService.generateErrorMsg(error));
+                }
+            });
+
+        }
+
+
+
+    }
+
+    private void doSearch() {
         if(!Utilities.stringHasValue(getSearchParams().getSearchParam())) {
             Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.nid_or_name_is_mandatory)).show();
         }else {

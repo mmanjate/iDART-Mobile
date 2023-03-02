@@ -2,6 +2,7 @@ package mz.org.fgh.idartlite.view.patientSearch;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,20 +16,23 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.gson.internal.LinkedTreeMap;
 
 import mz.org.fgh.idartlite.R;
 import mz.org.fgh.idartlite.adapter.recyclerview.patient.ContentListPatientAdapter;
 import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
+import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivitySearchPatientBinding;
 import mz.org.fgh.idartlite.listener.recyclerView.ClickListener;
 import mz.org.fgh.idartlite.listener.recyclerView.IOnLoadMoreListener;
 import mz.org.fgh.idartlite.model.Clinic;
-import mz.org.fgh.idartlite.model.patient.Patient;
+import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.view.about.AboutActivity;
-import mz.org.fgh.idartlite.view.patientPanel.PatientPanelActivity;
 import mz.org.fgh.idartlite.viewmodel.patient.PatientVM;
 
 public class SearchPatientActivity extends BaseActivity {
@@ -37,12 +41,54 @@ public class SearchPatientActivity extends BaseActivity {
     private RecyclerView recyclerPatient;
     private ActivitySearchPatientBinding searchPatientBinding;
     private ContentListPatientAdapter adapter;
-
+    public static final String TAG = "SearchPatientActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchPatientBinding = DataBindingUtil.setContentView(this, R.layout.activity_search_patient);
         searchPatientBinding.setViewModel(getRelatedViewModel());
+
+        if (getRelatedViewModel().getCurrentClinicSector().getClinicSectorType().getCode().contains("PROVEDOR")) {
+            String url = BaseRestService.baseUrl + "/sync_temp_check_loading?mainclinicuuid=eq." + getRelatedViewModel().getCurrentClinic().getUuid();
+
+            RESTServiceHandler handler = new RESTServiceHandler();
+            handler.addHeader("Content-Type", "Application/json");
+            handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
+                @Override
+                public void onResponse(Object[] loadingStatusList) {
+
+                    if (loadingStatusList.length > 0) {
+                        for (Object loading : loadingStatusList) {
+                            Log.i(TAG, "onResponse: " + loading);
+                            try {
+                                LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) loading;
+                                Boolean isLoading = itemresult.get("isloading") != null ? Boolean.valueOf(itemresult.get("isloading").toString()) : null;
+                                if (isLoading != null) {
+                                    if (isLoading) {
+                                        getRelatedViewModel().issueNotification("O carregamento de pacientes ainda está em curso.", IdartLiteApplication.CHANNEL_1_ID, false);
+
+                                    } else {
+                                        getRelatedViewModel().issueNotification("Carregamento de pacientes Terminado.", IdartLiteApplication.CHANNEL_1_ID, false);
+
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                continue;
+                            }
+                        }
+                    } else
+                        Log.w(TAG, "Response Sem Info." + loadingStatusList.length);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("Response", BaseRestService.generateErrorMsg(error));
+                }
+            });
+
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -140,8 +186,6 @@ public class SearchPatientActivity extends BaseActivity {
             });
         }
     }
-
-
 
     private void nextActivity(int position) {
         getRelatedViewModel().goToPatientPanel(getRelatedViewModel().getSearchResults().get(position));
