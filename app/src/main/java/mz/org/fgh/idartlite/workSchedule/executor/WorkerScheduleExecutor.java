@@ -24,10 +24,11 @@ import mz.org.fgh.idartlite.workSchedule.work.get.PatientWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetConfigWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetEpisodeWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetLastUSDispenseWorker;
+import mz.org.fgh.idartlite.workSchedule.work.get.RestGetLoadingStatusWorker;
 import mz.org.fgh.idartlite.workSchedule.work.get.RestGetPatientDispensationWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.get.StockWorker;
-import mz.org.fgh.idartlite.workSchedule.work.patch.RestPatchStockConfigWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.patch.RestPacthPatientWorker;
+import mz.org.fgh.idartlite.workSchedule.work.patch.RestPatchStockConfigWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostNewPatientWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostPatientDataWorkerScheduler;
 import mz.org.fgh.idartlite.workSchedule.work.post.RestPostStockWorkerScheduler;
@@ -284,6 +285,23 @@ public class WorkerScheduleExecutor {
         workManager.enqueue(periodicEpisodeDataWorkRequest);
     }
 
+
+    public void initCheckLoadingTaskWork() {
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        PeriodicWorkRequest periodicConfigDataWorkRequest = new PeriodicWorkRequest.Builder(RestGetLoadingStatusWorker.class,5, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .setInitialDelay(1,TimeUnit.MINUTES)
+                .addTag("ONE_TIME_CHECK_LOADING_ID" + JOB_ID)
+                .build();
+
+        workManager.enqueue(periodicConfigDataWorkRequest);
+    }
+
+
     public void runOneTimePatientSync(boolean fullLoad) {
         Data inputData = new Data.Builder()
                 .putBoolean("isFullLoad", fullLoad)
@@ -298,6 +316,14 @@ public class WorkerScheduleExecutor {
     public void runOneStockAlert() {
         OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(StockAlertWorker.class).addTag("ONE_TIME_STOCK_ALERT_ID" + ONE_TIME_REQUEST_JOB_ID).build();
         if (!Utilities.isWorkScheduled("ONE_TIME_STOCK_ALERT_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("NEW_STOCK_ALERT_ID " + JOB_ID, workManager)) {
+            workManager.enqueue(request);
+        }
+    }
+
+
+    public void runOneCheckLoadingSync() {
+        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(RestGetLoadingStatusWorker.class).addTag("ONE_TIME_CHECK_LOADING_ID" + ONE_TIME_REQUEST_JOB_ID).build();
+        if (!Utilities.isWorkScheduled("ONE_TIME_CHECK_LOADING_ID" + ONE_TIME_REQUEST_JOB_ID, workManager) && !Utilities.isWorkRunning("ONE_TIME_CHECK_LOADING_ID " + JOB_ID, workManager)) {
             workManager.enqueue(request);
         }
     }
@@ -363,6 +389,7 @@ public class WorkerScheduleExecutor {
             this.runOneTimeDataSync();
             this.runOneTimeDispenseSync();
             this.runOneTimeUSDispensesSync();
+            this.runOneCheckLoadingSync();
         }
     }
 }

@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import mz.org.fgh.idartlite.model.DiseaseType;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.PharmacyType;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
-import mz.org.fgh.idartlite.service.settings.AppSettingsService;
 import mz.org.fgh.idartlite.service.splash.ISplashService;
 import mz.org.fgh.idartlite.service.splash.SplashService;
 import mz.org.fgh.idartlite.service.stock.IStockAlertService;
@@ -38,7 +35,6 @@ import mz.org.fgh.idartlite.service.stock.StockAlertService;
 import mz.org.fgh.idartlite.util.Utilities;
 import mz.org.fgh.idartlite.view.login.LoginActivity;
 import mz.org.fgh.idartlite.view.splash.SplashActivity;
-import mz.org.fgh.idartlite.workSchedule.executor.WorkerScheduleExecutor;
 
 public class SplashVM extends BaseViewModel implements RestResponseListener<Clinic> {
 
@@ -140,7 +136,7 @@ public class SplashVM extends BaseViewModel implements RestResponseListener<Clin
         workerScheduleExecutor.initPostNewPatientDataTaskWork();
         workerScheduleExecutor.initStockAlertTaskWork();
         workerScheduleExecutor.initPatientUSDispenseTaskWork();
-    }
+        }
 
     public void requestConfiguration() {
         getRelatedActivity().requestCentralServerSettings();
