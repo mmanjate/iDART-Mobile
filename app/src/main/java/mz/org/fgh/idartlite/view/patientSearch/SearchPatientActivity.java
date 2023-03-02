@@ -68,7 +68,8 @@ public class SearchPatientActivity extends BaseActivity {
                                         getRelatedViewModel().issueNotification("O carregamento de pacientes ainda está em curso.", IdartLiteApplication.CHANNEL_1_ID, false);
 
                                     } else {
-                                        Log.i(TAG, "NAO ESTA em CARREGAMENTOO...");
+                                        getRelatedViewModel().issueNotification("Carregamento de pacientes Terminado.", IdartLiteApplication.CHANNEL_1_ID, false);
+
                                     }
                                 }
                             } catch (Exception e) {
