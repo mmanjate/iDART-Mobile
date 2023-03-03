@@ -4,6 +4,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import mz.org.fgh.idartlite.dao.generic.GenericDaoImpl;
 import mz.org.fgh.idartlite.model.User;
@@ -33,5 +34,9 @@ public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements IUserD
 
     public User getByCredentials(User user) throws SQLException {
         return queryBuilder().where().eq(User.COLUMN_USER_NAME, user.getUserName()).and().eq(User.COLUMN_PASSWORD, Utilities.MD5Crypt(user.getPassword())).query().get(0);
+    }
+
+    public List<User> getAllUsers() throws SQLException {
+        return queryForAll();
     }
 }

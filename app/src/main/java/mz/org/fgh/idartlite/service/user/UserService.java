@@ -3,6 +3,7 @@ package mz.org.fgh.idartlite.service.user;
 import android.app.Application;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import mz.org.fgh.idartlite.base.service.BaseService;
 import mz.org.fgh.idartlite.dao.user.IUserDao;
@@ -77,5 +78,10 @@ public class UserService extends BaseService<User> implements IUserService {
         }
         return null;
     }
+
+    public List<User> getAllUsers() throws SQLException {
+        return userDao.getAllUsers();
+    }
+
 
 }

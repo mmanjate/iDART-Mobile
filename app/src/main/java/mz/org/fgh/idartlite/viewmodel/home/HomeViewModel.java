@@ -35,9 +35,11 @@ public class HomeViewModel extends BaseViewModel {
 
     @Override
     protected BaseModel initRecord() {
-        if (!Utilities.isWorkScheduled("ONE_TIME_CHECK_LOADING_ID" + ONE_TIME_REQUEST_JOB_ID,  WorkManager.getInstance(getApplication().getApplicationContext())) && !Utilities.isWorkRunning("ONE_TIME_CHECK_LOADING_ID " + JOB_ID, WorkManager.getInstance(getApplication().getApplicationContext()))) {
-            this.workerScheduleExecutor = WorkerScheduleExecutor.getInstance(getApplication().getApplicationContext(), getCurrentClinic(), getSystemSettings());
-            this.workerScheduleExecutor.initCheckLoadingTaskWork();
+        if ( getCurrentClinicSector()!=null &&  getCurrentClinicSector().getClinicSectorType().getCode().contains("PROVEDOR")) {
+            if (!Utilities.isWorkScheduled("ONE_TIME_CHECK_LOADING_ID" + ONE_TIME_REQUEST_JOB_ID, WorkManager.getInstance(getApplication().getApplicationContext())) && !Utilities.isWorkRunning("ONE_TIME_CHECK_LOADING_ID " + JOB_ID, WorkManager.getInstance(getApplication().getApplicationContext()))) {
+                this.workerScheduleExecutor = WorkerScheduleExecutor.getInstance(getApplication().getApplicationContext(), getCurrentClinic(), getSystemSettings());
+                this.workerScheduleExecutor.initCheckLoadingTaskWork();
+            }
         }
         return null;
     }

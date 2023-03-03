@@ -129,24 +129,24 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
             stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_READY);
             if (stockList != null)
                 if (stockList.size() > 0) {
-                    serviceWatcherList.get(serviceWatcherList.size()-1).setServiceAsRunning();
+                    serviceWatcherList.get(serviceWatcherList.size() - 1).setServiceAsRunning();
 
                     for (Stock stock : stockList) {
-                        RestStockService.restPostStock(stock, serviceWatcherList.get(serviceWatcherList.size()-1), RestRunDataForTestService.this);
+                        RestStockService.restPostStock(stock, serviceWatcherList.get(serviceWatcherList.size() - 1), RestRunDataForTestService.this);
                     }
                 }
         } catch (SQLException e) {
-            log.saveErrorLogs(TAG, "Ocorreu um erro ao Buscar Pacientes: "+e );
+            log.saveErrorLogs(TAG, "Ocorreu um erro ao Buscar Pacientes: " + e);
         }
 
         try {
             stockList = stockService.getStockByStatus(BaseModel.SYNC_SATUS_UPDATED);
             if (stockList != null)
                 if (stockList.size() > 0) {
-                    serviceWatcherList.get(serviceWatcherList.size()-1).setServiceAsRunning();
+                    serviceWatcherList.get(serviceWatcherList.size() - 1).setServiceAsRunning();
 
                     for (Stock stock : stockList) {
-                        RestStockService.restGetAndPatchStockLevel(stock, serviceWatcherList.get(serviceWatcherList.size()-1), RestRunDataForTestService.this);
+                        RestStockService.restGetAndPatchStockLevel(stock, serviceWatcherList.get(serviceWatcherList.size() - 1), RestRunDataForTestService.this);
                     }
                 }
         } catch (SQLException e) {
@@ -160,19 +160,17 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
                     for (Dispense dispense : dispenseList) {
                         try {
                             RestDispenseService.restPostDispense(dispense);
-                        }
-                        catch(Exception e){
+                        } catch (Exception e) {
                             //Do Nothing continue
                         }
                     }
                 }
         } catch (SQLException e) {
-             e.printStackTrace();
+            e.printStackTrace();
             //continue();
         }
 
         try {
-
             List<Episode> episodeList = episodeService.getAllEpisodeByStatusAndDispenseStatus(BaseModel.SYNC_SATUS_READY, PatientAttribute.PATIENT_DISPENSATION_NORMAL);
             if (episodeList != null && episodeList.size() > 0) {
                 for (Episode episode1 : episodeList) {
@@ -190,14 +188,14 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
                 if (patientList.size() > 0) {
                     for (Patient patient : patientList) {
                         episode = episodeService.findEpisodeWithStopReasonByPatient(patient);
-                        if (episode == null){
+                        if (episode == null) {
                             RestDispenseService.restGetLastDispense(patient);
                             RestClinicInfoService.getRestLastClinicInfo(patient);
                         }
                     }
                 }
-        } catch (Exception  e) {
-            log.saveErrorLogs(TAG, "Ocorreu um erro ao Buscar Pacientes: \n "+e );
+        } catch (Exception e) {
+            log.saveErrorLogs(TAG, "Ocorreu um erro ao Buscar Pacientes: \n " + e);
         }
 
         try {
@@ -219,12 +217,13 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
     private void dysplayDownloadResultNotification() {
         String contentText = null;
 
-        for (ServiceWatcher watcher : serviceWatcherList){
+        for (ServiceWatcher watcher : serviceWatcherList) {
             if (!watcher.isUploadService() && Utilities.stringHasValue(watcher.getUpdates()))
-                contentText = Utilities.stringHasValue(contentText) ? contentText+'\n' + watcher.getUpdates() : watcher.getUpdates();
+                contentText = Utilities.stringHasValue(contentText) ? contentText + '\n' + watcher.getUpdates() : watcher.getUpdates();
         }
 
-        if (!Utilities.stringHasValue(contentText)) contentText = "Não foram encontrados dados novos para sincronizar.";
+        if (!Utilities.stringHasValue(contentText))
+            contentText = "Não foram encontrados dados novos para sincronizar.";
 
         Notification builder = new NotificationCompat.Builder(getApp(), CHANNEL_1_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -237,7 +236,7 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
     }
 
     private boolean hasRunningDownloadService() {
-        for (ServiceWatcher watcher : this.serviceWatcherList){
+        for (ServiceWatcher watcher : this.serviceWatcherList) {
             if (!watcher.isUploadService() && watcher.isRunning()) return true;
         }
         return false;
@@ -263,7 +262,7 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
     }
 
     private boolean hasUploadRunning() {
-        for (ServiceWatcher watcher : this.serviceWatcherList){
+        for (ServiceWatcher watcher : this.serviceWatcherList) {
             if (watcher.isUploadService() && watcher.isRunning()) return true;
         }
         return false;
@@ -272,9 +271,9 @@ public class RestRunDataForTestService extends BaseRestService implements RestRe
     private void dysplayUploadResultNotification() {
         String contentText = null;
 
-        for (ServiceWatcher watcher : serviceWatcherList){
+        for (ServiceWatcher watcher : serviceWatcherList) {
             if (watcher.isUploadService() && Utilities.stringHasValue(watcher.getUpdates()))
-                contentText = Utilities.stringHasValue(contentText) ? contentText+'\n' + watcher.getUpdates() : watcher.getUpdates();
+                contentText = Utilities.stringHasValue(contentText) ? contentText + '\n' + watcher.getUpdates() : watcher.getUpdates();
         }
 
         if (!Utilities.stringHasValue(contentText)) contentText = "Não foram enviados dados.";

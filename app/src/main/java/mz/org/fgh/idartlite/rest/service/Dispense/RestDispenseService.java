@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,7 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import mz.org.fgh.idartlite.base.application.IdartLiteApplication;
 import mz.org.fgh.idartlite.base.model.BaseModel;
@@ -31,12 +31,12 @@ import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
 import mz.org.fgh.idartlite.model.Episode;
-import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.model.PrescribedDrug;
 import mz.org.fgh.idartlite.model.Prescription;
 import mz.org.fgh.idartlite.model.Stock;
+import mz.org.fgh.idartlite.model.SyncDispense;
 import mz.org.fgh.idartlite.model.User;
-import mz.org.fgh.idartlite.model.*;
+import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.savelogs.SaveLogsInStorage;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
@@ -59,6 +59,7 @@ import mz.org.fgh.idartlite.service.prescription.PrescribedDrugService;
 import mz.org.fgh.idartlite.service.prescription.PrescriptionService;
 import mz.org.fgh.idartlite.service.stock.IStockService;
 import mz.org.fgh.idartlite.service.stock.StockService;
+import mz.org.fgh.idartlite.service.user.UserService;
 import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 
@@ -73,14 +74,15 @@ public class RestDispenseService extends BaseRestService {
     private static List<DispensedDrug> dispensedDrugList;
     private static List<Episode> episodeList;
     private static ClinicService clinicService;
+    private static UserService userService;
 
 
     public RestDispenseService(Application application, User currentUser) {
         super(application, currentUser);
         dispenseService = new DispenseService(application, currentUser);
         prescriptionService = new PrescriptionService(application, currentUser);
+        userService = new UserService(application, currentUser);
     }
-
 
 
     public static void restGetLastDispense(Patient patient) throws SQLException {
@@ -112,7 +114,7 @@ public class RestDispenseService extends BaseRestService {
                             if (dispenses.length > 0) {
                                 List<Dispense> dispenseList = new ArrayList<>();
                                 for (Object dispense : dispenses) {
-                                    Log.d(TAG, "onResponse: Dispensa " + dispense );
+                                    Log.d(TAG, "onResponse: Dispensa " + dispense);
 
                                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) (Object) dispense;
 
@@ -156,13 +158,14 @@ public class RestDispenseService extends BaseRestService {
                                         }
                                     }
                                 }
-                                if (listener != null) listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
+                                if (listener != null)
+                                    listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
                             } else {
                                 listener.doOnResponse(REQUEST_NO_DATA, null);
                                 Log.w(TAG, "Response Sem Info." + dispenses.length);
                             }
                         } catch (Exception e) {
-                            log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: "+e );
+                            log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: " + e);
                             Log.d(TAG, "onErrorResponse 1: Erro no GET :" + e.getMessage());
                         }
                     }, new Response.ErrorListener() {
@@ -173,13 +176,13 @@ public class RestDispenseService extends BaseRestService {
                         }
                     });
                 } catch (Exception e) {
-                    log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: "+e );
+                    log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: " + e);
                     Log.d(TAG, "onErrorResponse 2: Erro no GET :" + e.getMessage());
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: "+e );
+            log.saveErrorLogs(TAG, "Ocorreu um erro Inesperado: " + e);
             Log.d(TAG, "onErrorResponse 3: Erro no GET :" + e.getMessage());
         }
     }
@@ -246,7 +249,8 @@ public class RestDispenseService extends BaseRestService {
                                             }
                                             dispenseList.add(newDispense);
                                         }
-                                        if (listener != null) listener.doOnRestSucessResponse(BaseRestService.REQUEST_SUCESS);
+                                        if (listener != null)
+                                            listener.doOnRestSucessResponse(BaseRestService.REQUEST_SUCESS);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -303,7 +307,7 @@ public class RestDispenseService extends BaseRestService {
 
                                     Prescription prescription = dispense.getPrescription();
 
-                                       prescription.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
+                                    prescription.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
                                     prescriptionService.updatePrescriptionEntity(prescription);
                                     dispense.setSyncStatus(BaseModel.SYNC_SATUS_SENT);
                                     dispenseService.udpateDispense(dispense);
@@ -390,7 +394,7 @@ public class RestDispenseService extends BaseRestService {
         String inHand = itemresult.get("qtyinhand").toString();
 
         if (!inHand.isEmpty())
-            inHand = inHand.replace('(', ' ').replace(')', ' ').replaceAll("\\s+","");
+            inHand = inHand.replace('(', ' ').replace(')', ' ').replaceAll("\\s+", "");
         else
             inHand = "0";
 
@@ -399,11 +403,10 @@ public class RestDispenseService extends BaseRestService {
             List<Stock> stockList = stockService.getAllStocksByClinicAndDrug(clinic, localDrug);
 
             dispensedDrug.setDispense(dispensed);
-            int quantity=Integer.parseInt(inHand);
-            if(quantity>0 && quantity<12){
+            int quantity = Integer.parseInt(inHand);
+            if (quantity > 0 && quantity < 12) {
                 dispensedDrug.setQuantitySupplied(quantity);
-            }
-            else {
+            } else {
                 dispensedDrug.setQuantitySupplied(0);
             }
             if (!stockList.isEmpty())
@@ -433,17 +436,19 @@ public class RestDispenseService extends BaseRestService {
     private static SyncDispense setSyncDispense(Dispense dispense, DispensedDrug dispensedDrug) {
 
         episodeService = new EpisodeService(getApp(), null);
+        userService = new UserService(getApp(), null);
         SyncDispense syncDispense = new SyncDispense();
         int qtySupplied = 0;
 
-        if(dispensedDrug.getQuantitySupplied() == 0){
+        if (dispensedDrug.getQuantitySupplied() == 0) {
             qtySupplied = ((dispense.getSupply() / 4) * 30) / dispensedDrug.getDrug().getPackSize();
-        }else {
+        } else {
             qtySupplied = dispensedDrug.getQuantitySupplied();
         }
 
         try {
             Episode episode = episodeService.getAllEpisodesByPatient(dispense.getPrescription().getPatient()).get(0);
+            Clinic clinic = clinicService.getAllClinics().get(0);
             syncDispense.setDate(dispense.getPrescription().getPrescriptionDate());
             syncDispense.setClinicalstage(0);
             syncDispense.setCurrent('T');
@@ -514,6 +519,10 @@ public class RestDispenseService extends BaseRestService {
             syncDispense.setPrep(Character.toUpperCase('f'));
             syncDispense.setCe(Character.toUpperCase('f'));
             syncDispense.setCpn(Character.toUpperCase('f'));
+            syncDispense.setClinicuuid(clinic.getUuid());
+            List<User> users = userService.getAllUsers();
+
+            syncDispense.setUsername(!users.isEmpty() ? users.get(0).getUserName() : StringUtils.EMPTY);
             if (!Prescription.URGENT_PRESCRIPTION.equalsIgnoreCase(dispense.getPrescription().getUrgentPrescription())) {
                 syncDispense.setPrescricaoespecial(Character.toUpperCase('f'));
                 syncDispense.setMotivocriacaoespecial("");
@@ -600,7 +609,7 @@ public class RestDispenseService extends BaseRestService {
                     "&offset=" + offset +
                     "&limit=" + limit +
                     "&order=pickupdate.desc";
-        }else {
+        } else {
             url = BaseRestService.baseUrl + "/sync_temp_dispense_vw?pickupdate=gte." + DateUtilities.formatToYYYYMMDD(startDate) +
                     "&pickupdate=lte." + DateUtilities.formatToYYYYMMDD(endDate) +
                     "&clinicuuid=eq." + clinicUUID +
@@ -610,48 +619,48 @@ public class RestDispenseService extends BaseRestService {
         }
 
 
-            Log.d(TAG, "URL " + url);
-            try {
-                getRestServiceExecutor().execute(() -> {
+        Log.d(TAG, "URL " + url);
+        try {
+            getRestServiceExecutor().execute(() -> {
 
-                    RESTServiceHandler handler = new RESTServiceHandler();
+                RESTServiceHandler handler = new RESTServiceHandler();
 
-                    try {
-                        handler.addHeader("Content-Type", "application/json");
-                        handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
+                try {
+                    handler.addHeader("Content-Type", "application/json");
+                    handler.objectRequest(url, Request.Method.GET, null, Object[].class, new Response.Listener<Object[]>() {
 
-                            @Override
-                            public void onResponse(Object[] dispenses) {
-                                try {
-                                    List<Dispense> dispenseList = new ArrayList<>();
-                                    if (dispenses.length > 0) {
-                                        for (Object dispense : dispenses) {
-                                            Log.d(TAG, "onResponse: Dispensa " + dispense);
-                                            Patient patient = getPatient(dispense);
-                                            Prescription newPrescription = getPrescroptionRest(dispense, patient);
-                                            Dispense d = getDispenseOnRest(dispense, newPrescription);
-                                            loadDispensedDrugFromRest(dispense, d);
-                                            dispenseList.add(d);
-                                        }
-                                        listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
-                                    } else listener.doOnResponse(REQUEST_NO_DATA, null);
-                                } catch (Exception e) {
-                                    listener.doOnResponse(e.getMessage(), null);
-                                    e.printStackTrace();
-                                }
+                        @Override
+                        public void onResponse(Object[] dispenses) {
+                            try {
+                                List<Dispense> dispenseList = new ArrayList<>();
+                                if (dispenses.length > 0) {
+                                    for (Object dispense : dispenses) {
+                                        Log.d(TAG, "onResponse: Dispensa " + dispense);
+                                        Patient patient = getPatient(dispense);
+                                        Prescription newPrescription = getPrescroptionRest(dispense, patient);
+                                        Dispense d = getDispenseOnRest(dispense, newPrescription);
+                                        loadDispensedDrugFromRest(dispense, d);
+                                        dispenseList.add(d);
+                                    }
+                                    listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
+                                } else listener.doOnResponse(REQUEST_NO_DATA, null);
+                            } catch (Exception e) {
+                                listener.doOnResponse(e.getMessage(), null);
+                                e.printStackTrace();
                             }
-                        }, error -> {
-                            listener.doOnResponse(generateErrorMsg(error), null);
-                            Log.d(TAG, "onErrorResponse: Erro no GET :" + generateErrorMsg(error));
-                        });
-                    } catch (Exception e) {
-                        listener.doOnResponse(e.getMessage(), null);
-                        e.printStackTrace();
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                        }
+                    }, error -> {
+                        listener.doOnResponse(generateErrorMsg(error), null);
+                        Log.d(TAG, "onErrorResponse: Erro no GET :" + generateErrorMsg(error));
+                    });
+                } catch (Exception e) {
+                    listener.doOnResponse(e.getMessage(), null);
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void restGetAllLastUSDispense(RestResponseListener listener, long offset, long limit) throws SQLException {
@@ -679,6 +688,7 @@ public class RestDispenseService extends BaseRestService {
                                 List<Dispense> dispenseList = new ArrayList<>();
                                 for (Object dispense : dispenses) {
                                     Log.d(TAG, "onResponse: Dispensa " + dispense);
+
 
                                     LinkedTreeMap<String, Object> itemresult = (LinkedTreeMap<String, Object>) (Object) dispense;
 
@@ -723,7 +733,8 @@ public class RestDispenseService extends BaseRestService {
                                         }
                                     }
                                 }
-                                if (listener != null) listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
+                                if (listener != null)
+                                    listener.doOnResponse(BaseRestService.REQUEST_SUCESS, dispenseList);
                             } else {
                                 listener.doOnResponse(REQUEST_NO_DATA, null);
                                 Log.w(TAG, "Response Sem Info." + dispenses.length);
@@ -750,7 +761,7 @@ public class RestDispenseService extends BaseRestService {
 
     public static void restPatchSyncStatus(String syncTempDispenseId, Character syncStatus) {
 
-        String url = BaseRestService.baseUrl + "/sync_temp_dispense?id=eq."+ syncTempDispenseId;
+        String url = BaseRestService.baseUrl + "/sync_temp_dispense?id=eq." + syncTempDispenseId;
 
         episodeService = new EpisodeService(getApp());
 
@@ -797,8 +808,9 @@ public class RestDispenseService extends BaseRestService {
             dispensedDrug.setStock(new Stock());
             dispensedDrug.setDrug(localDrug);
             dispensedDrug.getStock().setDrug(localDrug);
-            dispensedDrug.setQuantitySupplied(Integer.valueOf(itemresult.get("qtyinhand").toString().substring(1,2)));
-            if (!Utilities.listHasElements(dispense.getDispensedDrugs())) dispense.setDispensedDrugs(new ArrayList<>());
+            dispensedDrug.setQuantitySupplied(Integer.valueOf(itemresult.get("qtyinhand").toString().substring(1, 2)));
+            if (!Utilities.listHasElements(dispense.getDispensedDrugs()))
+                dispense.setDispensedDrugs(new ArrayList<>());
             dispense.getDispensedDrugs().add(dispensedDrug);
         }
     }
