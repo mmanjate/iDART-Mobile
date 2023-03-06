@@ -48,7 +48,7 @@ public class SearchPatientActivity extends BaseActivity {
         searchPatientBinding = DataBindingUtil.setContentView(this, R.layout.activity_search_patient);
         searchPatientBinding.setViewModel(getRelatedViewModel());
 
-        if (getRelatedViewModel().getCurrentClinicSector().getClinicSectorType().getCode().contains("PROVEDOR")) {
+        if (getRelatedViewModel().getCurrentClinicSector() != null && getRelatedViewModel().getCurrentClinicSector().getClinicSectorType().getCode().contains("PROVEDOR")) {
             String url = BaseRestService.baseUrl + "/sync_temp_check_loading?mainclinicuuid=eq." + getRelatedViewModel().getCurrentClinic().getUuid();
 
             RESTServiceHandler handler = new RESTServiceHandler();

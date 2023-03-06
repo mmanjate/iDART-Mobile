@@ -51,7 +51,7 @@ public class PatientVM extends SearchVM<Patient> {
         super(application);
 
         patientService = (PatientService) getServiceProvider().get(PatientService.class);
-        episodeService = new EpisodeService(application,getCurrentUser());
+        episodeService = new EpisodeService(application, getCurrentUser());
         attributeService = new PatientAttributeService(application, getCurrentUser());
 
     }
@@ -72,21 +72,21 @@ public class PatientVM extends SearchVM<Patient> {
     }
 
     public List<Patient> searchPatient(String param, Clinic clinic, long offset, long limit) throws SQLException {
-        return patientService.searchPatientByParamAndClinic(param,clinic, offset, limit);
+        return patientService.searchPatientByParamAndClinic(param, clinic, offset, limit);
     }
 
     public void loadPatientEpisodes() throws SQLException {
         this.patient.setEpisodes(episodeService.getAllEpisodesByPatient(this.patient));
-        
-        if (!Utilities.listHasElements(this.patient.getEpisodes())){
+
+        if (!Utilities.listHasElements(this.patient.getEpisodes())) {
             throw new RuntimeException(getRelatedActivity().getString(R.string.no_episode_found));
         }
     }
 
     @Override
-    public void initSearch(){
-        if (getCurrentClinicSector().getClinicSectorType().getCode().contains("PROVEDOR")) {
-            String url = BaseRestService.baseUrl + "/sync_temp_check_loading?mainclinicuuid=eq." +getCurrentClinic().getUuid();
+    public void initSearch() {
+        if (getCurrentClinicSector() != null && getCurrentClinicSector().getClinicSectorType().getCode().contains("PROVEDOR")) {
+            String url = BaseRestService.baseUrl + "/sync_temp_check_loading?mainclinicuuid=eq." + getCurrentClinic().getUuid();
 
             RESTServiceHandler handler = new RESTServiceHandler();
             handler.addHeader("Content-Type", "Application/json");
@@ -102,11 +102,11 @@ public class PatientVM extends SearchVM<Patient> {
                                 Boolean isLoading = itemresult.get("isloading") != null ? Boolean.valueOf(itemresult.get("isloading").toString()) : null;
                                 if (isLoading != null) {
                                     if (isLoading) {
-                                      issueNotification("O carregamento de pacientes ainda está em curso.", IdartLiteApplication.CHANNEL_1_ID, false);
+                                        issueNotification("O carregamento de pacientes ainda está em curso.", IdartLiteApplication.CHANNEL_1_ID, false);
 
                                     } else {
                                         doSearch();
-                                      //  Log.i(TAG, "NAO ESTA em CARREGAMENTOO...");
+                                        //  Log.i(TAG, "NAO ESTA em CARREGAMENTOO...");
                                     }
                                 }
                             } catch (Exception e) {
@@ -125,16 +125,17 @@ public class PatientVM extends SearchVM<Patient> {
                 }
             });
 
+        } else {
+            doSearch();
         }
-
 
 
     }
 
     private void doSearch() {
-        if(!Utilities.stringHasValue(getSearchParams().getSearchParam())) {
-            Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.nid_or_name_is_mandatory)).show();
-        }else {
+        if (!Utilities.stringHasValue(getSearchParams().getSearchParam())) {
+            Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.nid_or_name_is_mandatory)).show();
+        } else {
             getLoadingDialog().startLoadingDialog();
             super.initSearch();
         }
@@ -143,14 +144,14 @@ public class PatientVM extends SearchVM<Patient> {
     @Override
     protected void doOnNoRecordFound() {
         getLoadingDialog().dismisDialog();
-        Utilities.displayAlertDialog(getRelatedActivity(),getRelatedActivity().getString(R.string.no_search_results)).show();
+        Utilities.displayAlertDialog(getRelatedActivity(), getRelatedActivity().getString(R.string.no_search_results)).show();
     }
 
     @Override
     public void displaySearchResults() {
         Utilities.hideSoftKeyboard(getRelatedActivity());
         getLoadingDialog().dismisDialog();
-        ((SearchPatientActivity)getRelatedActivity()).displaySearchResult();
+        ((SearchPatientActivity) getRelatedActivity()).displaySearchResult();
     }
 
     @Override
@@ -192,7 +193,7 @@ public class PatientVM extends SearchVM<Patient> {
     }
 
     @Bindable
-    public Clinic getClinic(){
+    public Clinic getClinic() {
         return getCurrentClinic();
     }
 
@@ -216,10 +217,10 @@ public class PatientVM extends SearchVM<Patient> {
             } else {
                 existingPatient.setAttributes(attributeService.getAllOfPatient(existingPatient));
                 if (existingPatient.isFaltosoOrAbandono()) {
-                    Utilities.displayAlertDialog(getRelatedActivity(),"O paciente seleccionado ja foi carregado.").show();
+                    Utilities.displayAlertDialog(getRelatedActivity(), "O paciente seleccionado ja foi carregado.").show();
                 } else {
                     //patientService.changePatienToFaltosoOrAbandono(existingPatient);
-                    Utilities.displayAlertDialog(getRelatedActivity(),"Paciente carregado com sucesso.").show();
+                    Utilities.displayAlertDialog(getRelatedActivity(), "Paciente carregado com sucesso.").show();
                 }
 
             }
@@ -234,7 +235,7 @@ public class PatientVM extends SearchVM<Patient> {
         goToPatientPanel(getPatient());
     }
 
-    public void goToPatientPanel (Patient patient) {
+    public void goToPatientPanel(Patient patient) {
         Map<String, Object> params = new HashMap<>();
         try {
             patient.setAttributes(attributeService.getAllOfPatient(patient));
@@ -242,7 +243,7 @@ public class PatientVM extends SearchVM<Patient> {
             params.put("user", getCurrentUser());
             params.put("clinic", getCurrentClinic());
             params.put("clinicSector", getCurrentClinicSector());
-            getRelatedActivity().nextActivity(PatientPanelActivity.class,params);
+            getRelatedActivity().nextActivity(PatientPanelActivity.class, params);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

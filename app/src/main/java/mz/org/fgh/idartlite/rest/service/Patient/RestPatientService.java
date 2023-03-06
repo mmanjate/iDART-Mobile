@@ -574,10 +574,9 @@ public class RestPatientService extends BaseRestService {
 
         try {
             Clinic finalClinic = clinicService.getAllClinics().get(0);
-            ClinicSector clinicSector = (ClinicSector) clinicSectorService.getClinicSectorsByClinic(finalClinic).get(0);
-
-
-            if (clinicSector.getClinicSectorType().getCode().contains("PROVEDOR")) {
+            List<ClinicSector> clinicSectorList = clinicSectorService.getClinicSectorsByClinic(finalClinic);
+            ClinicSector clinicSector = !clinicSectorList.isEmpty() ? clinicSectorList.get(0) : null;
+            if (clinicSector != null && clinicSector.getClinicSectorType().getCode().contains("PROVEDOR")) {
                 String url = BaseRestService.baseUrl + "/sync_temp_check_loading?mainclinicuuid=eq." + finalClinic.getUuid();
 
                 RESTServiceHandler handler = new RESTServiceHandler();
@@ -594,10 +593,10 @@ public class RestPatientService extends BaseRestService {
                                     Boolean isLoading = itemresult.get("isloading") != null ? Boolean.valueOf(itemresult.get("isloading").toString()) : null;
                                     if (isLoading != null) {
                                         if (isLoading) {
-                                            Utilities.issueNotification(NotificationManagerCompat.from(IdartLiteApplication.getInstance().getApplicationContext()),IdartLiteApplication.getInstance().getApplicationContext(),"O carregamento de pacientes ainda está em curso.", IdartLiteApplication.CHANNEL_1_ID, false, ThreadLocalRandom.current().nextInt());
+                                            Utilities.issueNotification(NotificationManagerCompat.from(IdartLiteApplication.getInstance().getApplicationContext()), IdartLiteApplication.getInstance().getApplicationContext(), "O carregamento de pacientes ainda está em curso.", IdartLiteApplication.CHANNEL_1_ID, false, ThreadLocalRandom.current().nextInt());
 
                                         } else {
-                                            Utilities.issueNotification(NotificationManagerCompat.from(IdartLiteApplication.getInstance().getApplicationContext()),IdartLiteApplication.getInstance().getApplicationContext(),"O carregamento de pacientes Terminado.", IdartLiteApplication.CHANNEL_1_ID, false, ThreadLocalRandom.current().nextInt());
+                                            Utilities.issueNotification(NotificationManagerCompat.from(IdartLiteApplication.getInstance().getApplicationContext()), IdartLiteApplication.getInstance().getApplicationContext(), "O carregamento de pacientes Terminado.", IdartLiteApplication.CHANNEL_1_ID, false, ThreadLocalRandom.current().nextInt());
 
                                         }
                                     }
