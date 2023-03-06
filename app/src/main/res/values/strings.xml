@@ -307,8 +307,8 @@
 
     <string name="dispensas_paciente_fila">Dispensas do Paciente(FILA)</string>
     <string name="fnm">FNM</string>
-    <string name="entrances">entrances</string>
-    <string name="packs">packs</string>
+    <string name="entrances">Entradas</string>
+    <string name="packs">Saidas</string>
     <string name="existing_stock">Stock Existente</string>
     <string name="expiry_date">Data de Validade</string>
     <string name="balance">Saldo</string>

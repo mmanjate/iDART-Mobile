@@ -291,9 +291,9 @@ public class StockListReportActivity extends BaseActivity {
         tableImage.addCell(cell);
 
 
-        PdfPTable table = new PdfPTable(new float[]{3,4, 3, 3,3,3});
+        PdfPTable table = new PdfPTable(new float[]{2,2, 2, 2,2,2});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.getDefaultCell().setFixedHeight(50);
+        table.getDefaultCell().setFixedHeight(30);
         table.setTotalWidth(PageSize.A4.getWidth());
         table.setWidthPercentage(100);
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -312,10 +312,10 @@ public class StockListReportActivity extends BaseActivity {
 
          List<DrugReportModel> listDrugs =drugService.getAllWithLoteAndNotExpired(getRelatedViewModel().getSearchParams().getStartdate(), getRelatedViewModel().getSearchParams().getEndDate());
 
-        PdfPTable tableParent = new PdfPTable(new float[]{3,4, 3});
+        PdfPTable tableParent = new PdfPTable(new float[]{2,6, 2});
     for (int i= 0, k=0; i<listDrugs.size();i++,k+=3) {
         tableParent.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-        tableParent.getDefaultCell().setFixedHeight(50);
+        tableParent.getDefaultCell().setFixedHeight(30);
         tableParent.setTotalWidth(PageSize.A4.getWidth());
         tableParent.setWidthPercentage(100);
         tableParent.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -337,9 +337,9 @@ public class StockListReportActivity extends BaseActivity {
             }
         }
 
-        PdfPTable tableChild = new PdfPTable(new float[]{3,4, 3,3,3});
+        PdfPTable tableChild = new PdfPTable(new float[]{2,2, 2,2,2});
         tableChild.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-        tableChild.getDefaultCell().setFixedHeight(50);
+        tableChild.getDefaultCell().setFixedHeight(30);
         tableChild.setTotalWidth(PageSize.A4.getWidth());
         tableChild.setWidthPercentage(100);
         tableChild.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
