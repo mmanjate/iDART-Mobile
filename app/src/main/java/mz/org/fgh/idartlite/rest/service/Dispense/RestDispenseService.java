@@ -27,6 +27,7 @@ import mz.org.fgh.idartlite.base.model.BaseModel;
 import mz.org.fgh.idartlite.base.rest.BaseRestService;
 import mz.org.fgh.idartlite.listener.rest.RestResponseListener;
 import mz.org.fgh.idartlite.model.Clinic;
+import mz.org.fgh.idartlite.model.ClinicSector;
 import mz.org.fgh.idartlite.model.Dispense;
 import mz.org.fgh.idartlite.model.DispensedDrug;
 import mz.org.fgh.idartlite.model.Drug;
@@ -39,6 +40,7 @@ import mz.org.fgh.idartlite.model.User;
 import mz.org.fgh.idartlite.model.patient.Patient;
 import mz.org.fgh.idartlite.rest.helper.RESTServiceHandler;
 import mz.org.fgh.idartlite.savelogs.SaveLogsInStorage;
+import mz.org.fgh.idartlite.service.clinic.ClinicSectorService;
 import mz.org.fgh.idartlite.service.clinic.ClinicService;
 import mz.org.fgh.idartlite.service.clinic.IClinicService;
 import mz.org.fgh.idartlite.service.dispense.DispenseDrugService;
@@ -75,6 +77,7 @@ public class RestDispenseService extends BaseRestService {
     private static List<Episode> episodeList;
     private static ClinicService clinicService;
     private static UserService userService;
+    private static ClinicSectorService clinicSectorService;
 
 
     public RestDispenseService(Application application, User currentUser) {
@@ -98,6 +101,7 @@ public class RestDispenseService extends BaseRestService {
         episodeService = new EpisodeService(getApp(), null);
         patientService = new PatientService(getApp());
         clinicService = new ClinicService(getApp(), null);
+        clinicSectorService = new ClinicSectorService(getApp(), null);
 
         Clinic clinic = clinicService.getAllClinics().get(0);
         String url = BaseRestService.baseUrl + "/patient_last_sync_tmp_dispense_vw?clinicuuid=eq." + clinic.getUuid() + "&offset=" + offset + "&limit=" + limit;
@@ -438,6 +442,7 @@ public class RestDispenseService extends BaseRestService {
         episodeService = new EpisodeService(getApp(), null);
         userService = new UserService(getApp(), null);
         SyncDispense syncDispense = new SyncDispense();
+        ArrayList<ClinicSector> clinicSectorList = new ArrayList<>();
         int qtySupplied = 0;
 
         if (dispensedDrug.getQuantitySupplied() == 0) {
@@ -449,6 +454,8 @@ public class RestDispenseService extends BaseRestService {
         try {
             Episode episode = episodeService.getAllEpisodesByPatient(dispense.getPrescription().getPatient()).get(0);
             Clinic clinic = clinicService.getAllClinics().get(0);
+            clinicSectorList = (ArrayList<ClinicSector>) clinicSectorService.getClinicSectorsByClinic(clinic);
+
             syncDispense.setDate(dispense.getPrescription().getPrescriptionDate());
             syncDispense.setClinicalstage(0);
             syncDispense.setCurrent('T');
@@ -519,7 +526,8 @@ public class RestDispenseService extends BaseRestService {
             syncDispense.setPrep(Character.toUpperCase('f'));
             syncDispense.setCe(Character.toUpperCase('f'));
             syncDispense.setCpn(Character.toUpperCase('f'));
-            syncDispense.setClinicuuid(clinic.getUuid());
+            syncDispense.setClinicuuid(clinicSectorList.isEmpty()? clinic.getUuid(): clinicSectorList.get(0).getUuid());
+
             List<User> users = userService.getAllUsers();
 
             syncDispense.setUsername(!users.isEmpty() ? users.get(0).getUserName() : StringUtils.EMPTY);
