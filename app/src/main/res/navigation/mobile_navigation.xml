@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="mz.org.fgh.idartlite.view.home.ui.home.HomeFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_config"
+        android:name="mz.org.fgh.idartlite.view.home.ui.settings.AppSettingsFragment"
+        android:label="Configurações"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/nav_add_user"
+        android:name="mz.org.fgh.idartlite.view.home.ui.user.AddUserFragment"
+        android:label="Adicionar Utilizador"
+        tools:layout="@layout/fragment_add_user" />
+
+    <fragment
+        android:id="@+id/nav_change_pass"
+        android:name="mz.org.fgh.idartlite.view.home.ui.user.ChangeUserPassFragment"
+        android:label="Alterar Senha"
+        tools:layout="@layout/change_user_pass_fragment" />
+
+    <fragment
+        android:id="@+id/nav_exit"
+        android:name="mz.org.fgh.idartlite.view.home.ui.home.LogoutFragment"
+        android:label="Sair"
+        tools:layout="@layout/fragment_logout" />
+
+    <activity
+        android:id="@+id/nav_about"
+        android:name="mz.org.fgh.idartlite.view.about.AboutActivity"
+        tools:layout="@layout/activity_about" />
+
+</navigation>

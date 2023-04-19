@@ -4,14 +4,23 @@
 
     <data>
         <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.base.viewModel.SearchVM" />
+        <variable
             name="patient"
-            type="mz.org.fgh.idartlite.model.Patient" />
+            type="mz.org.fgh.idartlite.model.patient.Patient" />
+        <import type="mz.org.fgh.idartlite.model.patient.PatientAttribute" />
+        <import type="mz.org.fgh.idartlite.util.Utilities" />
+
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/dimen_10dp">
+
 
         <ImageView
             android:id="@+id/imageView5"
@@ -77,7 +86,6 @@
                     android:layout_alignParentRight="true"
                     android:text="@{patient.fullName}"
                     android:layout_alignParentEnd="true" />
-
                 <TextView
                     android:id="@+id/genero"
                     android:layout_width="wrap_content"
@@ -141,9 +149,93 @@
                     android:layout_alignParentRight="true"
                     android:text="@{patient.ageToString}"/>
 
+
+
+                <LinearLayout
+                    android:id="@+id/linearDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_idade"
+                    android:layout_marginTop="0dp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/nid_data1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/referenceDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/referDate"
+                            android:gravity="right"
+                            android:text="@string/data_de_referencia"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/referDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/dimen_4dp"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(patient.episodes1.iterator().next().episodeDate)}" />
+
+                        <TextView
+                            android:id="@+id/lbl_prescription_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/referenceDate"
+                            android:layout_toLeftOf="@+id/prescription_date"
+                            android:gravity="right"
+                            android:text="@string/prescription_date"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/prescription_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/referDate"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:paddingLeft="@dimen/dimen_4dp"
+                            android:text="@{patient.prescriptions.iterator().hasNext()? DateUtilities.formatToDDMMYYYY(DateUtilities.formatToDDMMYYYY(patient.prescriptions.iterator().next().prescriptionDate)):patient.emptyString}" />
+
+                        <TextView
+                            android:id="@+id/lbl_dispense_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lbl_prescription_date"
+                            android:gravity="right"
+                            android:layout_toLeftOf="@+id/dispense_type"
+                            android:text="@string/dispense_type"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/dispense_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lbl_prescription_date"
+                            android:layout_alignParentRight="true"
+
+                            android:text="@{patient.prescriptions.iterator().hasNext()?patient.prescriptions.iterator().next().dispenseType.description:patient.emptyString}" />
+                    </RelativeLayout>
+                </LinearLayout>
             </RelativeLayout>
 
         </LinearLayout>
+        <ImageView
+            android:id="@+id/downloadPatient"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_5dp"
+            android:layout_gravity="center"
+            android:visibility='@{(viewModel.onlineSearch &amp;&amp; (Utilities.stringHasValue(patient.dispensatioStatus) &amp;&amp; patient.dispensatioStatus != PatientAttribute.PATIENT_DISPENSATION_NORMAL)) ? View.VISIBLE : View.GONE}'
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_arrow_circle_down" />
 
     </LinearLayout>
 </layout>

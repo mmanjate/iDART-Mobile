@@ -1,14 +1,17 @@
 package mz.org.fgh.idartlite.model;
 
+import android.content.Context;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.GenericDaoImpl;
-import mz.org.fgh.idartlite.dao.RegimenDrugDaoImpl;
 
 import java.util.Objects;
+
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.drug.RegimenDrugDaoImpl;
 
 @DatabaseTable(tableName = "regimen_drug", daoClass = RegimenDrugDaoImpl.class)
 public class RegimenDrug extends BaseModel {
@@ -72,5 +75,20 @@ public class RegimenDrug extends BaseModel {
                 "therapeuticRegimen=" + therapeuticRegimen +
                 ", drug=" + drug +
                 '}';
+    }
+
+    @Override
+    public String isValid(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
     }
 }

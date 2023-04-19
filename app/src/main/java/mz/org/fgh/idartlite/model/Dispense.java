@@ -1,16 +1,13 @@
 package mz.org.fgh.idartlite.model;
 
 
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.DispenseDaoImpl;
-import mz.org.fgh.idartlite.util.DateUtilitis;
-import mz.org.fgh.idartlite.util.Utilities;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -20,15 +17,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.dispense.DispenseDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilities;
+import mz.org.fgh.idartlite.util.Utilities;
+
 @DatabaseTable(tableName = "Dispense", daoClass = DispenseDaoImpl.class)
 public class Dispense extends BaseModel {
 
+    public static final String TABLE_NAME = "Dispense";
     public static final String COLUMN_PICKUP_DATE = "pickup_date";
     public static final String COLUMN_SUPPLY = "supply";
     public static final String COLUMN_NEXT_PICKUP_DATE = "next_pickup_date";
     public static final String COLUMN_PRESCRIPTION = "prescription_id";
     public static final String COLUMN_UUID = "uuid";
     public static final String COLUMN_SYNC_STATUS = "sync_status";
+    public static final String COLUMN_RETURNED = "returned";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_VOIDED = "voided";
 
     public static final int DURATION_TWO_WEEKS = 15;
     public static final int DURATION_ONE_MONTH = 30;
@@ -38,7 +44,7 @@ public class Dispense extends BaseModel {
     public static final int DURATION_FIVE_MONTHS = 150;
     public static final int DURATION_SIX_MONTHS = 180;
 
-    @DatabaseField(columnName = "id", generatedId = true)
+    @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
 
     @DatabaseField(columnName = COLUMN_PICKUP_DATE)
@@ -59,10 +65,15 @@ public class Dispense extends BaseModel {
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
 
-    private List<DispensedDrug> dispensedDrugs = new ArrayList<>();
+    @DatabaseField(columnName = COLUMN_RETURNED)
+    private boolean returned=false;
 
-    public Dispense() {
-    }
+    @DatabaseField(columnName = COLUMN_VOIDED)
+    private boolean voided=false;
+
+    private int orderNumber;
+
+    private List<DispensedDrug> dispensedDrugs = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -173,16 +184,33 @@ public class Dispense extends BaseModel {
 
     }
 
+
+    public boolean isReturned() {
+        return returned;
+    }
+
+    public void setReturned(boolean returned) {
+        this.returned = returned;
+    }
+
+    public boolean isVoided() {
+        return voided;
+    }
+
+    public void setVoided(boolean voided) {
+        this.voided = voided;
+    }
+
     public String validate() {
         if (this.pickupDate == null) return "A data da dispensa é obrigatória";
         if (this.nextPickupDate == null) return "A data do próximo levantamento é obrigatória";
-        if(DateUtilitis.dateDiff( this.pickupDate, DateUtilitis.getCurrentDate(), DateUtilitis.DAY_FORMAT) > 0) {
+        if(DateUtilities.dateDiff( this.pickupDate, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT) > 0) {
             return "A data do levantamento não pode ser maior que a data corrente.";
         }
-        if(DateUtilitis.dateDiff(this.pickupDate, this.nextPickupDate, DateUtilitis.DAY_FORMAT) > 0) {
+        if(DateUtilities.dateDiff(this.pickupDate, this.nextPickupDate, DateUtilities.DAY_FORMAT) > 0) {
             return "A data do levantamento não pode ser maior que a data do próximo levantamento.";
         }
-        if(DateUtilitis.dateDiff(this.prescription.getPrescriptionDate(), this.pickupDate, DateUtilitis.DAY_FORMAT) > 1) {
+        if((int) DateUtilities.dateDiff(this.prescription.getPrescriptionDate(), this.pickupDate, DateUtilities.DAY_FORMAT) > 0) {
             return "A data da prescrição não pode ser maior que a data do levantamento.";
         }
         if(this.supply <= 0) return "A duração da prescrição deve ser indicada.";
@@ -191,4 +219,27 @@ public class Dispense extends BaseModel {
         return "";
     }
 
+    @Override
+    public String isValid(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
+    }
+
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
 }

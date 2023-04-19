@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="listble" type="mz.org.fgh.idartlite.common.Listble" />
+        <variable name="listble" type="mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble" />
 
         <variable name="viewListEditButton" type="boolean" />
         <variable name="viewListRemoveButton" type="boolean" />
@@ -36,44 +36,73 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    android:text="@string/codigo"
+                    android:layout_weight="0.2"
+                    android:visibility="@{listble.iventorySelectionListing ? View.VISIBLE : View.GONE}"
                     style="@style/listble_header" />
 
-                <View
+                <TextView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.030"
-                    android:background="@color/separator" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:text="@string/codigo"
+                    android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
+                    style="@style/listble_header" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    style="@style/listble_header"
+                    android:visibility="@{(listble.stockListing || listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                    android:text="Lote" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2.6"
+                    android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing ||  listble.returnDispenseListing|| listble.iventorySelectionListing) ? View.VISIBLE : View.GONE}"
                     style="@style/listble_header"
                     android:text="@string/descricao" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.030"
-                    android:background="@color/separator"
-                    android:visibility="@{Utilities.stringHasValue(listble.lote) ? View.VISIBLE : View.GONE}" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.8"
                     style="@style/listble_header"
-                    android:text="@string/lote"
-                    android:visibility="@{Utilities.stringHasValue(listble.lote) ? View.VISIBLE : View.GONE}" />
+                    android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                    android:text="Validade" />
 
-                <View
+                <TextView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.030"
-                    android:background="@color/separator"
-                    android:visibility="@{listble.quantity > 0 ? View.VISIBLE : View.GONE}" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    style="@style/listble_header"
+                    android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                    android:text="Saldo Actual" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    style="@style/listble_header"
+                    android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                    android:text='@{listble.stockDestroyListing ? "Qtd. a Destruir" : "Frascos Contados"}' />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    style="@style/listble_header"
+                    android:visibility="@{listble.iventoryListing ? View.VISIBLE : View.GONE}"
+                    android:text='Notas' />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.6"
+                    android:visibility="@{listble.referedStockListing  ? View.VISIBLE : View.GONE}"
+                    style="@style/listble_header"
+                    android:text="Origem"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -81,14 +110,15 @@
                     android:layout_weight="1.2"
                     style="@style/listble_header"
                     android:text="@string/quantidade"
-                    android:visibility="@{listble.quantity > 0 ? View.VISIBLE : View.GONE}" />
+                    android:visibility='@{(listble.referedStockListing || listble.stockListing || listble.dispenseDrugListing||listble.isReturnDispenseListing ) ? View.VISIBLE : View.GONE}' />
 
-                <View
+                <TextView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.030"
-                    android:background="@color/separator"
-                    android:visibility="@{!viewListEditButton ? View.GONE : View.VISIBLE}" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    style="@style/listble_header"
+                    android:visibility="@{listble.isReturnDispenseListing  ? View.VISIBLE : View.GONE}"
+                    android:text='@{listble.isReturnDispenseListing ? "Qtd. a devolver" : " "}' />
 
                 <TextView
                     android:layout_width="0dp"
@@ -97,13 +127,6 @@
                     style="@style/listble_header"
                     android:text="@string/editar"
                     android:visibility="@{!viewListEditButton ? View.GONE : View.VISIBLE}" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.030"
-                    android:background="@color/separator"
-                    android:visibility="@{ !viewListRemoveButton ? View.GONE : View.VISIBLE}" />
 
                 <TextView
                     android:layout_width="0dp"

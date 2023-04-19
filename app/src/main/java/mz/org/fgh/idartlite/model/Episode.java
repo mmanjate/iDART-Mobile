@@ -2,19 +2,21 @@ package mz.org.fgh.idartlite.model;
 
 import android.content.Context;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.EpisodeDaoImpl;
-import mz.org.fgh.idartlite.util.DateUtilitis;
-import mz.org.fgh.idartlite.util.Utilities;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+
+import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.episode.EpisodeDaoImpl;
+import mz.org.fgh.idartlite.model.patient.Patient;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
 @DatabaseTable(tableName = "episode", daoClass = EpisodeDaoImpl.class)
 public class Episode extends BaseModel {
@@ -48,6 +50,7 @@ public class Episode extends BaseModel {
 
 	@DatabaseField(columnName = COLUMN_UUID)
 	private String uuid;
+
 
 	@DatabaseField(columnName = COLUMN_PATIENT_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
 	private Patient patient;
@@ -170,18 +173,28 @@ public class Episode extends BaseModel {
 	}
 
 	public String getStringEpisodeDate(){
-		return DateUtilitis.parseDateToDDMMYYYYString(this.episodeDate);
+		return DateUtilities.parseDateToDDMMYYYYString(this.episodeDate);
 	}
 
 	public String validateEpisodeData(Context context){
 		if(episodeDate==null){
 			return context.getString(R.string.episode_date_required);
 		}
-		if(DateUtilitis.dateDiff(episodeDate, Calendar.getInstance().getTime(),DateUtilitis.DAY_FORMAT) >=0){
+		if(DateUtilities.dateDiff(episodeDate, Calendar.getInstance().getTime(), DateUtilities.DAY_FORMAT) >=0){
 			return context.getString(R.string.visit_date_cannot_be_future);
 		}
 		if(stopReason.isEmpty()){
 			return context.getString(R.string.episode_end_motive_required);
+		}
+		return "";
+	}
+
+	public String validateEpisodeDataForCreatingPatient(Context context){
+		if(episodeDate==null){
+			return context.getString(R.string.admission_date_mandatory);
+		}
+		if(DateUtilities.dateDiff(episodeDate, Calendar.getInstance().getTime(), DateUtilities.DAY_FORMAT) >=0){
+			return context.getString(R.string.admission_date_not_correct);
 		}
 		return "";
 	}
@@ -205,4 +218,18 @@ public class Episode extends BaseModel {
 		return isSyncStatusReady(this.syncStatus);
 	}
 
+	@Override
+	public String isValid(Context context) {
+		return null;
+	}
+
+	@Override
+	public String canBeEdited(Context context) {
+		return null;
+	}
+
+	@Override
+	public String canBeRemoved(Context context) {
+		return null;
+	}
 }

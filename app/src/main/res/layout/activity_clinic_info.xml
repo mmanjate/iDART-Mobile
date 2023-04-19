@@ -1,0 +1,1284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.clinicInfo.ClinicInfoActivity"
+    >
+
+    <data>
+
+        <variable name="viewModel"              type="mz.org.fgh.idartlite.viewmodel.clinicInfo.ClinicInfoVM" />
+        <import type="mz.org.fgh.idartlite.model.ClinicInformation"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="android.view.View"/>
+
+        <variable
+            name="clinicInfo"
+            type="mz.org.fgh.idartlite.model.ClinicInformation" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            app:elevation="6dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/app_bar" />
+
+            <include layout="@layout/pacient_info" bind:patient="@{viewModel.patient}"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="1dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_4dp"
+                    >
+                    <TextView
+                        style="@style/input_labels"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/register_date" />
+
+                    <EditText
+                        android:id="@+id/registerDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_calendar"
+                        android:paddingStart="@dimen/dimen_4dp"
+                        android:paddingLeft="@dimen/dimen_4dp"
+                        android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.registerDate)}" />
+
+                    <LinearLayout
+                        android:id="@+id/vital_signs"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="@string/vital_signs"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_vital_signs"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/vital_signs_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dimen_4dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/weight" />
+
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/height"/>
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/imc"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:id="@+id/weight"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:inputType="number|numberDecimal"
+                                android:drawableLeft="@drawable/ic_quantidade_recebida"
+                                android:text="@{Utilities.parseDoubleToString(viewModel.clinicInformation.weight)}"
+                                />
+
+                            <EditText
+                                android:id="@+id/height"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_quantidade_recebida"
+                                android:text="@={viewModel.height}"
+                                android:inputType="number"/>
+                            <EditText
+                                android:id="@+id/imc"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_baseline_double_arrow_24"
+                                android:text="@={viewModel.imc}"
+                                android:enabled="false"
+                                android:clickable="false"
+                                android:inputType="number"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/systole" />
+
+                            <TextView
+                                style="@style/input_labels"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/distole"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:id="@+id/systole"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_quantidade_recebida"
+                                android:text="@={viewModel.systole}"
+                                android:inputType="number" />
+
+                            <EditText
+                                android:id="@+id/distole"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_quantidade_recebida"
+                                android:text="@={viewModel.distole}"
+                                android:inputType="number"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+
+
+                    <LinearLayout
+                        android:id="@+id/tb_screening_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="@string/tb_screening"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_tb_screening_details1"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tb_screening_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+                        <RelativeLayout
+                            android:id="@+id/tb_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txtTbScreening"
+                            style="@style/input_labels"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:text="@string/tb_screening_questions" />
+                            <TextView
+                                android:id="@+id/TbYes"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/TbNo"
+                                android:textSize="14sp"
+                                android:text="Sim" />
+
+                            <TextView
+                                android:id="@+id/TbNo"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:gravity="right"
+                                android:textSize="14sp"
+                                android:text="Nao" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/tb_screening_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:orientation="vertical"
+                    android:background="@drawable/shape_normal_grey"
+                    android:padding="@dimen/dimen_4dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/tbQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/treatment_tb"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/tbAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioTbYes1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setTreatmentTB(true)}"
+                                android:checked="@{viewModel.clinicInformation.treatmentTB}"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioTbNo1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setTreatmentTB(false)}"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_6dp"
+                         android:layout_marginLeft="@dimen/dimen_m3dp">
+
+                         <TextView
+                             android:id="@+id/startTreatmentDate"
+                             android:layout_width="0dp"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="1"
+                             android:text="@string/treatment_start_date"
+                             android:textColor="@color/black"
+                             android:textColorHighlight="@color/black"
+                            />
+                         <EditText
+                             android:id="@+id/editStartTreatmentDate"
+                             android:layout_width="0dp"
+                             android:layout_height="wrap_content"
+                             android:layout_weight="1"
+                             android:drawableLeft="@drawable/ic_calendar"
+                             android:paddingStart="@dimen/dimen_4dp"
+                             android:paddingLeft="@dimen/dimen_4dp"
+                             android:paddingRight="@dimen/dimen_4dp"
+                             android:enabled="false"
+                             android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.treatmentStartDate)}" />
+                     </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/shape_normal_grey"
+                        android:padding="@dimen/dimen_4dp">
+                        <TextView
+                            style="@style/input_labels"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/signs_syntoms_tb"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black"
+                            />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:id="@+id/coughQuestion"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/cough_last_two_weeks"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/coughAnswers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioCoughYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setCough(true)}"
+                                    android:checked="@{viewModel.clinicInformation.isCough}"
+                                 />
+
+                                <RadioButton
+                                    android:id="@+id/radioCoughNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setCough(false)}"
+                                     />
+                            </RadioGroup>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:id="@+id/feverQuestion"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/fever_last_two_weeks"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/feverAnswers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioFeverYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setFever(true)}"
+                                    android:checked="@{viewModel.clinicInformation.isFever}"
+                                    />
+
+                                <RadioButton
+                                    android:id="@+id/radioFeverNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setFever(false)}"
+                                    />
+                            </RadioGroup>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:id="@+id/weightQuestion"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/lost_weight_last_month"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/weightAnswers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioWeightYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setLostWeight(true)}"
+                                    android:checked="@{viewModel.clinicInformation.isLostWeight}"
+
+                                    />
+
+                                <RadioButton
+                                    android:id="@+id/radioWeightNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setLostWeight(false)}"
+                                    />
+                            </RadioGroup>
+                        </LinearLayout>
+
+                        <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/sweatingQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:text="@string/sweat_in_the_night"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/sweatingAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+
+                            <RadioButton
+                                android:id="@+id/radioSweatingYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setSweating(true)}"
+                                android:checked="@{viewModel.clinicInformation.isSweating}"
+                                />
+
+                            <RadioButton
+                                android:id="@+id/radioSweatingNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setSweating(false)}"
+                                />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:id="@+id/fatigueQuestion"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/has_fatigue_or_tiredness_last_two_weeks"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/fatigueAnswers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioFatigueYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setHasFatigueOrTirednesLastTwoWeeks(true)}"
+                                    android:checked="@{viewModel.clinicInformation.hasFatigueOrTirednesLastTwoWeeks}" />
+
+                                <RadioButton
+                                    android:id="@+id/radioFatigueNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setHasFatigueOrTirednesLastTwoWeeks(false)}"
+                                    />
+                            </RadioGroup>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_4dp">
+
+                            <TextView
+                                android:id="@+id/tbParentQuestion"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/got_parent_doing_tb_treatment"
+                                android:textColor="@color/black"
+                                android:textColorHighlight="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/parentAnswers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                                <RadioButton
+                                    android:id="@+id/radioParentYes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setHasParentTBTreatment(true)}"
+                                    android:checked="@{viewModel.clinicInformation.isHasParentTBTreatment}"
+                                    />
+
+                                <RadioButton
+                                    android:id="@+id/radioParentNo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.clinicInformation.setHasParentTBTreatment(false)}"
+                                    />
+                            </RadioGroup>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/tbRefered"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/patient_refered_evaluation_us"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/tbReferedAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioTbReferedYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setReferedToUsTB(true)}"
+                                android:checked="@{viewModel.clinicInformation.isReferedToUsTB}"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioTbReferedNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:onClick="@{()->viewModel.clinicInformation.setReferedToUsTB(false)}"
+                                />
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/pregnancy_screening"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="@string/tb_pregnancy_screening"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_pregnancy_screening_details1"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/pregnancy_screening_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+                        <RelativeLayout
+                            android:id="@+id/tb_data_pregnancy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txtPregnancyScreening"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:text="@string/tb_pregnancy_screening" />
+                            <TextView
+                                android:id="@+id/PregnancyYes"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/PregnancyNo"
+                                android:textSize="14sp"
+                                android:text="@string/yes" />
+
+                            <TextView
+                                android:id="@+id/PregnancyNo"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:gravity="right"
+                                android:textSize="14sp"
+                                android:text="@string/no" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                    android:id="@+id/pregnancy_screening_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:orientation="vertical"
+                    android:background="@drawable/shape_normal_grey"
+                    android:padding="@dimen/dimen_4dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/pregnancyQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/patient_is_pregnant"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/pregnancyAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioPregnancyYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setPregnant(true)}"
+                                android:checked="@{viewModel.clinicInformation.isPregnant}"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioPregnancyNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setPregnant(false)}"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/menstruationQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/patient_menstruated_last_two_months"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/menstruationAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioMenstruationYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setHasHadMenstruationLastTwoMonths(true)}"
+                                android:checked="@{viewModel.clinicInformation.hasHadMenstruationLastTwoMonths}"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioMenstruationNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setHasHadMenstruationLastTwoMonths(false)}"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monitoring_reinforcement_adesao_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="@string/monitoring"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_monitoring_reinforcment_details"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/monitoring_reinforcment_details_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+                        <RelativeLayout
+                            android:id="@+id/tb_data_monitoring"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txtMonitoringScreening"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:text="@string/monitoring_question" />
+                            <TextView
+                                android:id="@+id/MonitoringYes"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/MonitoringNo"
+                                android:textSize="14sp"
+                                android:text="@string/yes"/>
+
+                            <TextView
+                                android:id="@+id/MonitoringNo"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:gravity="right"
+                                android:textSize="14sp"
+                                android:text="@string/no"/>
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/monitoring_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:orientation="vertical"
+                    android:background="@drawable/shape_normal_grey"
+                    android:padding="@dimen/dimen_4dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/patientCameQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/patient_right_date"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/patientCameAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioPatientCameYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setHasPatientCameCorrectDate(true)}"
+                                android:checked="@{viewModel.clinicInformation.hasPatientCameCorrectDate}"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/radioPatientCameNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setHasPatientCameCorrectDate(false)}"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/checkPatientLate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/patient_wrong_date_days"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <EditText
+                            android:id="@+id/wrongDateNumber"
+                            style="@style/bottom_border_edit_text_style"
+                            android:layout_width="@dimen/dimen_50dp"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.lateDays}"
+                            android:maxLength="3"
+                            android:inputType="number"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <TextView
+                            android:id="@+id/patientHoursWrongQuestion"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/forgot_medicines"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/black" />
+
+                        <RadioGroup
+                            android:id="@+id/patientHoursWrongAnswers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/patientHoursWrongYes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setPatientForgotMedicine(true)}"
+                                android:checked="@{viewModel.clinicInformation.patientForgotMedicine}"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:id="@+id/patientHoursWrongNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->viewModel.clinicInformation.setPatientForgotMedicine(false)}"
+                                android:layout_weight="1" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/shape_normal_grey"
+                        android:padding="@dimen/dimen_4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginEnd="@dimen/dimen_50dp"
+                            android:padding="@dimen/dimen_10dp">
+
+                            <TextView
+                                android:id="@+id/patientLateHoursQuestion"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/forgot_medicines_hours"
+                                android:textColor="@color/black"
+                                android:padding="@dimen/dimen_2dp"/>
+
+                            <EditText
+                                android:id="@+id/daysWithoutMedicine"
+                                style="@style/bottom_border_edit_text_style"
+                                android:layout_width="@dimen/dimen_50dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/dimen_m3dp"
+                                android:text="@={viewModel.daysWithoutMedicine}"
+                                android:maxLength="3"
+                                android:textColor="@color/black"
+                                android:inputType="number"/>
+                        </LinearLayout>
+
+
+
+                        <TextView
+                            style="@style/input_labels"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@string/motives"
+                            android:layout_marginEnd="@dimen/dimen_50dp"
+                            android:padding="@dimen/dimen_10dp"/>
+
+                        <EditText
+                            android:id="@+id/editTextMotives"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_round_notes_24"
+                            android:text="@={viewModel.clinicInformation.lateMotives}"
+                            android:layout_marginEnd="@dimen/dimen_50dp"
+                            android:padding="@dimen/dimen_10dp"
+                            android:inputType="textMultiLine" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/adversity_reaction"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:layout_margin="@dimen/dimen_4dp"
+                        android:padding="3dp"
+                        android:onClick="@{(view) -> viewModel.changeInitialDataViewStatus(view)}"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="@string/adverse_reaction_ram"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="@dimen/dimen_10dp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibtn_adverstiry_reaction"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/ic_row_dados_pessoais"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/adverse_reaction_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dimen_4dp">
+                        <RelativeLayout
+                            android:id="@+id/realtive_adverse"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/txtAdverseReaction"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:text="@string/tb_adverse_reaction_questions" />
+                            <TextView
+                                android:id="@+id/adverseReactionYes"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/adverseReactionNo"
+                                android:textSize="14sp"
+                                android:text="@string/yes" />
+
+                            <TextView
+                                android:id="@+id/adverseReactionNo"
+                                style="@style/input_labels"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:gravity="right"
+                                android:textSize="14sp"
+                                android:text="@string/no" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/linear_monitoring_adversity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@drawable/shape_normal_grey"
+                            android:padding="@dimen/dimen_4dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_4dp">
+
+                                <TextView
+                                    android:id="@+id/adversityReactionQuestion"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/patient_has_adverse_reaction"
+                                    android:textColor="@color/black"
+                                    android:textColorHighlight="@color/black" />
+
+                                <RadioGroup
+                                    android:id="@+id/adversityReactionAnswers"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0"
+                                    android:orientation="horizontal">
+
+                                    <RadioButton
+                                        android:id="@+id/adversityReactionYes"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{()->viewModel.clinicInformation.setAdverseReactionOfMedicine(true)}"
+                                        android:checked="@{viewModel.clinicInformation.adverseReactionOfMedicine}"
+                                        android:layout_weight="1" />
+
+                                    <RadioButton
+                                        android:id="@+id/adversityReactionNo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{()->viewModel.clinicInformation.setAdverseReactionOfMedicine(false)}"
+                                        android:layout_weight="1" />
+                                </RadioGroup>
+                            </LinearLayout>
+
+
+
+                            <LinearLayout
+                                android:id="@+id/adversity_reactions2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:background="@drawable/shape_normal_grey"
+                                android:padding="@dimen/dimen_25dp">
+
+
+                                <TextView
+                                    style="@style/input_labels"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/black"
+                                    android:text="@string/describe_reaction"
+                                    android:padding="@dimen/dimen_10dp"/>
+
+                                <EditText
+                                    android:id="@+id/editTextAdverseReaction"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@={viewModel.clinicInformation.adverseReaction}"
+                                    android:drawableLeft="@drawable/ic_round_notes_24"
+                                    android:inputType="textMultiLine" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/dimen_4dp">
+
+                                <TextView
+                                    android:id="@+id/patientReferedByRam"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/patient_refered_evaluation_us_on_ram"
+                                    android:textColor="@color/black"
+                                    android:textColorHighlight="@color/black" />
+
+                                <RadioGroup
+                                    android:id="@+id/patientReferedAnswers"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0"
+                                    android:orientation="horizontal">
+
+                                    <RadioButton
+                                        android:id="@+id/patientReferedYes"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{()->viewModel.clinicInformation.setReferedToUsRAM(true)}"
+                                        android:checked="@{viewModel.clinicInformation.referedToUsRAM}"
+                                        android:layout_weight="1" />
+
+                                    <RadioButton
+                                        android:id="@+id/patientReferedNo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{()->viewModel.clinicInformation.setReferedToUsRAM(false)}"
+                                        android:layout_weight="1" />
+                                </RadioGroup>
+                            </LinearLayout>
+                        </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right">
+
+                        <ImageView
+                            android:id="@+id/save_and_continue"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/ic_done"
+                            android:layout_marginTop="@dimen/dimen_22dp"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
+                            android:layout_margin="@dimen/dimen_18dp"
+                            android:background="@drawable/button_shape"
+                            android:onClick="@{() -> viewModel.save1()}"
+                            android:layout_gravity="right"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

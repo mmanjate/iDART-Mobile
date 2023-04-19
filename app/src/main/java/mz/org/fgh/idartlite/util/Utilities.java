@@ -1,29 +1,46 @@
 package mz.org.fgh.idartlite.util;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.FileProvider;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.common.DialogListener;
-import mz.org.fgh.idartlite.common.ListbleDialogListener;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.listener.dialog.IDialogListener;
+import mz.org.fgh.idartlite.listener.dialog.IListbleDialogListener;
 import mz.org.fgh.idartlite.model.Prescription;
 
 public class Utilities {
@@ -31,6 +48,10 @@ public class Utilities {
     private static Utilities instance;
 
     private static MessageDigest digester;
+
+    final static int REQUEST_CODE_ASK_PERMISSIONS = 111;
+
+    public static String centralServerUrl;
 
     private Utilities() {
     }
@@ -40,6 +61,10 @@ public class Utilities {
             instance = new Utilities();
         }
         return instance;
+    }
+
+    public static String getCentralServerUrl() {
+        return centralServerUrl;
     }
 
     static {
@@ -90,7 +115,7 @@ public class Utilities {
      *
      * @param mContext, Context of where to display
      */
-    public static AlertDialog displayAlertDialog(final Context mContext, final String alertMessage, DialogListener listener) {
+    public static AlertDialog displayAlertDialog(final Context mContext, final String alertMessage, IDialogListener listener) {
         return genericDisplayAlertDialog(mContext, alertMessage, listener);
     }
 
@@ -107,7 +132,7 @@ public class Utilities {
      *
      * @param mContext, Context of where to display
      */
-    private static AlertDialog genericDisplayAlertDialog(final Context mContext, final String alertMessage, DialogListener listener) {
+    private static AlertDialog genericDisplayAlertDialog(final Context mContext, final String alertMessage, IDialogListener listener) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
                 .setMessage(alertMessage)
@@ -123,7 +148,7 @@ public class Utilities {
         return builder.create();
     }
 
-    private static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, int position, BaseModel baseModel, ListbleDialogListener listener)
+    private static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, int position, BaseModel baseModel, IListbleDialogListener listener)
         {
             AlertDialog myQuittingDialogBox = new AlertDialog.Builder(mContext)
                     // set message, title, and icon
@@ -158,7 +183,7 @@ public class Utilities {
             return myQuittingDialogBox;
         }
 
-    public static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, DialogListener listener)
+    public static AlertDialog displayConfirmationDialog(final Context mContext, final String dialogMesg, String positive, String negative, IDialogListener listener)
     {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(mContext)
                 // set message, title, and icon
@@ -185,11 +210,11 @@ public class Utilities {
         return myQuittingDialogBox;
     }
 
-    public static AlertDialog displayDeleteConfirmationDialogFromList(final Context mContext, final String dialogMesg, int position, ListbleDialogListener listener) {
+    public static AlertDialog displayDeleteConfirmationDialogFromList(final Context mContext, final String dialogMesg, int position, IListbleDialogListener listener) {
         return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel), position, null, listener);
     }
 
-    public static AlertDialog displayDeleteConfirmationDialog(final Context mContext, final String dialogMesg,  BaseModel baseModel, ListbleDialogListener listener) {
+    public static AlertDialog displayDeleteConfirmationDialog(final Context mContext, final String dialogMesg,  BaseModel baseModel, IListbleDialogListener listener) {
         return displayConfirmationDialog(mContext, dialogMesg, mContext.getString(R.string.remove), mContext.getString(R.string.cancel), 0, baseModel, listener);
     }
 
@@ -203,7 +228,7 @@ public class Utilities {
         return list;
     }
 
-    public <T extends Object, S extends Object> List<S> parseList(List<T> list, Class<S> classe){
+    public static <T extends Object, S extends Object> List<S> parseList(List<T> list, Class<S> classe){
         if (list == null) return null;
 
         List<S> parsedList = new ArrayList<S>();
@@ -234,11 +259,19 @@ public class Utilities {
         return string != null && !string.isEmpty() && string.trim().length() > 0;
     }
 
+    public static boolean objectNotNull(Object obj){
+        return obj != null;
+    }
+
     public static String parseIntToString(int toParse){
         return String.valueOf(toParse);
     }
 
     public static String parseDoubleToString(double toParse){
+        return String.valueOf(toParse);
+    }
+
+    public static String parseLongToString(long toParse){
         return String.valueOf(toParse);
     }
 
@@ -248,7 +281,9 @@ public class Utilities {
 
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService( Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow( activity.getCurrentFocus().getWindowToken(), 0);
+        if (activity.getCurrentFocus() != null) {
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
     public static String parseSupplyToLabel(int supply){
@@ -365,6 +400,17 @@ public class Utilities {
         animation.setDuration((long) (actualHeight/ view.getContext().getResources().getDisplayMetrics().density));
         view.startAnimation(animation);
     }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
+
     /*public static NotificationCompat.Builder showNotification(String title, String contntText, Context context, String channelId){
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
@@ -372,4 +418,119 @@ public class Utilities {
         mBuilder.setContentText(contntText);
         return mBuilder;
     }*/
+
+
+
+    public static void  previewPdfFiles(final Context mContext,File pdfFile) {
+        PackageManager packageManager = mContext.getPackageManager();
+        Intent testIntent = new Intent(Intent.ACTION_VIEW);
+        testIntent.setType("application/pdf");
+        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
+ //       if (list.size() > 0) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // Uri uri = Uri.fromFile(pdfFile);
+
+            Uri uri =  FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".FileProvider", pdfFile);
+            intent.setDataAndType(uri, "application/pdf");
+
+            mContext.startActivity(intent);
+        //} else {
+        //    Toast.makeText( mContext, "Download a PDF Viewer to see the generated PDF", Toast.LENGTH_SHORT).show();
+     //   }
+    }
+
+
+
+    public static boolean checkPermissionsToViewPdf(Activity activity) {
+        int hasWriteStoragePermission = ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (hasWriteStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CONTACTS)) {
+                    showMessageOKCancel(activity,"You need to allow access to Storage to store pdf reports ",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                REQUEST_CODE_ASK_PERMISSIONS);
+                                    }
+                                }
+                            });
+                    return false;
+                }
+                activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+            }
+            return false;
+        }
+        return false;
+    }
+
+
+
+
+    public static void showMessageOKCancel(Activity activity,String message, DialogInterface.OnClickListener okListener) {
+        new android.app.AlertDialog.Builder(activity)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    public static void issueNotification(NotificationManagerCompat notificationManagerCompat, Context context, String contentText, String channel, boolean progressStatus, int notificationId) {
+
+        Notification builder = new NotificationCompat.Builder(context, channel)
+                .setSmallIcon(R.drawable.ic_data)
+                .setContentTitle("iDART MOBILE")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
+                .setContentText(contentText)
+                .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .setProgress(0, 0, progressStatus)
+                .build();
+
+        notificationManagerCompat.notify(notificationId, builder);
+    }
+
+    public static boolean isWorkScheduled(String tag, WorkManager instance) {
+        ListenableFuture<List<WorkInfo>> statuses = instance.getWorkInfosByTag(tag);
+        try {
+            List<WorkInfo> workInfoList = statuses.get();
+            for (WorkInfo workInfo : workInfoList) {
+                WorkInfo.State state = workInfo.getState();
+                if (state.equals(WorkInfo.State.RUNNING) || state.equals(WorkInfo.State.ENQUEUED)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean isWorkRunning(String tag, WorkManager instance) {
+        ListenableFuture<List<WorkInfo>> statuses = instance.getWorkInfosByTag(tag);
+        try {
+            List<WorkInfo> workInfoList = statuses.get();
+            for (WorkInfo workInfo : workInfoList) {
+                WorkInfo.State state = workInfo.getState();
+                if (state.equals(WorkInfo.State.RUNNING)) {
+                 return true;
+                }
+            }
+            return false;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

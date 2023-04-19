@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.dispense.FILAReportVM" />
+        <variable
+            name="patient"
+            type="mz.org.fgh.idartlite.model.patient.Patient" />
+        <variable
+            name="dispense"
+            type="mz.org.fgh.idartlite.model.Dispense" />
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="380dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/layoutId"
+        tools:context=".view.reports.FILAReportActivity" >
+
+
+        <TextView
+            android:id="@+id/initial_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dispensas do Paciente"
+            android:textColor="@color/red"
+            android:textSize="20sp"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:layout_margin="@dimen/dimen_10dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/nid_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/pacient_nid"
+                    android:layout_toLeftOf="@+id/pacient_nid"
+                    android:gravity="right"
+                    android:text="@string/nid"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/pacient_nid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@{viewModel.patient.nid}"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nid"
+                    android:layout_toStartOf="@+id/pacient_name"
+                    android:layout_toLeftOf="@+id/pacient_name"
+                    android:gravity="right"
+                    android:text="@string/name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/pacient_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_nid"
+                    android:layout_alignParentRight="true"
+                    android:text="@{viewModel.patient.fullName}"
+                    android:layout_alignParentEnd="true" />
+                <TextView
+                    android:id="@+id/genero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/emptyspace"
+                    android:gravity="right"
+                    android:text="@string/genero"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emptyspace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/pacient_genero"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/pacient_genero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/emptyspace2"
+                    android:text="@{viewModel.patient.gender}" />
+
+                <TextView
+                    android:id="@+id/emptyspace2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/idade"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/idade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_name"
+                    android:layout_toLeftOf="@+id/emptyspace3"
+                    android:gravity="right"
+                    android:text="@string/idade"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emptyspace3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/pacient_idade"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/pacient_idade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_name"
+                    android:layout_alignParentRight="true"
+                    android:text="@{viewModel.patient.ageToString}"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+        <TextView
+            android:id="@+id/filaReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Historico de Levantamento do Paciente (FILA)"
+            android:background="@drawable/shape_normal"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:layout_margin="@dimen/dimen_10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reyclerDispenses"
+            android:layout_width="370dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="@dimen/dimen_10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="190dp"
+                android:text="Ok"></Button>
+
+            <Button
+                android:id="@+id/buttonPdf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PDF"></Button>
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

@@ -8,6 +8,7 @@
   <component name="DBNavigator.Project.DataExportManager">
     <export-instructions>
       <create-header value="true" />
+      <friendly-headers value="false" />
       <quote-values-containing-separator value="true" />
       <quote-all-values value="false" />
       <value-separator value="" />
@@ -43,9 +44,17 @@
       </filter>
     </filter-actions>
     <filter-actions connection-id="baff84a6-a0fa-420b-9410-1ffa63f40974" dataset="main.Dispense" active-filter-id="" />
+    <filter-actions connection-id="baff84a6-a0fa-420b-9410-1ffa63f40974" dataset="main.pharmacy_type" active-filter-id="5bd14e50-d53e-4e3e-acd8-860871ed5cc8">
+      <filter id="5bd14e50-d53e-4e3e-acd8-860871ed5cc8" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="id" operator="=" value="" active="true" />
+      </filter>
+    </filter-actions>
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
+  </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
@@ -84,7 +93,7 @@
           <port value="1234" />
           <database value="database" />
           <files>
-            <file path="$USER_HOME$/AndroidStudio/DeviceExplorer/emulator-5554/data/data/mz.org.fgh.idartlite/databases/databases/idartlite.db" schema="main" />
+            <file path="$PROJECT_DIR$/../../../../../../idartlite.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />
@@ -118,6 +127,7 @@
           <restore-workspace value="true" />
           <restore-workspace-deep value="true" />
           <environment-type value="default" />
+          <connectivity-timeout value="5" />
           <idle-time-to-disconnect value="30" />
           <idle-time-to-disconnect-pool value="5" />
           <credential-expiry-time value="10" />

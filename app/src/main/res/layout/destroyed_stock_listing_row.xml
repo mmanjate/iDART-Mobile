@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="destroiedStock"
+            type="mz.org.fgh.idartlite.model.DestroyedDrug" />
+
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="mz.org.fgh.idartlite.base.model.BaseModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_4dp"
+            android:layout_weight="1.4">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:srcCompat="@mipmap/ic_destroy"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="4">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:text="Medicamento"
+                        android:textSize="@dimen/dimen_12dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/drug_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="4"
+                        android:gravity="fill"
+                        android:text="@{destroiedStock.stock.drug.description}"
+                        android:paddingBottom="@dimen/dimen_5dp"
+                        android:textSize="@dimen/dimen_12dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:text="@{DateUtilities.formatToDDMMYYYY(destroiedStock.date)}"
+                        android:textSize="@dimen/dimen_8dp"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="top"
+                        android:src="@{destroiedStock.isSyncStatusSent(destroiedStock.syncStatus != null ? destroiedStock.syncStatus : BaseModel.SYNC_SATUS_READY) ? @drawable/ic_baseline_cloud_done_24 : @drawable/ic_baseline_cloud_queue_24}"/>
+                </LinearLayout>
+            </LinearLayout>
+
+    </LinearLayout>
+</layout>

@@ -1,125 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="stock"
             type="mz.org.fgh.idartlite.model.Stock" />
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="mz.org.fgh.idartlite.base.model.BaseModel"/>
         <import type="android.view.View"/>
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10dp"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4">
+            android:layout_marginLeft="@dimen/dimen_4dp"
+            android:layout_weight="1.4">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                bind:srcCompat="@drawable/ic_stock_entrance" />
+                bind:srcCompat="@drawable/ic_stock_entrance"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="bottom"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Número da Guia: "
-                            android:layout_weight="1"
-                            android:textSize="@dimen/dimen_18dp"
-                            android:textStyle="bold"
-                            android:gravity="center"/>
-
-                        <TextView
-                            android:id="@+id/prescriptionId"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@{stock.orderNumber}"
-                            android:textSize="@dimen/dimen_18dp"
-                            android:textStyle="bold"
-                            android:gravity="center" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textStyle="bold"
-                            android:text="Data Entrada:"
-                            android:gravity="center" />
-
-                        <TextView
-                            android:id="@+id/dataEntrada"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:textStyle="bold"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(stock.dateReceived)}" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_weight="4">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="8">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Número da Guia"
+                        android:textSize="@dimen/dimen_12dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{stock.orderNumber}"
+                        android:textSize="@dimen/dimen_12dp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="Data de Entrada:"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="@{DateUtilities.formatToDDMMYYYY(stock.dateReceived)}" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4">
+
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|right"
-                android:src="@{stock.syncStatus.equals(stock.SYNC_SATUS_READY) ? @drawable/ic_baseline_cloud_queue_24 : @drawable/ic_baseline_cloud_done_24}" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:src="@{stock.isSyncStatusSent(stock.syncStatus != null ? stock.syncStatus : BaseModel.SYNC_SATUS_READY) ? @drawable/ic_baseline_cloud_done_24 : @drawable/ic_baseline_cloud_queue_24}"/>
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    </LinearLayout>
 </layout>

@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Gráfico de aviamentos por regime"
+                android:text="Gráfico de Levantamentos por regime"
                 android:textColor="@color/text_color"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -134,8 +134,41 @@
                 app:srcCompat="@drawable/ic_search"/>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/rdgSearchType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:checkedButton="@+id/rdLocal">
+
+                <RadioButton
+                    android:id="@+id/rdLocal"
+                    android:layout_weight="2"
+                    android:textColor="@color/white"
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Relatório local" />
+
+                <RadioButton
+                    android:id="@+id/rdOnline"
+                    android:layout_weight="2"
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"
+                    android:text="Relatório online" />
+                <View
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </RadioGroup>
+        </LinearLayout>
     </LinearLayout>
-    <com.highsoft.highcharts.Core.HIChartView
+    <com.highsoft.highcharts.core.HIChartView
         android:id="@+id/hc_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

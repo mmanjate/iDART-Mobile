@@ -8,7 +8,7 @@
             type="mz.org.fgh.idartlite.model.Prescription" />
 
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/patient_activity_lists"
-                        android:text="@{DateUtilitis.formatToDDMMYYYY(prescription.prescriptionDate)}"/>
+                        android:text="@{DateUtilities.formatToDDMMYYYY(prescription.prescriptionDate)}"/>
                     <TextView
                         android:id="@+id/regime"
                         android:layout_width="match_parent"

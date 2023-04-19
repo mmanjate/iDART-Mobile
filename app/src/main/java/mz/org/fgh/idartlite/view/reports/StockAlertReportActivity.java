@@ -1,9 +1,13 @@
 package mz.org.fgh.idartlite.view.reports;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.Toolbar;
@@ -17,27 +21,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseViewModel;
-import mz.org.fgh.idartlite.common.ListbleReportRecycleViewAdapter;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.ListbleReportRecycleViewAdapter;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
 import mz.org.fgh.idartlite.databinding.ActivityStockAlertReportBinding;
 import mz.org.fgh.idartlite.model.StockReportData;
-import mz.org.fgh.idartlite.service.DispenseService;
-import mz.org.fgh.idartlite.view.AboutActivity;
+import mz.org.fgh.idartlite.service.dispense.DispenseService;
+import mz.org.fgh.idartlite.service.dispense.IDispenseService;
+import mz.org.fgh.idartlite.service.stock.IStockAlertService;
+import mz.org.fgh.idartlite.service.stock.IStockService;
+import mz.org.fgh.idartlite.service.stock.StockAlertService;
+import mz.org.fgh.idartlite.service.stock.StockService;
+import mz.org.fgh.idartlite.util.Utilities;
+import mz.org.fgh.idartlite.view.about.AboutActivity;
 
 public class StockAlertReportActivity extends BaseActivity {
 
     private RecyclerView reyclerStock;
     private ActivityStockAlertReportBinding stockAlertReportBinding;
-    private DispenseService dispenseService;
+    private IStockAlertService stockAlertService;
     private ListbleReportRecycleViewAdapter listbleReportRecycleViewAdapter;
-
+    private IStockService stockService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stockAlertReportBinding=   DataBindingUtil.setContentView(this, R.layout.activity_stock_alert_report);
-        dispenseService= new DispenseService(getApplication(), getCurrentUser());
+        stockAlertService = new StockAlertService(getApplication(), getCurrentUser());
+        stockService = new StockService(getApplication(), getCurrentUser());
 
         reyclerStock = stockAlertReportBinding.reyclerStock;
 
@@ -49,7 +60,12 @@ public class StockAlertReportActivity extends BaseActivity {
         reyclerStock.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
         List<StockReportData> stockReport=new ArrayList<>();
         try {
-         stockReport= dispenseService.getStockAlertReportLastThreeMonthsPeriod();
+         stockReport= stockAlertService.getAll();
+         if (Utilities.listHasElements(stockReport)) {
+             for (StockReportData reportData : stockReport) {
+                 reportData.getDrug().setStockList(stockService.getAllStocksByDrug(reportData.getDrug()));
+             }
+         }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -90,5 +106,60 @@ public class StockAlertReportActivity extends BaseActivity {
     @Override
     public BaseViewModel initViewModel() {
         return null;
+    }
+
+    public void showDialog(Activity activity, Bundle savedInstanceState){
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.activity_stock_alert_report_dialog);
+        stockAlertService = new StockAlertService(activity.getApplication(), getCurrentUser());
+        stockService = new StockService(activity.getApplication(), getCurrentUser());
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity.getApplication());
+
+
+        RecyclerView reyclerStock = (RecyclerView) dialog.findViewById(R.id.reyclerStock);
+
+        reyclerStock.setLayoutManager(layoutManager);
+        reyclerStock.setHasFixedSize(true);
+        reyclerStock.addItemDecoration(new DividerItemDecoration(activity.getApplication(), LinearLayout.VERTICAL));
+        List<StockReportData> stockReport=new ArrayList<>();
+        try {
+            stockReport= stockAlertService.getAll();
+            if (Utilities.listHasElements(stockReport)) {
+                for (StockReportData reportData : stockReport) {
+                    reportData.getDrug().setStockList(stockService.getAllStocksByDrug(reportData.getDrug()));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        listbleReportRecycleViewAdapter = new ListbleReportRecycleViewAdapter(reyclerStock, stockReport, (BaseActivity) activity);
+        reyclerStock.setAdapter(listbleReportRecycleViewAdapter);
+
+
+
+        LinearLayout dialogButton = (LinearLayout) dialog.findViewById(R.id.layoutId);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button ok = (Button) dialog.findViewById(R.id.buttonId);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        if(!stockReport.isEmpty()) {
+            dialog.show();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package mz.org.fgh.idartlite.model;
 
 
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -11,13 +12,15 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 import java.util.Objects;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.dao.StockDaoImpl;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.stock.StockDaoImpl;
+import mz.org.fgh.idartlite.util.DateUtilities;
 
-@DatabaseTable(tableName = "Stock", daoClass = StockDaoImpl.class)
+@DatabaseTable(tableName = Stock.TABLE_NAME, daoClass = StockDaoImpl.class)
 public class Stock extends BaseModel implements Listble {
 
+    public static final String TABLE_NAME = "Stock";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_ORDER_NUMBER = "order_number";
     public static final String COLUMN_BATCH_NUMBER = "batch_number";
@@ -273,5 +276,48 @@ public class Stock extends BaseModel implements Listble {
     @Override
     public String getCode() {
         return uuid;
+    }
+
+    @Override
+    public String isValid(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
+    }
+
+    @Override
+    public Date getValidate() {
+        return this.expiryDate;
+    }
+
+    @Override
+    public int getSaldoActual() {
+        return this.stockMoviment;
+    }
+
+    @Override
+    public boolean isStockListing() {
+        return listType.equals(Listble.STOCK_LISTING);
+    }
+
+    @Override
+    public boolean isStockDestroyListing() {
+        return listType.equals(Listble.STOCK_DESTROY_LISTING);
+    }
+
+    public void modifyCurrentQuantity(int qtyToAdd){
+        this.stockMoviment += qtyToAdd;
+    }
+
+    public boolean isExpired() {
+        return DateUtilities.dateDiff(this.expiryDate, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT) < 0;
     }
 }

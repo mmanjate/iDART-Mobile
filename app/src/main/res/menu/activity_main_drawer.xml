@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/init">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Início" />
+    </group>
+
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_add_user"
+            android:icon="@drawable/ic_add_user"
+            android:title="Registar Utilizador" />
+        <item
+            android:id="@+id/nav_change_pass"
+            android:icon="@drawable/ic_pass"
+            android:title="Alterar Senha" />
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/ic_settings_black"
+            android:title="Configurações" />
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_exit"
+            android:title="Sair" />
+    </group>
+
+    <group android:id="@+id/support">
+        <item
+            android:id="@+id/nav_report"
+            android:icon="@drawable/ic_comment"
+            android:title="Reportar problema" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_help"
+            android:title="Acerca" />
+    </group>
+</menu>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.viewmodel.user.ChangeUserPassVM" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/dimen_8dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_baseline_vpn_key_white"
+                android:layout_gravity="center|center_vertical"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_8dp"
+            android:layout_marginTop="@dimen/dimen_4dp"
+            android:layout_marginBottom="@dimen/dimen_4dp"
+            android:background="@color/light_grey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/server_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_normal"
+                    android:layout_margin="@dimen/dimen_4dp"
+                    android:padding="3dp"
+                    android:onClick="@{(view) -> viewModel.changeDataViewStatus(view)}"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="Alterar Senha"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="@dimen/dimen_10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/ibtn_server_data"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_layout"
+                        android:src="@drawable/ic_row_dados_pessoais"
+                        android:layout_marginRight="@dimen/dimen_2dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Utilizador *"
+                        style="@style/input_labels"/>
+
+                    <EditText
+                        android:id="@+id/edt_user_name"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/txt_url"
+                        android:inputType="textUri"
+                        android:drawableLeft="@drawable/ic_person_24"
+                        android:enabled="false"
+                        android:text="@{viewModel.userName}"
+                        android:layout_height="wrap_content"
+                        style="@style/bottom_border_edit_text_style"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Senha anterior *"
+                        style="@style/input_labels"/>
+
+                    <EditText
+                        android:id="@+id/edt_user_old_pass"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/txt_url"
+                        android:inputType="textPassword"
+                        android:drawableLeft="@drawable/ic_pass"
+                        android:text="@={viewModel.userOldPassword}"
+                        android:layout_height="wrap_content"
+                        style="@style/bottom_border_edit_text_style"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nova Senha *"
+                        style="@style/input_labels"/>
+
+                    <EditText
+                        android:id="@+id/edt_user_pass"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/txt_url"
+                        android:inputType="textPassword"
+                        android:drawableLeft="@drawable/ic_pass"
+                        android:text="@={viewModel.userNewPassword}"
+                        android:layout_height="wrap_content"
+                        style="@style/bottom_border_edit_text_style"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Repetir Senha *"
+                        style="@style/input_labels"/>
+
+                    <EditText
+                        android:id="@+id/edt_user_pass_repeat"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/txt_url"
+                        android:inputType="textPassword"
+                        android:drawableLeft="@drawable/ic_pass"
+                        android:text="@={viewModel.userPassRepeat}"
+                        android:layout_height="wrap_content"
+                        style="@style/bottom_border_edit_text_style"/>
+
+                    <ImageView
+                        android:id="@+id/save"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        app:srcCompat="@drawable/ic_done"
+                        android:layout_marginTop="@dimen/dimen_22dp"
+                        android:layout_margin="@dimen/dimen_18dp"
+                        android:background="@drawable/button_shape"
+                        android:onClick="@{() -> viewModel.save()}"
+                        android:layout_gravity="right"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

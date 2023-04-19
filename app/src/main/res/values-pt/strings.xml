@@ -29,7 +29,7 @@
     <string name="stock_inventory_fragment">Inventário Inactivo por enquanto.</string>
     <string name="general_info">Visão Geral</string>
     <string name="episode">Episódio</string>
-    <string name="dispense">Aviamento</string>
+    <string name="dispense">Dispensa</string>
     <string name="prescription">Prescrição</string>
     <string name="alert_ok">OK</string>
     <string name="name">Nome: </string>
@@ -49,7 +49,7 @@
     <string name="data_de_referencia">data_de_referencia</string>
     <string name="data_prox_levantamento">data_prox_levantamento</string>
     <string name="notas">notas</string>
-    <string name="regime_terapeutico">regime_terapeutico</string>
+    <string name="regime_terapeutico">Regime Terapêutico</string>
     <string name="linha">regime_terapeutico</string>
     <string name="data">data</string>
     <string name="dados_pessoais">Dados Pessoais</string>
@@ -66,7 +66,7 @@
     <string name="adicionar_episodio">Adicionar/Editar Episodio</string>
     <string name="motivo_de_inicio">Motivo de Inicio</string>
     <string name="motivo_de_fim">Motivo de Fim</string>
-
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="remove">Remover</string>
     <string name="cancel">Cancelar</string>
     <string name="list_item_delete_msg">Confirma remover o item?</string>
@@ -74,7 +74,7 @@
     <string name="dt_proximo_levantamento">Próx. levantamento</string>
 
     <string name="drug_data_duplication_msg">Não pode adicionar o mesmo medicamento duas vezes.</string>
-    <string name="stock_menor">A quantidade a aviar é maior que o stock do medicamento.</string>
+    <string name="stock_menor">A quantidade a dispensar é maior que o stock do medicamento.</string>
     <string name="label_entrada_stock">Entrada de Stock - Dados Iniciais</string>
     <string name="label_numero_guia">Número da Guia *</string>
     <string name="label_data_entrada">Data da Entrada *</string>
@@ -97,7 +97,7 @@
     <string name="drug_validate_date">A data de validade deve ser no minimo de dois meses (60 dias).</string>
     <string name="drug_entrada_date">A Data de Entrada não pode ser futura.</string>
     <string name="record_sucessfuly_removed">Registo removido com sucesso</string>
-    <string name="would_like_to_dispense">A Prescrição foi gravada com sucesso. Pretende aviar a mesma?</string>
+    <string name="would_like_to_dispense">A Prescrição foi gravada com sucesso. Pretende dispensar a mesma?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="prescription_cant_be_removed_msg">Esta Prescrição não pode ser removida, pois ja esta sincronizada com o IDART central.</string>
@@ -116,13 +116,13 @@
     <string name="adicionar_prescri_o_prescri_o_especial">Adicionar Prescrição - Prescrição Especial</string>
     <string name="prescri_o_especial">Prescrição Especial?</string>
     <string name="motivo">Motivo *</string>
-    <string name="prescription_got_dispenses_msg">Esta prescrição já tem aviamentos registados, não pode ser removida.</string>
+    <string name="prescription_got_dispenses_msg">Esta prescrição já tem levantamentos registados, não pode ser removida.</string>
 
     <string name="no_search_results">Não foram encontrados resultados para a sua pesquisa.</string>
     <string name="nid_or_name_is_mandatory">Deve informar o nome ou nid para pesquisar.</string>
     <string name="save_error_msg_episode">\"Ocorreu um erro ao gravar o Episodio. \"</string>
 
-    <string name="cant_edit_prescription_msg">Não pode efectuar alterações sobre esta prescrição pois a mesma ja possui aviamentos registados.</string>
+    <string name="cant_edit_prescription_msg">Não pode efectuar alterações sobre esta prescrição pois a mesma ja possui levantamentos registados.</string>
     <string name="cant_edit_synced_prescription">Não pode efectuar alterações sobre esta prescrição pois a mesma ja foi sincronizada com o iDART central.</string>
     <string name="loading">\" Por favor, aguarde ...\"</string>
     <string name="authenticate">Autenticando ...</string>
@@ -136,8 +136,8 @@
     <string name="prescription_urgent_notes_mandatory">Indicou que a prescrição é especial, por favor indique o motivo.</string>
     <string name="error_loading_patient_data">Ocorreu um erro ao carregar os dados do paciente.</string>
     <string name="no_episode_found">Não foi encontrado nenhum episódio do paciente seleccionado</string>
-    <string name="new_prescription_creation">A ultima prescrição ainda não teve todos os aviamentos efectuados, confirma anular a mesma e criar nova?</string>
-    <string name="cant_edit_synced_dispense">Não pode efectuar alterações sobre este aviamento pois o mesmo já foi sincronizada com o iDART central.</string>
+    <string name="new_prescription_creation">A ultima prescrição ainda não teve todos os levantamentos efectuados, confirma anular a mesma e criar nova?</string>
+    <string name="cant_edit_synced_dispense">Não pode efectuar alterações sobre esta dispensa pois o mesmo já foi sincronizada com o iDART central.</string>
     <string name="dispense_cant_be_removed_msg">Esta Dispensa não pode ser removida, pois já esta sincronizada com o IDART central.</string>
     <string name="visualizar_detalhes">Visualizar Detalhes</string>
     <string name="error_removing_record">Ocorreu um erro ao remover o registo.</string>
@@ -167,9 +167,9 @@
     <string name="pharmacy_config_not_found">Não foi encontrada a configuração da farmácia.</string>
     <string name="user_or_pass_invalid">Não foi encontrada a configuração da farmácia.</string>
     <string name="error_verifying">Ocorreu um erro ao verificar a configuração de utilizadores</string>
-    <string name="cant_dispense_patient_has_drugs">Este paciente ainda tem medicamentos. Tem certeza que deseja aviar os medicamentos ao Paciente?</string>
-    <string name="would_you_like_remove_prior_dispense">Gostaria de apagar o Aviamento anterior, e substituí-lo com este que você acabou de criar?</string>
-    <string name="dispense_drug_detail_list">O Aviamento que pretende editar contém os detalhes abaixo</string>
+    <string name="cant_dispense_patient_has_drugs">Este paciente ainda tem medicamentos. A data de leventamento actual não pode ser menor que a data do próximo levantamento na última dispensa efectuada.</string>
+    <string name="would_you_like_remove_prior_dispense">Gostaria de apagar a dispensa anterior, e substituí-lo com este que você acabou de criar?</string>
+    <string name="dispense_drug_detail_list">A Dispensa que pretende editar contém os detalhes abaixo</string>
     <string name="dispensed_drug_list">Medicamentos aviados</string>
 
     <string name="dados_iniciais">Dados Iniciais</string>
@@ -181,8 +181,8 @@
     <string name="quantidade">Quantidade</string>
     <string name="dados_do_episodio">Dados do Episódio</string>
     <string name="prescription_must_be_urgent">Esta prescrição deve ser indicada como especial, pois a anterior foi anulada.</string>
-    <string name="remove_dispense_drug_detail_list">O Aviamento que pretende remover contém os detalhes abaixo</string>
-    <string name="would_you_like_remove_dispense">Confirma a remoção do aviamento?</string>
+    <string name="remove_dispense_drug_detail_list">A Dispensa que pretende remover contém os detalhes abaixo</string>
+    <string name="would_you_like_remove_dispense">Confirma a remoção da dispensa?</string>
     <string name="dispense_has_final_episode_cant_be_edit">Não pode se editar/remover a dispensa porque o paciente já tem o episódio final.</string>
     <string name="patient_has_final_episode_cant_create_dispense">Não pode criar nova dispensa porque o paciente já tem o episódio final.</string>
 
@@ -199,5 +199,255 @@
     <string name="amc">AMC(Consumo Maximo)</string>
     <string name="stock_actual">Stock Actual</string>
     <string name="stock_status">Estado</string>
+    <string name="unknown_error">Erro desconhecido</string>
 
+    <string name="novo_paciente">Novo Paciente</string>
+    <string name="procurar_paciente">Procurar Paciente</string>
+
+
+
+    <string name="tipo_identificador">Tipo de Identificador</string>
+    <string name="provincia">Provincia</string>
+    <string name="distrito">Distrito</string>
+    <string name="bairro">Bairro</string>
+    <string name="local">Local</string>
+    <string name="casa_numero">Casa N.</string>
+    <string name="quarteirao">Quarteirao</string>
+    <string name="data_nascimento">Data de Nascimento</string>
+
+    <string name="data_admissao_na_paragem">Data de Admissao na Paragem Unica</string>
+    <string name="notas_admissao">Notas de Admissao</string>
+
+    <string name="adicionar_paciente">Adicionar Paciente</string>
+    <string name="actualizar_paciente">Actualizar Paciente</string>
+
+    <string name="adicionar_paciente_dados_demograficos">Adicionar Paciente - Dados Demograficos</string>
+    <string name="adicionar_paciente_endereco_contacto">Adicionar Paciente - Endereco e Contacto</string>
+    <string name="adicionar_paciente_information_clinic">Adicionar Paciente - Informacao Clinica</string>
+
+    <string name="actualizar_paciente_dados_demograficos">Actualizar Paciente - Dados Demograficos</string>
+    <string name="actualizar_paciente_endereco_contacto">Actualizar Paciente - Endereco e Contacto</string>
+    <string name="actualizar_paciente_information_clinic">Actualizar Paciente - Informacao Clinica</string>
+
+    <string name="nid_mandatory">O Campo NID é obrigatório</string>
+    <string name="nome_mandatory">O Campo Nome é obrigatório</string>
+    <string name="apelido_mandatory">O Campo Apelido é obrigatório</string>
+    <string name="sexo_mandatory">O Genero é obrigatório</string>
+    <string name="birth_date_not_correct">A data da nascimento não pode ser maior que a data corrente.</string>
+
+    <string name="tarv_inital_date_not_correct">A data de Inicio Tarv não pode ser maior que a data corrente.</string>
+    <string name="admission_date_not_correct">A data da Admissão não pode ser maior que a data corrente.</string>
+    <string name="tarv_inital_mandatory">A data de Inicio Tarv é um campo obrigatório.</string>
+    <string name="admission_date_mandatory">A data da Admissão é um campo obrigatório.</string>
+    <string name="patient_created_sucessfuly">Paciente Criado Com Sucesso</string>
+
+    <string name="patient_updated_sucessfuly">Paciente Actualizado Com Sucesso</string>
+    <string name="refazer_frascos">Refazer Frascos</string>
+    <string name="data_devolucao">Data do Retorno:</string>
+    <string name="notas_devolucao">Notas do Retorno</string>
+
+    <string name="return_date_mandatory">A data de Retorno é um campo obrigatório.</string>
+    <string name="return_date_date_not_correct">A data de Retorno não pode ser maior que a data corrente.</string>
+
+    <string name="quantity_return_cant_be_lower_zero">A quantidade Retornada não pode ser menor que zero</string>
+
+    <string name="returned_drug_sucessfuly">Medicamento Retornado Com Sucesso</string>
+    <string name="quantity_returned_cant_be_higher_than_taked">A quantidade Retornada não pode ser maior que a Dispensada</string>
+    <string name="return_date_date_cant_be_lower_than_dispense_date">A data de Retorno não pode ser menor que a data da dispensa.</string>
+    <string name="confirm_return_drugs_save">Confirma o Retorno destes Medicamentos?</string>
+    <string name="would_like_to_create_new_prescription">O Retorno foi efectuado com Sucesso. Pretende Criar uma nova Prescrição ?</string>
+
+    <string name="cant_return_dispense">Ja Foi Efectuado o retorno uma vez, não pode voltar a refazer.</string>
+    <string name="clinic_sector_type">Tipo de Sector de dispensa</string>
+    <string name="clinic_sector">Sector de dispensa</string>
+    <string name="would_like_create_patient">A Prescrição foi gravada com sucesso. Pretende dispensar a mesma?</string>
+    <string name="are_sure_work_this_patient">Tem Certeza que pretende trabalhar com este paciente? Os Seus dados serao baixados</string>
+
+    <string name="dta_levantamento">Data Levan</string>
+    <string name="reference_number_mandatory">O número da guia de referência deve ser indicado.</string>
+    <string name="operation_type_mandatory">O tipo de operação deve ser indicado.</string>
+    <string name="registration_date">A data de registo deve ser indicada.</string>
+    <string name="registration_date_cant_be_gt_than_current">A data de registo não pode ser maior que a data corrente</string>
+    <string name="refered_stock_is_mandatory">O stock a referir deve ser indicado.</string>
+    <string name="drug_must_be_indicated">O medicamento deve ser indicado.</string>
+    <string name="batch_number_mandatory">O número do lote deve ser indicado.</string>
+    <string name="expire_date_mandatory">A data de validade deve ser indicada.</string>
+    <string name="expire_date_must_be_gt_than_current">A data de validade não pode ser inferior que a data corrente</string>
+    <string name="invalid_quantity">A quantidade indicada é inválida.</string>
+    <string name="origin_mandatory">A origem deve ser indicada.</string>
+    <string name="record_cant_be_edited">Não pode efectuar alterações sobre este registo, pois já se encontra sincronizado com a central.</string>
+    <string name="record_cant_be_removed">Não pode remover este registo, pois já se encontra sincronizado com a central.</string>
+    <string name="operation_date_mandatory">A data da operação deve ser indicada.</string>
+    <string name="operation_date_cant_be_gt_current">A data da operação não pode ser maior que a data corrente</string>
+    <string name="operation_notes_mandatory">As notas da operação devem ser indicadas.</string>
+    <string name="operation_cant_be_edited">Esta operação de destruição de stock não pode ser alterada</string>
+    <string name="closed_record_cant_be_edited">Não pode editar este inventário pois ja se encontra fechado</string>
+    <string name="closed_record_cant_be_removed">Não pode remover este inventário pois já se encontra fechado</string>
+    <string name="operarion_cant_be_removed">Esta operação de destruição de stock não pode ser removida</string>
+    <string name="quantity_not_specified">Não indicou a quantidade de stock para destruir.</string>
+    <string name="stock_destruction_exists">Ja existe um registo de destruição de stock para este medicamento nesta data, gostaria de editar o mesmo?</string>
+    <string name="operation_success">Operação efectuada com sucesso.</string>
+    <string name="no_more_previous_drug">Não há mais medicamentos por visualizar, o corrente é o primeiro da lista.</string>
+    <string name="no_more_next_drug">Não há mais medicamentos por visualizar, o corrente é o último da lista</string>
+    <string name="drug">Medicamento </string>
+    <string name="exists_fields_with_zero">Existem campos com quantidade zero (0) o stock actual existente para os respectivos lotes será reduzido a zero (0), prosseguir?</string>
+    <string name="operation_failure">\"Ocorreu um erro ao gravar os dados \"</string>
+
+    <string name="dispensas_paciente_fila">Dispensas do Paciente(FILA)</string>
+
+    <string name="criar_no_directorio">Created a new directory for PDF</string>
+
+    <string name="paciente_nao_tem_dispensas">O Paciente Nao tem Dispensas</string>
+    <string name="of">de</string>
+    <string name="name_report">Nome</string>
+    <string name="nid_report">NID</string>
+    <string name="unidade_sanit_ria_report">Unidade Sanitária</string>
+    <string name="genero_report">Gênero</string>
+    <string name="idade_report">Idade</string>
+    <string name="dispense_type_report">Tipo de Dispensa </string>
+    <string name="data_de_referencia_report">Data de Referência</string>
+    <string name="prescription_date_report">Data da Prescrição</string>
+
+
+    <string name="clinic_info">Vital</string>
+    <string name="register_date">Data Registro:</string>
+    <string name="vital_signs">Data Registro:</string>
+    <string name="adherence_monitoring_and_screening">Monitoria e Rastreio de Adesao</string>
+    <string name="adverse_reactions">Reacoes Adversas</string>
+
+    <string name="weight">Peso (kg)</string>
+    <string name="height">Altura (cm)</string>
+    <string name="imc">IMC</string>
+    <string name="systole">Sistole (mmHg)</string>
+    <string name="distole">Distole (mmHg)</string>
+
+    <string name="tb_screening_questions">Perguntas de Rastreio de Tuberculose</string>
+
+    <string name="profilatic_treatment_tpi">Está Actualmente em tratamento Profilático com Isoniazida(TPI)?</string>
+    <string name="treatment_tb">Está em tratamento de tuberculose(TB)?</string>
+
+    <string name="signs_syntoms_tb">Sinais e sintomas sugestivos a TB</string>
+    <string name="cough_last_two_weeks">Está com tosse ?</string>
+    <string name="fever_last_two_weeks">Teve febres nas ultimas duas semanas ?</string>
+    <string name="lost_weight_last_month">Perdeu peso >1.5 kg no ultimo mês?</string>
+    <string name="sweat_in_the_night">Tem suado muito a noite?</string>
+    <string name="got_parent_doing_tb_treatment">Tem um parente em casa que está a fazer tratamento de TB ?</string>
+
+    <string name="patient_refered_evaluation_us">Paciente referido para mais avaliação na US ?</string>
+
+    <string name="monitoring_question">Perguntas de Monitoria e Reforco de Adesão</string>
+    <string name="patient_right_date">O paciente veio na data marcada ?</string>
+
+    <string name="patient_wrong_date_days">Se não, quantos dias de atraso completou o paciente ?</string>
+
+    <string name="forgot_medicines">Nos ultimos 2 meses teria se esquecido de tomar os seus medicamentos algum dia na sua hora habitual ?</string>
+
+    <string name="forgot_medicines_hours">Quantos dias passou da hora sem tomar os medicamentos ?</string>
+
+    <string name="motives">Motivos :</string>
+
+    <string name="patient_has_adverse_reaction">Tem alguma reação adversa que acha que e causada pelos medicamentos ?</string>
+
+    <string name="describe_reaction"> Descreva brevemente a reação?</string>
+
+    <string name="patient_refered_evaluation_us_on_ram">Paciente referido pelas reacções adversas para mais avaliação na US ?</string>
+
+
+    <string name="tb_adverse_reaction_questions">Perguntas de Rastreio de Tuberculose Reacções Adversas aos Medicamentos (RAM) </string>
+
+    <string name="tb_screening">Rastreio de Tuberculose</string>
+
+    <string name="monitoring">Monitoria e Reforço de Adesão</string>
+    <string name="adverse_reaction_ram">Reacções Adversas aos Medicamentos (RAM)</string>
+
+    <string name="clinic_information_saved_sucessfuly">Informação Clinica gravada Com Sucesso</string>
+
+    <string name="save_error_msg_clinic_information">\"Ocorreu um erro ao gravar o Informação Clinica. \"</string>
+    <string name="user_is_mandatory">O campo Utilizador deve ser preenchido.</string>
+    <string name="pass_is_mandatory">O campo Senha deve ser preenchido.</string>
+    <string name="generic_error_msg">Ocorreu um erro ao tentar realizar a operação desejada.</string>
+    <string name="geral">Geral</string>
+    <string name="parcial">Parcial</string>
+
+    <string name="tb_pregnancy_screening">Rastreio de Gravidez</string>
+    <string name="patient_is_pregnant">Está gravida ?</string>
+    <string name="patient_menstruated_last_two_months">Teve menstruação nos ultimos meses?</string>
+
+    <string name="has_fatigue_or_tiredness_last_two_weeks">Teve cansaço ou fadiga nas ultimas duas semanas?</string>
+
+    <string name="treatment_start_date">Data de Inicio de Tratamento</string>
+
+    <string name="title_activity_i_dart_home">iDartHomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="information_tb_message">Este paciente pode ter tuberculose. Por favor, referir o paciente de volta à Unidade Sanitaria para mais avaliações.</string>
+
+    <string name="info_tb_stop_message"> Parar com o rastreio de TB. Por favor, referir o paciente de volta a Unidade Sanitaria </string>
+
+    <string name="info_refer_to_us_message"> Por favor, referir o paciente de volta à Unidade Sanitaria para mais avaliações. </string>
+
+    <string name="info_monitoring_message"> Forneça aconselhamento de adesão sobre a importância de manter as datas </string>
+
+    <string name="info_ram_message"> Se o paciente tiver uma reacção adversa, Preenche a Ficha (amarela) de Notificação de Reações Adversas aos Medicamentos e Vacinas e envie-o para a Repartição Provincial de Farmácia).
+Se a reacção adversa for grave, referir o paciente para a US. </string>
+
+
+    <string name="register_date_required">A data do Registro é um dado obrigatório.</string>
+
+    <string name="treatment_start_date_required">A Data de Início do Tratamento é um dado obrigatório dado que respondeu afirmativamente a Esta em tratamento de tuberculose (TB).</string>
+
+    <string name="late_days_cannot_be_zero">Uma vez que o paciente não veio na data marcada, o numero de dias de atraso não pode ser zero.</string>
+
+    <string name="adverse_reaction_cannot_be_empty">Uma vez que o paciente teve reacção adversa deve descreve la</string>
+    <string name="new_pharmacy_types">Novo(s) Pharmacy Types</string>
+    <string name="new_forms">Novo(s) Forms</string>
+    <string name="new_drugs">Novo(s) Medicamentos</string>
+    <string name="new_diseases">Novo(s) Diseases</string>
+    <string name="new_dispense_types">Novo(s) Tipos de Dispensa</string>
+    <string name="new_regimens">Novo(s )Regimes Terapéuticos</string>
+    <string name="new_lines">Nova(s) Linhas Terapéuricas</string>
+    <string name="new_patients">Novo(s) Paciente(s) referido(s)</string>
+    <string name="new_episodes">Novo(s) Episódios</string>
+    <string name="no_selected_drug">Por favor seleccione pelo menos um medicamento.</string>
+    <string name="dta_marcada_levantamento">Data Marcada de Levantamento</string>
+    <string name="app_cant_connect_to_server">A aplicação não conseguiu ligar-se ao servidor central, por favor verifique a URL informada ou a configuração de rede do dispositivo.</string>
+    <string name="central_server_url_mandatory">Por favor indicar a URL do servidor central.</string>
+    <string name="data_ult_levantamento">Data Ultimo Levantamento</string>
+
+    <string name="awaiting_patients_report">Pacientes Esperados no Periodo</string>
+    <string name="absent_patients_report">Pacientes Faltosos no Periodo</string>
+    <string name="active_patients_report">Pacientes Activos no Periodo</string>
+    <string name="stock_list_report">Lista de Stock</string>
+    <string name="fnm">FNM</string>
+    <string name="entrances">Entradas</string>
+    <string name="packs">Saidas</string>
+    <string name="existing_stock">Stock Existente</string>
+    <string name="expiry_date">Data de Validade</string>
+    <string name="balance">Saldo</string>
+    <string name="batch_number">Lote</string>
+
+    <string name="date_missed">Data que faltou ao Levantamento</string>
+
+    <string name="days_missed">Numero de Dias que faltou</string>
+    <string name="total_dispensas">Total Dispensas</string>
+    <string name="remove_dispense">Remover Dispensa</string>
+    <string name="no_new_patientes">Não tem novos pacientes referidos.</string>
+
+    <string name="estatistica_dispensas_por_medicamento" translatable="false">Estatistica de Dispensas Por Medicamento</string>
+    <string name="encounter_date">Data da Consulta</string>
+
+    <string name="pacientes_suspeitos_tb" translatable="false">Lista de Suspeitos TB</string>
+    <string name="include_online_info">Incluir Informação online?</string>
+    <string name="online">online</string>
+    <string name="order_number_report">Ordem</string>
+    <string name="graphic_report_dispense_by_regime">Gráfico de Levantamentos por regime</string>
 </resources>

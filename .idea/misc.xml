@@ -1,5 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/drawable/ic_list.xml" value="0.242" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_absent_patients_report.xml" value="0.22" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_active_patients.xml" value="0.34148550724637683" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_active_patients_report.xml" value="0.33" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_dispense_by_dispense_type_report.xml" value="0.34148550724637683" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_fila_report.xml" value="0.26811594202898553" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_patients_awaiting_report.xml" value="0.23143115942028986" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_pregnant_patient_report.xml" value="0.34148550724637683" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_report.xml" value="0.26811594202898553" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_report_type.xml" value="0.23143115942028986" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/activity_reports_listing.xml" value="0.26811594202898553" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/app_bar.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/content_awaiting_absent_patients_report.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/content_awaiting_active_patients_report.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/content_clinic_info_report.xml" value="0.23143115942028986" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/content_patient.xml" value="0.23143115942028986" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/content_patients_awaiting_statistics.xml" value="0.23143115942028986" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/FGH/iDART-Mobile/app/src/main/res/layout/fragment_home.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_patient_home.xml" value="0.1" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_second_splash.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_splash.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/fragment_home.xml" value="0.24547101449275363" />
+        <entry key="..\:/Users/admin/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/fragment_settings.xml" value="0.1308876811594203" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_add_new_patient.xml" value="0.2" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_home.xml" value="0.16394927536231885" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_i_dart_home.xml" value="0.16" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_login.xml" value="0.1490036231884058" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_patient.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_patient_home.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_second_splash.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_settings.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/activity_splash.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/joao.mbjaia/Documents/FGH_Projects/iDART-Mobile/app/src/main/res/layout/fragment_home.xml" value="0.16875" />
+        <entry key="app/src/main/res/layout/activity_add_new_patient.xml" value="0.3695652173913043" />
+        <entry key="app/src/main/res/layout/activity_create_dispense.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/activity_dispense_by_dispense_type_report.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/activity_dispense_drug_graph_statistic_report.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/activity_dispense_drug_statistic_report.xml" value="0.3374094202898551" />
+        <entry key="app/src/main/res/layout/activity_dispensed_drugs_report.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/activity_fila_report.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.3695652173913043" />
+        <entry key="app/src/main/res/layout/activity_i_dart_home.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.35280797101449274" />
+        <entry key="app/src/main/res/layout/activity_patient.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/activity_patient_home.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/activity_patient_register_report.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/activity_prescription.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/activity_search_patient.xml" value="0.3677536231884058" />
+        <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/content_patient.xml" value="0.36594202898550726" />
+        <entry key="app/src/main/res/layout/content_patients_awaiting_statistics.xml" value="0.20729166666666668" />
+        <entry key="app/src/main/res/layout/custom_dialog_loading.xml" value="0.20729166666666668" />
+        <entry key="app/src/main/res/layout/dispense_report.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/layout/report_search_mode_opts.xml" value="0.3697916666666667" />
+        <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.3697916666666667" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="referedStock"
+            type="mz.org.fgh.idartlite.model.ReferedStockMoviment" />
+
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="mz.org.fgh.idartlite.base.model.BaseModel"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_4dp"
+            android:layout_weight="1.4">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                bind:srcCompat="@mipmap/ic_refered"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="4">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Número de Guia de Referência"
+                        android:textSize="@dimen/dimen_12dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{referedStock.orderNumber}"
+                        android:textSize="@dimen/dimen_12dp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:paddingLeft="@dimen/dimen_10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2.5">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="Tipo de Operação:"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="Data:"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="@{referedStock.operationType.description}"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/patient_activity_lists"
+                        android:text="@{DateUtilities.formatToDDMMYYYY(referedStock.date)}" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="@dimen/dimen_10dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="top"
+                        android:src="@{referedStock.isSyncStatusSent(referedStock.syncStatus != null ? referedStock.syncStatus : BaseModel.SYNC_SATUS_READY) ? @drawable/ic_baseline_cloud_done_24 : @drawable/ic_baseline_cloud_queue_24}"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -1,13 +1,17 @@
 package mz.org.fgh.idartlite.model;
 
+import android.content.Context;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.DispensedDrugDaoImpl;
 
 import java.util.Objects;
+
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.dispense.DispensedDrugDaoImpl;
 
 @DatabaseTable(tableName = "Dispense_drug", daoClass = DispensedDrugDaoImpl.class)
 public class DispensedDrug extends BaseModel {
@@ -15,6 +19,7 @@ public class DispensedDrug extends BaseModel {
     public static final String COLUMN_QUANTITY_SUPPLIED = "quantity_supplied";
     public static final String COLUMN_DISPENSE = "dispense_id";
     public static final String COLUMN_STOCK = "stock_id";
+    public static final String COLUMN_DRUG_ID = "drug_id";
     public static final String COLUMN_SYNC_STATUS = "sync_status";
 
 
@@ -24,7 +29,7 @@ public class DispensedDrug extends BaseModel {
     @DatabaseField(columnName = COLUMN_QUANTITY_SUPPLIED)
     private int quantitySupplied;
 
-    @DatabaseField(columnName = COLUMN_STOCK , canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = COLUMN_STOCK , canBeNull = true, foreign = true, foreignAutoRefresh = true)
     private Stock stock;
 
     @DatabaseField(columnName = COLUMN_DISPENSE ,canBeNull = false, foreign = true, foreignAutoRefresh = true)
@@ -32,6 +37,9 @@ public class DispensedDrug extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_SYNC_STATUS)
     private String syncStatus;
+
+    @DatabaseField(columnName = COLUMN_DRUG_ID ,canBeNull = false, foreign = true, foreignAutoRefresh = true)
+    private Drug drug;
 
     public DispensedDrug() {
     }
@@ -105,5 +113,28 @@ public class DispensedDrug extends BaseModel {
                 ", dispense=" + dispense +
                 ", syncStatus='" + syncStatus + '\'' +
                 '}';
+    }
+
+    public Drug getDrug() {
+        return drug;
+    }
+
+    public void setDrug(Drug drug) {
+        this.drug = drug;
+    }
+
+    @Override
+    public String isValid(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
     }
 }

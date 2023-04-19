@@ -13,16 +13,16 @@
             type="mz.org.fgh.idartlite.model.Stock" />
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.StockEntranceVM" />
+            type="mz.org.fgh.idartlite.viewmodel.stock.StockEntranceVM" />
 
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".view.stock.StockEntranceActivity">
+            tools:context=".view.stock.panel.StockEntranceActivity">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarLayout2"
@@ -134,7 +134,7 @@
                             android:layout_height="wrap_content"
                             style="@style/bottom_border_edit_text_style"
                             android:drawableLeft="@drawable/ic_calendar"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(stock.dateReceived)}"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(stock.dateReceived)}"
                             android:paddingStart="@dimen/dimen_4dp"
                             android:paddingLeft="@dimen/dimen_4dp" />
 
@@ -245,7 +245,7 @@
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_calendar"
                             style="@style/bottom_border_edit_text_style"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(stock.expiryDate)}"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(stock.expiryDate)}"
                             android:paddingStart="@dimen/dimen_4dp"
                             android:paddingLeft="@dimen/dimen_4dp" />
 

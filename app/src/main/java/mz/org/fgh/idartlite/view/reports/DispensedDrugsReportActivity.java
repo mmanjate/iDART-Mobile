@@ -3,21 +3,21 @@ package mz.org.fgh.idartlite.view.reports;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.highsoft.highcharts.Common.HIChartsClasses.HIChart;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIDataLabels;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIOptions;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIPie;
-import com.highsoft.highcharts.Common.HIChartsClasses.HIPlotOptions;
-import com.highsoft.highcharts.Common.HIChartsClasses.HITitle;
-import com.highsoft.highcharts.Common.HIChartsClasses.HITooltip;
-import com.highsoft.highcharts.Core.HIChartView;
+import com.highsoft.highcharts.common.hichartsclasses.HIChart;
+import com.highsoft.highcharts.common.hichartsclasses.HIDataLabels;
+import com.highsoft.highcharts.common.hichartsclasses.HIOptions;
+import com.highsoft.highcharts.common.hichartsclasses.HIPie;
+import com.highsoft.highcharts.common.hichartsclasses.HIPlotOptions;
+import com.highsoft.highcharts.common.hichartsclasses.HITitle;
+import com.highsoft.highcharts.common.hichartsclasses.HITooltip;
+import com.highsoft.highcharts.core.HIChartView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.Map;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseActivity;
-import mz.org.fgh.idartlite.base.BaseViewModel;
-import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.base.activity.BaseActivity;
+import mz.org.fgh.idartlite.base.viewModel.BaseViewModel;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
-import mz.org.fgh.idartlite.viewmodel.DispensedDrugsReportVM;
+import mz.org.fgh.idartlite.viewmodel.dispense.DispensedDrugsReportVM;
 
 public class DispensedDrugsReportActivity extends BaseActivity {
 
@@ -41,6 +41,9 @@ public class DispensedDrugsReportActivity extends BaseActivity {
     private HIChartView chartView;
     private EditText edtStart;
     private EditText edtEnd;
+    private RadioButton rdOnline;
+    private RadioButton rdLocal;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,37 +58,42 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         edtStart = findViewById(R.id.start);
         edtEnd = findViewById(R.id.end);
         ImageView search = findViewById(R.id.buttonSearch);
+        rdOnline = findViewById(R.id.rdOnline);
+        rdLocal = findViewById(R.id.rdLocal);
+        rdLocal.setChecked(true);
 
-        edtStart.setOnClickListener(new View.OnClickListener() {
+        rdOnline.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                int mYear, mMonth, mDay;
-
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
+            public void onClick(View v) {
+                getRelatedViewModel().changeReportSearchMode(getString(R.string.online));
             }
+        });
+
+        rdLocal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getRelatedViewModel().changeReportSearchMode(getString(R.string.local));
+            }
+        });
+
+        edtStart.setOnClickListener(view -> {
+            int mYear, mMonth, mDay;
+
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, (view1, year, monthOfYear, dayOfMonth) -> {
+                edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                start =dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+            }, mYear, mMonth, mDay);
+            datePickerDialog.show();
         });
 
         edtEnd.setOnClickListener(new View.OnClickListener() {
@@ -98,56 +106,89 @@ public class DispensedDrugsReportActivity extends BaseActivity {
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                    }
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, (view12, year, monthOfYear, dayOfMonth) -> {
+                    edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
         });
 
-        search.setOnClickListener(new View.OnClickListener() {
+        edtStart.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
-                    Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Por favor indicar o período por analisar!").show();
-                }else
-                if (DateUtilitis.dateDiff(DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) < 0){
-                    Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
-                }else
-                if ((int) (DateUtilitis.dateDiff(DateUtilitis.getCurrentDate(), DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT)) < 0){
-                    Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    int mYear, mMonth, mDay;
+
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, (view, year, monthOfYear, dayOfMonth) -> {
+                        edtStart.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        start = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
                 }
-                else
-                if ((int) DateUtilitis.dateDiff(DateUtilitis.getCurrentDate(), DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT), DateUtilitis.DAY_FORMAT) < 0){
-                    Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
-                }else {
-                    Utilities.hideSoftKeyboard(DispensedDrugsReportActivity.this);
-                    generateGraph(start, end);
+            }
+        });
+
+        edtEnd.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                int mYear, mMonth, mDay;
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(DispensedDrugsReportActivity.this, (view, year, monthOfYear, dayOfMonth) -> {
+                    edtEnd.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    end = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
+        search.setOnClickListener(v -> {
+
+            if (!Utilities.stringHasValue(start) || !Utilities.stringHasValue(end) ){
+                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Por favor indicar o período por analisar!").show();
+            }else
+            if (DateUtilities.dateDiff(DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
+                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data fim.").show();
+            }else
+            if ((int) (DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT)) < 0){
+                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data inicio deve ser menor que a data corrente.").show();
+            }
+            else
+            if ((int) DateUtilities.dateDiff(DateUtilities.getCurrentDate(), DateUtilities.createDate(end, DateUtilities.DATE_FORMAT), DateUtilities.DAY_FORMAT) < 0){
+                Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "A data fim deve ser menor que a data corrente.").show();
+            }else {
+                Utilities.hideSoftKeyboard(DispensedDrugsReportActivity.this);
+                try {
+                    getRelatedViewModel().doSearch(DateUtilities.createDate(start, DateUtilities.DATE_FORMAT), DateUtilities.createDateWithTime(end, DateUtilities.END_DAY_TIME, DateUtilities.DATE_TIME_FORMAT));
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
             }
         });
     }
 
-    private void generateGraph(String start, String end) {
+    public void generateGraph() {
 
         start = edtStart.getText().toString();
         end = edtEnd.getText().toString();
+        Map<String, Double> map;
 
-        Map<String, Double> map = new HashMap<>();
-        try {
-            map = getRelatedViewModel().search(DateUtilitis.createDate(start, DateUtilitis.DATE_FORMAT), DateUtilitis.createDate(end, DateUtilitis.DATE_FORMAT));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        map = getRelatedViewModel().getSearchResults();
 
-        if (map == null || map.isEmpty() || map.size() == 0){
-            Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Não foram encontrados registos para o período informado!").show();
+        if (map == null || map.isEmpty()){
+            Utilities.displayAlertDialog(DispensedDrugsReportActivity.this, "Não foram encontrados resultados para a sua pesquisa!").show();
             return;
+        } else {
+            map.size();
         }
 
         HIOptions options = new HIOptions();
@@ -160,7 +201,7 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         options.setChart(chart);
 
         HITitle title = new HITitle();
-        title.setText("Percentagem de Aviamentos por Regime, "+start+" à "+end);
+        title.setText("Percentagem de Dispensas por Regime, "+start+" à "+end);
         options.setTitle(title);
 
         HITooltip tooltip = new HITooltip();
@@ -171,8 +212,6 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         plotOptions.setPie(new HIPie());
         plotOptions.getPie().setAllowPointSelect(true);
         plotOptions.getPie().setCursor("pointer");
-        plotOptions.getPie().setDataLabels(new HIDataLabels());
-        plotOptions.getPie().getDataLabels().setEnabled(false);
         plotOptions.getPie().setShowInLegend(true);
         options.setPlotOptions(plotOptions);
 
@@ -201,6 +240,7 @@ public class DispensedDrugsReportActivity extends BaseActivity {
         chartView.reload();
 
         chartView.setVisibility(View.VISIBLE);
+
     }
 
     @Override

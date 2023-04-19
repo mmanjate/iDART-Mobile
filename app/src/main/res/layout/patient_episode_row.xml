@@ -14,7 +14,7 @@
             name="lastDispense"
             type="mz.org.fgh.idartlite.model.Dispense" />
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -141,21 +141,21 @@
                         style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{DateUtilitis.formatToDDMMYYYY(episode.getStringEpisodeDate)}" />
+                        android:text="@{DateUtilities.formatToDDMMYYYY(episode.getStringEpisodeDate)}" />
 
                     <TextView
                         android:id="@+id/referenceDate"
                         style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{DateUtilitis.formatToDDMMYYYY(firstEpisode.getStringEpisodeDate)}" />
+                        android:text="@{DateUtilities.formatToDDMMYYYY(firstEpisode.getStringEpisodeDate)}" />
 
                     <TextView
                         android:id="@+id/nextPickUpDate"
                         style="@style/patient_activity_lists"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{episode.stopReason==null ? DateUtilitis.formatToDDMMYYYY(lastDispense.nextPickupDate):episode.noInfoString}" />
+                        android:text="@{episode.stopReason==null ? DateUtilities.formatToDDMMYYYY(lastDispense.nextPickupDate):episode.noInfoString}" />
 
                     <TextView
                         android:id="@+id/notes"

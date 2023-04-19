@@ -9,7 +9,7 @@
         <variable
             name="prescription"
             type="mz.org.fgh.idartlite.model.Prescription" />
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
     </data>
 
     <LinearLayout
@@ -64,7 +64,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{DateUtilitis.formatToDDMMYYYY(prescription.prescriptionDate)}"/>
+                    android:text="@{DateUtilities.formatToDDMMYYYY(prescription.prescriptionDate)}"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -64,6 +64,8 @@ public class SyncDispense {
     private String motivocriacaoespecial;
     private String syncuuid;
     private String uuidopenmrs;
+    private String clinicuuid;
+    private String username;
 
     public Integer getId() {
         return id;
@@ -75,6 +77,22 @@ public class SyncDispense {
 
     public Integer getClinicalstage() {
         return clinicalstage;
+    }
+
+    public String getClinicuuid() {
+        return clinicuuid;
+    }
+
+    public void setClinicuuid(String clinicuuid) {
+        this.clinicuuid = clinicuuid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setClinicalstage(Integer clinicalstage) {

@@ -6,26 +6,67 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name = "android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".base.IdartLiteApplication"
+        android:name=".base.application.IdartLiteApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.reports.ReportTypeActivity"></activity>
-        <activity android:name=".view.reports.ReportsListingActivity"></activity>
-        <activity android:name=".view.reports.DispenseReportActivity"></activity>
+        <activity android:name=".view.reports.DispenseByDispenseTypeReportActivity"></activity>
+        <activity android:name=".view.reports.TBTracedPatientGraphReportActivity" />
+        <activity android:name=".view.reports.PregnantPatientGraphReportActivity" />
+        <activity android:name=".view.reports.TBTracedPatientReportActivity" />
+        <activity android:name=".view.reports.PatientTreatmentFollowUpReportActivity" />
+        <activity android:name=".view.reports.AdverseReactionReportActivity" />
+        <activity android:name=".view.reports.PatientTreatmentFollowUpGraphicReportActivity" />
+        <activity android:name=".view.reports.DispenseDrugGraphStatisticReportActivity" />
+        <activity android:name=".view.reports.PregnantPatientReportActivity" />
+        <activity android:name=".view.reports.DispenseDrugStatisticReportActivity" />
+        <activity
+            android:name=".view.reports.DispensesNonSyncReportActivity"
+            android:label="@string/title_activity_dispenses_non_sync_report"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.reports.PatientsAwaitingStatisticsActivity"
+            android:label="@string/title_activity_patients_awaiting_statistics"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.reports.AwatingPatientsGraphReportActivity" />
+        <activity android:name=".view.reports.PatientsAwaitingReportActivity" />
+        <activity android:name=".view.reports.AbsentPatientsReportActivity" />
+        <activity android:name=".view.reports.ActivePatientsReportActivity" />
+        <activity android:name=".view.reports.StockListReportActivity" />
+        <activity
+            android:name=".view.home.IDartHomeActivity"
+            android:label="@string/title_activity_i_dart_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.settings.SettingsActivity" />
+        <activity android:name=".view.reports.FILAReportActivity" />
+        <activity android:name=".view.patientSearch.NewPatientSearchActivity" />
+        <activity android:name=".view.reports.PatientRegisterReportActivity" />
+        <activity android:name=".view.dispense.ReturnDispenseActivity" />
+        <activity android:name=".view.stock.referedstock.ReferedStockMovimentActivity" />
+        <activity android:name=".view.patientPanel.AddNewPatientActivity" />
+        <activity android:name=".view.home.PatientHomeActivity" />
+        <activity android:name=".view.reports.ReportTypeActivity" />
+        <activity android:name=".view.reports.ReportsListingActivity" />
+        <activity android:name=".view.reports.DispenseReportActivity" />
+        <activity android:name=".view.reports.DispensedDrugsReportActivity" />
+        <activity android:name=".view.reports.StockAlertReportActivity" />
+        <activity android:name=".view.stock.inventory.IventoryActivity" />
+        <activity android:name=".view.stock.destroy.DestroyStockActivity" />
 
-        <activity android:name=".view.reports.DispensedDrugsReportActivity">
-
-
-        </activity>
-        <activity android:name=".view.reports.StockAlertReportActivity"></activity>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="mz.org.fgh.idartlite.FileProvider"
@@ -33,18 +74,16 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".view.reports.PatientReportActivity">
-
-        </activity>
-        <activity android:name=".view.AboutActivity" />
+        <activity android:name=".view.reports.PatientReportActivity" />
+        <activity android:name=".view.about.AboutActivity" />
         <activity
-            android:name=".view.SecondSplashActivity"
+            android:name=".view.splash.SecondSplashActivity"
             android:noHistory="true" />
         <activity
-            android:name=".view.SplashActivity"
+            android:name=".view.splash.SplashActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,40 +92,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.patient.PrescriptionActivity"
+            android:name=".view.prescription.PrescriptionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.patient.CreateDispenseActivity"
+            android:name=".view.dispense.CreateDispenseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.stock.StockEntranceActivity"
+            android:name=".view.stock.panel.StockEntranceActivity"
             android:label="@string/title_activity_stock"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.stock.StockActivity"
+            android:name=".view.stock.panel.StockActivity"
             android:label="@string/title_activity_stock"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.SearchPatientActivity"
+            android:name=".view.patientSearch.SearchPatientActivity"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.patient.PatientActivity"
+            android:name=".view.patientPanel.PatientPanelActivity"
             android:label="@string/title_activity_patient"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.login.LoginActivity"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.HomeActivity"
+            android:name=".view.home.HomeActivity"
             android:screenOrientation="sensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.patient.EpisodeActivity"
+            android:name=".view.episode.EpisodeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.clinicInfo.ClinicInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

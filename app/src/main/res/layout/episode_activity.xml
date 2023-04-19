@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.patient.EpisodeActivity"
+    tools:context=".view.episode.EpisodeActivity"
     >
 
     <data>
         <variable
             name="viewModel"
-            type="mz.org.fgh.idartlite.viewmodel.EpisodeVM" />
+            type="mz.org.fgh.idartlite.viewmodel.episode.EpisodeVM" />
         <variable
             name="patient"
-            type="mz.org.fgh.idartlite.model.Patient" />
+            type="mz.org.fgh.idartlite.model.patient.Patient" />
         <variable
             name="episode"
             type="mz.org.fgh.idartlite.model.Episode" />
 
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
     </data>
 
@@ -101,7 +101,7 @@
                             android:id="@+id/editEpisodeDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(episode.episodeDate)}"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(episode.episodeDate)}"
                             android:drawableLeft="@drawable/ic_calendar"
                             android:paddingStart="@dimen/dimen_4dp"
                             android:paddingLeft="@dimen/dimen_4dp" />

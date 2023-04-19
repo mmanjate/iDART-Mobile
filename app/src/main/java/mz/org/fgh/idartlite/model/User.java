@@ -1,11 +1,14 @@
 package mz.org.fgh.idartlite.model;
 
+import android.content.Context;
+
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.UserDaoImpl;
+import mz.org.fgh.idartlite.R;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.user.UserDaoImpl;
 import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "user", daoClass = UserDaoImpl.class)
@@ -28,6 +31,9 @@ public class User extends BaseModel {
 
     @DatabaseField(columnName = COLUMN_CLINIC_ID, canBeNull = false, foreign = true, foreignAutoRefresh = true)
     private Clinic clinic;
+
+    @DatabaseField(columnName = COLUMN_SYNC_STATUS)
+    private String syncStatus;
 
     public User() {
     }
@@ -64,10 +70,36 @@ public class User extends BaseModel {
         this.clinic = clinic;
     }
 
-    public String validadeToLogin() {
-        if (!Utilities.stringHasValue(this.userName)) return "O campo Utilizador deve ser preenchido.";
-        if (!Utilities.stringHasValue(this.password)) return "O campo Senha deve ser preenchido.";
+    public String getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(String syncStatus) {
+        this.syncStatus = syncStatus;
+    }
+
+    private String validadeToLogin(Context context) {
+        if (!Utilities.stringHasValue(this.userName)) return context.getString(R.string.user_is_mandatory);
+        if (!Utilities.stringHasValue(this.password)) return context.getString(R.string.pass_is_mandatory);
+
+        if (this.userName.length() < 4) return "O nome do utilizador deve ter o minimo de quatro caracteres";
+        if (this.password.length() < 4) return "A senha deve ter o minimo de quatro caracteres";
 
         return "";
+    }
+
+    @Override
+    public String isValid(Context context) {
+        return validadeToLogin(context);
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
     }
 }

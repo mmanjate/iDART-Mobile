@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.SplashActivity">
+    tools:context=".view.splash.SplashActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             <ImageView
                 android:layout_width="@dimen/dimen_0dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@mipmap/ic_mz_misau"
+                app:srcCompat="@mipmap/ic_misau"
                 android:padding="@dimen/dimen_10dp"
                 android:layout_gravity="left"
                 android:layout_weight="1"/>

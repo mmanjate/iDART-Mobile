@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="listble" type="mz.org.fgh.idartlite.common.Listble" />
+        <variable name="listble" type="mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble" />
 
         <variable name="viewListEditButton" type="boolean" />
         <variable name="viewListRemoveButton" type="boolean" />
+        <variable
+            name="viewModel"
+            type="mz.org.fgh.idartlite.base.viewModel.BaseViewModel" />
 
         <import type="mz.org.fgh.idartlite.util.Utilities"/>
         <import type="android.view.View"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
+            android:id="@+id/prescription_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/list_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingTop="@dimen/dimen_2dp"
+            android:paddingBottom="@dimen/dimen_2dp"
+            android:background="@color/list_icon">
 
+            <CheckBox
+                android:id="@+id/cbx_select"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:visibility="@{listble.iventorySelectionListing ? View.VISIBLE : View.GONE}"
+                android:layout_weight="0.2"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
+                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
                 style="@style/listble_content"
                 android:text="@{listble.fnmcode}" />
 
@@ -41,11 +45,29 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
+                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing) ? View.VISIBLE : View.GONE}"
                 android:background="@color/white"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                style="@style/listble_content"
+                android:visibility="@{(listble.stockListing || listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                android:text="@{listble.lote}" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.030"
+                android:visibility="@{(listble.stockListing || listble.stockDestroyListing || listble.iventoryListing || listble.iventorySelectionListing) ? View.VISIBLE : View.GONE}"
+                android:background="@color/white"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2.6"
+                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing|| listble.returnDispenseListing || listble.iventorySelectionListing) ? View.VISIBLE : View.GONE}"
                 style="@style/listble_content"
                 android:text="@{listble.description}"/>
 
@@ -53,29 +75,114 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
-                android:visibility="@{Utilities.stringHasValue(listble.lote) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.referedStockListing || listble.stockListing || listble.prescriptionDrugListing || listble.dispenseDrugListing || listble.returnDispenseListing) ? View.VISIBLE : View.GONE}"
                 android:background="@color/white"/>
+
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6"
+                android:layout_weight="0.8"
                 style="@style/listble_content"
-                android:visibility="@{Utilities.stringHasValue(listble.lote) ? View.VISIBLE : View.GONE}"
-                android:text="@{listble.lote}" />
+                android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                android:text="@{DateUtilities.formatToDDMMYYYY(listble.validate)}" />
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
-                android:visibility="@{listble.quantity > 0 ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
                 android:background="@color/white"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                style="@style/listble_content"
+                android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                android:text="@{Utilities.parseIntToString(listble.saldoActual)}" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.030"
+                android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                android:background="@color/white"/>
+
+            <EditText
+                android:id="@+id/edt_qty_destroy"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:gravity="center"
+                android:padding="@dimen/dimen_1dp"
+                android:inputType="number"
+                android:background="@drawable/listable_edit_text_border"
+                android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
+                android:text='@{(listble.qtyToModify > 0 || viewModel.currentStep.applicationStepList) ? Utilities.parseIntToString(listble.qtyToModify) : ""}'>
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/edt_notes"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:padding="@dimen/dimen_1dp"
+                android:inputType="textAutoComplete"
+                android:background="@drawable/listable_edit_text_border"
+                android:visibility="@{listble.iventoryListing ? View.VISIBLE : View.GONE}"
+                android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
+                android:text='@{listble.notes}'>
+
+            </EditText>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.6"
+                android:visibility="@{listble.referedStockListing  ? View.VISIBLE : View.GONE}"
+                style="@style/listble_content"
+                android:text="@{listble.origin}"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.030"
+                android:visibility="@{(listble.stockDestroyListing || listble.iventoryListing) ? View.VISIBLE : View.GONE}"
+                android:background="@color/white"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
                 style="@style/listble_content"
-                android:visibility="@{listble.quantity > 0 ? View.VISIBLE : View.GONE}"
-                android:text="@{Utilities.parseIntToString(listble.quantity)}" />
+                android:textAlignment="center"
+                android:visibility='@{(listble.referedStockListing || listble.stockListing || listble.dispenseDrugListing || listble.returnDispenseListing) ? View.VISIBLE : View.GONE}'
+                android:text='@{listble.quantity > 0 ? Utilities.parseIntToString(listble.quantity) : ""}' />
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.030"
+                android:visibility="@{listble.returnDispenseListing ? View.VISIBLE : View.GONE}"
+                android:background="@color/white"/>
+
+            <EditText
+                android:id="@+id/edt_qty_returned"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:gravity="center"
+                android:padding="@dimen/dimen_1dp"
+                android:background="@drawable/listable_edit_text_border"
+                android:visibility="@{listble.returnDispenseListing ? View.VISIBLE : View.GONE}"
+                android:enabled="@{viewModel.currentStep.applicationstepCreate || viewModel.currentStep.applicationStepEdit}"
+                android:inputType="number"
+                android:text='@{listble.qtyToModify > 0 ? Utilities.parseIntToString(listble.qtyToModify) : ""}'/>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -96,7 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.030"
-                android:visibility="@{ !viewListRemoveButton ? View.GONE : View.VISIBLE}"
+                android:visibility="@{!viewListRemoveButton ? View.GONE : View.VISIBLE}"
                 android:background="@color/white"/>
 
             <ImageView
@@ -110,7 +217,5 @@
 
 
         </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

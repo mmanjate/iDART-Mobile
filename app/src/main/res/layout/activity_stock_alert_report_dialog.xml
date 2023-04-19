@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/layoutId"
+        tools:context=".view.reports.StockAlertReportActivity" >
+
+
+        <TextView
+            android:id="@+id/initial_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alerta Stock"
+
+            android:textColor="@color/red"
+            android:textSize="20sp"
+            android:paddingLeft="@dimen/dimen_10dp"
+            android:layout_margin="@dimen/dimen_10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reyclerStock"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="@dimen/dimen_10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="190dp"
+                android:text="Ok"></Button>
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

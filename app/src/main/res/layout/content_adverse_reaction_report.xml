@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="clinicInformation"
+            type="mz.org.fgh.idartlite.model.ClinicInformation" />
+
+        <variable
+            name="reportType"
+            type="String" />
+
+        <import type="mz.org.fgh.idartlite.model.ClinicInformation"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_10dp">
+
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_baseline_person_24" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/nid_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/pacient_nid"
+                    android:layout_toLeftOf="@+id/pacient_nid"
+                    android:gravity="right"
+                    android:text="@string/nid"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/pacient_nid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:text="@{clinicInformation.patient.nid}"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/dimen_10dp"/>
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/nid"
+                    android:layout_toStartOf="@+id/pacient_name"
+                    android:layout_toLeftOf="@+id/pacient_name"
+                    android:gravity="right"
+                    android:text="@string/name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/pacient_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_nid"
+                    android:layout_alignParentRight="true"
+                    android:text="@{clinicInformation.patient.fullName}"
+                    android:layout_alignParentEnd="true" />
+                <TextView
+                    android:id="@+id/genero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/emptyspace"
+                    android:gravity="right"
+                    android:text="@string/genero"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emptyspace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/pacient_genero"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/pacient_genero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/emptyspace2"
+                    android:text="@{clinicInformation.patient.gender}" />
+
+                <TextView
+                    android:id="@+id/emptyspace2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/idade"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/idade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_name"
+                    android:layout_toLeftOf="@+id/emptyspace3"
+                    android:gravity="right"
+                    android:text="@string/idade"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emptyspace3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_name"
+                    android:layout_toLeftOf="@id/pacient_idade"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/pacient_idade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_name"
+                    android:layout_alignParentRight="true"
+                    android:text="@{clinicInformation.patient.ageToString}"/>
+
+
+                <TextView
+                    android:id="@+id/pacient_adverse_reaction_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_idade"
+                    android:layout_toLeftOf="@id/emptyspace4"
+                    android:gravity="right"
+                    android:text='@{reportType.equals(ClinicInformation.PARAM_FOLLOW_STATUS) ? "Dias de atraso:" : "Tem RAM?"}'
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emptyspace4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_idade"
+                    android:layout_toLeftOf="@id/pacient_adverse_reaction"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/pacient_adverse_reaction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_idade"
+                    android:layout_toLeftOf="@id/registration_date_lbl"
+                    android:layout_marginRight="@dimen/dimen_4dp"
+                    android:text='@{reportType.equals(ClinicInformation.PARAM_FOLLOW_STATUS) ? Utilities.parseIntToString(clinicInformation.lateDays) : (clinicInformation.adverseReactionOfMedicine ? "SIM" : "NÃO")}' />
+
+                <TextView
+                    android:id="@+id/registration_date_lbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_idade"
+                    android:layout_toLeftOf="@+id/emptyspace5"
+                    android:gravity="right"
+                    android:text="Data do Rastreio: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emptyspace5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pacient_idade"
+                    android:layout_toLeftOf="@id/registration_date"
+                    android:gravity="right"
+                    android:text="   " />
+
+                <TextView
+                    android:id="@+id/registration_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_idade"
+                    android:layout_alignParentRight="true"
+                    android:text="@{DateUtilities.formatToDDMMYYYY(clinicInformation.registerDate)}"/>
+
+
+                <LinearLayout
+                    android:id="@+id/linearDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pacient_idade"
+                    android:layout_marginTop="0dp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/nid_data1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/referenceDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/referDate"
+                            android:gravity="right"
+                            android:text="@string/data_de_referencia"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/referDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/dimen_4dp"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(clinicInformation.patient.episodes1.iterator().next().episodeDate)}" />
+
+                        <TextView
+                            android:id="@+id/lbl_prescription_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/referenceDate"
+                            android:layout_toLeftOf="@+id/prescription_date"
+                            android:gravity="right"
+                            android:text="@string/prescription_date"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/prescription_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/referDate"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
+                            android:paddingLeft="@dimen/dimen_4dp"
+                            android:text="@{clinicInformation.patient.prescriptions.iterator().hasNext()? DateUtilities.formatToDDMMYYYY(DateUtilities.formatToDDMMYYYY(clinicInformation.patient.prescriptions.iterator().next().prescriptionDate)):clinicInformation.patient.emptyString}" />
+
+                        <TextView
+                            android:id="@+id/lbl_dispense_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lbl_prescription_date"
+                            android:gravity="right"
+                            android:layout_toLeftOf="@+id/dispense_type"
+                            android:text="@string/dispense_type"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/dispense_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lbl_prescription_date"
+                            android:layout_alignParentRight="true"
+
+                            android:text="@{clinicInformation.patient.prescriptions.iterator().hasNext()?clinicInformation.patient.prescriptions.iterator().next().dispenseType.description:clinicInformation.patient.emptyString}" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

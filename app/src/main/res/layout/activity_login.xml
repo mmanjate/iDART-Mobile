@@ -7,9 +7,12 @@
 <data>
     <variable
         name="viewModel"
-        type="mz.org.fgh.idartlite.viewmodel.LoginVM" />
+        type="mz.org.fgh.idartlite.viewmodel.login.LoginVM" />
 
-    <variable name="clinicAdapter" type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
+    <variable name="clinicAdapter" type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+    <variable name="clinicSectorAdapter" type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+
+    <variable name="clinicSectorTypeAdapter" type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
     <import type="android.view.View"/>
 </data>
     <ScrollView
@@ -66,6 +69,42 @@
                     app:adapter="@{clinicAdapter}"
                     bind:selectedOpt="@={viewModel.selectedClinic}"
                     />
+
+                <TextView
+                    android:id="@+id/textClinicSectorType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/login_text_style"
+                    android:visibility="@{viewModel.sanitaryUnit  ? View.VISIBLE : View.GONE}"
+                    android:text="@string/clinic_sector_type"/>
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/clinic_sector_Type"
+                    android:prompt="@string/clinic_sector_type"
+                    style="@style/login_spinner_style"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:visibility="@{viewModel.sanitaryUnit ? View.VISIBLE : View.GONE}"
+                    app:adapter="@{clinicSectorTypeAdapter}"
+                    bind:selectedOpt="@={viewModel.selectedClinicSectorType}" />
+
+                <TextView
+                    android:id="@+id/textClinicSector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/login_text_style"
+                    android:visibility="@{viewModel.sanitaryUnit  ? View.VISIBLE : View.GONE}"
+                    android:text="@string/clinic_sector"/>
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/clinic_sector_1"
+                    android:prompt="@string/clinic_sector"
+                    style="@style/login_spinner_style"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:visibility="@{viewModel.sanitaryUnit ? View.VISIBLE : View.GONE}"
+                    app:adapter="@{clinicSectorAdapter}"
+                    bind:selectedOpt="@={viewModel.selectedClinicSector}" />
 
 
                 <TextView
@@ -129,25 +168,25 @@
                         android:id="@+id/login_progress_box"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{viewModel.authenticating? View.VISIBLE : View.GONE}"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="@{viewModel.authenticating ? View.VISIBLE : View.GONE}">
 
                         <ProgressBar
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="right"
                             android:layout_weight="1"
-                            android:padding="@dimen/dimen_10dp"
-                            android:layout_gravity="right"/>
+                            android:padding="@dimen/dimen_10dp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Autenticando, aguarde por favor..."
+                            android:layout_gravity="center_vertical"
                             android:layout_weight="3"
-                            android:textSize="16sp"
-                            android:textColor="@color/logo"
                             android:gravity="left"
-                            android:layout_gravity="center_vertical"/>
+                            android:text="Autenticando, aguarde por favor..."
+                            android:textColor="@color/logo"
+                            android:textSize="16sp" />
                     </LinearLayout>
                 </RelativeLayout>
 

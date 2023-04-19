@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.patient.PrescriptionActivity"
+    tools:context=".view.prescription.PrescriptionActivity"
     >
 
     <data>
-        <variable name="viewModel"              type="mz.org.fgh.idartlite.viewmodel.PrescriptionVM" />
-        <variable name="dispenseTypeAdapter"    type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="lineAdapter"            type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="regimenAdapter"         type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="motiveAdapter"          type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
-        <variable name="durationAdapter"        type="mz.org.fgh.idartlite.common.ListableSpinnerAdapter"/>
+        <variable name="viewModel"              type="mz.org.fgh.idartlite.viewmodel.prescription.PrescriptionVM" />
+        <variable name="dispenseTypeAdapter"    type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="lineAdapter"            type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="regimenAdapter"         type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="motiveAdapter"          type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
+        <variable name="durationAdapter"        type="mz.org.fgh.idartlite.adapter.spinner.listable.ListableSpinnerAdapter"/>
 
         <import type="mz.org.fgh.idartlite.model.Prescription"/>
-        <import type="mz.org.fgh.idartlite.util.DateUtilitis"/>
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
         <import type="android.view.View"/>
 
     </data>
@@ -119,7 +119,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_calendar"
-                            android:text="@{DateUtilitis.formatToDDMMYYYY(viewModel.prescriptionDate)}"
+                            android:text="@{DateUtilities.formatToDDMMYYYY(viewModel.prescriptionDate)}"
                             android:enabled="@{!viewModel.currentStep.applicationStepDisplay}"
                             style="@style/bottom_border_edit_text_style"/>
                         <TextView
@@ -243,6 +243,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="@{viewModel.currentStep.applicationStepDisplay ? View.GONE : View.VISIBLE}"
                             android:text="@string/drugs"
                             style="@style/input_labels"
                             />

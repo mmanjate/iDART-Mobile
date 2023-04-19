@@ -1,5 +1,6 @@
 package mz.org.fgh.idartlite.model;
 
+import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -7,16 +8,22 @@ import androidx.annotation.RequiresApi;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.common.Listble;
-import mz.org.fgh.idartlite.dao.DrugDaoImpl;
+import mz.org.fgh.idartlite.adapter.recyclerview.listable.Listble;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.drug.DrugDaoImpl;
+import mz.org.fgh.idartlite.model.inventory.InventoryRelatedObject;
+import mz.org.fgh.idartlite.util.Utilities;
 
-@DatabaseTable(tableName = "drug", daoClass = DrugDaoImpl.class)
-public class Drug extends BaseModel implements Listble {
+@DatabaseTable(tableName = Drug.TABLE_NAME, daoClass = DrugDaoImpl.class)
+public class Drug extends BaseModel implements Listble, InventoryRelatedObject {
 
+    public static final String TABLE_NAME = "drug";
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_FNMCODE = "fnm_code";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_PACK_SIZE = "packSize";
@@ -50,6 +57,12 @@ public class Drug extends BaseModel implements Listble {
     private int restid;
 
     private int quantity;
+
+    private List<Stock> stockList;
+
+    private List<StockAjustment> ajustmentInfo;
+
+    private List<DestroyedDrug> destroyedDrugsInfo;
 
     public int getId() {
         return id;
@@ -172,5 +185,82 @@ public class Drug extends BaseModel implements Listble {
     @Override
     public int compareTo(Object o) {
         return compareTo((BaseModel) o);
+    }
+
+    @Override
+    public String isValid(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeEdited(Context context) {
+        return null;
+    }
+
+    @Override
+    public String canBeRemoved(Context context) {
+        return null;
+    }
+
+    @Override
+    public boolean isDispenseDrugListing() {
+        return listType.equals(Listble.DISPENSE_DRUG_LISTING);
+    }
+
+    @Override
+    public boolean isPrescriptionDrugListing() {
+        return listType.equals(Listble.PRESCRIPTION_DRUG_LISTING);
+    }
+
+    @Override
+    public boolean isIventorySelectionListing() {
+        return listType.equals(Listble.INVENTORY_SELECTION_LISTING);
+    }
+
+    @Override
+    public List<StockAjustment> getAjustmentInfo() {
+        return ajustmentInfo;
+    }
+
+    @Override
+    public void setAjustmentInfo(List<StockAjustment> ajustmentInfo) {
+        this.ajustmentInfo = ajustmentInfo;
+    }
+
+    public void addAjustmentInfo(StockAjustment ajustment) {
+        if (this.ajustmentInfo == null) this.ajustmentInfo = new ArrayList<>();
+
+        this.ajustmentInfo.add(ajustment);
+    }
+
+    public void addStockDestructionInfo(DestroyedDrug destroyedDrug) {
+        if (this.destroyedDrugsInfo == null) this.destroyedDrugsInfo = new ArrayList<>();
+
+        this.destroyedDrugsInfo.add(destroyedDrug);
+    }
+
+    public List<DestroyedDrug> getDestroyedDrugsInfo() {
+        return destroyedDrugsInfo;
+    }
+
+    public void setDestroyedDrugsInfo(List<DestroyedDrug> destroyedDrugsInfo) {
+        this.destroyedDrugsInfo = destroyedDrugsInfo;
+    }
+
+    public List<Stock> getStockList() {
+        return stockList;
+    }
+
+    public void setStockList(List<Stock> stockList) {
+        this.stockList = stockList;
+    }
+
+    public int getCurrStock() {
+        if (!Utilities.listHasElements(this.stockList)) return 0;
+        int stockValue = 0;
+        for (Stock stock : this.stockList) {
+            if (!stock.isExpired()) stockValue = stockValue + stock.getStockMoviment();
+        }
+        return stockValue;
     }
 }

@@ -16,14 +16,16 @@ import java.util.List;
 import java.util.Objects;
 
 import mz.org.fgh.idartlite.R;
-import mz.org.fgh.idartlite.base.BaseModel;
-import mz.org.fgh.idartlite.dao.PrescriptionDaoImpl;
-import mz.org.fgh.idartlite.util.DateUtilitis;
+import mz.org.fgh.idartlite.base.model.BaseModel;
+import mz.org.fgh.idartlite.dao.prescription.PrescriptionDaoImpl;
+import mz.org.fgh.idartlite.model.patient.Patient;
+import mz.org.fgh.idartlite.util.DateUtilities;
 import mz.org.fgh.idartlite.util.Utilities;
 
 @DatabaseTable(tableName = "prescription", daoClass = PrescriptionDaoImpl.class)
 public class Prescription extends BaseModel {
 
+	public static final String TABLE_NAME = "Prescription";
 	public static final String COLUMN_ID = "id";
 	public static final String COLUMN_PRESCRIPTION_DATE = "prescription_date";
 	public static final String COLUMN_SUPPLY = "supply";
@@ -36,7 +38,7 @@ public class Prescription extends BaseModel {
 	public static final String COLUMN_PRESCRIPTION_SEQ = "prescription_seq";
 	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_PATIENT_ID = "patient_id";
-	public static final String COLUMN_SYNC_STATUS = "sync_status";
+
 
 	public static final String DURATION_TWO_WEEKS = "2 Semanas";
 	public static final String DURATION_ONE_MONTH = "1 Mês";
@@ -211,20 +213,26 @@ public class Prescription extends BaseModel {
 		if (o == null || getClass() != o.getClass()) return false;
 		Prescription that = (Prescription) o;
 		return prescriptionDate.equals(that.prescriptionDate) &&
-				expiryDate.equals(that.expiryDate) &&
 				prescriptionSeq.equals(that.prescriptionSeq) &&
 				uuid.equals(that.uuid);
 	}
 
 	public double getDurationInMonths(){
 		if (expiryDate == null) return  0;
-		return DateUtilitis.dateDiff(this.prescriptionDate, this.expiryDate, DateUtilitis.MONTH_FORMAT);
+		return DateUtilities.dateDiff(this.prescriptionDate, this.expiryDate, DateUtilities.MONTH_FORMAT);
 	}
-	
+
+	public int getTimeLeftInMonths(){
+
+		int leftTime = getSupply()-getTotalDispenseSupplied();
+
+       return getDurationMonths(leftTime);
+	}
+
 	public String getDurationToUserUI(){
 		if (this.supply == 2) return DURATION_TWO_WEEKS;
 		if (this.supply == 4) return DURATION_ONE_MONTH;
-		if (this.supply == 8) return DURATION_THREE_MONTHS;
+		if (this.supply == 8) return DURATION_TWO_MONTHS;
 		if (this.supply == 12) return DURATION_THREE_MONTHS;
 		if (this.supply == 16) return DURATION_FOUR_MONTHS;
 		if (this.supply == 20) return DURATION_FIVE_MONTHS;
@@ -233,10 +241,22 @@ public class Prescription extends BaseModel {
 		return "Não definido";
 	}
 
+	public int getDurationMonths(int supplyLeft){
+		if (supplyLeft == 2) return 0;
+		if (supplyLeft == 4) return 1;
+		if (supplyLeft == 8) return 2;
+		if (supplyLeft == 12) return 3;
+		if (supplyLeft== 16) return 4;
+		if (supplyLeft== 20) return 5;
+		if (supplyLeft == 24) return 6;
+
+		return 0;
+	}
+
 	@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 	@Override
 	public int hashCode() {
-		return Objects.hash(prescriptionDate, expiryDate, prescriptionSeq, uuid);
+		return Objects.hash(prescriptionDate, prescriptionSeq, uuid);
 	}
 
 	@Override
@@ -255,7 +275,7 @@ public class Prescription extends BaseModel {
 	}
 
 	public boolean isUrgent(){
-		return  this.urgentPrescription.equalsIgnoreCase(URGENT_PRESCRIPTION);
+		return  URGENT_PRESCRIPTION.equalsIgnoreCase(this.urgentPrescription);
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.O)
@@ -278,7 +298,7 @@ public class Prescription extends BaseModel {
 
     public String validate(Context context) {
 		if (this.prescriptionDate == null) return context.getString(R.string.prescription_date_mandatory);
-		if(DateUtilitis.dateDiff(this.prescriptionDate, DateUtilitis.getCurrentDate(), DateUtilitis.DAY_FORMAT) > 0) {
+		if(DateUtilities.dateDiff(this.prescriptionDate, DateUtilities.getCurrentDate(), DateUtilities.DAY_FORMAT) > 0) {
 			return context.getString(R.string.prescription_date_not_correct);
 		}
 		if(this.supply <= 0) return context.getString(R.string.prescription_durationmandatory);
@@ -322,11 +342,16 @@ public class Prescription extends BaseModel {
 
 	public void generateNextSeq() {
 		long lastSeq = 0;
-		if (Utilities.stringHasValue(this.prescriptionSeq)){
-			lastSeq = Long.parseLong(this.prescriptionSeq);
-		}else {
-			lastSeq = 0;
+		try{
+			if (Utilities.stringHasValue(this.prescriptionSeq)){
+				lastSeq = Long.parseLong(this.prescriptionSeq);
+			}else {
+				lastSeq = 0;
+			}
+		}catch (Exception e){
+			e.printStackTrace();
 		}
+
 
 		setPrescriptionSeq(String.valueOf(Utilities.garantirXCaracterOnNumber(lastSeq+1, 4)));
 	}
@@ -342,11 +367,15 @@ public class Prescription extends BaseModel {
 	public String getPrescriptionAsString(){
 		String prescriptionData = "";
 
-		prescriptionData = Utilities.concatStrings(prescriptionData, "Este paciente contém uma Prescrição anterior válida com o id "+this.getUiId() +" (detalhes abaixo).", "\n\n");
+		prescriptionData = Utilities.concatStrings(prescriptionData, "Este paciente contém uma Prescrição anterior válida/sem duração com o id "+this.getUiId() +" (detalhes abaixo).", "\n\n");
 
-		prescriptionData = Utilities.concatStrings(prescriptionData, "Regime: "+this.therapeuticRegimen.getDescription(), "\n");
+		if(this.therapeuticRegimen != null){
+			prescriptionData = Utilities.concatStrings(prescriptionData, "Regime: " +this.therapeuticRegimen.getDescription(), "\n");
+		}else{
+			prescriptionData = Utilities.concatStrings(prescriptionData, "Regime: não definido!" , "\n");
+		}
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Duração: "+getDurationToUserUI(), "\n");
-		prescriptionData = Utilities.concatStrings(prescriptionData, "Registado em: "+DateUtilitis.formatToDDMMYYYY(this.prescriptionDate), "\n");
+		prescriptionData = Utilities.concatStrings(prescriptionData, "Registado em: "+ DateUtilities.formatToDDMMYYYY(this.prescriptionDate), "\n");
 		prescriptionData = Utilities.concatStrings(prescriptionData, "Medicamentos na Prescrição: \n"+getPrescribedDrugsAsString(), "\n");
 		prescriptionData = Utilities.concatStrings(prescriptionData, "\n Gostaria de apagar esta Prescrição anterior, e substituí-la com a que esta para criar? ", "");
 
@@ -364,5 +393,20 @@ public class Prescription extends BaseModel {
 
 
 		return drugs;
+	}
+
+	@Override
+	public String isValid(Context context) {
+		return validate(context);
+	}
+
+	@Override
+	public String canBeEdited(Context context) {
+		return null;
+	}
+
+	@Override
+	public String canBeRemoved(Context context) {
+		return null;
 	}
 }

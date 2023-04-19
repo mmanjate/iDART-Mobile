@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="dispenseStatistic"
+            type="java.util.HashMap" />
+        <import type="mz.org.fgh.idartlite.util.DateUtilities"/>
+        <import type="mz.org.fgh.idartlite.util.Utilities"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="141dp"
+        android:padding="@dimen/dimen_10dp">
+
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_report_main" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:paddingBottom="@dimen/dimen_10dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/nid_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/linearDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <RelativeLayout
+                        android:id="@+id/nid_data1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/regime"
+                            android:layout_width="155dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="0dp"
+                            android:layout_toLeftOf="@+id/regime_thera"
+                            android:textSize="16sp"
+                            android:gravity="right"
+                            android:text="@string/regime_terapeutico"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/regime_thera"
+                            android:layout_width="159dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/dimen_50dp"
+                            android:text="@{(String) dispenseStatistic.get(`regimeTerapeutico`)}" />
+
+                        <TextView
+                            android:id="@+id/lbl_dispense_type_DM"
+                            android:layout_width="309dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/regime"
+                            android:layout_marginTop="2dp"
+                            android:layout_toLeftOf="@+id/dispense_type_DM"
+                            android:gravity="left"
+                            android:text="@string/dispensa_mensal_dm"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/dispense_type_DM"
+                            android:layout_width="108dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/regime_thera"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="1dp"
+                            android:layout_toLeftOf="@+id/regime_thera"
+                            android:paddingLeft="@dimen/dimen_50dp"
+                            android:text="@{String.valueOf(dispenseStatistic.get(`totalGeralDM`))}" />
+
+                        <TextView
+                            android:id="@+id/lbl_dispense_type_DT"
+                            android:layout_width="309dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lbl_dispense_type_DM"
+                            android:layout_marginTop="2dp"
+                            android:layout_toLeftOf="@+id/dispense_type_DT"
+                            android:gravity="left"
+                            android:text="@string/dispensa_trimestral_dt"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/dispense_type_DT"
+                            android:layout_width="108dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/dispense_type_DM"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginRight="1dp"
+                            android:layout_toLeftOf="@+id/dispense_type_DM"
+                            android:paddingLeft="@dimen/dimen_50dp"
+                            android:text="@{String.valueOf(dispenseStatistic.get(`totalGeralDT`))}" />
+
+                        <TextView
+                            android:id="@+id/lbl_dispense_type_DS"
+                            android:layout_width="309dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lbl_dispense_type_DT"
+                            android:layout_marginTop="2dp"
+                            android:layout_toLeftOf="@+id/dispense_type_DS"
+                            android:gravity="left"
+                            android:text="@string/dispensa_semestral"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/dispense_type_DS"
+                            android:layout_width="108dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/dispense_type_DT"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginRight="0dp"
+                            android:layout_toLeftOf="@+id/dispense_type_DT"
+                            android:paddingLeft="@dimen/dimen_50dp"
+                            android:text="@{String.valueOf(dispenseStatistic.get(`totalGeralDS`))}" />
+
+                        <TextView
+                            android:id="@+id/lbl_dispense_type_Total"
+                            android:layout_width="309dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/lbl_dispense_type_DS"
+                            android:layout_marginTop="2dp"
+                            android:layout_toLeftOf="@+id/dispense_type_Total"
+                            android:gravity="left"
+                            android:text="@string/total_dispensas"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/dispense_type_Total"
+                            android:layout_width="108dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/dispense_type_DS"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginRight="0dp"
+                            android:layout_toLeftOf="@+id/dispense_type_DS"
+                            android:paddingLeft="@dimen/dimen_50dp"
+                            android:text="@{String.valueOf(dispenseStatistic.get(`totalGeral`))}" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

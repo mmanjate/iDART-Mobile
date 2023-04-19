@@ -1,5 +1,7 @@
 package mz.org.fgh.idartlite.common;
 
+import mz.org.fgh.idartlite.model.Clinic;
+
 public class ApplicationStep {
 
     public static final String STEP_INIT = "INIT";
@@ -7,8 +9,11 @@ public class ApplicationStep {
     public static final String STEP_EDIT = "EDIT";
     public static final String STEP_LIST = "LIST";
     public static final String STEP_DISPLAY = "DYSPLAY";
+    public static final String STEP_SELECT = "SELECT";
     public static final String STEP_CREATE = "CREATE";
     public static final String STEP_REMOVE= "REMOVE";
+    public static final String STEP_DOWNLOAD= "DOWNLOAD";
+    public static final String SANITARY_UNIT="Unidade Sanitária";
 
     private int id;
     private String descrption;
@@ -77,6 +82,15 @@ public class ApplicationStep {
         return this.code.equals(STEP_CREATE);
     }
 
+    public boolean isApplicationstepDownload(){
+        return this.code.equals(STEP_DOWNLOAD);
+    }
+
+    public boolean isApplicationStepSelect(){
+        return this.code.equals(STEP_SELECT);
+    }
+
+
     public void changeToInit(){
         this.code = STEP_INIT;
     }
@@ -107,5 +121,19 @@ public class ApplicationStep {
 
     public void changeTo(String stepCode){
         this.code = stepCode;
+    }
+
+    public void changetoDownload(){
+        this.code = STEP_DOWNLOAD;
+    }
+
+    public void changeToSelect(){
+        this.code = STEP_SELECT;
+    }
+
+
+    public boolean checkSanitaryUnit(Clinic currentClinic){
+
+        return currentClinic.getPharmacyType().getDescription().equalsIgnoreCase(SANITARY_UNIT);
     }
 }
