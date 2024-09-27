@@ -320,15 +320,7 @@ public abstract class BaseViewModel  extends AndroidViewModel implements Observa
         return relatedRecord;
     }
 
-    @Override
-    public void doOnConfirmed() {
 
-    }
-
-    @Override
-    public void doOnDeny() {
-
-    }
 
     public GenericFragment getRelatedFragment() {
         return relatedFragment;
